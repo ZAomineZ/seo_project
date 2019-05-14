@@ -24,12 +24,21 @@ class CrawlController
         $this->crawl = $crawl;
     }
 
+    /**
+     * @param array $item
+     * @param string $key
+     * @return array
+     */
     protected function CrawlDup (array $item, string $key)
     {
         return $this->crawl->DupArrValues($item, $key);
     }
 
 
+    /**
+     * @param string $url
+     * @throws \Exception
+     */
     public function ResultCrawl (string $url)
     {
         $urls = trim((string)$url);
