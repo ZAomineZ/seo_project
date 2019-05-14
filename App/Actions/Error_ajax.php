@@ -5,6 +5,10 @@ class Error_ajax {
 
     private static $bl;
 
+    /**
+     * Error_ajax constructor.
+     * @param Json_File $bl
+     */
     public function __construct(Json_File $bl)
     {
         self::$bl = $bl;
