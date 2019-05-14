@@ -1,0 +1,18 @@
+{
+    "require": {
+        "slim/slim": "^3.0",
+        "fabpot/goutte": "^3.2",
+        "laravel/laravel": "^5.8",
+        "stillat/numeral.php": "^2.0",
+        "elboletaire/crawler": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\concern\\": "App/concern/",
+            "App\\Controller\\": "App/Controller/",
+            "App\\Model\\": "App/model/",
+            "App\\Table\\": "App/Table/",
+            "App\\Actions\\": "App/Actions/"
+        }
+    }
+}
