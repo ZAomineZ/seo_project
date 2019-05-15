@@ -21,6 +21,11 @@ class Table
         $this->pdo = $PDO_Model;
     }
 
+    /**
+     * @param array $data
+     * @param string $table
+     * @return bool
+     */
     public function InsertData (array $data, string $table)
     {
         $arr = [];

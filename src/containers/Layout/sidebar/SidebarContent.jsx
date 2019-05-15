@@ -21,43 +21,43 @@ class SidebarContent extends Component {
           <SidebarLink
             title="Serp Dashboard"
             icon="home"
-            route="/serp"
+            route="/seo/serp"
             onClick={this.hideSidebar}
           />
           <SidebarLink
             title="Dashboard Analyse"
             icon="heart"
-            route="/serp_analyse"
+            route="/seo/serp_analyse"
             onClick={this.hideSidebar}
           />
           <SidebarLink
             title="Suggest"
             icon="store"
-            route="/suggest"
+            route="/seo/suggest"
             onClick={this.hideSidebar}
           />
           <SidebarLink
             title="Crawl"
             icon="apartment"
-            route="/crawl"
+            route="/seo/crawl"
             onClick={this.hideSidebar}
           />
           <SidebarLink
             title="LinkProfile"
             icon="rocket"
-            route="/linkprofile"
+            route="/seo/linkprofile"
             onClick={this.hideSidebar}
           />
           <SidebarLink
             title="Campain"
             icon="smartphone"
-            route="/campain"
+            route="/seo/campain"
             onClick={this.hideSidebar}
           />
           <SidebarLink
             title="Top kw by Domains"
             icon="diamond"
-            route="/keyworddomains"
+            route="/seo/keyworddomains"
             onClick={this.hideSidebar}
           />
           <SidebarCategory title="Switch layout" icon="layers">
