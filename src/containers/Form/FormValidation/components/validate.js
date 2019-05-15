@@ -2,7 +2,7 @@ const validate = (values) => {
   const errors = {};
   if (!values.username) {
     errors.username = 'Username field shouldn’t be empty';
-  } else if (values.username && values.username.length <= 5) {
+  } else if (values.username && values.username.length < 5) {
     errors.username = 'Username field should must do 5 characters';
   }
   if (!values.url) {
@@ -15,7 +15,7 @@ const validate = (values) => {
   }
   if (!values.password) {
     errors.password = 'Password field shouldn’t be empty';
-  } else if (values.password && values.password.length <= 5) {
+  } else if (values.password && values.password.length < 5) {
     errors.password = 'Password field should must do 5 characters';
   }
   if (!values.select) {

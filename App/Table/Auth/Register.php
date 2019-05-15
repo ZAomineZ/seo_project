@@ -32,7 +32,7 @@ class Register extends Table
     {
         $select = $this->pdo
             ->GetPdo()
-            ->prepare("SELECT id FROM users WHERE username = :username OR email = :email");
+            ->prepare("SELECT id, confirmation_token FROM users WHERE username = :username OR email = :email");
         $select->execute(['username' => $username, 'email' => $email]);
         return $select->fetch();
     }

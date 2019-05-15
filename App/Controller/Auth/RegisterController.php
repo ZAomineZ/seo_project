@@ -37,6 +37,7 @@ class RegisterController
      * @param $email
      * @param $password
      * @return array|bool
+     * @throws \Exception
      */
     protected function RequestData (string $username, $email, $password)
     {
@@ -50,7 +51,7 @@ class RegisterController
             'email' => $email,
             'password' => $password,
             'created_at' => date('Y-m-d H:i:s'),
-            'confirmation_token' => ''
+            'confirmation_token' =>  bin2hex(random_bytes(32))
         ]);
     }
 
@@ -68,11 +69,12 @@ class RegisterController
             if (is_array($request) && $request['error'] !== '') {
                 echo \GuzzleHttp\json_encode($request);
             } else {
-                $mail = $this->register->MailEnjoy($username, $email);
+                $req = $this->RequestExisteField($username, $email);
+                $mail = $this->register->MailEnjoy($username, $email, $req->confirmation_token);
                 if (is_array($mail) && isset($mail['error'])) {
-                    echo \GuzzleHttp\json_encode($mail['error']);
+                    echo \GuzzleHttp\json_encode($mail);
                 } else {
-                    echo \GuzzleHttp\json_encode($mail['success']);
+                    echo \GuzzleHttp\json_encode($mail);
                 }
             }
         }

@@ -8,6 +8,8 @@ import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import MailRuIcon from 'mdi-react/MailRuIcon';
 import PropTypes from 'prop-types';
 import axios from "axios";
+import {BasicNotification} from "../../../../shared/components/Notification";
+import NotificationSystem from "rc-notification";
 
 const renderField = ({
                          input, placeholder, type, meta: {touched, error},
@@ -34,6 +36,22 @@ renderField.defaultProps = {
     type: 'text',
 };
 
+let notification = null;
+
+const showNotification = (message, type) => {
+    notification.notice({
+        content: <BasicNotification
+            color={type}
+            title={type === 'danger' ? '👋 A Error is present !!!' : '👋 Success Message !!!'}
+            message={type === 'danger' ? message.error : message.success + ', You can check your account via your email !!!'}
+        />,
+        duration: 5,
+        closable: true,
+        style: { top: 0, left: 'calc(100vw - 100%)' },
+        className: 'left-up',
+    });
+};
+
 class RegisterForm extends PureComponent {
     static propTypes = {
         handleSubmit: PropTypes.func,
@@ -46,7 +64,8 @@ class RegisterForm extends PureComponent {
             showPassword: false,
             valueUsername: '',
             valueEmail: '',
-            valuePassword: ''
+            valuePassword: '',
+            message: ''
         };
 
         this.showPassword = this.showPassword.bind(this);
@@ -75,6 +94,12 @@ class RegisterForm extends PureComponent {
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                }).then(response => {
+                    if (response && response.status === 200) {
+                        this.setState({message: response.data});
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification(this.state.message, response.data.error ? 'danger' : 'success'), 700);
+                    }
                 })
             }
         }
