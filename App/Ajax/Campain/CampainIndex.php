@@ -7,5 +7,7 @@ $goutte = new \Goutte\Client();
 $campain_model = new \App\Model\Campain($table_campain, $goutte);
 $ajax->HeaderProtect();
 
+$auth = \GuzzleHttp\json_decode($_GET['auth']);
+
 $campain = new \App\Controller\CampainController($table_campain, $campain_model);
-$campain->ReqCampain();
+$campain->ReqCampain($auth);

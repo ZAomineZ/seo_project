@@ -1,16 +1,14 @@
+/* eslint-disable */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import TopbarSidebarButton from './TopbarSidebarButton';
 import TopbarProfile from './TopbarProfile';
-import TopbarMail from './TopbarMail';
-import TopbarNotification from './TopbarNotification';
-import TopbarSearch from './TopbarSearch';
-import TopbarLanguage from './TopbarLanguage';
 
 class Topbar extends PureComponent {
   static propTypes = {
     changeMobileSidebarVisibility: PropTypes.func.isRequired,
     changeSidebarVisibility: PropTypes.func.isRequired,
+    username_auth: PropTypes.string.isRequired
   };
 
   render() {
@@ -26,11 +24,7 @@ class Topbar extends PureComponent {
             />
           </div>
           <div className="topbar__right">
-            <TopbarSearch />
-            <TopbarNotification />
-            <TopbarMail new />
-            <TopbarProfile />
-            <TopbarLanguage />
+            <TopbarProfile username={this.props.username_auth}/>
           </div>
         </div>
       </div>

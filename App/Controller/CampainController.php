@@ -43,24 +43,26 @@ class CampainController
     /**
      * @param string $table
      * @param string $slug
+     * @param int $user_id
      * @return array
      */
-    protected function DataReq (string $table, string $slug = '')
+    protected function DataReq (string $table, string $slug = '', int $user_id)
     {
         if ($slug !== '') {
-            return $this->table->SelectCampainDetails($slug, $table);
+            return $this->table->SelectCampainDetails($slug, $table, $user_id);
         }
-        return $this->table->SelectCampain($table);
+        return $this->table->SelectCampain($table, $user_id);
     }
 
     /**
      * @param string $table
      * @param string $slug
+     * @param int $user_id
      * @return bool
      */
-    protected function DataDelete (string $table, string $slug)
+    protected function DataDelete (string $table, string $slug, int $user_id)
     {
-        return $this->table->DeleteCampain($table, $slug);
+        return $this->table->DeleteCampain($table, $slug, $user_id);
     }
 
     /**
@@ -124,21 +126,23 @@ class CampainController
     }
 
     /**
+     * @param object $auth
      * @return array
      */
-    public function ReqCampain ()
+    public function ReqCampain (object $auth)
     {
-        $select = $this->DataReq("campaign");
+        $select = $this->DataReq("campaign", '', $auth->id);
         return $this->campain->ReturnJson($select);
     }
 
     /**
      * @param string $slug
+     * @param object $auth
      * @return bool
      */
-    public function DeleteCampain (string $slug)
+    public function DeleteCampain (string $slug, object $auth)
     {
-        return $this->DataDelete("campaign", $slug);
+        return $this->DataDelete("campaign", $slug, $auth->id);
     }
 
     /**

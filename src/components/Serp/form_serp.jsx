@@ -100,7 +100,7 @@ class CampainForm extends PureComponent {
         if (redirectMe) {
             return (
                 <Redirect to={{
-                    pathname: '/serp/' + this.state.valueInput,
+                    pathname: '/seo/serp/' + this.state.valueInput,
                 }}/>
             );
         }

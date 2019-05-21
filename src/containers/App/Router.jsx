@@ -5,7 +5,12 @@ import Layout from '../Layout/index';
 
 import NotFound404 from '../DefaultPage/404/index';
 import LogIn from '../Account/LogIn/index';
+import LogInToken from '../../components/Auth/login_token';
+import LogOut from '../../components/Auth/logout';
 import Register from '../Account/Register/index';
+import ConfirmationEmail from '../../components/Auth/email_confirmation';
+import PassWordFagot from '../../components/Auth/password_forgot';
+import PassWordFagotConfirm from '../../components/Auth/password_forgot_confirm';
 
 
 import Landing from '../Landing/index';
@@ -57,8 +62,13 @@ const Router = () => (
     <main>
       <Switch>
         <Route exact path="/" component={Landing} />
-        <Route path="/log_in" component={LogIn} />
+        <Route exact path="/log_in" component={LogIn} />
+        <Route exact path="/log_in/:token" component={LogInToken} />
+        <Route exact path="/log_out" component={LogOut} />
         <Route path="/register" component={Register} />
+        <Route path="/confirmation_email" component={ConfirmationEmail} />
+        <Route path="/password_forgot" component={PassWordFagot} />
+        <Route path="/password_forgot_confirm/:token" component={PassWordFagotConfirm} />
         <Route path="/seo" component={wrappedRoutes} />
         <Route exact path="*" component={NotFound404} /> {/* The Default not found component */}
       </Switch>

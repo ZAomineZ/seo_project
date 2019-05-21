@@ -30,16 +30,15 @@ class Campain extends Table
 
     /**
      * @param string $table
+     * @param int $user_id
      * @return array
      */
-    public function SelectCampain (string $table)
+    public function SelectCampain (string $table, int $user_id)
     {
         $select = $this->pdo
             ->GetPdo()
-            ->query("
-                SELECT *
-                FROM $table
-                ORDER BY id ASC");
+            ->prepare("SELECT * FROM $table WHERE user_id = :user_id ORDER BY id ASC");
+        $select->execute(['user_id' => $user_id]);
         return $select->fetchAll();
     }
 
@@ -55,18 +54,19 @@ class Campain extends Table
     /**
      * @param string $slug
      * @param string $table
+     * @param int $user_id
      * @return array
      */
-    public function SelectCampainDetails (string $slug, string $table)
+    public function SelectCampainDetails (string $slug, string $table, int $user_id)
     {
         $select = $this->pdo
             ->GetPdo()
             ->prepare("
                 SELECT *
                 FROM $table
-                WHERE campain = ?
+                WHERE campain = :slug AND user_id = :user_id
                 ORDER BY id ASC");
-        $select->execute([$slug]);
+        $select->execute(['slug' => $slug, 'user_id' => $user_id]);
         return $select->fetchAll();
     }
 
@@ -126,12 +126,13 @@ class Campain extends Table
     /**
      * @param string $table
      * @param string $slug
+     * @param int $user_id
      * @return bool
      */
-    public function DeleteCampain (string $table, string $slug)
+    public function DeleteCampain (string $table, string $slug, int $user_id)
     {
-        $delete = $this->pdo->GetPdo()->prepare("DELETE FROM $table WHERE slug = ? ");
-        return $delete->execute([$slug]);
+        $delete = $this->pdo->GetPdo()->prepare("DELETE FROM $table WHERE slug = ? AND user_id = :user_id");
+        return $delete->execute(['slug' => $slug, 'user_id' => $user_id]);
     }
 
     /**

@@ -1,16 +1,15 @@
+/* eslint-disable */
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TopbarSidebarButton from './TopbarSidebarButton';
 import TopbarProfile from './TopbarProfile';
-import TopbarMail from './TopbarMail';
-import TopbarLanguage from './TopbarLanguage';
-import TopbarNotification from './TopbarNotification';
 import TopbarNav from './tobar_nav/TopbarNav';
 
 export default class TopbarWithNavigation extends PureComponent {
   static propTypes = {
     changeMobileSidebarVisibility: PropTypes.func.isRequired,
+    username_auth: PropTypes.string.isRequired
   };
 
   render() {
@@ -25,10 +24,7 @@ export default class TopbarWithNavigation extends PureComponent {
           </div>
           <TopbarNav />
           <div className="topbar__right">
-            <TopbarNotification />
-            <TopbarMail new />
-            <TopbarProfile />
-            <TopbarLanguage />
+            <TopbarProfile username={this.props.username_auth}/>
           </div>
         </div>
       </div>

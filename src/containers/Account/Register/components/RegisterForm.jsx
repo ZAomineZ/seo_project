@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import axios from "axios";
 import {BasicNotification} from "../../../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
+import {Redirect} from "react-router-dom";
 
 const renderField = ({
                          input, placeholder, type, meta: {touched, error},
@@ -47,7 +48,7 @@ const showNotification = (message, type) => {
         />,
         duration: 5,
         closable: true,
-        style: { top: 0, left: 'calc(100vw - 100%)' },
+        style: {top: 0, left: 'calc(100vw - 100%)'},
         className: 'left-up',
     });
 };
@@ -65,7 +66,8 @@ class RegisterForm extends PureComponent {
             valueUsername: '',
             valueEmail: '',
             valuePassword: '',
-            message: ''
+            message: '',
+            emailReceived: false
         };
 
         this.showPassword = this.showPassword.bind(this);
@@ -87,16 +89,16 @@ class RegisterForm extends PureComponent {
             if (this.state.valueUsername.length >= 5 && this.state.valuePassword.length >= 5 && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.valueEmail)) {
                 axios.get('http://localhost/ReactProject/App/Ajax/Auth/register.php', {
                     params: {
-                      'username': this.state.valueUsername,
-                      'email': this.state.valueEmail,
-                      'password': this.state.valuePassword
+                        'username': this.state.valueUsername,
+                        'email': this.state.valueEmail,
+                        'password': this.state.valuePassword
                     },
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 }).then(response => {
                     if (response && response.status === 200) {
-                        this.setState({message: response.data});
+                        this.setState({message: response.data, emailReceived: response.data.success ? !this.state.emailReceived : false});
                         NotificationSystem.newInstance({}, n => notification = n);
                         setTimeout(() => showNotification(this.state.message, response.data.error ? 'danger' : 'success'), 700);
                     }
@@ -120,6 +122,13 @@ class RegisterForm extends PureComponent {
     render() {
         const {handleSubmit, typeFuncSubmit} = this.props;
 
+        if (this.state.emailReceived) {
+            return (
+                <Redirect to={{
+                    pathname: '/confirmation_email',
+                }}/>
+            )
+        }
         return (
             <form className="form" onSubmit={typeFuncSubmit === false ? e => this.SubmitRegister(e) : handleSubmit}>
                 <div className="form__form-group">

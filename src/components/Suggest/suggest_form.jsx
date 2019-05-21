@@ -84,7 +84,7 @@ class SuggestForm extends PureComponent {
         if (redirectMe) {
             return (
                 <Redirect to={{
-                    pathname: '/suggest/' + this.state.valueInput,
+                    pathname: '/seo/suggest/' + this.state.valueInput,
                 }}/>
             );
         }

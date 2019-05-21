@@ -63,8 +63,11 @@ class TopKeywordController
         if ($filter !== '') {
             $json = str_replace(' ','', $this->str->str_replace_crawl($filter));
             $explode = explode($search, $json);
-            $explode_key = explode(',', $explode[1]);
-            return str_replace('"', '', $explode_key[0]);
+            if ($explode && isset($explode[1])) {
+                $explode_key = explode(',', $explode[1]);
+                return str_replace('"', '', $explode_key[0]);
+            }
+            return '';
         }
     }
 

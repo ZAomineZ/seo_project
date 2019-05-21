@@ -1,4 +1,6 @@
 /* eslint-disable max-len */
+/* eslint-disable */
+
 import React, { PureComponent } from 'react';
 import { Col, Row, Container } from 'reactstrap';
 import scrollToComponent from 'react-scroll-to-component';
@@ -14,8 +16,27 @@ import Testimonials from './components/Testimonials';
 import FeatureRequest from './components/FeatureRequest';
 import { changeThemeToDark, changeThemeToLight } from '../../redux/actions/themeActions';
 import { ThemeProps } from '../../shared/prop-types/ReducerProps';
+import NotificationSystem from "rc-notification";
+import {BasicNotification} from "../../shared/components/Notification";
+import {Redirect} from "react-router-dom";
 
 const logo = `${process.env.PUBLIC_URL}/img/landing/logo_svg.svg`;
+
+let notification = null;
+
+const showNotification = (message, type) => {
+    notification.notice({
+        content: <BasicNotification
+            color={type}
+            title='👋 Danger !!!'
+            message={message}
+        />,
+        duration: 5,
+        closable: true,
+        style: {top: 0, left: 'calc(100vw - 100%)'},
+        className: 'left-up',
+    });
+};
 
 class Landing extends PureComponent {
   static propTypes = {
@@ -23,7 +44,22 @@ class Landing extends PureComponent {
     theme: ThemeProps.isRequired,
   };
 
-  changeToDark = () => {
+    constructor() {
+        super();
+        this.state = {
+            auth: ''
+        }
+    }
+
+  componentDidMount() {
+      if (sessionStorage.getItem('Auth')) {
+          this.setState({auth: 'Auth'});
+          NotificationSystem.newInstance({}, n => notification = n);
+          setTimeout(() => showNotification('You are already connected, it is impossible to access page Home !!!', 'danger'), 700);
+      }
+  }
+
+    changeToDark = () => {
     this.props.dispatch(changeThemeToDark());
   };
 
@@ -33,6 +69,14 @@ class Landing extends PureComponent {
 
   render() {
     const { theme } = this.props;
+
+      if (this.state.auth === 'Auth')  {
+          return (
+              <Redirect to={{
+                  pathname: '/seo/serp',
+              }}/>
+          );
+      }
 
     return (
       <div className="landing">

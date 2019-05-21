@@ -39,6 +39,9 @@ class Campain extends PureComponent {
             }
         }
         axios.get("http://localhost/ReactProject/App/Ajax/Campain/CampainIndex.php", {
+            params: {
+                auth: sessionStorage.getItem('Auth')
+            },
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -65,6 +68,7 @@ class Campain extends PureComponent {
             },
             params: {
                 'slug': slug,
+                'auth': sessionStorage.getItem('Auth')
             }
         }).then((response) => {
             if (response && response.status === 200) {
@@ -116,7 +120,7 @@ class Campain extends PureComponent {
                                                                         { key + 1 }
                                                                     </td>
                                                                     <td>
-                                                                        <Link to={"/campain/" + d.slug}>{ d.name }</Link>
+                                                                        <Link to={"campain/" + d.slug}>{ d.name }</Link>
                                                                     </td>
                                                                     <td>
                                                                         { d.campain.id_count }

@@ -1,10 +1,10 @@
 /* eslint-disable */
 import React, {PureComponent} from 'react';
-import {Link, Redirect} from 'react-router-dom';
-import RegisterForm from './components/RegisterForm';
+import PasswordForgotConfirmForm from './password_forgot_confirm_form'
 import axios from "axios";
 import NotificationSystem from "rc-notification";
-import {BasicNotification} from "../../../shared/components/Notification";
+import {BasicNotification} from "../../shared/components/Notification";
+import {Redirect} from "react-router-dom";
 
 let notification = null;
 
@@ -22,29 +22,40 @@ const showNotification = (message, type) => {
     });
 };
 
-class Register extends PureComponent {
+class PasswordForgotConfirm extends PureComponent {
     constructor() {
         super();
         this.state = {
-            auth: ''
+            redirectLogIn: false
         }
     }
 
     componentDidMount() {
-        if (sessionStorage.getItem('Auth')) {
-            this.setState({ auth : 'Auth' });
-            NotificationSystem.newInstance({}, n => notification = n);
-            setTimeout(() => showNotification('You are already connected, it is impossible to access this page !!!', 'danger'), 700);
-        }
+        axios.get('http://localhost/ReactProject/App/Ajax/Auth/password_forgot_confirm_error.php', {
+            params: {
+                'token': this.props.match.params.token,
+            },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response && response.status === 200) {
+                if (response.data.error) {
+                    this.setState({ redirectLogIn: !this.state.redirectLogIn });
+                    NotificationSystem.newInstance({}, n => notification = n);
+                    setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                }
+            }
+        })
     }
 
     render() {
-        if (this.state.auth === 'Auth')  {
+        if (this.state.redirectLogIn) {
             return (
                 <Redirect to={{
-                    pathname: '/seo/serp',
+                    pathname: '/log_in',
                 }}/>
-            );
+            )
         }
         return (
             <div className="account">
@@ -56,12 +67,9 @@ class Register extends PureComponent {
               <span className="account__logo-accent">DEV</span>
             </span>
                             </h3>
-                            <h4 className="account__subhead subhead">Create an account</h4>
+                            <h4 className="account__subhead subhead">Fomulate your new Password !!!</h4>
                         </div>
-                        <RegisterForm typeFuncSubmit={false}/>
-                        <div className="account__have-account">
-                            <p>Already have an account? <Link to="/log_in">Login</Link></p>
-                        </div>
+                        <PasswordForgotConfirmForm typeFuncSubmit={false} token={this.props.match.params.token} />
                     </div>
                 </div>
             </div>
@@ -69,4 +77,4 @@ class Register extends PureComponent {
     }
 }
 
-export default Register;
+export default PasswordForgotConfirm

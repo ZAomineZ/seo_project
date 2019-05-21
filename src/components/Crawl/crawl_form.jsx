@@ -162,7 +162,7 @@ class CrawlForm extends PureComponent {
         if (redirectMe) {
             return (
                 <Redirect to={{
-                    pathname: '/crawl/' + this.state.valueInput,
+                    pathname: '/seo/crawl/' + this.state.valueInput,
                     state: {valueIndex: this.state.valueIndex}
                 }}/>
             );
