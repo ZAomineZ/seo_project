@@ -92,7 +92,7 @@ export default class AlertComponent extends PureComponent {
                                     this.props.date_comparaison === true ?
                                         <Link className="btn_style btn-outline-primary"
                                             to={{
-                                            pathname: '/serp_comparison/' + this.props.keyword + '/' + moment(this.props.state_location[0].EndDate).format('YYYY-MM-DD'),
+                                            pathname: '/seo/serp_comparison/' + this.props.keyword + '/' + moment(this.props.state_location[0].EndDate).format('YYYY-MM-DD'),
                                             state: [
                                                 {
                                                     'StartDate': this.props.state_location[0].StartDate,

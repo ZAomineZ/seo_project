@@ -31,7 +31,7 @@ class SerpComparison extends PureComponent {
     };
 
     componentDidMount() {
-        axios.get('http://localhost/ReactProject/App/Ajax/SerpComparaison.php', {
+        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/SerpComparaison.php', {
             headers: {
                 'Content-Type': 'application/json',
             },

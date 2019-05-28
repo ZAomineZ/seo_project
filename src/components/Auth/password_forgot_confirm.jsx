@@ -31,7 +31,7 @@ class PasswordForgotConfirm extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get('http://localhost/ReactProject/App/Ajax/Auth/password_forgot_confirm_error.php', {
+        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Auth/password_forgot_confirm_error.php', {
             params: {
                 'token': this.props.match.params.token,
             },

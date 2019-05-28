@@ -7,7 +7,6 @@ import ToggleTheme from './ToggleTheme';
 import ToggleCollapsedMenu from './ToggleCollapsedMenu';
 import ToggleSquared from './ToggleSquared';
 import ToggleShadow from './ToggleShadow';
-import ToggleTopMenu from './ToggleTopMenu';
 
 const settings = `${process.env.PUBLIC_URL}/img/settings.svg`;
 
@@ -18,7 +17,6 @@ export default class Customizer extends PureComponent {
     customizer: CustomizerProps.isRequired,
     theme: ThemeProps.isRequired,
     changeSidebarVisibility: PropTypes.func.isRequired,
-    toggleTopNavigation: PropTypes.func.isRequired,
     changeToDark: PropTypes.func.isRequired,
     changeToLight: PropTypes.func.isRequired,
     changeBorderRadius: PropTypes.func.isRequired,
@@ -44,7 +42,6 @@ export default class Customizer extends PureComponent {
       sidebar,
       customizer,
       theme,
-      toggleTopNavigation,
       changeToDark,
       changeToLight,
       changeBorderRadius,
@@ -67,7 +64,6 @@ export default class Customizer extends PureComponent {
             Create your own visual style for every project you do!
           </p>
           <ToggleCollapsedMenu changeSidebarVisibility={changeSidebarVisibility} sidebar={sidebar} />
-          <ToggleTopMenu toggleTopNavigation={toggleTopNavigation} customizer={customizer} />
           <ToggleTheme changeToDark={changeToDark} changeToLight={changeToLight} theme={theme} />
           <ToggleSquared customizer={customizer} changeBorderRadius={changeBorderRadius} />
           <ToggleShadow customizer={customizer} toggleBoxShadow={toggleBoxShadow} />

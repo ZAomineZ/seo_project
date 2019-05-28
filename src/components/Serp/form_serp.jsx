@@ -1,20 +1,20 @@
 /* eslint-disable */
-import React, { PureComponent } from 'react';
-import { Card, CardBody, Col, Button, ButtonToolbar } from 'reactstrap';
-import { Field, reduxForm } from 'redux-form';
-import { translate } from 'react-i18next';
+import React, {PureComponent} from 'react';
+import {Card, CardBody, Col, Button, ButtonToolbar} from 'reactstrap';
+import {Field, reduxForm} from 'redux-form';
+import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import validate from '../../containers/Form/FormValidation/components/validate';
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import axios from "axios";
 
 const renderField = ({
-                         input, placeholder, type, meta: { touched, error },
+                         input, placeholder, type, meta: {touched, error},
                      }) => (
     <div className="form__form-group-input-wrap form__form-group-input-wrap--error-above">
-        <input {...input} placeholder={placeholder} type={type} />
+        <input {...input} placeholder={placeholder} type={type}/>
         {touched && error && <span className="form__form-group-error">{error}</span>}
     </div>
 );
@@ -30,7 +30,7 @@ const showNotification = (error) => {
         />,
         duration: 5,
         closable: true,
-        style: { top: 0, left: 'calc(100vw - 100%)' },
+        style: {top: 0, left: 'calc(100vw - 100%)'},
         className: 'left-up',
     });
 };
@@ -70,32 +70,34 @@ class CampainForm extends PureComponent {
     onSubmit(e) {
         e.preventDefault();
         if (this.state.valueInput.length !== 0 && this.state.valueInput.length >= 3) {
-            if (this.state.valueInput.indexOf(' ')) {
-                let string = '';
-                let string_ = this.state.valueInput.split(' ');
-                string_.map(d => {
-                    let replace_data = d.replace(' ', '-');
-                    return string += replace_data + '-'
-                });
-                let last_str = string.substr(0, string.length - 1);
-                this.setState({ valueInput: last_str });
+            if (this.state.valueInput.indexOf('/') === -1 && this.state.valueInput.indexOf(',') === -1) {
+                if (this.state.valueInput.indexOf(' ') !== -1) {
+                    let string = '';
+                    let string_ = this.state.valueInput.split(' ');
+                    string_.map(d => {
+                        let replace_data = d.replace(' ', '-');
+                        return string += replace_data + '-'
+                    });
+                    let last_str = string.substr(0, string.length - 1);
+                    this.setState({valueInput: last_str});
+                } else {
+                    let replace_string = this.state.valueInput;
+                    this.setState({valueInput: replace_string});
+                }
+                this.setState({redirectTo: !this.state.redirectTo})
             } else {
-                let replace_string = this.state.valueInput;
-                this.setState({ valueInput: replace_string });
+                NotificationSystem.newInstance({}, n => notification = n);
+                setTimeout(() => showNotification('The fiels is empty or your keyword is invalid !!!'), 700);
             }
-            this.setState({ redirectTo: !this.state.redirectTo })
-        } else {
-            NotificationSystem.newInstance({}, n => notification = n);
-            setTimeout(() => showNotification('The fiels is empty or your keyword is so many short !!!'), 700);
         }
     }
 
     onChangeInput(e) {
-        this.setState({ valueInput: e.target.value });
+        this.setState({valueInput: e.target.value});
     }
 
     render() {
-        const { t, location } = this.props;
+        const {t, location} = this.props;
         const redirectMe = this.state.redirectTo;
         if (redirectMe) {
             return (
@@ -105,7 +107,7 @@ class CampainForm extends PureComponent {
             );
         }
         if (location.substr(-1) === '/') {
-            return <Redirect to={location.substr(0, location.length - 1)} />;
+            return <Redirect to={location.substr(0, location.length - 1)}/>;
         }
         return (
             <Col md={12} lg={12}>
@@ -142,4 +144,12 @@ class CampainForm extends PureComponent {
 export default reduxForm({
     form: 'horizontal_form_validation_two', // a unique identifier for this form
     validate,
-})(translate('common')(CampainForm));
+})
+
+(
+    translate(
+        'common'
+    )(
+        CampainForm
+    ))
+;

@@ -5,54 +5,83 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/App/Ajax/Auth/ReconnectCookie.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Ajax/Auth/login.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Ajax/Auth/login_token.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Ajax/Auth/password_forgot.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Ajax/Auth/password_forgot_confirm.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Ajax/Auth/password_forgot_confirm_error.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Controller/Auth/LogInController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Controller/Auth/PasswordForgotController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Table/Auth/LogIn.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/Table/Auth/PasswordForgot.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/concern/Mail.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/model/Auth/LogIn.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/model/Auth/PasswordForgot.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Auth/email_confirmation.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Auth/login_token.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Auth/logout.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Auth/password_forgot.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm_form.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/CampainDelete.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/CampainDelete.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/CampainIndex.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/CampainIndex.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/Campain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/Campain.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/CampainDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/CampainDetails.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/CampainItemDelete.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/CampainItemDelete.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/DataCampain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/DataCampain.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/UpdateDataBl.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/UpdateDataBl.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/Serp.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Serp.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/WebSite.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/WebSite.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/CampainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/CampainController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/TopKeywordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/TopKeywordController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Controller/WebSiteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/WebSiteController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Table/Auth/LogIn.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Table/Auth/LogIn.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Table/Campain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Table/Campain.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/model/Auth/Register.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/Auth/Register.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/concern/Str_options.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/concern/Str_options.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/Campain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/Campain.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/LinkDomain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/LinkDomain.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/WebSite.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/WebSite.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Auth/login_token.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Auth/login_token.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Auth/logout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Auth/logout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Campain/campain_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Campain/campain_form.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Campain/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Campain/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Crawl/crawl_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Crawl/crawl_form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/form_analyse.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/form_analyse.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Serp/form_serp.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/form_serp.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_date.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_date.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/tab_anchors.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/tab_anchors.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/tab_data.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/tab_data.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Suggest/suggest_details.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/suggest_details.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Suggest/suggest_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/suggest_form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Account/EmailConfimation/components/EmailConfirmationCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/EmailConfimation/components/EmailConfirmationCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Account/Register/components/RegisterForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/Register/components/RegisterForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Account/Register/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/Register/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/App/Router.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/Router.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Form/FormValidation/components/validate.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Form/FormValidation/components/validate.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Charts/ReactVis/components/Bar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Charts/ReactVis/components/Bar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Charts/Recharts/components/SimpleLineChart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Charts/Recharts/components/SimpleLineChart.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Booking/components/Occupancy.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Booking/components/Occupancy.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BCH.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BCH.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BTC.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BTC.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/CryptotrendsToday.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/CryptotrendsToday.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/ETH.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/ETH.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TradeHistory.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TradeHistory.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/XRP.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/XRP.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Default/components/BounceRateArea.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Default/components/BounceRateArea.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/ActivityChart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/ActivityChart.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Landing/components/Features.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Landing/components/Features.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Landing/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Landing/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Landing/components/Technologies.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Landing/components/Technologies.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Landing/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Landing/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Layout/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/topbar/TopbarProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/topbar/TopbarProfile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/topbar_with_navigation/TopbarWithNavigation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/topbar_with_navigation/TopbarWithNavigation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scss/app/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/app/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scss/containers/landing.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/containers/landing.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/components/Panel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/Panel.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-boersen-zeitung-de/boersen-zeitung-de-291eefd313bf07dc480403a5d283db56.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-boersen-zeitung-de/boersen-zeitung-de-291eefd313bf07dc480403a5d283db56.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-bonjourlesenfants-net/bonjourlesenfants-net-5b7682cc3081cc9b08428064137afc93.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-bonjourlesenfants-net/bonjourlesenfants-net-5b7682cc3081cc9b08428064137afc93.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloori-com/coloori-com-ede8188ffc58649b8db772ab04f88d04.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloori-com/coloori-com-ede8188ffc58649b8db772ab04f88d04.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloriages-info/coloriages-info-51f0937e35b81c79ef41787652237dea.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloriages-info/coloriages-info-51f0937e35b81c79ef41787652237dea.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/dash-stats-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/dash-stats-df393e05f4a6554fbba0eaf1a01a32ef.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/dash-stats-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/dash-stats-94dbdf3060b4a5c8a3be506889d95e3c.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/traffic-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/traffic-94dbdf3060b4a5c8a3be506889d95e3c.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/dash-stats-2619ee8ce400f00bd57955d150fce876.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/dash-stats-2619ee8ce400f00bd57955d150fce876.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/dash-stats-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/dash-stats-ddfe220cec847aa8e6de024bdd987e81.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/dash-stats-272aa091de7638c851fad67db73102e2.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/dash-stats-272aa091de7638c851fad67db73102e2.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -82,8 +111,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/containers/App/Router.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="40" column="61" lean-forward="true" selection-start-line="40" selection-start-column="61" selection-end-line="40" selection-end-column="61" />
+            <state relative-caret-position="408">
+              <caret line="66" column="53" selection-start-line="66" selection-start-column="53" selection-end-line="66" selection-end-column="53" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -92,46 +121,82 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Campain/index.jsx">
+        <entry file="file://$PROJECT_DIR$/src/components/Auth/logout.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="398">
-              <caret line="73" column="54" lean-forward="true" selection-start-line="73" selection-start-column="54" selection-end-line="73" selection-end-column="54" />
+            <state relative-caret-position="1640">
+              <caret line="44" column="50" lean-forward="true" selection-start-line="44" selection-start-column="50" selection-end-line="44" selection-end-column="50" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="488">
+              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/login.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="568">
+              <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-21">
+              <caret line="116" column="16" lean-forward="true" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1328">
+              <caret line="110" column="41" selection-start-line="110" selection-start-column="41" selection-end-line="110" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/App/Ajax/Campain/CampainDelete.php">
+        <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="455">
+              <caret line="135" column="56" lean-forward="true" selection-start-line="135" selection-start-column="56" selection-end-line="135" selection-end-column="56" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx">
+        <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/ReconnectCookie.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1518">
-              <caret line="181" column="49" lean-forward="true" selection-start-line="181" selection-start-column="49" selection-end-line="181" selection-end-column="49" />
+            <state relative-caret-position="600">
+              <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App/Controller/CampainController.php">
+        <entry file="file://$PROJECT_DIR$/App/Controller/Auth/LogInController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="509">
-              <caret line="64" column="31" lean-forward="true" selection-start-line="64" selection-start-column="31" selection-end-line="64" selection-end-column="31" />
+            <state relative-caret-position="-1">
+              <caret line="81" column="7" lean-forward="true" selection-start-line="81" selection-start-column="7" selection-end-line="81" selection-end-column="7" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App/Table/Campain.php">
+        <entry file="file://$PROJECT_DIR$/App/model/Auth/LogIn.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-171">
-              <caret line="122" column="35" lean-forward="true" selection-start-line="122" selection-start-column="35" selection-end-line="122" selection-end-column="35" />
+            <state relative-caret-position="279">
+              <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -174,6 +239,7 @@
       <find>Find</find>
       <find>Json</find>
       <find>validate</find>
+      <find>landing__im</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/build</dir>
@@ -185,57 +251,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/containers/Account/Register/components/RegisterForm.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Account/EmailConfimation/components/EmailConfirmationCard.jsx" />
-        <option value="$PROJECT_DIR$/App/model/Auth/Register.php" />
-        <option value="$PROJECT_DIR$/App/Ajax/Auth/login.php" />
-        <option value="$PROJECT_DIR$/App/Ajax/Auth/user_connect.php" />
-        <option value="$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Layout/topbar_with_navigation/TopbarWithNavigation.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Landing/index.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/email_confirmation.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Account/Register/index.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Layout/topbar/TopbarProfile.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/login_token.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_fagot.jsx" />
-        <option value="$PROJECT_DIR$/src/scss/app/style.scss" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_fagot_form.jsx" />
-        <option value="$PROJECT_DIR$/App/model/Auth/PasswordForgot.php" />
-        <option value="$PROJECT_DIR$/App/concern/mail.php" />
-        <option value="$PROJECT_DIR$/App/Ajax/Auth/password_forgot.php" />
-        <option value="$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Form/FormValidation/components/validate.js" />
-        <option value="$PROJECT_DIR$/App/concern/Mail.php" />
-        <option value="$PROJECT_DIR$/src/containers/App/Router.jsx" />
-        <option value="$PROJECT_DIR$/App/Ajax/Auth/password_forgot_confirm.php" />
-        <option value="$PROJECT_DIR$/App/Ajax/Auth/password_forgot_confirm_error.php" />
-        <option value="$PROJECT_DIR$/App/Table/Auth/PasswordForgot.php" />
-        <option value="$PROJECT_DIR$/App/Controller/Auth/PasswordForgotController.php" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm_form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx" />
-        <option value="$PROJECT_DIR$/App/model/Auth/LogIn.php" />
-        <option value="$PROJECT_DIR$/src/components/Auth/logout.jsx" />
-        <option value="$PROJECT_DIR$/App/Ajax/Auth/ReconnectCookie.php" />
-        <option value="$PROJECT_DIR$/App/Controller/Auth/LogInController.php" />
-        <option value="$PROJECT_DIR$/src/containers/Layout/index.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/form_serp.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BCH.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/XRP.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Default/components/BounceRateArea.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/ActivityChart.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/CryptotrendsToday.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Charts/ReactVis/components/Bar.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/index_serp.jsx" />
         <option value="$PROJECT_DIR$/src/components/Serp/index.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" />
         <option value="$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx" />
-        <option value="$PROJECT_DIR$/App/Table/Auth/LogIn.php" />
-        <option value="$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx" />
+        <option value="$PROJECT_DIR$/src/shared/components/Panel.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" />
         <option value="$PROJECT_DIR$/src/components/Serp/form_analyse.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_form.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_details.jsx" />
         <option value="$PROJECT_DIR$/src/components/Crawl/crawl_form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/LinkProfile/form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" />
-        <option value="$PROJECT_DIR$/App/Controller/TopKeywordController.php" />
-        <option value="$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx" />
-        <option value="$PROJECT_DIR$/App/Ajax/Campain/CampainIndex.php" />
+        <option value="$PROJECT_DIR$/App/Table/Auth/LogIn.php" />
+        <option value="$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx" />
+        <option value="$PROJECT_DIR$/App/model/LinkDomain.php" />
         <option value="$PROJECT_DIR$/src/components/Campain/index.jsx" />
-        <option value="$PROJECT_DIR$/App/Ajax/Campain/CampainDelete.php" />
-        <option value="$PROJECT_DIR$/App/Controller/CampainController.php" />
-        <option value="$PROJECT_DIR$/App/Table/Campain.php" />
+        <option value="$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Auth/login_token.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Account/Register/components/RegisterForm.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx" />
+        <option value="$PROJECT_DIR$/App/Ajax/ErrorSearch.php" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_form.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Campain/campain_form.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/form_serp.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Landing/index.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" />
+        <option value="$PROJECT_DIR$/App/Controller/TopKeywordController.php" />
+        <option value="$PROJECT_DIR$/src/containers/Landing/components/Header.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Landing/components/Technologies.jsx" />
+        <option value="$PROJECT_DIR$/src/scss/containers/landing.scss" />
+        <option value="$PROJECT_DIR$/src/containers/Landing/components/Features.jsx" />
+        <option value="$PROJECT_DIR$/App/Controller/WebSiteController.php" />
+        <option value="$PROJECT_DIR$/App/model/WebSite.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/WebSite.php" />
+        <option value="$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx" />
+        <option value="$PROJECT_DIR$/App/Ajax/Serp.php" />
+        <option value="$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/serp_date.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx" />
+        <option value="$PROJECT_DIR$/App/Ajax/Auth/login.php" />
+        <option value="$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Auth/logout.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Layout/index.jsx" />
       </list>
     </option>
   </component>
@@ -312,11 +378,11 @@
       <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-1" />
     <option name="y" value="33" />
-    <option name="width" value="1922" />
-    <option name="height" value="1050" />
+    <option name="width" value="1914" />
+    <option name="height" value="1051" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -341,6 +407,19 @@
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="Actions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="Actions" type="462c0819:PsiDirectoryNode" />
+              <item name="Url" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="Ajax" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -348,7 +427,7 @@
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="Ajax" type="462c0819:PsiDirectoryNode" />
-              <item name="Campain" type="462c0819:PsiDirectoryNode" />
+              <item name="Auth" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
@@ -366,34 +445,13 @@
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="Controller" type="462c0819:PsiDirectoryNode" />
-              <item name="Auth" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="Auth" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="Table" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="Table" type="462c0819:PsiDirectoryNode" />
-              <item name="Auth" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
@@ -411,7 +469,14 @@
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Auth" type="462c0819:PsiDirectoryNode" />
+              <item name="Crawl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="LinkProfile" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
@@ -419,6 +484,46 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="Serp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="Suggest" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="TopDomainsKeyword" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="containers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+              <item name="component" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+              <item name="containers" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -566,7 +671,12 @@
       <workItem from="1558164067509" duration="12980000" />
       <workItem from="1558179270077" duration="2901000" />
       <workItem from="1558348360902" duration="15204000" />
-      <workItem from="1558433118338" duration="9991000" />
+      <workItem from="1558433118338" duration="19510000" />
+      <workItem from="1558521673729" duration="18977000" />
+      <workItem from="1558606484273" duration="13046000" />
+      <workItem from="1558692611115" duration="3633000" />
+      <workItem from="1558955302524" duration="11144000" />
+      <workItem from="1559041512399" duration="4286000" />
     </task>
     <task id="LOCAL-00001" summary="commit xml">
       <created>1557842988682</created>
@@ -596,11 +706,18 @@
       <option name="project" value="LOCAL" />
       <updated>1557934049797</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="commit Auth User">
+      <created>1558449048732</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1558449048733</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1006525000" />
+    <option name="totallyTimeSpent" value="1067130000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -612,9 +729,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="33" width="1922" height="1050" extended-state="6" />
+    <frame x="-1" y="33" width="1914" height="1051" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4983108" weight="0.27306867" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4983108" weight="0.2817888" />
       <window_info id="Structure" order="1" sideWeight="0.5016892" side_tool="true" weight="0.3138412" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -629,7 +747,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49946353" weight="0.3295583" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5005365" side_tool="true" weight="0.3295583" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3272933" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32692307" />
       <window_info anchor="bottom" id="TypeScript" order="12" weight="0.32918552" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -649,416 +767,360 @@
     <option name="LAST_COMMIT_MESSAGE" value="commit Auth User" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="93" column="65" lean-forward="true" selection-start-line="93" selection-start-column="65" selection-end-line="93" selection-end-column="65" />
-          <folding>
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/password_forgot_confirm.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="5" lean-forward="true" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Table/Auth/PasswordForgot.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="43" column="85" selection-start-line="43" selection-start-column="85" selection-end-line="43" selection-end-column="85" />
-          <folding>
-            <element signature="e#118#142#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/password_forgot_confirm_error.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="15" column="26" lean-forward="true" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/password_forgot_confirm_form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="92" column="32" lean-forward="true" selection-start-line="92" selection-start-column="32" selection-end-line="92" selection-end-column="32" />
-          <folding>
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/login_token.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="516">
-          <caret line="48" column="35" lean-forward="true" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="927">
-          <caret line="52" column="36" selection-start-line="52" selection-start-column="36" selection-end-line="52" selection-end-column="36" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="518">
-          <caret line="59" column="30" selection-start-line="59" selection-start-column="30" selection-end-line="59" selection-end-column="30" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/shared/components/form/CheckBox.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2880">
-          <caret line="76" column="6" selection-start-line="76" selection-start-column="6" selection-end-line="76" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="26" column="20" lean-forward="true" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/topbar/TopbarMenuLink.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/topbar/TopbarProfile.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="36" column="21" lean-forward="true" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/logout.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="38" column="5" lean-forward="true" selection-start-line="38" selection-start-column="5" selection-end-line="38" selection-end-column="5" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/Auth/RegisterController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="47" column="61" selection-start-line="47" selection-start-column="45" selection-end-line="47" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/login.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="3" selection-start-line="3" selection-end-line="15" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/Auth/LogIn.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="28" column="59" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/SerpComparaison.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-313" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/top_comparaison.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7411">
-          <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="149" column="36" selection-start-line="149" selection-start-column="36" selection-end-line="149" selection-end-column="36" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_date.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5811">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/form_serp.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="101" column="31" lean-forward="true" selection-start-line="101" selection-start-column="31" selection-end-line="101" selection-end-column="31" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/index_serp.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Form/FormPicker/components/DatePickers.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="111" column="76" selection-start-line="111" selection-start-column="76" selection-end-line="111" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="96" column="29" lean-forward="true" selection-start-line="96" selection-start-column="29" selection-end-line="96" selection-end-column="29" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/ReconnectCookie.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Table/Auth/LogIn.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="55" column="72" selection-start-line="55" selection-start-column="72" selection-end-line="55" selection-end-column="72" />
-          <folding>
-            <element signature="e#118#142#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/Auth/LogInController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="39" column="38" selection-start-line="39" selection-start-column="38" selection-end-line="39" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="86" column="31" lean-forward="true" selection-start-line="86" selection-start-column="31" selection-end-line="86" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1007">
-          <caret line="129" column="5" lean-forward="true" selection-start-line="129" selection-start-column="5" selection-end-line="129" selection-end-column="5" />
-          <folding>
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="84" column="78" lean-forward="true" selection-start-line="84" selection-start-column="78" selection-end-line="84" selection-end-column="78" />
-          <folding>
-            <element signature="e#59#98#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/form_analyse.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-833">
-          <caret line="160" column="23" lean-forward="true" selection-start-line="160" selection-start-column="23" selection-end-line="160" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_analyse.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="48" column="21" selection-start-line="48" selection-start-column="21" selection-end-line="48" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Suggest/suggest_form.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="87" column="20" lean-forward="true" selection-start-line="87" selection-start-column="20" selection-end-line="87" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Suggest/suggest.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Crawl/crawl_form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="167" column="14" lean-forward="true" selection-start-line="167" selection-start-column="14" selection-end-line="167" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Crawl/crawl_index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="48" column="24" lean-forward="true" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/LinkProfile/form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1116">
-          <caret line="137" column="21" lean-forward="true" selection-start-line="137" selection-start-column="21" selection-end-line="137" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/LinkProfile/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="49" column="13" lean-forward="true" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
+        <state relative-caret-position="2760">
+          <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="141" column="14" lean-forward="true" selection-start-line="141" selection-start-column="14" selection-end-line="141" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/top_index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="48" column="23" lean-forward="true" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/Auth/PasswordForgotController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2309">
-          <caret line="66" column="87" selection-start-line="66" selection-start-column="87" selection-end-line="66" selection-end-column="87" />
+        <state relative-caret-position="6720">
+          <caret line="206" column="12" selection-start-line="206" selection-start-column="12" selection-end-line="207" selection-end-column="115" />
           <folding>
-            <element signature="e#123#144#0#PHP" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!block;n#AjaxSpace#0;n#CampainForm#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/TopKeywordController.php">
+    <entry file="file://$PROJECT_DIR$/App/Ajax/ErrorSearch.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="64" column="47" lean-forward="true" selection-start-line="64" selection-start-column="47" selection-end-line="64" selection-end-column="47" />
+        <state relative-caret-position="360">
+          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/App/Router.jsx">
+    <entry file="file://$PROJECT_DIR$/src/components/Campain/campain_form.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="40" column="61" lean-forward="true" selection-start-line="40" selection-start-column="61" selection-end-line="40" selection-end-column="61" />
+        <state relative-caret-position="3040">
+          <caret line="85" column="21" selection-start-line="85" selection-start-column="21" selection-end-line="85" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/form_serp.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1208">
+          <caret line="64" column="30" lean-forward="true" selection-start-line="64" selection-start-column="30" selection-end-line="64" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/index_serp.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="48" column="24" lean-forward="true" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/platform-impl.jar!/resources/html5-schema/html5/phrase.rnc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="345" column="16" selection-start-line="345" selection-start-column="16" selection-end-line="345" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/TopKeyword.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1920">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="27" column="93" selection-start-line="27" selection-start-column="93" selection-end-line="27" selection-end-column="93" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/containers/landing.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="421" column="36" lean-forward="true" selection-start-line="421" selection-start-column="36" selection-end-line="421" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Landing/components/Technologies.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="800">
+          <caret line="51" column="43" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Landing/components/Header.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="2" column="40" lean-forward="true" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="40" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Campain/CampainIndex.php">
+    <entry file="file://$PROJECT_DIR$/src/containers/Landing/components/Features.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="12" column="15" lean-forward="true" selection-start-line="12" selection-start-column="15" selection-end-line="12" selection-end-column="15" />
+        <state relative-caret-position="880">
+          <caret line="22" column="81" selection-start-line="22" selection-start-column="81" selection-end-line="22" selection-end-column="81" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Campain/Campain.php">
+    <entry file="file://$PROJECT_DIR$/src/containers/Landing/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="670">
+          <caret line="157" column="22" selection-start-line="157" selection-start-column="22" selection-end-line="157" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/concern/Date_Format.php">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/TopKeywordController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5120">
+          <caret line="137" column="23" selection-start-line="137" selection-start-column="23" selection-end-line="137" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/TopKeyword.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4130" />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/Controller/CampainController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="64" column="31" lean-forward="true" selection-start-line="64" selection-start-column="31" selection-end-line="64" selection-end-column="31" />
+        <state relative-caret-position="-7080" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/LinkProfileController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6330" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/SerpController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7800" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/LinkDomain.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-12970" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/Crawl.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="13" column="20" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Table/Campain.php">
+    <entry file="file://$PROJECT_DIR$/App/Controller/CrawlController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-171">
-          <caret line="122" column="35" lean-forward="true" selection-start-line="122" selection-start-column="35" selection-end-line="122" selection-end-column="35" />
+        <state relative-caret-position="470">
+          <caret line="33" column="36" selection-start-line="33" selection-start-column="36" selection-end-line="33" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx">
+    <entry file="file://$PROJECT_DIR$/App/Actions/Error_ajax.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1518">
-          <caret line="181" column="49" lean-forward="true" selection-start-line="181" selection-start-column="49" selection-end-line="181" selection-end-column="49" />
+        <state relative-caret-position="757">
+          <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Campain/index.jsx">
+    <entry file="file://$PROJECT_DIR$/App/Actions/Suggest_Data.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="73" column="54" lean-forward="true" selection-start-line="73" selection-start-column="54" selection-end-line="73" selection-end-column="54" />
+        <state relative-caret-position="2439">
+          <caret line="89" column="20" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Campain/CampainDelete.php">
+    <entry file="file://$PROJECT_DIR$/App/Actions/Json_File.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="-4920" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/SuggestController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="91" column="42" selection-start-line="91" selection-start-column="42" selection-end-line="91" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Actions/Url/Curl_Url.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2610" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Actions/Url/Curl_Keyword.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2232">
+          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/WebSite.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1220">
+          <caret line="238" column="26" lean-forward="true" selection-start-line="238" selection-start-column="26" selection-end-line="238" selection-end-column="26" />
+          <folding>
+            <element signature="e#112#138#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/UI/Panels/components/DefaultPanel.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="19" column="23" lean-forward="true" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Crawl/crawl.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="17" column="36" lean-forward="true" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Crawl/crawl_tab.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/Serp.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/Serp.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/WebSite.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="10" column="10" selection-start-line="10" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/WebSiteController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1080">
+          <caret line="38" column="59" selection-start-line="38" selection-start-column="59" selection-end-line="38" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_date.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1208">
+          <caret line="83" column="53" lean-forward="true" selection-start-line="83" selection-start-column="53" selection-end-line="83" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="79" column="23" selection-start-line="79" selection-end-line="80" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#21#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/Campain.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/Auth/LogIn.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1328">
+          <caret line="110" column="41" selection-start-line="110" selection-start-column="41" selection-end-line="110" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/ReconnectCookie.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/Auth/LogInController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1">
+          <caret line="81" column="7" lean-forward="true" selection-start-line="81" selection-start-column="7" selection-end-line="81" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-21">
+          <caret line="116" column="16" lean-forward="true" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/login.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="568">
+          <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/App/Router.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="66" column="53" selection-start-line="66" selection-start-column="53" selection-end-line="66" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Auth/logout.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1640">
+          <caret line="44" column="50" lean-forward="true" selection-start-line="44" selection-start-column="50" selection-end-line="44" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="488">
+          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="455">
+          <caret line="135" column="56" lean-forward="true" selection-start-line="135" selection-start-column="56" selection-end-line="135" selection-end-column="56" />
         </state>
       </provider>
     </entry>

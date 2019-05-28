@@ -47,7 +47,8 @@ class SerpDate extends PureComponent {
             rank: [],
             loading: true,
             loaded: false,
-            redirectError: false
+            redirectError: false,
+            auth: ''
         }
     }
 
@@ -59,45 +60,55 @@ class SerpDate extends PureComponent {
     };
 
     componentDidMount() {
-        if (this.props.location.state !== undefined) {
-            // Load Notification !!!
-            NotificationSystem.newInstance({}, n => notification = n);
-            setTimeout(() => showNotification('The modification of the dates of the calendar have been modified with success !!!', 'success'), 700);
+        if (sessionStorage.getItem('Auth')) {
+            if (this.props.location.state !== undefined) {
+                // Load Notification !!!
+                NotificationSystem.newInstance({}, n => notification = n);
+                setTimeout(() => showNotification('The modification of the dates of the calendar have been modified with success !!!', 'success'), 700);
 
-            // Ajax Load Data Rank !!!
-            axios.get('http://localhost/ReactProject/App/Ajax/SerpDate.php', {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                params: {
-                    keyword: this.props.match.params.keyword,
-                    state_location: this.props.location.state
-                }
-            }).then((response) => {
-                if (response && response.status === 200) {
-                    this.setState({
-                        url: response.data.url,
-                        description: response.data.description,
-                        rank: response.data.rank,
-                        date: response.data.date,
-                        date_format: response.data.date_format,
-                        loading: false
-                    });
-                    setTimeout(() => this.setState({ loaded: true }), 500);
-                }
-            });
+                // Ajax Load Data Rank !!!
+                axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/SerpDate.php', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    params: {
+                        keyword: this.props.match.params.keyword,
+                        state_location: this.props.location.state
+                    }
+                }).then((response) => {
+                    if (response && response.status === 200) {
+                        this.setState({
+                            url: response.data.url,
+                            description: response.data.description,
+                            rank: response.data.rank,
+                            date: response.data.date,
+                            date_format: response.data.date_format,
+                            loading: false
+                        });
+                        setTimeout(() => this.setState({ loaded: true }), 500);
+                    }
+                });
+            } else {
+                this.setState({ redirectError: !this.state.redirectError })
+            }
         } else {
-            this.setState({ redirectError: !this.state.redirectError })
+            this.setState({ auth: 'noAuth' })
         }
     }
 
     render() {
         const { t } = this.props;
 
-        if (this.state.redirectError === true) {
+        if (this.state.auth === 'noAuth') {
             return (
                 <Redirect to={{
-                    pathname: '/serp/' + this.props.match.params.keyword,
+                    pathname: '/log_in'
+                }}/>
+            )
+        } else if (this.state.redirectError === true) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp/' + this.props.match.params.keyword,
                     state: [
                         {
                             'error': 'Error Access !!!'

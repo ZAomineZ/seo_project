@@ -8,6 +8,7 @@ import {Button, ButtonToolbar, Popover, PopoverHeader} from 'reactstrap';
 import axios from "axios";
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
+import {Redirect} from "react-router-dom";
 
 let notification = null;
 
@@ -20,7 +21,7 @@ const showNotification = (title, message, color) => {
         />,
         duration: 5,
         closable: true,
-        style: { top: 0, left: 'calc(100vw - 100%)' },
+        style: {top: 0, left: 'calc(100vw - 100%)'},
         className: 'left-up',
     });
 };
@@ -36,7 +37,8 @@ class CampainDetails extends PureComponent {
             platform: '',
             cost: '',
             modal: false,
-            Popper: false
+            Popper: false,
+            redirectCampain: false
         };
         this.onChange = this.onChange.bind(this);
         this.handleSubmitLink = this.handleSubmitLink.bind(this);
@@ -48,22 +50,29 @@ class CampainDetails extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://localhost/ReactProject/App/Ajax/Campain/DataCampain.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/DataCampain.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
             params: {
-                slug: this.props.match.params.web
+                slug: this.props.match.params.web,
+                auth: sessionStorage.getItem('Auth')
             }
         }).then((response) => {
             if (response && response.status === 200) {
-                this.setState({data: response.data.data, data_chart: response.data.data_chart})
+                if (response.data && !response.data.error) {
+                    this.setState({data: response.data.data, data_chart: response.data.data_chart})
+                } else {
+                    this.setState({ redirectCampain: !this.state.redirectCampain });
+                    NotificationSystem.newInstance({}, n => notification = n);
+                    setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
+                }
             }
         });
     }
 
     handleClickReceived(event, id, type) {
-        axios.get("http://localhost/ReactProject/App/Ajax/Campain/UpdateData.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/UpdateData.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -98,7 +107,7 @@ class CampainDetails extends PureComponent {
 
     handleSubmit(event, id, bl) {
         event.preventDefault();
-        axios.get("http://localhost/ReactProject/App/Ajax/Campain/UpdateDataBl.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/UpdateDataBl.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -107,13 +116,14 @@ class CampainDetails extends PureComponent {
                 value: this.state.value,
                 bl: bl,
                 slug: this.props.match.params.web,
+                auth: sessionStorage.getItem('Auth')
             }
         }).then((response) => {
             if (response && response.status === 200) {
-                this.setState({ data: response.data.data }),
-                this.setState({
-                    value: ''
-                });
+                this.setState({data: response.data.data}),
+                    this.setState({
+                        value: ''
+                    });
             }
         });
     }
@@ -145,7 +155,7 @@ class CampainDetails extends PureComponent {
     handleSubmitLink(event) {
         event.preventDefault();
         if (this.state.website !== '' && this.state.platform !== '' && this.state.cost !== '') {
-            axios.get("http://localhost/ReactProject/App/Ajax/Campain/CampainDetails.php", {
+            axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/CampainDetails.php", {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -153,11 +163,12 @@ class CampainDetails extends PureComponent {
                     website: this.state.website,
                     platform: this.state.platform,
                     cost: this.state.cost,
-                    slug: this.props.match.params.web
+                    slug: this.props.match.params.web,
+                    auth: sessionStorage.getItem('Auth')
                 }
             }).then((response) => {
                 if (response && response.status === 200) {
-                    this.setState({ data: response.data.data, data_chart: response.data.data_chart});
+                    this.setState({data: response.data.data, data_chart: response.data.data_chart});
                     this.setState({
                         website: '',
                         platform: '',
@@ -165,7 +176,7 @@ class CampainDetails extends PureComponent {
                         modal: false,
                     });
                     NotificationSystem.newInstance({}, n => notification = n);
-                    setTimeout(() => showNotification('Success Message', 'Your backlink has been add !!!' , 'success'), 700);
+                    setTimeout(() => showNotification('Success Message', 'Your backlink has been add !!!', 'success'), 700);
                 }
             });
         }
@@ -173,20 +184,21 @@ class CampainDetails extends PureComponent {
     }
 
     onDeleteBackLink(event, id) {
-        axios.get("http://localhost/ReactProject/App/Ajax/Campain/CampainItemDelete.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/CampainItemDelete.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
             params: {
                 id: id,
-                slug: this.props.match.params.web
+                slug: this.props.match.params.web,
+                auth: sessionStorage.getItem('Auth')
             }
         }).then((response) => {
             if (response && response.status === 200) {
                 const data_bl = this.state.data.filter(i => i.id !== id);
-                this.setState({data: data_bl, data_chart: response.data });
+                this.setState({data: data_bl, data_chart: response.data});
                 NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification('Success Message', 'Your backlink has been delete !!!' , 'success'), 700);
+                setTimeout(() => showNotification('Success Message', 'Your backlink has been delete !!!', 'success'), 700);
             }
         });
     }
@@ -220,6 +232,14 @@ class CampainDetails extends PureComponent {
     }
 
     render() {
+
+        if (this.state.redirectCampain) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/campain',
+                }}/>
+            )
+        }
         return (
             <div className="dashboard container">
                 <div className="row">
@@ -248,7 +268,7 @@ class CampainDetails extends PureComponent {
                                 <div className="col-md-12 col-lg-12 col-xl-12">
                                     <div className="card">
                                         <div className="card-body">
-                                            <BarCampainDetails data={this.state.data_chart} />
+                                            <BarCampainDetails data={this.state.data_chart}/>
                                             <div className="col-md-12 col-lg-12 col-xl-12 table_chart_card">
                                                 <table className="table--bordered table">
                                                     <thead>
@@ -325,7 +345,8 @@ class CampainDetails extends PureComponent {
                                                                                         <PopoverHeader>{d.backlink}</PopoverHeader>
                                                                                     </Popover>
                                                                             }
-                                                                        </ButtonToolbar> : d.backlink !== '' && d.bl_found === '0' ? <span className="red-text">Backlink not found !!!</span> :
+                                                                        </ButtonToolbar> : d.backlink !== '' && d.bl_found === '0' ?
+                                                                            <span className="red-text">Backlink not found !!!</span> :
                                                                             <ModalAddBacklink value={this.state.value}
                                                                                               onChange={this.onChange}
                                                                                               onSubmit={e => this.handleSubmit(e, d.id, d.website)}

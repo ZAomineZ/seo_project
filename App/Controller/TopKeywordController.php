@@ -49,7 +49,7 @@ class TopKeywordController
      */
     protected function UrlTraffic (string $domain, string $key, string $exportHash)
     {
-        return "https://www.semrush.com/dpa/api?database=fr&amp;export=json&key=$key&domain=$domain&display_hash=$exportHash&currency=usd&action=report&type=domain_rank_history&display_sort=dt_asc&_=1555332238625";
+        return "https://www.semrush.com/dpa/api?database=fr&export=json&key=$key&domain=$domain&display_hash=$exportHash&action=report&type=domain_rank_history&display_sort=dt_asc&_=1558542130813";
     }
 
     /**
@@ -84,8 +84,8 @@ class TopKeywordController
             return $node->html();
         });
         // Explode for recuperate the element required !!!
-        $api_key = $this->SearchData($filter[6], '"apiKey":');
-        $exportHashH = $this->SearchData($filter[55], '"exportHashH":');
+        $api_key = $this->SearchData($filter[$this->str->array_find('"apiKey":', $filter)], '"apiKey":');
+        $exportHashH = $this->SearchData($filter[$this->str->array_find('"exportHashH":', $filter)], '"exportHashH":');
         return ["api_key" => $api_key, "export_hash" => $exportHashH];
     }
 
@@ -163,14 +163,14 @@ class TopKeywordController
         $data = [];
         if (strstr($domain, '&')) {
             $explode = explode('&', $domain);
-            if (count($explode) <= 5 ) {
+            if (count($explode) <= 10 ) {
                 foreach ($explode as $ex) {
                     $string = str_replace('-', '.', $ex);
                     $data[] = $this->DomainParam($string, $html);
                 }
                 echo \GuzzleHttp\json_encode($data);
             } else {
-                echo \GuzzleHttp\json_encode("You have enjoyed more to 5 domain, while the limit 5 !!!");
+                echo \GuzzleHttp\json_encode("You have enjoyed more to 10 domain, while the limit 10 !!!");
             }
         } else {
             $data = $this->DomainParam($domain, $html);

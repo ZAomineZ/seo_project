@@ -70,7 +70,12 @@ class SuggestForm extends PureComponent {
     onSubmit(e) {
         e.preventDefault();
         if (this.state.valueInput.length !== 0) {
-            this.setState({ redirectTo: !this.state.redirectTo })
+            if (this.state.valueInput.indexOf('/') === -1 && this.state.valueInput.indexOf('.') === -1) {
+                this.setState({ redirectTo: !this.state.redirectTo })
+            } else {
+                NotificationSystem.newInstance({}, n => notification = n);
+                setTimeout(() => showNotification('Your domain is invalid !!!'), 700);
+            }
         }
     }
 

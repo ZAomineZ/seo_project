@@ -159,7 +159,10 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
 
 .landing__header-img {
   margin-top: 80px;
+  margin-bottom: 80px;
   max-width: 1000px;
+  -webkit-box-shadow: 2px -1px 2px 22px rgba(242,242,242,1);
+  border-radius: 7px;
 }
 
 .landing .landing__header-subhead {
@@ -218,9 +221,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
   }
 
   &.landing__section-background--technologies {
-    transform: scale(-1, 1);
-    left: 0;
-    right: auto;
+    left: auto;
+    right: 0;
     height: 950px;
     top: 1850px;
     bottom: auto;
@@ -232,7 +234,7 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
 
     @media screen and (min-width: 768px) {
       width: 75%;
-      top: 850px;
+      top: 232px;
     }
 
     @media screen and (min-width: 992px) {
@@ -412,11 +414,15 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
     &.landing__img--over {
       margin: -50px 0 -100px -150px;
       width: calc(100% + 150px);
+      -webkit-box-shadow: 2px -1px 2px 22px rgba(242,242,242,1);
+      border-radius: 7px;
     }
 
     &.landing__img--over-right {
       margin: -50px -150px -100px 0;
       width: calc(100% + 150px);
+      -webkit-box-shadow: 2px -1px 2px 22px #f2f2f2;
+      border-radius: 7px;
     }
   }
 }

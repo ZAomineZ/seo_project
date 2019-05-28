@@ -84,7 +84,7 @@ class FormAnalyse extends PureComponent {
 
     VerifError (domain)
     {
-        axios.get("http://localhost/ReactProject/App/Ajax/ErrorSearch.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/ErrorSearch.php", {
             headers: {
                 'Content-Type': 'application/json',
             },

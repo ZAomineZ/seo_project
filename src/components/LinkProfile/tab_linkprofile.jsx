@@ -68,7 +68,7 @@ class tab_linkprofile extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get('http://localhost/ReactProject/App/Ajax/linkprofile_mount.php', {
+        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/linkprofile_mount.php', {
             params: {
                 'domain': this.PropsChange(this.props.domain)
             },
@@ -111,10 +111,11 @@ class tab_linkprofile extends PureComponent {
     }
 
     render() {
+        console.log(this.state.place_reffering);
         if (this.state.error === true) {
             return (
                 <Redirect to={{
-                    pathname: '/linkprofile',
+                    pathname: '/seo/linkprofile',
                     state: { error: this.state.error_message }
                 }} />
             );

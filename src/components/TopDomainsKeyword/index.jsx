@@ -16,7 +16,7 @@ class DomainsKeyword extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://localhost/ReactProject/App/Ajax/TopKeyword.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/TopKeyword.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -25,7 +25,7 @@ class DomainsKeyword extends PureComponent {
             }
         }).then(response => {
             if (response && response.status === 200) {
-                if (response.data === "You have enjoyed more to 5 domain, while the limit 5 !!!") {
+                if (response.data === "You have enjoyed more to 10 domain, while the limit 10 !!!") {
                     this.setState({ error_message : response.data })
                 } else {
                     this.setState({ data: response.data, loading: false });

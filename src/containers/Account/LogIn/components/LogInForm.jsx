@@ -115,7 +115,8 @@ class LogInForm extends PureComponent {
             let string_username = this.generateRandomString(8, auth_user.username);
             return this.SetCookie('remember_me_auth', Math.random().toString(36).substring(7) + '_' + string_username + '_' + auth_user.confirmation_token + '__' + auth_user.id, 30)
         } else {
-            //
+            let string_username = this.generateRandomString(8, auth_user.username);
+            return this.SetCookie('auth_today', Math.random().toString(36).substring(7) + '_' + string_username + '__' + auth_user.id, 1)
         }
     }
 
@@ -134,7 +135,7 @@ class LogInForm extends PureComponent {
         e.preventDefault();
         if (this.state.valueUsername !== '' && this.state.valuePassword !== '') {
             if (this.state.valueUsername.length >= 5 && this.state.valuePassword.length >= 5) {
-                axios.get('http://localhost/ReactProject/App/Ajax/Auth/login.php', {
+                axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Auth/login.php', {
                     params: {
                         'username': this.state.valueUsername,
                         'password': this.state.valuePassword

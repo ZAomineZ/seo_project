@@ -48,7 +48,7 @@ class SerpAnalyseDetails extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://localhost/ReactProject/App/Ajax/WebSite.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/WebSite.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -90,7 +90,7 @@ class SerpAnalyseDetails extends PureComponent {
         if (this.state.error === true) {
             return (
                 <Redirect to={{
-                    pathname: '/serp_analyse',
+                    pathname: '/seo/serp_analyse',
                     state: {error: this.state.error_message}
                 }}/>
             );

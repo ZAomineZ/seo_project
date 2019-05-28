@@ -38,4 +38,19 @@ class Str_options
         }
         return strtoupper(substr($subject, $start, $end));
     }
+
+    /**
+     * @param string $needle
+     * @param array $haystack
+     * @return bool|int|string
+     */
+    public function array_find (string $needle, array $haystack)
+    {
+        foreach ($haystack as $key => $value) {
+            if (stripos($value, $needle) !== false) {
+                return $key;
+            }
+        }
+        return false;
+    }
 }

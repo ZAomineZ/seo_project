@@ -24,7 +24,7 @@ const CustomTooltip = ({active, payload}) => {
     if (active) {
         return (
             <div className="dashboard__total-tooltip">
-                <p className="label">{`$${payload[0].value}`}</p>
+                <p className="label">{`${payload[0].value}`}</p>
             </div>
         );
     }
@@ -246,7 +246,7 @@ export default class TopTen extends PureComponent {
 
     TrustScoreRank = (event, domain, id) => {
         event.preventDefault();
-        axios.get('http://localhost/ReactProject/App/Ajax/SerpTrustScore.php', {
+        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/SerpTrustScore.php', {
             headers: {
                 'Content-Type': 'application/json',
             },

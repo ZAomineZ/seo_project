@@ -29,11 +29,31 @@ class LogIn extends PureComponent {
       }
     }
 
+    getCookie(name_cookie) {
+        let name = name_cookie + '=';
+        let cookie = document.cookie.split(';');
+        for (let i = 0; i < cookie.length; i++) {
+            let cook = cookie[i];
+            while (cook.charAt(0) == ' ') {
+                cook = cook.substring(1);
+            }
+            if (cook.indexOf(name) == 0) {
+                return cook.substring(name.length, cook.length);
+            }
+            return '';
+        }
+    }
+
     componentDidMount() {
-        if (sessionStorage.getItem('Auth')) {
+        if (sessionStorage.getItem('Auth') && this.getCookie('auth_day') !== '') {
             this.setState({ auth : 'Auth' });
             NotificationSystem.newInstance({}, n => notification = n);
             setTimeout(() => showNotification('You are already connected, it is impossible to access this page !!!', 'danger'), 700);
+        } else {
+            if (sessionStorage.getItem('Auth')) {
+                sessionStorage.removeItem('Auth');
+                sessionStorage.removeItem('Remember_me');
+            }
         }
     }
 

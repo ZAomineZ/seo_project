@@ -14,7 +14,9 @@ class Occupancy extends PureComponent {
   };
 
   render() {
-    const { t, dash_stats } = this.props;
+      let numbro = require('numbro');
+
+      const { t, dash_stats } = this.props;
 
     return (
       <Panel
@@ -51,7 +53,7 @@ class Occupancy extends PureComponent {
                 <td className="td-head">Referring_domains</td>
                   {
                       this.props.dash_stats.map(d => (
-                          <td className="td-blue">{ d.referring_domain }</td>
+                          <td className="td-blue">{ numbro(d.referring_domain).format({average: true, mantissa: 2}) }</td>
                       ))
                   }
               </tr>
@@ -59,7 +61,7 @@ class Occupancy extends PureComponent {
                 <td className="td-head">Ip</td>
                   {
                       this.props.dash_stats.map(d => (
-                          <td className="td-green">{ d.ip }</td>
+                          <td className="td-green">{ numbro(d.ip).format({average: true, mantissa: 2}) }</td>
                       ))
                   }
               </tr>
@@ -67,7 +69,7 @@ class Occupancy extends PureComponent {
                 <td className="td-head">Backlinks</td>
                   {
                       this.props.dash_stats.map(d => (
-                          <td className="td-gray">{ d.total_backlinks }</td>
+                          <td className="td-gray">{ numbro(d.total_backlinks).format({average: true, mantissa: 2}) }</td>
                       ))
                   }
               </tr>

@@ -21,6 +21,8 @@ export default class TradeHistory extends PureComponent {
     }
 
     render() {
+        let numbro = require('numbro');
+
         const data = this.props.anchors.map(d => {
             return  { anchor: d.anchor, backlinks_num: parseInt(d.backlinks_num), domains_num: parseInt(d.domains_num)}
         });
@@ -59,7 +61,7 @@ export default class TradeHistory extends PureComponent {
                         data.slice(0, 10).map((item) => (
                             <tr>
                                 <td>{ item.anchor }</td>
-                                <td>{ item.backlinks_num }</td>
+                                <td>{ numbro(item.backlinks_num).format({average: true, mantissa: 2}) }</td>
                                 <td>{ item.domains_num }</td>
                             </tr>
                         ))

@@ -7,6 +7,25 @@ import TopTenComparaison from './top_comparaison';
 import {CryptoTableProps} from '../../shared/prop-types/TablesProps';
 import {deleteCryptoTableData} from '../../redux/actions/cryptoTableActions';
 import axios from "axios";
+import NotificationSystem from "rc-notification";
+import {BasicNotification} from "../../shared/components/Notification";
+import {Redirect} from "react-router-dom";
+
+let notification = null;
+
+const showNotification = (message, type) => {
+    notification.notice({
+        content: <BasicNotification
+            color={type}
+            title={type === 'danger' ? '👋 A Error is present !!!' : '👋 Well done !!!'}
+            message={message}
+        />,
+        duration: 5,
+        closable: true,
+        style: {top: 0, left: 'calc(100vw - 100%)'},
+        className: 'left-up',
+    });
+};
 
 class SerpComparisonDate extends PureComponent {
     static propTypes = {
@@ -19,7 +38,9 @@ class SerpComparisonDate extends PureComponent {
         super(props);
         this.state = {
             rank: [],
-            url: []
+            url: [],
+            redirectSerpDate: false,
+            auth: ''
         }
     }
 
@@ -31,23 +52,33 @@ class SerpComparisonDate extends PureComponent {
     };
 
     componentDidMount() {
-        axios.get('http://localhost/ReactProject/App/Ajax/SerpComparaisonDate.php', {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            params: {
-                keyword: this.props.match.params.keyword,
-                StartDate: this.props.location.state[0].StartDate,
-                EndDate: this.props.location.state[0].EndDate
+        if (sessionStorage.getItem('Auth')) {
+            if (this.props.location.state !== undefined) {
+                axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/SerpComparaisonDate.php', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    params: {
+                        keyword: this.props.match.params.keyword,
+                        StartDate: this.props.location.state[0].StartDate,
+                        EndDate: this.props.location.state[0].EndDate
+                    }
+                }).then((response) => {
+                    if (response && response.status === 200) {
+                        this.setState({
+                            rank: response.data.rank,
+                            url: response.data.url,
+                        })
+                    }
+                });
+            } else {
+                this.setState({ redirectSerpDate: !this.state.redirectSerpDate });
+                NotificationSystem.newInstance({}, n => notification = n);
+                setTimeout(() => showNotification("You haven't not access this page !!!", 'danger'), 700);
             }
-        }).then((response) => {
-            if (response && response.status === 200) {
-                this.setState({
-                    rank: response.data.rank,
-                    url: response.data.url,
-                })
-            }
-        });
+        } else {
+            this.setState({ auth: 'noAuth' });
+        }
     }
 
     render() {
@@ -141,6 +172,21 @@ class SerpComparisonDate extends PureComponent {
 
         let data_lose_set = Array.from(new Set(array_rank_desc.slice(0, 10)));
         let data_end_top_set = Array.from(new Set(array_rank_asc.slice(0, 10)));
+
+        if (this.state.auth === 'noAuth') {
+            return (
+                <Redirect to={{
+                    pathname: '/log_in'
+
+                }}/>
+            )
+        }else if (this.state.redirectSerpDate) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp/' + this.props.match.params.keyword,
+                }}/>
+            )
+        }
 
         return (
             <div className="dashboard container">

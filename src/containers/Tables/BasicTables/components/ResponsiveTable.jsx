@@ -6,7 +6,24 @@ import PropTypes from 'prop-types';
 import ModalCrawl from '../../../../components/Crawl/modal_crawl';
 import CrawlStat from '../../../../components/Crawl/crawl_stats';
 import axios from "axios";
+import {BasicNotification} from "../../../../shared/components/Notification";
+import {Redirect} from "react-router-dom";
 
+let notification = null;
+
+const showNotification = (message, type) => {
+    notification.notice({
+        content: <BasicNotification
+            color={type}
+            title={type === 'danger' ? '👋 A Error is present !!!' : '👋 Well done !!!'}
+            message={message}
+        />,
+        duration: 5,
+        closable: true,
+        style: {top: 0, left: 'calc(100vw - 100%)'},
+        className: 'left-up',
+    });
+};
 
 class ResponsiveTable extends PureComponent {
     static propTypes = {
@@ -22,12 +39,13 @@ class ResponsiveTable extends PureComponent {
             dup_meta: [],
             dup_h1: [],
             loading: true,
-            loaded: false
+            loaded: false,
+            redirectCrawl: false,
         }
     }
 
     componentDidMount() {
-        axios.get("http://localhost/ReactProject/App/Ajax/Crawl.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Crawl.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -35,14 +53,19 @@ class ResponsiveTable extends PureComponent {
                 'url': this.props.url_domain
             }
         }).then((response) => {
-            this.setState({
-                data: response.data.data,
-                dup_title: response.data.dup_title,
-                dup_meta: response.data.dup_meta,
-                dup_h1: response.data.dup_h1,
-                loading: false
-            });
-            setTimeout(() => this.setState({ loaded: true }), 500);
+            if (response.data !== '') {
+                this.setState({
+                    data: response.data.data,
+                    dup_title: response.data.dup_title,
+                    dup_meta: response.data.dup_meta,
+                    dup_h1: response.data.dup_h1,
+                    loading: false
+                });
+                setTimeout(() => this.setState({ loaded: true }), 500);
+            } else {
+                setTimeout(() => showNotification('Your Request is so many long !!!', 'danger'), 700);
+                this.setState({ redirectCrawl: !this.state.redirectCrawl })
+            }
         })
     }
 
@@ -81,6 +104,15 @@ class ResponsiveTable extends PureComponent {
                 links_extern: d.links_extern.filter(function (el) { return el != null }),
             }
         });
+
+        if (this.state.redirectCrawl) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/crawl',
+                }}/>
+            );
+        }
+
         return (
             <div>
                 {!this.state.loaded &&

@@ -8,6 +8,10 @@
 
 namespace App\Model;
 
+use App\Actions\Json_File;
+use App\Actions\Url\Curl_Keyword;
+use App\concern\File_Params;
+use App\Controller\TopKeywordController;
 use Goutte\Client;
 
 class WebSite
@@ -18,14 +22,50 @@ class WebSite
     CONST URL = "https://www.alexa.com/siteinfo/";
 
     private $crawl;
+    private $controller;
+    private $curl_keyword;
+    private $json;
 
     /**
      * WebSite constructor.
      * @param Client $crawl
+     * @param TopKeywordController $controller
+     * @param Curl_Keyword $curl_keyword
+     * @param Json_File $bl
      */
-    public function __construct(Client $crawl)
+    public function __construct(Client $crawl, TopKeywordController $controller, Curl_Keyword $curl_keyword, Json_File $bl)
     {
         $this->crawl = $crawl;
+        $this->controller = $controller;
+        $this->curl_keyword = $curl_keyword;
+        $this->json = $bl;
+    }
+
+    /**
+     * @param string $date_create
+     * @param string $date_now
+     * @return bool|\DateInterval
+     * @throws \Exception
+     */
+    private function DateDiff (string $date_create, string $date_now)
+    {
+        $date_create = new \DateTime($date_create);
+        $date_now = new \DateTime($date_now);
+        $diff = $date_create->diff($date_now);
+        return $diff;
+    }
+
+    /**
+     * @param string $domain
+     * @return string
+     */
+    protected function JsonTrafic (string $domain)
+    {
+        $html = $this->controller->CrawlHtml($this->curl_keyword->Curl($domain));
+        $key = $html['api_key'];
+        $exportHash = $html['export_hash'];
+        $traffic = $this->json->ReqTrafficKeyword("https://www.semrush.com/dpa/api?database=fr&amp;export=json&key=$key&domain=$domain&display_hash=$exportHash&currency=usd&action=report&type=domain_rank_history&display_sort=dt_asc&_=1555332238625");
+        return \GuzzleHttp\json_encode(['data' => $traffic->rank_history->data]);
     }
 
     /**
@@ -181,5 +221,24 @@ class WebSite
             $data_end[] = $dt;
         }
         return $data_end;
+    }
+
+    /**
+     * @param string $file
+     * @param string $dir
+     * @param string $domain
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function CronTraffic (string $file, string $dir, string $domain)
+    {
+        $date_strtotime = filemtime($file);
+        $date = date('Y-m-d', $date_strtotime);
+        $date_diff = $this->DateDiff(date('Y-m-d'), $date);
+        if ($date_diff && $date_diff->m !== 0) {
+            unlink($file);
+            return File_Params::CreateParamsFile($file, $dir, $this->JsonTrafic($domain), TRUE);
+        }
+        return null;
     }
 }

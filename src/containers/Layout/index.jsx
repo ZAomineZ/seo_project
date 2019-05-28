@@ -70,7 +70,7 @@ class Layout extends Component {
                 let split_string = this.getCookie('remember_me_auth').split('__');
                 let id = split_string[1];
                 if (id !== '') {
-                    axios.get('http://localhost/ReactProject/App/Ajax/Auth/ReconnectCookie.php', {
+                    axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Auth/ReconnectCookie.php', {
                         params: {
                             'id': id
                         },
@@ -93,13 +93,49 @@ class Layout extends Component {
                 //
             }
         } else {
-            if (sessionStorage.getItem('Auth')) {
-                //
+            if (this.getCookie('auth_today') !== '') {
+                if (!sessionStorage.getItem('Auth')) {
+                    let split_string = this.getCookie('auth_today').split('__');
+                    let id = split_string[1];
+                    if (id !== '') {
+                        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Auth/ReconnectCookie.php', {
+                            params: {
+                                'id': id
+                            },
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        }).then((response) => {
+                            if (response && response.status === 200) {
+                                if (response.data !== '') {
+                                    let JSON_DECODE = JSON.stringify(response.data);
+                                    sessionStorage.setItem('Auth', JSON_DECODE);
+                                    sessionStorage.setItem('Remember_me', 'FALSE');
+                                    NotificationSystem.newInstance({}, n => notification = n);
+                                    setTimeout(() => showNotification('You are connected !!!', 'success'), 700);
+                                }
+                            }
+                        })
+                    }
+                }
             } else {
                 this.setState({auth: 'noAuth'});
                 NotificationSystem.newInstance({}, n => notification = n);
                 setTimeout(() => showNotification('You must be logged in to access this page !!!', 'danger'), 700);
             }
+        }
+    }
+
+    DeleteCookieNotExist ()
+    {
+        sessionStorage.removeItem('Auth');
+        sessionStorage.removeItem('Remember_me');
+        this.setState({auth: 'noAuth'});
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.getCookie('auth_today') === '' && this.getCookie('remember_me_auth') === '') {
+            this.DeleteCookieNotExist()
         }
     }
 

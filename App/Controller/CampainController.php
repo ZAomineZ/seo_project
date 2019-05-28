@@ -30,12 +30,13 @@ class CampainController
 
     /**
      * @param string $value
+     * @param int $user_id
      * @return bool
      */
-    protected function data_insert (string $value)
+    protected function data_insert (string $value, int $user_id)
     {
         if ($value) {
-            return $this->table->CreateCampain(["name" => $value, "slug" => Str::slug($value)], 'campaign');
+            return $this->table->CreateCampain(["name" => $value, "slug" => Str::slug($value), 'user_id' => $user_id], 'campaign');
         }
         return false;
     }
@@ -46,10 +47,10 @@ class CampainController
      * @param int $user_id
      * @return array
      */
-    protected function DataReq (string $table, string $slug = '', int $user_id)
+    protected function DataReq (string $table, string $slug = '', int $user_id = 0)
     {
         if ($slug !== '') {
-            return $this->table->SelectCampainDetails($slug, $table, $user_id);
+            return $this->table->SelectCampainDetails($slug, $table);
         }
         return $this->table->SelectCampain($table, $user_id);
     }
@@ -62,6 +63,8 @@ class CampainController
      */
     protected function DataDelete (string $table, string $slug, int $user_id)
     {
+        $select = $this->table->SelectIdCampain($table, $slug, $user_id);
+        $this->table->DeleteCampainDetails($select->id, 'list_campaign');
         return $this->table->DeleteCampain($table, $slug, $user_id);
     }
 
@@ -100,11 +103,12 @@ class CampainController
      * @param string $platform
      * @param string $cost
      * @param string $slug
+     * @param object $auth
      * @throws \Exception
      */
-    public function InsertCampain (string $website, string $platform, string $cost, string $slug)
+    public function InsertCampain (string $website, string $platform, string $cost, string $slug, object $auth)
     {
-        $select = $this->table->SelectIdCampain("campaign", $slug);
+        $select = $this->table->SelectIdCampain("campaign", $slug, $auth->id);
         $this->DataCampainDetails('list_campaign', [
             'campain' => $select->id,
             'website' => $website,
@@ -118,11 +122,12 @@ class CampainController
 
     /**
      * @param string $value
+     * @param object $auth
      * @return bool
      */
-    public function CampainData (string $value)
+    public function CampainData (string $value, object $auth)
     {
-       return $this->data_insert($value);
+       return $this->data_insert($value, $auth->id);
     }
 
     /**
@@ -148,12 +153,13 @@ class CampainController
     /**
      * @param string $id
      * @param string $slug
+     * @param object $auth
      * @throws \Exception
      */
-    public function DeleteItemCampain (string $id, string $slug)
+    public function DeleteItemCampain (string $id, string $slug, object $auth)
     {
         $this->table->DeleteCampainItem($id, 'list_campaign');
-        $select = $this->table->SelectIdCampain("campaign", $slug);
+        $select = $this->table->SelectIdCampain("campaign", $slug, $auth->id);
         $select_item = $this->table->SelectBlLink('list_campaign', $select->id);
         if ($select_item->id_count >= 1) {
             $select_date = $this->table->SelectDateAsc("list_campaign", $select->id);
@@ -166,23 +172,28 @@ class CampainController
 
     /**
      * @param string $slug
+     * @param object $auth
      * @throws \Exception
      */
-    public function DataReqCampain (string $slug)
+    public function DataReqCampain (string $slug, object $auth)
     {
-        $select = $this->table->SelectIdCampain("campaign", $slug);
-        $select_all = $this->DataReq("list_campaign", $select->id);
-        $select_date = $this->table->SelectDateAsc("list_campaign", $select->id);
-        if (!empty($select_all)) {
-            echo \GuzzleHttp\json_encode([
-                'data' => $select_all,
-                'data_chart' => $this->campain->ChartData($select_date->date, $select->id)
-            ]);
+        $select = $this->table->SelectIdCampain("campaign", $slug, $auth->id);
+        if ($select !== false) {
+            $select_all = $this->DataReq("list_campaign", $select->id);
+            $select_date = $this->table->SelectDateAsc("list_campaign", $select->id);
+            if (!empty($select_all)) {
+                echo \GuzzleHttp\json_encode([
+                    'data' => $select_all,
+                    'data_chart' => $this->campain->ChartData($select_date->date, $select->id)
+                ]);
+            } else {
+                echo \GuzzleHttp\json_encode([
+                    'data' => [],
+                    'data_chart' => []
+                ]);
+            }
         } else {
-            echo \GuzzleHttp\json_encode([
-                'data' => [],
-                'data_chart' => []
-            ]);
+            echo \GuzzleHttp\json_encode($this->campain->MessageError("This campain doesn't belong to you !!!", 'error'));
         }
     }
 
@@ -201,11 +212,12 @@ class CampainController
      * @param string $value
      * @param string $slug
      * @param string $bl
+     * @param object $auth
      * @throws \Exception
      */
-    public function UpdateDataBl (string $id, string $value, string $slug, string $bl)
+    public function UpdateDataBl (string $id, string $value, string $slug, string $bl, object $auth)
     {
-        $select = $this->table->SelectIdCampain("campaign", $slug);
+        $select = $this->table->SelectIdCampain("campaign", $slug, $auth->id);
         $this->table->UpdateDataBl('list_campaign', $id, $value);
         $this->campain->CrawlBl($bl, $value, $id);
         return $this->SelectEchoJsonData($select->id);

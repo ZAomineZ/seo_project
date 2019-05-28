@@ -61,7 +61,7 @@ class CryptotrendsToday extends PureComponent {
             >
                 <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto" height={360}>
                     <PieChart className="dashboard__chart-pie-container">
-                        <Tooltip formatter={value => (`$${value.toFixed(2)}`)} />
+                        <Tooltip formatter={value => (`${value.toFixed(2)}`)} />
                         <Pie
                             data={data}
                             dataKey="value"

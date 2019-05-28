@@ -103,6 +103,10 @@ class WebSiteController
         );
     }
 
+    /**
+     * @param string $domain
+     * @return string
+     */
     protected static function JsonTrafic (string $domain)
     {
         $html = self::$controller->CrawlHtml(self::$curl_keyword->Curl($domain));
@@ -239,12 +243,14 @@ class WebSiteController
                 $file = self::FilesDomain($dir_domain['dir'], $dir_domain['domain_str'], $req->token, date("Y-m-d"));
                 $file_dir = self::FileSystem($dir_domain['dir'], $req->token, $file);
                 if (file_exists($file_dir[1]) && !file_exists($file_dir[0]) && !file_exists($file_dir[2]) && !file_exists($file_dir[3]) && !file_exists($file_dir[4]) && !file_exists($file_dir[5])) {
+                    self::$web->CronTraffic($file_dir[1], $dir_domain['dir'], $domain);
                     self::CreateFileWebSite(
                         [$file_dir[0], $file_dir[1], $file_dir[2], $file, $file_dir[4], $file_dir[5]],
                         $dir_domain['dir'],
                         $domain,
                         $option);
                 } elseif (file_exists($file_dir[1]) && !file_exists($file_dir[0]) && !file_exists($file_dir[2]) && file_exists($file_dir[3]) && !file_exists($file_dir[4]) && !file_exists($file_dir[5])) {
+                    self::$web->CronTraffic($file_dir[1], $dir_domain['dir'], $domain);
                     self::CreateFileWebSite(
                         [$file_dir[0], $file_dir[1], $file_dir[2], $file, $file_dir[4], $file_dir[5]],
                         $dir_domain['dir'],
@@ -263,6 +269,7 @@ class WebSiteController
                         $domain,
                         $option);
                 } else {
+                    self::$web->CronTraffic($file_dir[1], $dir_domain['dir'], $domain);
                     $req = self::$table->SelectToken($domain);
                     $file_token = self::FilesDomain($dir_domain['dir'], $dir_domain['domain_str'], $req->token, date("Y-m-d"));
                     $file_ref = self::FilesDomain($dir_domain['dir'], 'dash-stats', $req->token);
@@ -298,7 +305,7 @@ class WebSiteController
             'stats' => File_Params::OpenFile($file[4], $dir),
             'traffic_data' => self::$web->ForData(File_Params::OpenFile($file[1], $dir)->data),
             'anchors' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' : self::$web->DataDefault(File_Params::OpenFile($file[0], $dir)->data->anchors->data),
-            'domain_stat' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' : self::$web->ChangeDataItem(File_Params::OpenFile($file[0], $dir)->data->historical->domain_stat->weeks, "F j"),
+            'domain_stat' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' : self::$web->ChangeDataItem(File_Params::OpenFile($file[0], $dir)->data->historical->domain_stat->weeks, "M j"),
             'data_asc' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[0]->backlink->backlink, 'UNIQUE'),
             'data_desc' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][0]->backlink->backlink, 'UNIQUE'),
             'error' => ''

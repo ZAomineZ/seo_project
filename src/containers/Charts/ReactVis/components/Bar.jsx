@@ -43,15 +43,17 @@ class Bar extends PureComponent {
                         >
                             <VerticalGridLines />
                             <HorizontalGridLines />
-                            <XAxis />
-                            <YAxis />
+                            <XAxis marginLeft={55} />
+                            <YAxis type="number" domain={['auto', 'auto']} width={60} />
                             <VerticalBarSeries
                                 data={data}
                                 color="#70bbfd"
+                                marginLeft={55}
                             />
                             <VerticalBarSeries
                                 data={data_2}
                                 color="#c88ffa"
+                                marginLeft={55}
                             />
                         </FlexibleWidthXYPlot>
                     </div>

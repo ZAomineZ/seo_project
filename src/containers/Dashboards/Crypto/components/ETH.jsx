@@ -30,7 +30,7 @@ export default class ETH extends PureComponent {
             if (active) {
                 return (
                     <div className="dashboard__total-tooltip">
-                        <p className="label">{`$${payload[0].value}`}</p>
+                        <p className="label">{`${payload[0].value}`}</p>
                     </div>
                 );
             }

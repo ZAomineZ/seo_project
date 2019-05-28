@@ -12,6 +12,8 @@ export default class TabData extends PureComponent {
     }
 
     render() {
+        let numbro = require('numbro');
+
         const data = this.props.stats.map(d => {
             return {
                 follow: d.follow,
@@ -39,7 +41,7 @@ export default class TabData extends PureComponent {
                     <tbody>
                     <tr>
                         <td><p className="bold-text dashboard__btc">Referring Domain</p></td>
-                        <td>{ data_ob.referring_domain }</td>
+                        <td>{ numbro(data_ob.referring_domain).format({average: true, mantissa: 2}) }</td>
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
@@ -53,7 +55,7 @@ export default class TabData extends PureComponent {
                     </tr>
                     <tr>
                         <td><p className="bold-text dashboard__eth">Referring Pages</p></td>
-                        <td>{ data_ob.referring_pages }</td>
+                        <td>{ numbro(data_ob.referring_pages).format({average: true, mantissa: 2}) }</td>
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
@@ -67,7 +69,7 @@ export default class TabData extends PureComponent {
                     </tr>
                     <tr>
                         <td><p className="bold-text dashboard__neo">IP (Subnets)</p></td>
-                        <td>{ data_ob.ip } ({ data_ob.ip_subnets })</td>
+                        <td>{ numbro(data_ob.ip).format({average: true, mantissa: 2}) } ({ numbro(data_ob.ip_subnets).format({average: true, mantissa: 2})})</td>
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
@@ -81,7 +83,7 @@ export default class TabData extends PureComponent {
                     </tr>
                     <tr>
                         <td><p className="bold-text dashboard__ste">Total Backlinks</p></td>
-                        <td>{ data_ob.total_backlinks }</td>
+                        <td>{ numbro(data_ob.total_backlinks).format({average: true, mantissa: 2}) }</td>
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
@@ -95,7 +97,7 @@ export default class TabData extends PureComponent {
                     </tr>
                     <tr>
                         <td><p className="bold-text dashboard__eos">NoFollow</p></td>
-                        <td>{ data_ob.nofollow }</td>
+                        <td>{ numbro(data_ob.nofollow).format({average: true, mantissa: 2}) }</td>
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
@@ -109,7 +111,7 @@ export default class TabData extends PureComponent {
                     </tr>
                     <tr>
                         <td><p className="bold-text dashboard__lit">Follow</p></td>
-                        <td>{ data_ob.follow }</td>
+                        <td>{ numbro(data_ob.follow).format({average: true, mantissa: 2}) }</td>
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''

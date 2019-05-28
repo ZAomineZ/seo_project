@@ -15,16 +15,16 @@ class ActivityChart extends PureComponent{
     }
 
     render() {
-      const data = this.props.traffic.map(d => {
+        const data = this.props.traffic.map(d => {
           return  { name: d.date, traffic: parseInt(d.traffic), keyword: parseInt(d.keyword)}
-      });
+        });
 
         return (
             <Panel xs={12} lg={12} title="SEO Traffic">
                 <ResponsiveContainer height={300} className="dashboard__area">
                     <AreaChart data={data} margin={{ top: 20, left: -15, bottom: 20 }}>
                         <XAxis dataKey="name" tickLine={false} />
-                        <YAxis tickLine={false} />
+                        <YAxis tickLine={false} type="number" domain={['auto', 'auto']} width={70} />
                         <Tooltip />
                         <Legend />
                         <CartesianGrid />

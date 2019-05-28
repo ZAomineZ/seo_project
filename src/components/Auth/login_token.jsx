@@ -35,7 +35,7 @@ export default class LoginToken extends PureComponent {
             NotificationSystem.newInstance({}, n => notification = n);
             setTimeout(() => showNotification('You are already connected, it is impossible to access this page !!!', 'danger'), 700);
         }
-        axios.get('http://localhost/ReactProject/App/Ajax/Auth/login_token.php', {
+        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Auth/login_token.php', {
             params: {
                 'token': this.props.match.params.token
             },

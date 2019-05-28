@@ -54,31 +54,31 @@ class Campain extends Table
     /**
      * @param string $slug
      * @param string $table
-     * @param int $user_id
      * @return array
      */
-    public function SelectCampainDetails (string $slug, string $table, int $user_id)
+    public function SelectCampainDetails (string $slug, string $table)
     {
         $select = $this->pdo
             ->GetPdo()
             ->prepare("
                 SELECT *
                 FROM $table
-                WHERE campain = :slug AND user_id = :user_id
+                WHERE campain = :slug
                 ORDER BY id ASC");
-        $select->execute(['slug' => $slug, 'user_id' => $user_id]);
+        $select->execute(['slug' => $slug]);
         return $select->fetchAll();
     }
 
     /**
      * @param string $table
      * @param string $slug
+     * @param int $user_id
      * @return mixed
      */
-    public function SelectIdCampain (string $table, string $slug)
+    public function SelectIdCampain (string $table, string $slug, int $user_id)
     {
-        $select = $this->pdo->GetPdo()->prepare("SELECT id FROM $table WHERE slug = ?");
-        $select->execute([$slug]);
+        $select = $this->pdo->GetPdo()->prepare("SELECT id FROM $table WHERE slug = :slug AND user_id = :user_id");
+        $select->execute(['slug' => $slug, 'user_id' => $user_id]);
         return $select->fetch();
     }
 
@@ -131,7 +131,7 @@ class Campain extends Table
      */
     public function DeleteCampain (string $table, string $slug, int $user_id)
     {
-        $delete = $this->pdo->GetPdo()->prepare("DELETE FROM $table WHERE slug = ? AND user_id = :user_id");
+        $delete = $this->pdo->GetPdo()->prepare("DELETE FROM $table WHERE slug = :slug AND user_id = :user_id");
         return $delete->execute(['slug' => $slug, 'user_id' => $user_id]);
     }
 
@@ -144,6 +144,17 @@ class Campain extends Table
     {
         $delete = $this->pdo->GetPdo()->prepare("DELETE FROM $table WHERE id = ? ");
         return $delete->execute([$id]);
+    }
+
+    /**
+     * @param int $campain
+     * @param string $table
+     * @return bool
+     */
+    public function DeleteCampainDetails (int $campain, string $table)
+    {
+        $delete = $this->pdo->GetPdo()->prepare("DELETE FROM $table WHERE campain = :campain ");
+        return $delete->execute(['campain' => $campain]);
     }
 
     /**

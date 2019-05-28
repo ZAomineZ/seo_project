@@ -21,12 +21,12 @@ const renderField = ({
 
 let notification = null;
 
-const showNotification = (error) => {
+const showNotification = (error, message) => {
     notification.notice({
         content: <BasicNotification
             color="danger"
             title={error}
-            message="This Url is invalid !!!"
+            message={message}
         />,
         duration: 5,
         closable: true,
@@ -70,19 +70,25 @@ class CampainForm extends PureComponent {
     onSubmit(e) {
         e.preventDefault();
         if (this.state.valueInput.length !== 0) {
-            const value = this.state.valueInput;
-            axios.get("http://localhost/ReactProject/App/Ajax/Campain/Campain.php", {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                params: {
-                    'campain': value
-                }
-            }).then((response) => {
-                if (response && response.status === 200) {
-                    this.setState({ redirectTo: !this.state.redirectTo })
-                }
-            })
+            if (this.state.valueInput.indexOf('/') === -1 && this.state.valueInput.indexOf('.') === -1) {
+                const value = this.state.valueInput;
+                axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/Campain.php", {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    params: {
+                        'campain': value,
+                        'auth': sessionStorage.getItem('Auth')
+                    }
+                }).then((response) => {
+                    if (response && response.status === 200) {
+                        this.setState({ redirectTo: !this.state.redirectTo })
+                    }
+                })
+            } else {
+                NotificationSystem.newInstance({}, n => notification = n);
+                setTimeout(() => showNotification('A Error is present !!!', 'Your campain is invalid !!!'), 700);
+            }
         }
     }
 
@@ -96,7 +102,7 @@ class CampainForm extends PureComponent {
         if (redirectMe) {
             return (
                 <Redirect to={{
-                    pathname: '/campain/' + this.state.valueInput,
+                    pathname: 'campain/' + this.state.valueInput,
                 }}/>
             );
         }

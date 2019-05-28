@@ -82,7 +82,6 @@ class IntervalDatePickerField extends PureComponent {
 
         if (this.state.redirectTo === true) {
             this.setState({redirectTo: !this.state.redirectTo});
-            window.location.reload();
             return (
                 <Redirect to={{
                     pathname: '/seo/serp/' + this.props[0].keyword + '/' + this.state.DateRedirect,

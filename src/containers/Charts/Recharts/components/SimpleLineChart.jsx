@@ -27,7 +27,7 @@ class SimpleLineChart extends PureComponent {
             }
         });
         this.setState({
-            data: nextProps.date_array.slice(nextProps.date_array.length - 7, nextProps.date_array.length).map((d, key) => {
+            data: nextProps.date_array.slice(nextProps.date_array.length >= 7 ? nextProps.date_array.length - 7 : 0, nextProps.date_array.length).map((d, key) => {
                 let dt = nextProps.rank_object[d];
                 let array_dt = dt.slice(0, 10);
                 array_rank[key] = Object.entries(array_dt).map((data, k) => {

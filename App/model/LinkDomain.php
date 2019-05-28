@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model;
 
 use App\concern\Date_Format;
@@ -26,7 +27,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @throws \Exception
      * Create a token !!!
      */
-    public function TokenImg () : string
+    public function TokenImg(): string
     {
         return bin2hex(random_bytes(16));
     }
@@ -36,7 +37,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @return string
      * Replace "." by "/" for recuperate the token ($file) !!!
      */
-    public function TokenImgExplode (string $file) : string
+    public function TokenImgExplode(string $file): string
     {
         $explode = explode('/', $file);
         $explode_domain = explode('-', $explode[9]);
@@ -51,7 +52,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @return mixed
      * Use OBJECT Crawl with the method $node->html() for scrolling the page !!!
      */
-    private function FilterCrawl ($crawl, string $params, $replace = FALSE)
+    private function FilterCrawl($crawl, string $params, $replace = FALSE)
     {
         return $crawl_clss = $crawl->filter($params)->each(function ($node, $i) use ($replace) {
             if ($replace) {
@@ -68,7 +69,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @return array
      * Return string with two explode by $params and $params_second and use the delimiter !!!
      */
-    private function ExplodeHtmlTwo (string $params, string $str_update, string $params_second)
+    private function ExplodeHtmlTwo(string $params, string $str_update, string $params_second)
     {
         $explode = explode($params, $str_update);
         $explode_end = explode($params_second, $explode[0]);
@@ -83,9 +84,22 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param bool $replace
      * @return array
      */
-    private function FilterUrlHtml ($crawl, string $params, string $explode_second, string $search, bool $replace)
+    private function FilterUrlHtml($crawl, string $params, string $explode_second, string $search, bool $replace)
     {
         $crawl_clss = $this->FilterCrawl($crawl, $search, $replace);
+        if (isset($crawl_clss[1])) {
+            if (stripos($crawl_clss[1], 'font')) {
+                if (isset($crawl_clss[3]) && stripos($crawl_clss[3], 'font')) {
+                    $explode = $this->ExplodeHtmlTwo($params, $crawl_clss[1], $explode_second);
+                    $explode1 = $this->ExplodeHtmlTwo($params, $crawl_clss[3], $explode_second);
+                    return [$explode[1], $explode1[1]];
+                } else {
+                    $explode = $this->ExplodeHtmlTwo($params, $crawl_clss[1], $explode_second);
+                    return [$explode[1], ''];
+                }
+            }
+            return [$crawl_clss[0], $crawl_clss[1]];
+        }
         if ($params && $explode_second !== '') {
             if (isset($crawl_clss[3])) {
                 $explode = $this->ExplodeHtmlTwo($params, $crawl_clss[1], $explode_second);
@@ -93,10 +107,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
                 return [$explode[1], $explode1[1]];
             }
             $explode = $this->ExplodeHtmlTwo($params, $crawl_clss[2], $explode_second);
-            return [$explode[1], ''];
-        }
-        if (isset($crawl_clss[1])) {
-            return [$crawl_clss[0], $crawl_clss[1]];
+            return [isset($explode[1]) ? $explode[1] : '', ''];
         }
         return [$crawl_clss[0], ''];
     }
@@ -106,7 +117,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @return array
      * Recuperate all the power to FetchAll Table link_profile for implode in the array !!!
      */
-    protected static function ForPower ($power) : array
+    protected static function ForPower($power): array
     {
         $power_end = [];
         foreach ($power as $puissance) {
@@ -120,13 +131,13 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @return array
      * Recuperate all the date to FetchAll and Format DateTime in Table link_profile for implode in the array !!!
      */
-    protected static function ForDate ($power)
+    protected static function ForDate($power)
     {
         $power_end = [];
         foreach ($power as $puissance) {
-           $power_end[] = $puissance->date;
+            $power_end[] = $puissance->date;
         }
-        $date =  Date_Format::DateDayAndMonth($power_end);
+        $date = Date_Format::DateDayAndMonth($power_end);
         return $date;
     }
 
@@ -134,7 +145,8 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param $anchor
      * @return array
      */
-    protected static function ForAnchors ($anchor) {
+    protected static function ForAnchors($anchor)
+    {
         $anchor_end = [];
         foreach ($anchor as $anchors) {
             $anchor_end[] = $anchors->backlinks_num;
@@ -146,7 +158,8 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param $label
      * @return array
      */
-    protected static function ForLabelsAnchor ($label) {
+    protected static function ForLabelsAnchor($label)
+    {
         $labels_end = [];
         foreach ($label as $labels) {
             $labels_end[] = $labels->anchor;
@@ -158,7 +171,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param $date
      * @return float
      */
-    protected static function DiffDate ($date)
+    protected static function DiffDate($date)
     {
         $date_two = [];
         foreach ($date as $dt) {
@@ -173,7 +186,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @return array
      * Implode two $this->FilterUrlHtml() in the array for use in the method $this->>FilterReturnResult !!!
      */
-    protected function FilterReturnResult ($crawl) : array
+    protected function FilterReturnResult($crawl): array
     {
         $filter1 = $this->FilterUrlHtml($crawl, '', '', "tr.highlight > td[align=\"right\"] font", FALSE);
         $filter2 = $this->FilterUrlHtml($crawl, ">", '"', "tr.highlight > td[align=\"right\"] span", TRUE);
@@ -191,7 +204,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @return false|string
      * Method Public, echo json_encode and Scrolling the data !!!
      */
-    public function UrlHtml (string $url, $power, $power_last, $date, $json)
+    public function UrlHtml(string $url, $power, $power_last, $date, $json)
     {
         $crawl = $this->goutte->request("GET", $url);
         $json_encode_tab = [];
@@ -247,8 +260,8 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
                         'image' => $json->data->image,
                         'anchor_data' => self::ForAnchors($json->data->anchors->data),
                         'anchor_label' => self::ForLabelsAnchor($json->data->anchors->data),
-                        'place_reffering' => $referring ? $referring[0][0] : '' ,
-                        'place_ip_referring' =>  '',
+                        'place_reffering' => $referring ? $referring[0][0] : '',
+                        'place_ip_referring' => '',
                         'color_referring' => $referring ? $referring[1][0] : '',
                         'color_ip_referring' => '',
                         'power' => self::ForPower($power),
@@ -318,10 +331,10 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param string $url
      * @return mixed
      */
-    public function ExplodeUrl (string $url)
+    public function ExplodeUrl(string $url)
     {
         $Referer = $url;
-        $new_domain  = explode("/", $Referer);
+        $new_domain = explode("/", $Referer);
         return str_replace('-', '.', $new_domain[5]);
     }
 }

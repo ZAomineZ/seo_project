@@ -1,12 +1,11 @@
 import React from 'react';
 import { Col, Row, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 const background = `${process.env.PUBLIC_URL}/img/landing/header_bg.png`;
-const img = `${process.env.PUBLIC_URL}/img/landing/macbook.png`;
+const img = `${process.env.PUBLIC_URL}/img/landing/landing_1.png`;
 
-const Header = ({ onClick }) => (
+const Header = () => (
   <div className="landing__header" style={{ backgroundImage: `url(${background})` }}>
     <Container>
       <Row>
@@ -20,21 +19,17 @@ const Header = ({ onClick }) => (
               freshest updates
             </Link>.
           </p>
-          <Link className="landing__btn landing__btn--header" to="/documentation/introduction" target="_blank">
-            Check out the docs
+          <Link className="landing__btn landing__btn--header" to="/log_in">
+            Sign In
           </Link>
-          <button className="landing__btn landing__btn--header" onClick={onClick}>
-            Go to demo
-          </button>
+          <Link className="landing__btn landing__btn--header" to="/register">
+            Register
+          </Link>
           <img className="landing__header-img" src={img} alt="macbook" />
         </Col>
       </Row>
     </Container>
   </div>
 );
-
-Header.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
 
 export default Header;

@@ -38,7 +38,7 @@ class Campain extends PureComponent {
                 setTimeout(() => showNotification('error', 'This Campain is not authorized', '👋 A Error is present !!!'), 700);
             }
         }
-        axios.get("http://localhost/ReactProject/App/Ajax/Campain/CampainIndex.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/CampainIndex.php", {
             params: {
                 auth: sessionStorage.getItem('Auth')
             },
@@ -62,7 +62,7 @@ class Campain extends PureComponent {
 
     DeleteData (event, slug)
     {
-        axios.get("http://localhost/ReactProject/App/Ajax/Campain/CampainDelete.php", {
+        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/CampainDelete.php", {
             headers: {
                 'Content-Type': 'application/json',
             },

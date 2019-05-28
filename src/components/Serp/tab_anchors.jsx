@@ -107,11 +107,11 @@ export default class TabAnchors extends PureComponent {
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     render() {
+        let numbro = require('numbro');
+
         const {
             data, order, orderBy, selected, filter
         } = this.state;
-
-        console.log(data);
 
         return (
             <Card>
@@ -156,7 +156,7 @@ export default class TabAnchors extends PureComponent {
                                                     <div
                                                         className="dashboard__total"
                                                     >
-                                                        <p className="">{d.backlinks_num}</p>
+                                                        <p className="">{numbro(d.backlinks_num).format({average: true, mantissa: 2})}</p>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="material-table__cell">
