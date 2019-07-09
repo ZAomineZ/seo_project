@@ -5,264 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/img/landing/landing_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/img/landing/landing_website.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/img/landing/serp.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/img/user_logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/COMMITMENT" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/LICENSE" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/SECURITY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/VERSION" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/composer.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/get_oauth_token.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-am.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ar.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-az.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ba.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-be.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-bg.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ca.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ch.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-cs.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-da.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-de.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-el.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-eo.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-es.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-et.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-fa.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-fi.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-fo.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-fr.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-gl.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-he.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-hi.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-hr.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-hu.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-id.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-it.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ja.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ka.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ko.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-lt.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-lv.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-mg.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ms.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-nb.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-nl.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-pl.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-pt.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-pt_br.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ro.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-ru.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-sk.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-sl.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-sr.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-sv.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-tl.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-tr.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-uk.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-vi.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-zh.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/language/phpmailer.lang-zh_cn.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/src/Exception.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/src/OAuth.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/src/PHPMailer.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/src/POP3.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vendor/phpmailer/phpmailer/src/SMTP.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-alligator-io/alligator-io-f21299017916600cddeeb9035b9dd48c.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-boersen-zeitung-de/boersen-zeitung-de-291eefd313bf07dc480403a5d283db56.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-bonjourlesenfants-net/bonjourlesenfants-net-5b7682cc3081cc9b08428064137afc93.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloori-com/coloori-com-ede8188ffc58649b8db772ab04f88d04.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloriage-info/coloriage-info-0e8d6decbfa856561e1ae2f3f801c9b4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloriages-info/coloriages-info-51f0937e35b81c79ef41787652237dea.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-da-net/da-net-0c8b2897d2e906e4574fc21b44942b01.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-fr-majestic-com/fr-majestic-com-998b0ddf6f2ce6ea57ee4f585ac20da7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-google-com/google-com-876fe3e2287e3de02576f93d4cda88bd.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-hugolescargot-com/hugolescargot-com-d52be84f8bd88d891c70b53616690190.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-selfinvest-me/selfinvest-me-48e5a0740cb06714fc380ee81d4758ab.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-symfony-com/symfony-com-a3a9f6b53b1eaff8316468197fd48222.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-twitter-com/twitter-com-30a222a7b188b1487620697cc5d7e13f.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-youtube-com/youtube-com-692a42b9e3763bfbd82e2f635ececc36.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/A/ASS/assurance-auto/2019-05-08.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/A/ASS/assurance-auto/2019-05-09.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/A/ASS/assurance-auto/2019-05-10.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/A/ASS/assurance-auto/2019-05-13.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage-de-fille/2019-05-03.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage-de-fille/2019-05-08.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage-de-jeux/2019-05-03.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage-de-jeux/2019-05-08.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage-de-noel/2019-05-03.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage-de-noel/2019-05-06.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage-de-noel/2019-05-08.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-04-25.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-04-29.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-04-30.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-05-01.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-05-02.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-05-03.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-05-06.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-05-07.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-05-08.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-05-09.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-05-10.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriage/2019-05-13.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriages/2019-04-30.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriages/2019-05-03.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/serptime/C/COL/coloriages/2019-05-08.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/all_bl-bd1ebf5f732f47a2b60f0711791f17b7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/bl-info-bd1ebf5f732f47a2b60f0711791f17b7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/boersen-zeitung-de-2019-04-10-bd1ebf5f732f47a2b60f0711791f17b7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/boersen-zeitung-de-2019-04-22-bd1ebf5f732f47a2b60f0711791f17b7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/dash-stats-bd1ebf5f732f47a2b60f0711791f17b7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/top_bl-bd1ebf5f732f47a2b60f0711791f17b7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/traffic-bd1ebf5f732f47a2b60f0711791f17b7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/all_bl-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/bl-info-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/bonjourlesenfants-net-2019-04-12-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/bonjourlesenfants-net-2019-04-15-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/bonjourlesenfants-net-2019-04-22-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/bonjourlesenfants-net-2019-04-23-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/bonjourlesenfants-net-2019-05-02-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/dash-stats-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/top_bl-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/traffic-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/all_bl-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/bl-info-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/coloori-com-2019-04-10-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/coloori-com-2019-04-11-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/coloori-com-2019-04-12-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/coloori-com-2019-04-17-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/coloori-com-2019-04-22-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/coloori-com-2019-04-29-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/coloori-com-2019-05-02-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/coloori-com-2019-05-08-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/coloori-com-2019-05-13-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/dash-stats-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/top_bl-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/traffic-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-biz/all_bl-00ca6bec0af2f9e146ae366be0b92287.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-biz/bl-info-00ca6bec0af2f9e146ae366be0b92287.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-biz/coloriage-biz-2019-04-30-00ca6bec0af2f9e146ae366be0b92287.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-biz/dash-stats-00ca6bec0af2f9e146ae366be0b92287.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-biz/top_bl-00ca6bec0af2f9e146ae366be0b92287.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-biz/traffic-00ca6bec0af2f9e146ae366be0b92287.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/all_bl-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/bl-info-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/coloriage-info-2019-04-10-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/coloriage-info-2019-04-22-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/coloriage-info-2019-04-30-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/coloriage-info-2019-05-01-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/coloriage-info-2019-05-02-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/coloriage-info-2019-05-03-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/dash-stats-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/top_bl-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/traffic-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/all_bl-928269acbaa97bce298475ad2bf87323.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/bl-info-928269acbaa97bce298475ad2bf87323.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/coloriages-biz-2019-04-30-928269acbaa97bce298475ad2bf87323.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/coloriages-biz-2019-05-02-928269acbaa97bce298475ad2bf87323.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/dash-stats-928269acbaa97bce298475ad2bf87323.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/top_bl-928269acbaa97bce298475ad2bf87323.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/traffic-928269acbaa97bce298475ad2bf87323.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/all_bl-2619ee8ce400f00bd57955d150fce876.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/bl-info-2619ee8ce400f00bd57955d150fce876.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/coloriages-info-2019-04-10-2619ee8ce400f00bd57955d150fce876.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/coloriages-info-2019-04-22-2619ee8ce400f00bd57955d150fce876.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/top_bl-2619ee8ce400f00bd57955d150fce876.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/all_bl-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/bl-info-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/coloriez-com-2019-04-22-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/coloriez-com-2019-05-02-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/dash-stats-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/top_bl-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/traffic-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/all_bl-1a3b379590bbc141071617eb49c7573c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/bl-info-1a3b379590bbc141071617eb49c7573c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/dash-stats-1a3b379590bbc141071617eb49c7573c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/hellokids-com-2019-04-30-1a3b379590bbc141071617eb49c7573c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/top_bl-1a3b379590bbc141071617eb49c7573c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/traffic-1a3b379590bbc141071617eb49c7573c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/all_bl-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/bl-info-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/dash-stats-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/momes-net-2019-04-22-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/momes-net-2019-04-30-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/momes-net-2019-05-01-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/momes-net-2019-05-02-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/momes-net-2019-05-03-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/top_bl-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/traffic-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/all_bl-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/bl-info-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/dash-stats-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/teteamodeler-com-2019-04-22-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/teteamodeler-com-2019-04-30-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/teteamodeler-com-2019-05-01-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/teteamodeler-com-2019-05-02-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/top_bl-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/traffic-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/topsante-com/all_bl-fc598d1a7fd8f14efff7c18208e373f9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/topsante-com/bl-info-fc598d1a7fd8f14efff7c18208e373f9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/topsante-com/dash-stats-fc598d1a7fd8f14efff7c18208e373f9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/topsante-com/top_bl-fc598d1a7fd8f14efff7c18208e373f9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/topsante-com/topsante-com-2019-04-22-fc598d1a7fd8f14efff7c18208e373f9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/topsante-com/traffic-fc598d1a7fd8f14efff7c18208e373f9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/toysrus-fr/all_bl-ab61fb5db9e9ed08829bf7b99c24c665.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/toysrus-fr/bl-info-ab61fb5db9e9ed08829bf7b99c24c665.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/toysrus-fr/dash-stats-ab61fb5db9e9ed08829bf7b99c24c665.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/toysrus-fr/top_bl-ab61fb5db9e9ed08829bf7b99c24c665.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/toysrus-fr/toysrus-fr-2019-04-22-ab61fb5db9e9ed08829bf7b99c24c665.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/toysrus-fr/traffic-ab61fb5db9e9ed08829bf7b99c24c665.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/wakatoon-com/all_bl-67901e04e2cd8053ec2d097d0c935cbb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/wakatoon-com/bl-info-67901e04e2cd8053ec2d097d0c935cbb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/wakatoon-com/dash-stats-67901e04e2cd8053ec2d097d0c935cbb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/wakatoon-com/top_bl-67901e04e2cd8053ec2d097d0c935cbb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/wakatoon-com/traffic-67901e04e2cd8053ec2d097d0c935cbb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/wakatoon-com/wakatoon-com-2019-04-22-67901e04e2cd8053ec2d097d0c935cbb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/1001jeux-fr/1001jeux-fr-2019-05-03-55570ff8fafaca08924df1b85ece90a7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/1001jeux-fr/dash-stats-55570ff8fafaca08924df1b85ece90a7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/amv-fr/amv-fr-2019-05-08-27a78d8bc19126670e8bf54b5b92f85b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/amv-fr/dash-stats-27a78d8bc19126670e8bf54b5b92f85b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriage-com/traffic-849c5a431b6aa20ff6bd8cfa0acbd773.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriage-gulli-fr/coloriage-gulli-fr-2019-05-01-e87d13f7b27d7979723d138fde902fbd.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriage-jeux-com/coloriage-jeux-com-2019-05-03-4cfccdef541757757b372c6b2879729c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriage-jeux-com/dash-stats-4cfccdef541757757b372c6b2879729c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriages-com/traffic-79c01dcab94a26b03cff9d1a13dc12e4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriages-enfants-com/all_bl-a09799f8f56bf0cb5c78fe3b98748946.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriages-enfants-com/bl-info-a09799f8f56bf0cb5c78fe3b98748946.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriages-enfants-com/coloriages-enfants-com-2019-05-02-a09799f8f56bf0cb5c78fe3b98748946.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriages-enfants-com/coloriages-enfants-com-2019-05-03-a09799f8f56bf0cb5c78fe3b98748946.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriages-enfants-com/dash-stats-a09799f8f56bf0cb5c78fe3b98748946.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriages-enfants-com/top_bl-a09799f8f56bf0cb5c78fe3b98748946.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/coloriages-enfants-com/traffic-a09799f8f56bf0cb5c78fe3b98748946.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/colorier-dessin-com/colorier-dessin-com-2019-05-01-01546133136f1088ad870109f7dfc96d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/fr-hellokids-com/dash-stats-2ed28791b256f42e37cee67b3ceea354.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/fr-hellokids-com/fr-hellokids-com-2019-05-03-2ed28791b256f42e37cee67b3ceea354.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/hyperassur-com/dash-stats-354ba2e7f62f4e6b0f0e866868b70fa0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/hyperassur-com/hyperassur-com-2019-05-08-354ba2e7f62f4e6b0f0e866868b70fa0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jesuisanimateur-fr/dash-stats-0715eb3e76c32506f122ef297fa7f1b1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jesuisanimateur-fr/jesuisanimateur-fr-2019-05-03-0715eb3e76c32506f122ef297fa7f1b1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeux-com/traffic-c822600cd74c02120c67e41163c86b03.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeux-info/traffic-fdefcbf3e8f7efeaaa78acba2bdcd83e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxetcompagnie-fr/dash-stats-b6e141a1b41b52bc36b3a69afdffb0c4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxetcompagnie-fr/jeuxetcompagnie-fr-2019-05-02-b6e141a1b41b52bc36b3a69afdffb0c4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/all_bl-021279a358839fad7b0b227b6cf88eaf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/bl-info-021279a358839fad7b0b227b6cf88eaf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/dash-stats-021279a358839fad7b0b227b6cf88eaf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/jeuxjeuxjeux-fr-2019-05-03-021279a358839fad7b0b227b6cf88eaf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/top_bl-021279a358839fad7b0b227b6cf88eaf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/traffic-021279a358839fad7b0b227b6cf88eaf.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/logicieleducatif-fr/dash-stats-a7a3c06aeda95a0960cfff9a58df4272.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/logicieleducatif-fr/logicieleducatif-fr-2019-05-03-a7a3c06aeda95a0960cfff9a58df4272.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/magicmaman-com/all_bl-09cf7bd3a21ff1a021f16b1f11f9cab3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/magicmaman-com/bl-info-09cf7bd3a21ff1a021f16b1f11f9cab3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/magicmaman-com/dash-stats-09cf7bd3a21ff1a021f16b1f11f9cab3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/magicmaman-com/magicmaman-com-2019-05-02-09cf7bd3a21ff1a021f16b1f11f9cab3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/magicmaman-com/top_bl-09cf7bd3a21ff1a021f16b1f11f9cab3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/magicmaman-com/traffic-09cf7bd3a21ff1a021f16b1f11f9cab3.json" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -343,7 +87,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/containers/App/App.jsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
@@ -351,6 +95,15 @@
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="80">
+              <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -434,7 +187,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/containers/Layout/index.jsx" />
         <option value="$PROJECT_DIR$/App/Ajax/SerpTrustScore.php" />
         <option value="$PROJECT_DIR$/App/Ajax/SerpComparaison.php" />
         <option value="$PROJECT_DIR$/App/Ajax/SerpComparaisonDate.php" />
@@ -485,6 +237,7 @@
         <option value="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" />
         <option value="$PROJECT_DIR$/src/components/Serp/top_backlinks.jsx" />
         <option value="$PROJECT_DIR$/src/components/Serp/modal_top_bl.jsx" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -580,16 +333,6 @@
             <path>
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -762,7 +505,7 @@
       <workItem from="1562316588178" duration="88000" />
       <workItem from="1562579159670" duration="17940000" />
       <workItem from="1562660407882" duration="7491000" />
-      <workItem from="1562685751590" duration="1512000" />
+      <workItem from="1562685751590" duration="1624000" />
     </task>
     <task id="LOCAL-00001" summary="commit xml">
       <created>1557842988682</created>
@@ -820,11 +563,18 @@
       <option name="project" value="LOCAL" />
       <updated>1562687055752</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="commit Node Module">
+      <created>1562687269516</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1562687269516</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1116360000" />
+    <option name="totallyTimeSpent" value="1116472000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -837,8 +587,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="33" width="1922" height="1050" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4983108" visible="true" weight="0.30633047" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4983108" visible="true" weight="0.30633047" />
       <window_info id="Structure" order="1" sideWeight="0.5016892" side_tool="true" weight="0.3138412" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -850,7 +601,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3295583" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="8" sideWeight="0.49946353" visible="true" weight="0.32842582" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49946353" visible="true" weight="0.32842582" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5005365" side_tool="true" weight="0.3295583" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32692307" />
@@ -912,13 +663,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="commit Node Module" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/TabMaterielTopDomains.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="10" column="26" lean-forward="true" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/LinkProfile/tab_backlinks.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3473">
@@ -1254,6 +998,13 @@
           <folding>
             <element signature="e#0#51#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
         </state>
       </provider>
     </entry>
