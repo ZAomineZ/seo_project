@@ -96,9 +96,11 @@ class WebSiteController
         return \GuzzleHttp\json_encode(
             [
                 'referring_domain' => $bl->data->domains > 1000 ? self::$format->format($bl->data->domains, '0a.00') : $bl->data->domains ,
+                'referring_domain_int' => $bl->data->domains,
                 'trust_rank' => $bl->data->trust_score,
                 'score_rank' => $bl->data->ascore,
-                'alexa_rank' => $option
+                'alexa_rank' => $option,
+                'ip_subnets' => $bl->data->ipclassc
             ]
         );
     }
@@ -158,14 +160,21 @@ class WebSiteController
         ]);
     }
 
+    /**
+     * @param bool $first
+     * @param string $domain
+     * @return string
+     */
     protected static function JsonBlTop ($first = false, string $domain)
     {
-        $result_first = self::$curl->Curl($domain, "true");
-        $result = self::$curl->Curl($domain, "false");
+        $result_first = self::$curl->Curl($domain, "true", 'lastCheck');
+        $result = self::$curl->Curl($domain, "false", 'lastCheck');
+        $result_second = self::$curl->Curl($domain, "false", 'url');
+        $result_anchorUrl = self::$curl->Curl($domain, "true", 'anchorUrl');
         if ($first) {
             return \GuzzleHttp\json_encode([$result_first]);
         }
-        return \GuzzleHttp\json_encode([$result]);
+        return \GuzzleHttp\json_encode([$result, $result_second, $result_anchorUrl]);
     }
 
     /**
@@ -268,6 +277,12 @@ class WebSiteController
                         $dir_domain['dir'],
                         $domain,
                         $option);
+                } elseif (file_exists($file_dir[1]) && !file_exists($file_dir[0]) && !file_exists($file_dir[2]) && !file_exists($file_dir[3]) && file_exists($file_dir[4]) && !file_exists($file_dir[5])) {
+                    self::CreateFileWebSite(
+                        [$file_dir[0], $file_dir[1], $file_dir[2], $file, $file_dir[4], $file_dir[5]],
+                        $dir_domain['dir'],
+                        $domain,
+                        $option);
                 } else {
                     self::$web->CronTraffic($file_dir[1], $dir_domain['dir'], $domain);
                     $req = self::$table->SelectToken($domain);
@@ -308,6 +323,8 @@ class WebSiteController
             'domain_stat' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' : self::$web->ChangeDataItem(File_Params::OpenFile($file[0], $dir)->data->historical->domain_stat->weeks, "M j"),
             'data_asc' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[0]->backlink->backlink, 'UNIQUE'),
             'data_desc' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][0]->backlink->backlink, 'UNIQUE'),
+            'data_url' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][1]->backlink->backlink, 'UNIQUE'),
+            'data_assortUrl' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][2]->backlink->backlink, 'UNIQUE'),
             'error' => ''
         ]);
     }

@@ -18,10 +18,13 @@ import {Redirect} from "react-router-dom";
 class SerpAnalyseDetails extends PureComponent {
     constructor(props) {
         super(props);
+        console.error = () => {};
+        console.error();
         this.state = {
             trust_rank: 0,
             score_rank: 0,
             referring_domain: '',
+            referring_domain_int: 0,
             dash_stats: [],
             stats: [],
             backlink: 0,
@@ -32,6 +35,8 @@ class SerpAnalyseDetails extends PureComponent {
             top_bl: [],
             data_asc: [],
             data_desc: [],
+            data_url: [],
+            data_assortUrl: [],
             error: false,
             error_message: '',
             loading: true,
@@ -61,6 +66,7 @@ class SerpAnalyseDetails extends PureComponent {
                     trust_rank: response.data.result.trust_rank,
                     score_rank: response.data.result.score_rank,
                     referring_domain: response.data.result.referring_domain,
+                    referring_domain_int: response.data.result.referring_domain_int,
                     dash_stats: response.data.dash_stats,
                     stats: response.data.stats,
                     backlink: response.data.bl_info !== "" ? response.data.bl_info.data.total : [],
@@ -71,6 +77,8 @@ class SerpAnalyseDetails extends PureComponent {
                     top_bl: response.data.file_top_bl !== "" ? response.data.file_top_bl.data.backlinks.data : [],
                     data_asc: response.data.data_asc,
                     data_desc: response.data.data_desc,
+                    data_url: response.data.data_url,
+                    data_assortUrl: response.data.data_assortUrl,
                     error: response.data.error,
                     loading: false
                 });
@@ -116,6 +124,7 @@ class SerpAnalyseDetails extends PureComponent {
                         <TabsCalorie score_rank={this.state.score_rank} dash_stats={this.state.dash_stats} />
                         <TabsSteps ratio_rank={this.RatioRank()} dash_stats={this.state.dash_stats} />
                         <TabsDistance referring_domain={this.state.referring_domain}
+                                      referring_domain_int={this.state.referring_domain_int}
                                       backlink={this.state.backlink}
                                       domain={this.state.domain}
                                       dash_stats={this.state.dash_stats} />
@@ -138,7 +147,7 @@ class SerpAnalyseDetails extends PureComponent {
                             <TradeHistory anchors={this.state.anchors} modal={1} />
                         </div>
                         <div className="col-xl-6">
-                            <CryptotrendsToday data={this.state.anchors}/>
+                            <CryptotrendsToday data={this.state.anchors} />
                         </div>
                     </div>
                     <div className="row">
@@ -146,7 +155,9 @@ class SerpAnalyseDetails extends PureComponent {
                             <TopBacklinks modal={1}
                                           data={this.state.top_bl}
                                           data_asc={this.state.data_asc}
-                                          data_desc={this.state.data_desc}/>
+                                          data_desc={this.state.data_desc}
+                                          data_url={this.state.data_url}
+                                          data_assortUrl={this.state.data_assortUrl} />
                         </div>
                         <TabsDetails domain_stat={this.state.domain_stat}/>
                     </div>

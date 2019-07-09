@@ -63,7 +63,6 @@ class ResponsiveTable extends PureComponent {
                 });
                 setTimeout(() => this.setState({ loaded: true }), 500);
             } else {
-                setTimeout(() => showNotification('Your Request is so many long !!!', 'danger'), 700);
                 this.setState({ redirectCrawl: !this.state.redirectCrawl })
             }
         })
@@ -196,7 +195,7 @@ class ResponsiveTable extends PureComponent {
                                                 <p>
                                                     { d.meta_description }
                                                 </p>
-                                                <div className={ d.meta_description[0].length > 158
+                                                <div className={ d.meta_description[0] && d.meta_description[0].length > 158
                                                     ? "pt-5 progress-wrap progress-wrap--small progress-wrap--pink progress-wrap--label-top"
                                                     : "pt-5 progress-wrap progress-wrap--small progress-wrap--label-top" }>
                                                     <Progress value={(d.meta_description[0].length / 158) * 100 }>

@@ -19,8 +19,8 @@ export default class AlertComponent extends PureComponent {
         icon: PropTypes.string,
         panelClass: PropTypes.string,
         button: PropTypes.string,
-        keyword: PropTypes.string.isRequired,
-        date_comparaison: PropTypes.bool.isRequired,
+        keyword: PropTypes.string,
+        date_comparaison: PropTypes.bool,
         state_location: PropTypes.array
     };
 

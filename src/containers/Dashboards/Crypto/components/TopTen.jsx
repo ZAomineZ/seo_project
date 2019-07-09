@@ -44,7 +44,7 @@ CustomTooltip.defaultProps = {
     payload: null,
 };
 
-const DropDownMore = ({index, handleDeleteRow, onClick, trust_rank, score_rank, ref_domain, loaded}) => (
+const DropDownMore = ({index, handleDeleteRow, onClick, trust_rank, score_rank, ip_subnets, loaded}) => (
     <UncontrolledDropdown className="dashboard__table-more">
         <DropdownToggle onClick={onClick}>
             <p><DotsHorizontalIcon/></p>
@@ -91,10 +91,10 @@ const DropDownMore = ({index, handleDeleteRow, onClick, trust_rank, score_rank, 
                 </div>
                 }
                 <div className="block_flex">
-                    <span className="span-style badge-primary">R</span>
-                    <span className="span-style badge-primary">D</span>
+                    <span className="span-style badge-primary">I</span>
+                    <span className="span-style badge-primary">P</span>
                     <p className="mr_mdi">
-                        {ref_domain}
+                        {ip_subnets}
                     </p>
                 </div>
             </DropdownItem>
@@ -108,7 +108,7 @@ DropDownMore.propTypes = {
     onClick: PropTypes.func.isRequired,
     trust_rank: PropTypes.number,
     score_rank: PropTypes.number,
-    ref_domain: PropTypes.string,
+    ip_subnets: PropTypes.string,
     loaded: PropTypes.bool.isRequired
 };
 
@@ -120,7 +120,10 @@ export default class TopTen extends PureComponent {
         TopOrLose: PropTypes.bool,
         array_description: PropTypes.array.isRequired,
         array_url: PropTypes.array.isRequired,
-        array_rank: PropTypes.object.isRequired,
+        array_rank: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.object
+        ]),
         array_date: PropTypes.array.isRequired,
         keyword: PropTypes.string.isRequired,
         date_comparaison: PropTypes.bool.isRequired,
@@ -263,7 +266,7 @@ export default class TopTen extends PureComponent {
                                 id: d.id,
                                 title: d.title,
                                 url: d.url,
-                                ref_domain: response.data.ref_domain,
+                                ip_subnets: response.data.ip_subnets,
                                 score_rank: response.data.score_rank,
                                 trust_rank: response.data.trust_rank
                             }
@@ -349,7 +352,6 @@ export default class TopTen extends PureComponent {
                                         btc: d.rank
                                     }
                                 });
-
                                 return (
                                     <TableRow
                                         className="material-table__row"
@@ -447,7 +449,7 @@ export default class TopTen extends PureComponent {
                                                 onClick={e => this.TrustScoreRank(e, d.title, d.id)}
                                                 trust_rank={d.trust_rank}
                                                 score_rank={d.score_rank}
-                                                ref_domain={d.ref_domain}
+                                                ip_subnets={d.ip_subnets}
                                                 loaded={this.state.loaded}
                                             />
                                         </td>

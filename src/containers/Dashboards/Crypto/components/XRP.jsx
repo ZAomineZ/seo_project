@@ -20,7 +20,7 @@ export default class XRP extends PureComponent {
 
     render() {
         const Top = <TrendingUpIcon className="dashboard__trend-icon" />;
-        const Bottom = <TrendingDownIcon className="dashboard__trend-icon" />;
+        const Bottom = <TrendingDownIcon className="dashboard_top_serp_icon" />;
 
         const data = this.props.dash_stats.map(d => {
             return { name: '', xrp : d.referring_domain };

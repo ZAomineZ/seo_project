@@ -144,7 +144,6 @@ class LogInForm extends PureComponent {
                         'Content-Type': 'application/json',
                     },
                 }).then((response) => {
-                    console.log(this.ArrayAuth(JSON.stringify(response.data)));
                     if (response && response.status === 200)  {
                         if (!response.data.error) {
                             sessionStorage.setItem('Auth', this.ArrayAuth(JSON.stringify(response.data)));

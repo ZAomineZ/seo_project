@@ -39,6 +39,8 @@ class SerpDate extends PureComponent {
 
     constructor() {
         super();
+        console.error = () => {};
+        console.error();
         this.state = {
             description: [],
             url: [],

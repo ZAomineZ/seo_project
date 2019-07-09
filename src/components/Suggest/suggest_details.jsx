@@ -11,6 +11,8 @@ class SuggestDetails extends PureComponent{
     constructor ()
     {
         super();
+        console.error = () => {};
+        console.error();
         this.state = {
             data_current: [],
             data_questions: [],
@@ -44,6 +46,7 @@ class SuggestDetails extends PureComponent{
             }
         })
     }
+
     render() {
         return (
             <div className="dashboard container">

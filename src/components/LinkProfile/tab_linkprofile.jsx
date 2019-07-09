@@ -111,7 +111,6 @@ class tab_linkprofile extends PureComponent {
     }
 
     render() {
-        console.log(this.state.place_reffering);
         if (this.state.error === true) {
             return (
                 <Redirect to={{
@@ -153,6 +152,8 @@ class tab_linkprofile extends PureComponent {
                                 18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z" />
             </svg>;
 
+            let numbro = require('numbro');
+
             return (
                 <Card>
                     <CardBody>
@@ -173,7 +174,7 @@ class tab_linkprofile extends PureComponent {
                                 <th>Referring domains</th>
                                 <th>URL</th>
                                 <th>Authority</th>
-                                <th>Referring subnets</th>
+                                <th>BL Follow</th>
                                 <th>Referring IPs</th>
                             </tr>
                             </thead>
@@ -221,13 +222,7 @@ class tab_linkprofile extends PureComponent {
                                     </div>
                                 </td>
                                 <td>
-                                    <p className="font-default-size">{this.state.referring}</p>
-                                    <div className="place_flex">
-                                        {this.state.color_referring === "#ff0000" ? svg_red : ''}
-                                        {this.state.color_referring === "#008000" ? svg_green : ''}
-                                        {this.state.color_referring === "" ? '' : ''}
-                                        <p className="dashboard__total-stat">{this.state.place_reffering}</p>
-                                    </div>
+                                    <p className="font-default-size">{ numbro(this.state.follow).format({average: true, mantissa: 2}) }</p>
                                 </td>
                                 <td>
                                     <p className="font-default-size">{this.state.ip_referring}</p>

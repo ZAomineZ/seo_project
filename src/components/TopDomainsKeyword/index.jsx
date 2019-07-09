@@ -7,6 +7,8 @@ import {Redirect} from "react-router-dom";
 class DomainsKeyword extends PureComponent {
     constructor(props) {
         super(props);
+        console.error = () => {};
+        console.error();
         this.state = {
             data: [],
             loading: true,

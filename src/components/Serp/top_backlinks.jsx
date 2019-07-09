@@ -9,8 +9,22 @@ export default class TopBacklinks extends PureComponent {
     static propTypes = {
         modal: PropTypes.number,
         data: PropTypes.array.isRequired,
-        data_asc: PropTypes.array.isRequired,
-        data_desc: PropTypes.array.isRequired,
+        data_asc: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.object
+        ]).isRequired,
+        data_desc: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.object
+        ]).isRequired,
+        data_url: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.object
+        ]).isRequired,
+        data_assortUrl: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.object
+        ]).isRequired
     };
 
     static defaultProps = {
@@ -30,13 +44,23 @@ export default class TopBacklinks extends PureComponent {
 
         const data_array_asc = Object.values(this.props.data_asc);
         const data_array_desc = Object.values(this.props.data_desc);
+        const data_array_url = Object.values(this.props.data_url);
+        const data_array_assortUrl = Object.values(this.props.data_assortUrl);
 
         const data_asc = data_array_asc.map(d => {
-           return {url: d.url !== null ? d.url : '', anchorUrl: d.anchorUrl !== null ? d.anchorUrl : '', noFollow : d.noFollow !== null ? d.noFollow : ''}
+           return {url: d.url !== null ? d.url : '', anchorUrl: d.anchorUrl !== null ? d.anchorUrl : '', anchorText: d.anchorText !== null ? d.anchorText : '', noFollow : d.noFollow !== null ? d.noFollow : ''}
         });
 
         const data_desc = data_array_desc.map(d => {
-           return {url: d.url !== null ? d.url : '', anchorUrl: d.anchorUrl !== null ? d.anchorUrl : '', noFollow : d.noFollow !== null ? d.noFollow : ''}
+            return {url: d.url !== null ? d.url : '', anchorUrl: d.anchorUrl !== null ? d.anchorUrl : '', anchorText: d.anchorText !== null ? d.anchorText : '', noFollow : d.noFollow !== null ? d.noFollow : ''}
+        });
+
+        const data_url = data_array_url.map(d => {
+            return {url: d.url !== null ? d.url : '', anchorUrl: d.anchorUrl !== null ? d.anchorUrl : '', anchorText: d.anchorText !== null ? d.anchorText : '', noFollow : d.noFollow !== null ? d.noFollow : ''}
+        });
+
+        const data_assortUrl = data_array_assortUrl.map(d => {
+            return {url: d.url !== null ? d.url : '', anchorUrl: d.anchorUrl !== null ? d.anchorUrl : '', anchorText: d.anchorText !== null ? d.anchorText : '', noFollow : d.noFollow !== null ? d.noFollow : ''}
         });
 
         const modal =
@@ -48,6 +72,8 @@ export default class TopBacklinks extends PureComponent {
                         btn="More"
                         data_asc={data_asc}
                         data_desc={data_desc}
+                        data_url={data_url}
+                        data_assortUrl={data_assortUrl}
                     />
                 </ButtonToolbar>
             </CardBody> : null;
@@ -65,7 +91,7 @@ export default class TopBacklinks extends PureComponent {
                     <thead>
                     <tr>
                         <th>URL</th>
-                        <th>Anchor</th>
+                        <th>Anchors</th>
                         <th>Type : Follow/NoFollow</th>
                     </tr>
                     </thead>

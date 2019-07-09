@@ -6,82 +6,107 @@
   <component name="ChangeListManager">
     <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/Campain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/Campain.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/CampainDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/CampainDetails.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/CampainItemDelete.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/CampainItemDelete.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/DataCampain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/DataCampain.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/Campain/UpdateDataBl.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Campain/UpdateDataBl.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/Serp.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Serp.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/WebSite.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/WebSite.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Controller/CampainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/CampainController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Controller/TopKeywordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/TopKeywordController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Actions/Url/Curl_Url.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Actions/Url/Curl_Url.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/SerpComparaison.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/SerpComparaison.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/SerpComparaisonDate.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/SerpComparaisonDate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/SerpDate.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/SerpDate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/SerpTrustScore.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/SerpTrustScore.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Controller/SerpController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/SerpController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/WebSiteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/WebSiteController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Table/Auth/LogIn.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Table/Auth/LogIn.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Table/Campain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Table/Campain.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/concern/Str_options.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/concern/Str_options.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/model/Campain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/Campain.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/model/LinkDomain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/LinkDomain.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/model/WebSite.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/WebSite.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Auth/login_token.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Auth/login_token.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Auth/logout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Auth/logout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/Serp.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/Serp.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/TopKeyword.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/TopKeyword.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Campain/campain_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Campain/campain_form.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Campain/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Campain/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Crawl/crawl_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Crawl/crawl_form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Crawl/crawl.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Crawl/crawl.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LinkProfile/linkprofile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LinkProfile/linkprofile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LinkProfile/tab_backlinks.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LinkProfile/tab_backlinks.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Serp/form_analyse.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/form_analyse.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Serp/form_serp.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/form_serp.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Serp/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/modal_top_bl.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/modal_top_bl.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_date.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_date.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Serp/tab_anchors.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/tab_anchors.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Serp/tab_data.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/tab_data.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/top_backlinks.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/top_backlinks.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Suggest/modal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/modal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Suggest/suggest_alpha.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/suggest_alpha.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Suggest/suggest_comparison.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/suggest_comparison.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Suggest/suggest_current.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/suggest_current.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Suggest/suggest_details.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/suggest_details.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Suggest/suggest_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/suggest_form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Suggest/suggest_preposition.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/suggest_preposition.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Suggest/suggest_questions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Suggest/suggest_questions.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/TabMaterielTopDomains.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/TabMaterielTopDomains.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/tabs/tabs_distance.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/tabs/tabs_distance.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Account/Register/components/RegisterForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/Register/components/RegisterForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Charts/ReactVis/components/Bar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Charts/ReactVis/components/Bar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Charts/Recharts/components/SimpleLineChart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Charts/Recharts/components/SimpleLineChart.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Booking/components/Occupancy.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Booking/components/Occupancy.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BCH.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BCH.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BTC.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BTC.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/CryptotrendsToday.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/CryptotrendsToday.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/ETH.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/ETH.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TradeHistory.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TradeHistory.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/XRP.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/XRP.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Default/components/BounceRateArea.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Default/components/BounceRateArea.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/ActivityChart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/ActivityChart.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Landing/components/Features.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Landing/components/Features.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Landing/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Landing/components/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Landing/components/Technologies.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Landing/components/Technologies.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/Distance.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/Distance.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Landing/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Landing/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scss/containers/landing.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/containers/landing.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared/components/Panel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/Panel.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-boersen-zeitung-de/boersen-zeitung-de-291eefd313bf07dc480403a5d283db56.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-boersen-zeitung-de/boersen-zeitung-de-291eefd313bf07dc480403a5d283db56.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-bonjourlesenfants-net/bonjourlesenfants-net-5b7682cc3081cc9b08428064137afc93.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-bonjourlesenfants-net/bonjourlesenfants-net-5b7682cc3081cc9b08428064137afc93.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloori-com/coloori-com-ede8188ffc58649b8db772ab04f88d04.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloori-com/coloori-com-ede8188ffc58649b8db772ab04f88d04.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloriage-info/coloriage-info-0e8d6decbfa856561e1ae2f3f801c9b4.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloriage-info/coloriage-info-0e8d6decbfa856561e1ae2f3f801c9b4.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloriages-info/coloriages-info-51f0937e35b81c79ef41787652237dea.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-coloriages-info/coloriages-info-51f0937e35b81c79ef41787652237dea.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-hugolescargot-com/hugolescargot-com-d52be84f8bd88d891c70b53616690190.png" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/imastic/LinkProfile-hugolescargot-com/hugolescargot-com-d52be84f8bd88d891c70b53616690190.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/dash-stats-bd1ebf5f732f47a2b60f0711791f17b7.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/dash-stats-bd1ebf5f732f47a2b60f0711791f17b7.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/traffic-bd1ebf5f732f47a2b60f0711791f17b7.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/boersen-zeitung-de/traffic-bd1ebf5f732f47a2b60f0711791f17b7.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/dash-stats-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/dash-stats-df393e05f4a6554fbba0eaf1a01a32ef.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/traffic-df393e05f4a6554fbba0eaf1a01a32ef.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/bonjourlesenfants-net/traffic-df393e05f4a6554fbba0eaf1a01a32ef.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/dash-stats-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/dash-stats-94dbdf3060b4a5c8a3be506889d95e3c.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/traffic-94dbdf3060b4a5c8a3be506889d95e3c.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloori-com/traffic-94dbdf3060b4a5c8a3be506889d95e3c.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/dash-stats-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/dash-stats-e5ac97339447e8232dcd85f059b2a606.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/traffic-e5ac97339447e8232dcd85f059b2a606.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriage-info/traffic-e5ac97339447e8232dcd85f059b2a606.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/dash-stats-928269acbaa97bce298475ad2bf87323.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/dash-stats-928269acbaa97bce298475ad2bf87323.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/traffic-928269acbaa97bce298475ad2bf87323.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-biz/traffic-928269acbaa97bce298475ad2bf87323.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/dash-stats-2619ee8ce400f00bd57955d150fce876.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/dash-stats-2619ee8ce400f00bd57955d150fce876.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/traffic-2619ee8ce400f00bd57955d150fce876.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriages-info/traffic-2619ee8ce400f00bd57955d150fce876.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/dash-stats-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/dash-stats-ddfe220cec847aa8e6de024bdd987e81.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/dash-stats-272aa091de7638c851fad67db73102e2.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/dash-stats-272aa091de7638c851fad67db73102e2.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/traffic-ddfe220cec847aa8e6de024bdd987e81.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/coloriez-com/traffic-ddfe220cec847aa8e6de024bdd987e81.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/grafikart-fr/all_bl-18b79d5c3942b10b6f5f0d730e528863.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/grafikart-fr/bl-info-18b79d5c3942b10b6f5f0d730e528863.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/grafikart-fr/dash-stats-18b79d5c3942b10b6f5f0d730e528863.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/grafikart-fr/grafikart-fr-2019-04-22-18b79d5c3942b10b6f5f0d730e528863.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/grafikart-fr/top_bl-18b79d5c3942b10b6f5f0d730e528863.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/grafikart-fr/traffic-18b79d5c3942b10b6f5f0d730e528863.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/dash-stats-1a3b379590bbc141071617eb49c7573c.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/dash-stats-1a3b379590bbc141071617eb49c7573c.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/traffic-1a3b379590bbc141071617eb49c7573c.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/hellokids-com/traffic-1a3b379590bbc141071617eb49c7573c.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/all_bl-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/bl-info-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/dash-stats-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/hugolescargot-com-2019-04-30-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/hugolescargot-com-2019-05-01-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/hugolescargot-com-2019-05-02-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/hugolescargot-com-2019-05-03-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/hugolescargot-com-2019-05-06-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/hugolescargot-com-2019-05-07-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/top_bl-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/hugolescargot-com/traffic-272aa091de7638c851fad67db73102e2.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/dash-stats-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/dash-stats-0615ea391765fff5c7e34a9c6b504586.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/traffic-0615ea391765fff5c7e34a9c6b504586.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/momes-net/traffic-0615ea391765fff5c7e34a9c6b504586.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/dash-stats-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/dash-stats-edacb11c45d89a31df910334fc275cd8.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/traffic-edacb11c45d89a31df910334fc275cd8.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/04/teteamodeler-com/traffic-edacb11c45d89a31df910334fc275cd8.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/tidou-fr/all_bl-05a91f88fdd5f718ba3089d94bc93959.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/tidou-fr/bl-info-05a91f88fdd5f718ba3089d94bc93959.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/tidou-fr/dash-stats-05a91f88fdd5f718ba3089d94bc93959.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/tidou-fr/tidou-fr-2019-04-30-05a91f88fdd5f718ba3089d94bc93959.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/tidou-fr/top_bl-05a91f88fdd5f718ba3089d94bc93959.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/04/tidou-fr/traffic-05a91f88fdd5f718ba3089d94bc93959.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/enfant-com/dash-stats-d0869e14524051a4b30de639f8bed93c.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/enfant-com/enfant-com-2019-05-02-d0869e14524051a4b30de639f8bed93c.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/fr-hellokids-com/dash-stats-2ed28791b256f42e37cee67b3ceea354.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/05/fr-hellokids-com/dash-stats-2ed28791b256f42e37cee67b3ceea354.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/dash-stats-021279a358839fad7b0b227b6cf88eaf.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/dash-stats-021279a358839fad7b0b227b6cf88eaf.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/traffic-021279a358839fad7b0b227b6cf88eaf.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/05/jeuxjeuxjeux-fr/traffic-021279a358839fad7b0b227b6cf88eaf.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/datas/website/2019/05/magicmaman-com/dash-stats-09cf7bd3a21ff1a021f16b1f11f9cab3.json" beforeDir="false" afterPath="$PROJECT_DIR$/storage/datas/website/2019/05/magicmaman-com/dash-stats-09cf7bd3a21ff1a021f16b1f11f9cab3.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,8 +136,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/containers/App/Router.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="66" column="53" selection-start-line="66" selection-start-column="53" selection-end-line="66" selection-end-column="53" />
+            <state relative-caret-position="596">
+              <caret line="51" column="67" lean-forward="true" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="67" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -121,82 +146,58 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Auth/logout.jsx">
+        <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1640">
-              <caret line="44" column="50" lean-forward="true" selection-start-line="44" selection-start-column="50" selection-end-line="44" selection-end-column="50" />
+            <state relative-caret-position="680">
+              <caret line="154" column="38" lean-forward="true" selection-start-line="154" selection-start-column="38" selection-end-line="154" selection-end-column="38" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx">
+        <entry file="file://$PROJECT_DIR$/src/components/Serp/top_backlinks.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="488">
-              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/login.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="568">
-              <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-21">
-              <caret line="116" column="16" lean-forward="true" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1328">
-              <caret line="110" column="41" selection-start-line="110" selection-start-column="41" selection-end-line="110" selection-end-column="41" />
+            <state relative-caret-position="447">
+              <caret line="93" column="35" selection-start-line="93" selection-start-column="35" selection-end-line="93" selection-end-column="35" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
+        <entry file="file://$PROJECT_DIR$/src/components/Serp/modal_top_bl.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="455">
-              <caret line="135" column="56" lean-forward="true" selection-start-line="135" selection-start-column="56" selection-end-line="135" selection-end-column="56" />
+            <state relative-caret-position="360">
+              <caret line="145" column="44" lean-forward="true" selection-start-line="145" selection-start-column="44" selection-end-line="145" selection-end-column="44" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/ReconnectCookie.php">
+        <entry file="file://$PROJECT_DIR$/App/Actions/Url/Curl_Url.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
+            <state relative-caret-position="240">
+              <caret line="68" column="51" lean-forward="true" selection-start-line="68" selection-start-column="51" selection-end-line="68" selection-end-column="51" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App/Controller/Auth/LogInController.php">
+        <entry file="file://$PROJECT_DIR$/App/Controller/WebSiteController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1">
-              <caret line="81" column="7" lean-forward="true" selection-start-line="81" selection-start-column="7" selection-end-line="81" selection-end-column="7" />
+            <state relative-caret-position="696">
+              <caret line="326" column="46" selection-start-line="326" selection-start-column="46" selection-end-line="326" selection-end-column="46" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App/model/Auth/LogIn.php">
+        <entry file="file://$PROJECT_DIR$/App/model/WebSite.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
+            <state relative-caret-position="158">
+              <caret line="150" column="20" selection-start-line="150" selection-start-column="20" selection-end-line="150" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -212,7 +213,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Link</find>
       <find>module</find>
       <find>dark</find>
       <find>chart</find>
@@ -240,6 +240,9 @@
       <find>Json</find>
       <find>validate</find>
       <find>landing__im</find>
+      <find>format</find>
+      <find>console</find>
+      <find>JsonBlTop</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/build</dir>
@@ -251,57 +254,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/src/containers/Layout/index.jsx" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpTrustScore.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpComparaison.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpComparaisonDate.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpDate.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/TopKeyword.php" />
+        <option value="$PROJECT_DIR$/App/model/TopKeyword.php" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/Distance.jsx" />
+        <option value="$PROJECT_DIR$/src/components/tabs/tabs_distance.jsx" />
+        <option value="$PROJECT_DIR$/App/model/LinkDomain.php" />
+        <option value="$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/tab_data.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/ETH.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BTC.jsx" />
         <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BCH.jsx" />
         <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/XRP.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Dashboards/Default/components/BounceRateArea.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/ActivityChart.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/CryptotrendsToday.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Charts/ReactVis/components/Bar.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/index_serp.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/index.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Charts/Recharts/components/SimpleLineChart.jsx" />
         <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" />
-        <option value="$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx" />
+        <option value="$PROJECT_DIR$/App/Controller/SerpController.php" />
         <option value="$PROJECT_DIR$/src/shared/components/Panel.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/form_analyse.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_details.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Crawl/crawl_form.jsx" />
-        <option value="$PROJECT_DIR$/App/Table/Auth/LogIn.php" />
+        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_questions.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_preposition.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_comparison.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_current.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_alpha.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Suggest/modal.jsx" />
         <option value="$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx" />
-        <option value="$PROJECT_DIR$/App/model/LinkDomain.php" />
-        <option value="$PROJECT_DIR$/src/components/Campain/index.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/login_token.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Account/Register/components/RegisterForm.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx" />
-        <option value="$PROJECT_DIR$/App/Ajax/ErrorSearch.php" />
+        <option value="$PROJECT_DIR$/src/components/LinkProfile/tab_backlinks.jsx" />
         <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" />
-        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Campain/campain_form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/form_serp.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Landing/index.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx" />
-        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" />
-        <option value="$PROJECT_DIR$/App/Controller/TopKeywordController.php" />
-        <option value="$PROJECT_DIR$/src/containers/Landing/components/Header.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Landing/components/Technologies.jsx" />
-        <option value="$PROJECT_DIR$/src/scss/containers/landing.scss" />
-        <option value="$PROJECT_DIR$/src/containers/Landing/components/Features.jsx" />
-        <option value="$PROJECT_DIR$/App/Controller/WebSiteController.php" />
-        <option value="$PROJECT_DIR$/App/model/WebSite.php" />
-        <option value="$PROJECT_DIR$/App/Ajax/WebSite.php" />
-        <option value="$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx" />
-        <option value="$PROJECT_DIR$/App/Ajax/Serp.php" />
-        <option value="$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/TabMaterielTopDomains.jsx" />
+        <option value="$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx" />
+        <option value="$PROJECT_DIR$/node_modules/react-i18next/dist/es/utils.js" />
+        <option value="$PROJECT_DIR$/src/containers/App/App.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/index.jsx" />
         <option value="$PROJECT_DIR$/src/components/Serp/serp_date.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Crawl/crawl.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx" />
+        <option value="$PROJECT_DIR$/src/components/LinkProfile/linkprofile.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_details.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Campain/index.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx" />
         <option value="$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx" />
-        <option value="$PROJECT_DIR$/App/Ajax/Auth/login.php" />
-        <option value="$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/logout.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Layout/index.jsx" />
+        <option value="$PROJECT_DIR$/App/model/Serp.php" />
+        <option value="$PROJECT_DIR$/App/Actions/Url/Curl_Url.php" />
+        <option value="$PROJECT_DIR$/App/Controller/WebSiteController.php" />
+        <option value="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/top_backlinks.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/modal_top_bl.jsx" />
       </list>
     </option>
   </component>
@@ -378,7 +381,7 @@
       <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-1" />
     <option name="y" value="33" />
     <option name="width" value="1914" />
@@ -390,7 +393,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -426,13 +428,6 @@
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="Ajax" type="462c0819:PsiDirectoryNode" />
-              <item name="Auth" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="concern" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -456,48 +451,12 @@
             <path>
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Crawl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="LinkProfile" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Serp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="Suggest" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="TopDomainsKeyword" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
@@ -509,33 +468,21 @@
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="scss" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="scss" type="462c0819:PsiDirectoryNode" />
-              <item name="component" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="scss" type="462c0819:PsiDirectoryNode" />
               <item name="containers" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.last.introduce.type" value="CONST" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../events-project" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.jscs" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -676,7 +623,26 @@
       <workItem from="1558606484273" duration="13046000" />
       <workItem from="1558692611115" duration="3633000" />
       <workItem from="1558955302524" duration="11144000" />
-      <workItem from="1559041512399" duration="4286000" />
+      <workItem from="1559041512399" duration="5529000" />
+      <workItem from="1559129617311" duration="322000" />
+      <workItem from="1559130391093" duration="78000" />
+      <workItem from="1559132992835" duration="52000" />
+      <workItem from="1559133129272" duration="22000" />
+      <workItem from="1559210292935" duration="4966000" />
+      <workItem from="1559216852116" duration="4615000" />
+      <workItem from="1559222839590" duration="98000" />
+      <workItem from="1559309027217" duration="3375000" />
+      <workItem from="1559315160166" duration="2326000" />
+      <workItem from="1559557721795" duration="11000" />
+      <workItem from="1559831347847" duration="88000" />
+      <workItem from="1561130210017" duration="1641000" />
+      <workItem from="1561276560691" duration="147000" />
+      <workItem from="1561387277261" duration="1678000" />
+      <workItem from="1561623985760" duration="748000" />
+      <workItem from="1561624834566" duration="789000" />
+      <workItem from="1562316588178" duration="88000" />
+      <workItem from="1562579159670" duration="17940000" />
+      <workItem from="1562660407882" duration="5046000" />
     </task>
     <task id="LOCAL-00001" summary="commit xml">
       <created>1557842988682</created>
@@ -713,11 +679,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558449048733</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="commit Update Project and Cookie Update User">
+      <created>1559050679202</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1559050679203</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1067130000" />
+    <option name="totallyTimeSpent" value="1112403000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -729,10 +702,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="33" width="1914" height="1051" extended-state="0" />
+    <frame x="-1" y="33" width="1922" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4983108" weight="0.2817888" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4983108" weight="0.30203864" />
       <window_info id="Structure" order="1" sideWeight="0.5016892" side_tool="true" weight="0.3138412" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -764,363 +737,374 @@
     <MESSAGE value="commit DocFileModel" />
     <MESSAGE value="commit Register User" />
     <MESSAGE value="commit Auth User" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit Auth User" />
+    <MESSAGE value="commit Update Project and Cookie Update User" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit Update Project and Cookie Update User" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/Suggest/suggest_form.jsx">
+    <entry file="file://$PROJECT_DIR$/src/components/Suggest/suggest_current.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2760">
-          <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
+        <state relative-caret-position="-2473">
+          <caret line="13" column="19" lean-forward="true" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6720">
-          <caret line="206" column="12" selection-start-line="206" selection-start-column="12" selection-end-line="207" selection-end-column="115" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="n#!!block;n#AjaxSpace#0;n#CampainForm#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/ErrorSearch.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Campain/campain_form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3040">
-          <caret line="85" column="21" selection-start-line="85" selection-start-column="21" selection-end-line="85" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/form_serp.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1208">
-          <caret line="64" column="30" lean-forward="true" selection-start-line="64" selection-start-column="30" selection-end-line="64" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Serp/index_serp.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="48" column="24" lean-forward="true" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/platform-impl.jar!/resources/html5-schema/html5/phrase.rnc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="345" column="16" selection-start-line="345" selection-start-column="16" selection-end-line="345" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/TopKeyword.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1920">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="27" column="93" selection-start-line="27" selection-start-column="93" selection-end-line="27" selection-end-column="93" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scss/containers/landing.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="421" column="36" lean-forward="true" selection-start-line="421" selection-start-column="36" selection-end-line="421" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Landing/components/Technologies.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="800">
-          <caret line="51" column="43" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Landing/components/Header.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="2" column="40" lean-forward="true" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Landing/components/Features.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="880">
-          <caret line="22" column="81" selection-start-line="22" selection-start-column="81" selection-end-line="22" selection-end-column="81" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Landing/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="670">
-          <caret line="157" column="22" selection-start-line="157" selection-start-column="22" selection-end-line="157" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/concern/Date_Format.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/TopKeywordController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5120">
-          <caret line="137" column="23" selection-start-line="137" selection-start-column="23" selection-end-line="137" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/TopKeyword.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4130" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/CampainController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7080" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/LinkProfileController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6330" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/SerpController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7800" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/LinkDomain.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12970" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/Crawl.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="13" column="20" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/CrawlController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="33" column="36" selection-start-line="33" selection-start-column="36" selection-end-line="33" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Actions/Error_ajax.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="757">
-          <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Actions/Suggest_Data.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2439">
-          <caret line="89" column="20" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Actions/Json_File.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4920" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/SuggestController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="91" column="42" selection-start-line="91" selection-start-column="42" selection-end-line="91" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Actions/Url/Curl_Url.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2610" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Actions/Url/Curl_Keyword.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2232">
-          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/WebSite.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1220">
-          <caret line="238" column="26" lean-forward="true" selection-start-line="238" selection-start-column="26" selection-end-line="238" selection-end-column="26" />
-          <folding>
-            <element signature="e#112#138#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/UI/Panels/components/DefaultPanel.jsx">
+    <entry file="file://$PROJECT_DIR$/src/components/Suggest/modal.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
-          <caret line="19" column="23" lean-forward="true" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
+          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Crawl/crawl.jsx">
+    <entry file="file://$PROJECT_DIR$/src/components/Suggest/suggest_comparison.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="92" column="64" lean-forward="true" selection-start-line="92" selection-start-column="64" selection-end-line="92" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Suggest/suggest_alpha.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/UI/Panels/components/DefaultPanelDivider.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="738">
+          <caret line="199" column="49" selection-start-line="199" selection-start-column="49" selection-end-line="199" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LinkProfile/modal_info_backlinks.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="53" column="25" lean-forward="true" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableToolbarTopDomain.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1120">
+          <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+          <folding>
+            <element signature="e#2594#4758#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/TabMaterielTopDomains.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="10" column="26" lean-forward="true" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LinkProfile/tab_backlinks.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3473">
+          <caret line="17" column="6" lean-forward="true" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-11731">
+          <caret line="114" column="21" selection-start-line="114" selection-start-column="21" selection-end-line="114" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Form/FormPicker/components/DatePickers.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="111" column="71" selection-start-line="111" selection-start-column="71" selection-end-line="111" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/env.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1320" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@material-ui/core/transitions/utils.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/chart.js/samples/utils.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/i18next/dist/es/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="21" column="47" selection-start-line="21" selection-start-column="47" selection-end-line="21" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/rc-slider/es/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/react-i18next/dist/es/utils.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
-          <caret line="17" column="36" lean-forward="true" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
+          <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#66#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Crawl/crawl_tab.jsx">
+    <entry file="file://$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="155" column="32" lean-forward="true" selection-start-line="155" selection-start-column="32" selection-end-line="155" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/App/App.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="440">
-          <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+          <caret line="26" selection-start-line="26" selection-end-line="26" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/Serp.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Serp.php">
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/WebSite.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="10" column="10" selection-start-line="10" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/WebSiteController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1080">
-          <caret line="38" column="59" selection-start-line="38" selection-start-column="59" selection-end-line="38" selection-end-column="72" />
+        <state relative-caret-position="280">
+          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="42" selection-end-column="24" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_date.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1208">
-          <caret line="83" column="53" lean-forward="true" selection-start-line="83" selection-start-column="53" selection-end-line="83" selection-end-column="53" />
+        <state relative-caret-position="280">
+          <caret line="41" column="33" lean-forward="true" selection-start-line="41" selection-start-column="33" selection-end-line="41" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Crawl/crawl.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="79" column="23" selection-start-line="79" selection-end-line="80" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="440">
+          <caret line="39" column="24" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/Campain.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/Auth/LogIn.php">
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
+        <state relative-caret-position="484">
+          <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Tables/BasicTables/components/ResponsiveTable.jsx">
+    <entry file="file://$PROJECT_DIR$/src/components/LinkProfile/linkprofile.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1328">
-          <caret line="110" column="41" selection-start-line="110" selection-start-column="41" selection-end-line="110" selection-end-column="41" />
+        <state relative-caret-position="320">
+          <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/ReconnectCookie.php">
+    <entry file="file://$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
+        <state relative-caret-position="318">
+          <caret line="32" column="24" selection-start-line="32" selection-start-column="24" selection-end-line="32" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/Auth/LogInController.php">
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1">
-          <caret line="81" column="7" lean-forward="true" selection-start-line="81" selection-start-column="7" selection-end-line="81" selection-end-column="7" />
+        <state relative-caret-position="280">
+          <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Suggest/suggest_details.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Campain/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="65" column="23" selection-start-line="65" selection-start-column="23" selection-end-line="65" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3000">
+          <caret line="79" column="33" selection-start-line="79" selection-start-column="33" selection-end-line="79" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8080">
+          <caret line="218" column="26" selection-start-line="218" selection-start-column="26" selection-end-line="218" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/topbar_with_navigation/TopbarWithNavigation.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/topbar_with_navigation/sidebar_mobile/SidebarMobile.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/sidebar/Sidebar.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1360">
+          <caret line="37" column="12" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/containers/Layout/customizer/ToggleCollapsedMenu.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/Serp.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="23" column="11" lean-forward="true" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/SerpController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3989">
+          <caret line="202" column="20" selection-start-line="202" selection-start-column="20" selection-end-line="202" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/Serp.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="233" column="30" lean-forward="true" selection-start-line="233" selection-start-column="30" selection-end-line="233" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-21">
-          <caret line="116" column="16" lean-forward="true" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/Auth/login.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="568">
-          <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
+        <state relative-caret-position="4858">
+          <caret line="146" selection-start-line="146" selection-end-line="146" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/App/Router.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="66" column="53" selection-start-line="66" selection-start-column="53" selection-end-line="66" selection-end-column="53" />
+        <state relative-caret-position="596">
+          <caret line="51" column="67" lean-forward="true" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="67" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/logout.jsx">
+    <entry file="file://$PROJECT_DIR$/App/Actions/Url/Curl_Url.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1640">
-          <caret line="44" column="50" lean-forward="true" selection-start-line="44" selection-start-column="50" selection-end-line="44" selection-end-column="50" />
+        <state relative-caret-position="240">
+          <caret line="68" column="51" lean-forward="true" selection-start-line="68" selection-start-column="51" selection-end-line="68" selection-end-column="51" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx">
+    <entry file="file://$PROJECT_DIR$/App/model/WebSite.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+        <state relative-caret-position="158">
+          <caret line="150" column="20" selection-start-line="150" selection-start-column="20" selection-end-line="150" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
+    <entry file="file://$PROJECT_DIR$/App/Controller/WebSiteController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="135" column="56" lean-forward="true" selection-start-line="135" selection-start-column="56" selection-end-line="135" selection-end-column="56" />
+        <state relative-caret-position="696">
+          <caret line="326" column="46" selection-start-line="326" selection-start-column="46" selection-end-line="326" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="154" column="38" lean-forward="true" selection-start-line="154" selection-start-column="38" selection-end-line="154" selection-end-column="38" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/top_backlinks.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="93" column="35" selection-start-line="93" selection-start-column="35" selection-end-line="93" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/modal_top_bl.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="145" column="44" lean-forward="true" selection-start-line="145" selection-start-column="44" selection-end-line="145" selection-end-column="44" />
         </state>
       </provider>
     </entry>

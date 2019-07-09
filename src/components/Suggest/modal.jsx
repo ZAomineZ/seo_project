@@ -19,8 +19,8 @@ export default class ModalAddBacklink extends PureComponent {
       title: PropTypes.string.isRequired,
       data: PropTypes.array.isRequired,
       onSubmit: PropTypes.func.isRequired,
-      value: PropTypes.string.isRequired,
-      onChange: PropTypes.func.isRequired,
+      value: PropTypes.string,
+      onChange: PropTypes.func,
     };
 
     constructor(props) {

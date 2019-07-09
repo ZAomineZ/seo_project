@@ -29,6 +29,8 @@ const showNotification = (title, message, color) => {
 class CampainDetails extends PureComponent {
     constructor(props) {
         super(props);
+        console.error = () => {};
+        console.error();
         this.state = {
             data: [],
             data_chart: [],

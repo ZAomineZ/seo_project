@@ -11,6 +11,7 @@ class DefaultTabs extends PureComponent {
     static propTypes = {
       t: PropTypes.func.isRequired,
       referring_domain: PropTypes.string.isRequired,
+      referring_domain_int: PropTypes.number.isRequired,
       dash_stats: PropTypes.array.isRequired,
       backlink: PropTypes.number.isRequired,
       domain: PropTypes.number.isRequired,
@@ -70,7 +71,12 @@ class DefaultTabs extends PureComponent {
                   </Nav>
                   <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="1">
-                      <Distance referring_domain={this.props.referring_domain} backlink={this.props.backlink} domain={this.props.domain} />
+                      <Distance
+                          referring_domain={this.props.referring_domain}
+                          backlink={this.props.backlink}
+                          domain={this.props.domain}
+                          referring_domain_int={this.props.referring_domain_int}
+                      />
                     </TabPane>
                     <TabPane tabId="2">
                       <XRP dash_stats={this.props.dash_stats}/>

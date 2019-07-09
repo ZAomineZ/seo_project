@@ -51,9 +51,14 @@ class TopKeyword
         } else {
             $dir = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'datas' . DIRECTORY_SEPARATOR . 'website' . DIRECTORY_SEPARATOR . $req->directory . DIRECTORY_SEPARATOR . $domain_str;
             $file = $dir . DIRECTORY_SEPARATOR . 'traffic-' . $req->token . '.json';
-            $object = File_Params::OpenFile($file, $dir);
-            if (isset($object->traffic)) {
-                File_Params::UpdateFileExist($file, $dir, $this->JsonData($data));
+            if (!file_exists($file)) {
+                $json = $this->JsonData($data);
+                File_Params::CreateParamsFile($file, $dir, $json, true);
+            } else {
+                $object = File_Params::OpenFile($file, $dir);
+                if (isset($object->traffic)) {
+                    File_Params::UpdateFileExist($file, $dir, $this->JsonData($data));
+                }
             }
             return File_Params::OpenFile($file, $dir);
         }

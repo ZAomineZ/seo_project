@@ -12,6 +12,7 @@ import SimpleLineChart from '../../containers/Charts/Recharts/components/SimpleL
 import axios from "axios";
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
+import {Redirect} from "react-router-dom";
 
 let notification = null;
 
@@ -38,6 +39,8 @@ class CryptoDashboard extends PureComponent {
 
     constructor() {
         super();
+        console.error = () => {};
+        console.error();
         this.state = {
             description: [],
             url: [],
@@ -45,7 +48,8 @@ class CryptoDashboard extends PureComponent {
             date_format: [],
             rank: [],
             loading: true,
-            loaded: false
+            loaded: false,
+            error: false
         }
     }
 
@@ -79,12 +83,27 @@ class CryptoDashboard extends PureComponent {
                     loading: false
                 });
                 setTimeout(() => this.setState({loaded: true}), 500);
+                if (this.state.description && this.state.description.length === 0) {
+                    this.setState({ error: !this.state.error });
+                    NotificationSystem.newInstance({}, n => notification = n);
+                    setTimeout(() => showNotification('A error has been detected, this error will be fixed as soon as possible', 'danger'), 700);
+                }
             }
         });
     }
 
     render() {
         const {t} = this.props;
+
+        const url_data = this.state.url.filter(d => d !== null);
+
+        if (this.state.error === true) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            );
+        }
 
         return (
             <Container className="dashboard">
@@ -94,11 +113,11 @@ class CryptoDashboard extends PureComponent {
                     </Col>
                 </Row>
                 <Row>
-                    <DatePickers top_10_url={this.state.url.slice(0, 10)}
-                                 top_20_url={this.state.url.slice(0, 20)}
-                                 top_30_url={this.state.url.slice(0, 30)}
-                                 top_50_url={this.state.url.slice(0, 50)}
-                                 top_100_url={this.state.url.slice(0, this.state.url.length)}
+                    <DatePickers top_10_url={url_data.slice(0, 10)}
+                                 top_20_url={url_data.slice(0, 20)}
+                                 top_30_url={url_data.slice(0, 30)}
+                                 top_50_url={url_data.slice(0, 50)}
+                                 top_100_url={url_data.slice(0, url_data.length)}
                                  date_array={this.state.date_format}
                                  dt_array={[]}
                                  type_btn={false}
@@ -112,7 +131,7 @@ class CryptoDashboard extends PureComponent {
                         </svg>
                     </div>
                     }
-                    <SimpleLineChart data_url={this.state.url} date_array={this.state.date}
+                    <SimpleLineChart data_url={url_data} date_array={this.state.date}
                                      rank_object={this.state.rank}/>
                 </Row>
                 <Row>
@@ -131,7 +150,7 @@ class CryptoDashboard extends PureComponent {
                             cryptoTable={this.props.cryptoTable}
                             onDeleteCryptoTableData={this.onDeleteCryptoTableData}
                             array_description={this.state.description}
-                            array_url={this.state.url}
+                            array_url={url_data}
                             array_date={this.state.date}
                             array_rank={this.state.rank}
                             keyword={this.props.match.params.keyword}

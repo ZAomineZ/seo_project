@@ -8,7 +8,7 @@ export default class PanelBacklinks extends PureComponent {
     static propTypes = {
         data: PropTypes.array.isRequired,
         data_page: PropTypes.array.isRequired,
-        referring_data: PropTypes.array.isRequired,
+        referring_data: PropTypes.array,
         anchor_data: PropTypes.array.isRequired,
         anchor_label: PropTypes.array.isRequired,
         follow: PropTypes.number.isRequired,

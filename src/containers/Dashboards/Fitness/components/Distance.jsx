@@ -8,7 +8,8 @@ import PropTypes from 'prop-types';
 
 class Distance extends PureComponent {
     static propTypes = {
-        referring_domain: PropTypes.number.isRequired,
+        referring_domain: PropTypes.string.isRequired,
+        referring_domain_int: PropTypes.number.isRequired,
         backlink: PropTypes.number.isRequired,
         domain: PropTypes.number.isRequired,
     };
@@ -37,7 +38,7 @@ class Distance extends PureComponent {
                     </ResponsiveContainer>
                     <div className="dashboard__health-chart-info">
                         <p className="dashboard__health-chart-number">{ this.props.referring_domain }</p>
-                        <p className="dashboard__health-chart-units">{ this.props.domain } / { this.props.backlink }</p>
+                        <p className="dashboard__health-chart-units">{ this.props.referring_domain_int } / { this.props.backlink }</p>
                     </div>
                 </div>
                 <p className="dashboard__goal">Referring: { this.props.referring_domain }</p>

@@ -27,12 +27,13 @@ class Curl_Url
      * @param $ch
      * @param string $domain
      * @param string $mode
+     * @param string $sort
      */
-    private function CurlSet ($ch, string $domain, string $mode)
+    private function CurlSet ($ch, string $domain, string $mode, string $sort)
     {
         $this->CurlSetopt($ch, CURLOPT_URL, 'https://webmeup.com/backlink/backlinks');
         $this->CurlSetopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $this->CurlSetopt($ch, CURLOPT_POSTFIELDS, "url=$domain&mode=2&count=true&perPage=50&sort=lastCheck&sortAsc=$mode");
+        $this->CurlSetopt($ch, CURLOPT_POSTFIELDS, "url=$domain&mode=2&count=true&perPage=50&sort=$sort&sortAsc=$mode");
         $this->CurlSetopt($ch, CURLOPT_POST, 1);
         $this->CurlSetopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
     }
@@ -61,11 +62,11 @@ class Curl_Url
      * @param string $mode
      * @return bool|string
      */
-    public function Curl (string $domain, string $mode)
+    public function Curl (string $domain, string $mode, string $sort)
     {
         //Init Curl and Use Method CurlSet for CURL an URL with the options !!!
         $ch = curl_init();
-        $this->CurlSet($ch, $domain, $mode);
+        $this->CurlSet($ch, $domain, $mode, $sort);
 
         //Initialise the header to CURL !!!
         $headers = [];

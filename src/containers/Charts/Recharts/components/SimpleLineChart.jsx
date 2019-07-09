@@ -8,7 +8,10 @@ import PropTypes from 'prop-types';
 class SimpleLineChart extends PureComponent {
     static propTypes = {
         date_array: PropTypes.array.isRequired,
-        rank_object: PropTypes.object.isRequired,
+        rank_object: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.object
+        ]),
         data_url: PropTypes.array.isRequired,
     };
 

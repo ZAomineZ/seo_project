@@ -17,6 +17,8 @@ class SerpComparison extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.error = () => {};
+        console.error();
         this.state = {
             rank: [],
             url: []

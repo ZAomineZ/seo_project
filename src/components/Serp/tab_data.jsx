@@ -45,10 +45,10 @@ export default class TabData extends PureComponent {
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
-                                : data_numb[data.length - 2].referring_domain - data_numb[data.length - 1].referring_domain > 0
-                                ? "+" + (data_numb[data.length - 2].referring_domain - data_numb[data.length - 1].referring_domain)
-                                : data_numb[data.length - 2].referring_domain - data_numb[data.length - 1].referring_domain < 0
-                                ? data_numb[data.length - 2].referring_domain - data_numb[data.length - 1].referring_domain
+                                : data_numb[data.length - 1].referring_domain - data_numb[data.length - 2].referring_domain > 0
+                                ? "+" + (data_numb[data.length - 1].referring_domain - data_numb[data.length - 2].referring_domain)
+                                : data_numb[data.length - 1].referring_domain - data_numb[data.length - 2].referring_domain < 0
+                                ? data_numb[data.length - 1].referring_domain - data_numb[data.length - 2].referring_domain
                                 : 0
                             }
                         </td>
@@ -59,24 +59,24 @@ export default class TabData extends PureComponent {
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
-                                : data_numb[data.length - 2].referring_pages - data_numb[data.length - 1].referring_pages > 0
-                                ? "+" + (data_numb[data.length - 2].referring_pages - data_numb[data.length - 1].referring_pages)
-                                : data_numb[data.length - 2].referring_pages - data_numb[data.length - 1].referring_pages < 0
-                                ? data_numb[data.length - 2].referring_pages - data_numb[data.length - 1].referring_pages
+                                : data_numb[data.length - 1].referring_pages - data_numb[data.length - 2].referring_pages > 0
+                                ? "+" + (data_numb[data.length - 1].referring_pages - data_numb[data.length - 2].referring_pages)
+                                : data_numb[data.length - 1].referring_pages - data_numb[data.length - 2].referring_pages < 0
+                                ? data_numb[data.length - 1].referring_pages - data_numb[data.length - 2].referring_pages
                                 : 0
                             }
                         </td>
                     </tr>
                     <tr>
-                        <td><p className="bold-text dashboard__neo">IP (Subnets)</p></td>
-                        <td>{ numbro(data_ob.ip).format({average: true, mantissa: 2}) } ({ numbro(data_ob.ip_subnets).format({average: true, mantissa: 2})})</td>
+                        <td><p className="bold-text dashboard__neo">Referring IP</p></td>
+                        <td>{ numbro(data_ob.ip_subnets).format({average: true, mantissa: 2})}</td>
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
-                                : data_numb[data.length - 2].ip - data_numb[data.length - 1].ip > 0
-                                ? "+" + (data_numb[data.length - 2].ip - data_numb[data.length - 1].ip)
-                                : data_numb[data.length - 2].ip - data_numb[data.length - 1].ip < 0
-                                ? data_numb[data.length - 2].ip - data_numb[data.length - 1].ip
+                                : data_numb[data.length - 1].ip_subnets - data_numb[data.length - 2].ip_subnets > 0
+                                ? "+" + (data_numb[data.length - 1].ip_subnets - data_numb[data.length - 2].ip_subnets)
+                                : data_numb[data.length - 1].ip_subnets - data_numb[data.length - 2].ip_subnets < 0
+                                ? data_numb[data.length - 1].ip_subnets - data_numb[data.length - 2].ip_subnets
                                 : 0
                             }
                         </td>
@@ -87,10 +87,10 @@ export default class TabData extends PureComponent {
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
-                                : data_numb[data.length - 2].total_backlinks - data_numb[data.length - 1].total_backlinks > 0
-                                ? "+" + (data_numb[data.length - 2].total_backlinks - data_numb[data.length - 1].total_backlinks)
-                                : data_numb[data.length - 2].total_backlinks - data_numb[data.length - 1].total_backlinks < 0
-                                ? data_numb[data.length - 2].total_backlinks - data_numb[data.length - 1].total_backlinks
+                                : data_numb[data.length - 1].total_backlinks - data_numb[data.length - 2].total_backlinks > 0
+                                ? "+" + (data_numb[data.length - 1].total_backlinks - data_numb[data.length - 2].total_backlinks)
+                                : data_numb[data.length - 1].total_backlinks - data_numb[data.length - 2].total_backlinks < 0
+                                ? data_numb[data.length - 1].total_backlinks - data_numb[data.length - 2].total_backlinks
                                 : 0
                             }
                         </td>
@@ -101,10 +101,10 @@ export default class TabData extends PureComponent {
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
-                                : data_numb[data.length - 2].nofollow - data_numb[data.length - 1].nofollow > 0
-                                ? "+" + (data_numb[data.length - 2].nofollow - data_numb[data.length - 1].nofollow)
-                                : data_numb[data.length - 2].nofollow - data_numb[data.length - 1].nofollow < 0
-                                ? data_numb[data.length - 2].nofollow - data_numb[data.length - 1].nofollow
+                                : data_numb[data.length - 1].nofollow - data_numb[data.length - 2].nofollow > 0
+                                ? "+" + (data_numb[data.length - 1].nofollow - data_numb[data.length - 2].nofollow)
+                                : data_numb[data.length - 1].nofollow - data_numb[data.length - 2].nofollow < 0
+                                ? data_numb[data.length - 1].nofollow - data_numb[data.length - 2].nofollow
                                 : 0
                             }
                         </td>
@@ -115,10 +115,10 @@ export default class TabData extends PureComponent {
                         <td>
                             { data[data.length -2] === undefined
                                 ? ''
-                                : data_numb[data.length - 2].follow - data_numb[data.length - 1].follow > 0
-                                ? "+" + (data_numb[data.length - 2].follow - data_numb[data.length - 1].follow)
-                                : data_numb[data.length - 2].follow - data_numb[data.length - 1].follow < 0
-                                ? data_numb[data.length - 2].follow - data_numb[data.length - 1].follow
+                                : data_numb[data.length - 1].follow - data_numb[data.length - 2].follow > 0
+                                ? "+" + (data_numb[data.length - 1].follow - data_numb[data.length - 2].follow)
+                                : data_numb[data.length - 1].follow - data_numb[data.length - 2].follow < 0
+                                ? data_numb[data.length - 1].follow - data_numb[data.length - 2].follow
                                 : 0
                             }
                         </td>

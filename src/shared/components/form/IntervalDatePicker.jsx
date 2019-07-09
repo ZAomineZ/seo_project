@@ -25,11 +25,11 @@ const showNotification = (message, type) => {
 
 class IntervalDatePickerField extends PureComponent {
     static propTypes = {
-        valueStartDate: PropTypes.string.isRequired,
-        valueEndDate: PropTypes.string.isRequired,
-        date_array: PropTypes.array.isRequired,
-        keyword: PropTypes.string.isRequired,
-        type_btn: PropTypes.bool.isRequired
+        valueStartDate: PropTypes.string,
+        valueEndDate: PropTypes.string,
+        date_array: PropTypes.array,
+        keyword: PropTypes.string,
+        type_btn: PropTypes.bool
     };
 
     constructor(props) {
@@ -48,7 +48,7 @@ class IntervalDatePickerField extends PureComponent {
         startDate = startDate || this.state.startDate;
         endDate = endDate || this.state.endDate;
 
-        if (startDate.isAfter(endDate)) {
+        if (startDate !== null && startDate.isAfter(endDate)) {
             endDate = startDate;
         }
 
@@ -126,13 +126,13 @@ class IntervalDatePickerField extends PureComponent {
                 />
                 <div className="pl-3">
                     <button className="btn btn-sm btn-primary"
-                            onClick={(e) => this.ClickBtn(e, this.state.startDate === null ? this.props[0].valueStartDate : this.state.startDate.format('LL'),
-                                this.state.endDate === null ? this.props[0].valueEndDate : this.state.endDate.format('LL'),
+                            onClick={(e) => this.ClickBtn(e, this.state.startDate === null ? this.props[0].valueStartDate : this.state.startDate.format('MMM D, Y'),
+                                this.state.endDate === null ? this.props[0].valueEndDate : this.state.endDate.format('MMM D, Y'),
                                 this.state.endDate === null ? moment(this.props[0].valueEndDate).format('YYYY-MM-DD') : this.state.endDate.format('YYYY-MM-DD'))}>Enjoy
                     </button>
                     {
                         this.props[0].type_btn ? <button className="btn btn-sm btn-danger"
-                                                      onClick={(e) => this.RedirectSerp(e)}>Reset to default
+                                                         onClick={(e) => this.RedirectSerp(e)}>Reset to default
                         </button> : ''
                     }
                 </div>

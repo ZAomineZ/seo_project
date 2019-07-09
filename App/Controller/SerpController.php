@@ -101,7 +101,7 @@ class SerpController extends Controller
         }
         return \GuzzleHttp\json_encode(
             [
-                'referring_domain' => $trust->data->domains > 1000 ? $this->format->format($trust->data->domains, '0a.00') : $trust->data->domains ,
+                'ip_subnets' => $trust->data->ipclassc,
                 'trust_rank' => $trust->data->trust_score,
                 'score_rank' => $trust->data->ascore,
                 'alexa_rank' => $option
@@ -193,7 +193,7 @@ class SerpController extends Controller
         echo \GuzzleHttp\json_encode([
             'trust_rank' => $trust->trust_rank,
             'score_rank' => $trust->score_rank,
-            'ref_domain' => $trust->referring_domain
+            'ip_subnets' => $trust->ip_subnets
         ]);
     }
 

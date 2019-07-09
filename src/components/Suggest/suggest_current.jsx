@@ -8,7 +8,10 @@ import Modal from "./modal";
 
 export default class ProfileTasks extends PureComponent {
     static propTypes = {
-      data: PropTypes.array.isRequired
+      data: PropTypes.oneOfType([
+          PropTypes.array,
+          PropTypes.object
+      ]).isRequired
     };
 
     constructor (props) {

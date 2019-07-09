@@ -12,7 +12,9 @@ export default class ModalAnchors extends PureComponent {
         header: PropTypes.bool,
         btn: PropTypes.string.isRequired,
         data_asc: PropTypes.array.isRequired,
-        data_desc: PropTypes.array.isRequired
+        data_desc: PropTypes.array.isRequired,
+        data_url: PropTypes.array.isRequired,
+        data_assortUrl: PropTypes.array.isRequired
     };
 
     static defaultProps = {
@@ -84,7 +86,8 @@ export default class ModalAnchors extends PureComponent {
                             <thead>
                             <tr>
                                 <th>URL</th>
-                                <th>Anchor</th>
+                                <th>Target</th>
+                                <th>Anchors</th>
                                 <th>Type : Follow/NoFollow</th>
                             </tr>
                             </thead>
@@ -92,8 +95,9 @@ export default class ModalAnchors extends PureComponent {
                             {
                                 this.props.data_asc.map((item) => (
                                     <tr>
-                                        <td>{ item.url }</td>
-                                        <td>{ item.anchorUrl }</td>
+                                        <td>{ item.url.substring(0, 100)  }</td>
+                                        <td>{ item.anchorUrl.substring(0, 100) }</td>
+                                        <td>{ item.anchorText }</td>
                                         <td>
                                             {
                                                 item.noFollow === false ?
@@ -106,8 +110,39 @@ export default class ModalAnchors extends PureComponent {
                             }{
                                 this.props.data_desc.map((item) => (
                                     <tr>
-                                        <td>{ item.url }</td>
-                                        <td>{ item.anchorUrl }</td>
+                                        <td>{ item.url.substring(0, 100)  }</td>
+                                        <td>{ item.anchorUrl.substring(0, 100)  }</td>
+                                        <td>{ item.anchorText }</td>
+                                        <td>
+                                            {
+                                                item.noFollow === false ?
+                                                    <span className="badge badge-success">Follow</span> :
+                                                    <span className="badge badge-danger">NoFollow</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                ))
+                            }{
+                                this.props.data_url.map((item) => (
+                                    <tr>
+                                        <td>{ item.url.substring(0, 100)  }</td>
+                                        <td>{ item.anchorUrl.substring(0, 100)  }</td>
+                                        <td>{ item.anchorText }</td>
+                                        <td>
+                                            {
+                                                item.noFollow === false ?
+                                                    <span className="badge badge-success">Follow</span> :
+                                                    <span className="badge badge-danger">NoFollow</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                ))
+                            }{
+                                this.props.data_assortUrl.map((item) => (
+                                    <tr>
+                                        <td>{ item.url.substring(0, 100)  }</td>
+                                        <td>{ item.anchorUrl.substring(0, 100)  }</td>
+                                        <td>{ item.anchorText }</td>
                                         <td>
                                             {
                                                 item.noFollow === false ?

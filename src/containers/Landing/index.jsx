@@ -46,6 +46,8 @@ class Landing extends PureComponent {
 
     constructor() {
         super();
+        console.error = () => {};
+        console.error();
         this.state = {
             auth: ''
         }

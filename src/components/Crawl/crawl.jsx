@@ -3,7 +3,12 @@ import React, {PureComponent} from 'react';
 import CrawlTab from '../Crawl/crawl_tab';
 import {Redirect} from "react-router-dom";
 
-class Crawl extends PureComponent{
+class Crawl extends PureComponent {
+    constructor () {
+        super();
+        console.error = () => {};
+        console.error();
+    }
     render() {
         return (
             <div className="dashboard container">

@@ -6,7 +6,10 @@ import MatTableTopDomains from '../TopDomainsKeyword/MatTableTopDomains';
 
 class TabMaterielTopDomains extends PureComponent{
     static propTypes = {
-      data: PropTypes.array.isRequired,
+      data: PropTypes.oneOfType([
+          PropTypes.array,
+          PropTypes.object
+      ]).isRequired,
       keyword: PropTypes.string.isRequired
     };
 
