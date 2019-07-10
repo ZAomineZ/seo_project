@@ -18,7 +18,8 @@ class DomainsKeyword extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/TopKeyword.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeyword.php", {
             headers: {
                 'Content-Type': 'application/json',
             },

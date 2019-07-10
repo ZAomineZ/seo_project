@@ -135,7 +135,8 @@ class LogInForm extends PureComponent {
         e.preventDefault();
         if (this.state.valueUsername !== '' && this.state.valuePassword !== '') {
             if (this.state.valueUsername.length >= 5 && this.state.valuePassword.length >= 5) {
-                axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Auth/login.php', {
+                let route = '/ReactProject/App'
+                axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/login.php', {
                     params: {
                         'username': this.state.valueUsername,
                         'password': this.state.valuePassword

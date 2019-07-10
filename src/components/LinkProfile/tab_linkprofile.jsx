@@ -68,7 +68,8 @@ class tab_linkprofile extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/linkprofile_mount.php', {
+        let route = '/ReactProject/App'
+        axios.get('http://' + window.location.hostname + route + '/Ajax/linkprofile_mount.php', {
             params: {
                 'domain': this.PropsChange(this.props.domain)
             },

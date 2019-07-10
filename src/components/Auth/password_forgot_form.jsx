@@ -82,7 +82,8 @@ class PasswordFagotForm extends PureComponent {
     {
         e.preventDefault();
         if (this.state.valueEmail !== '' && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.valueEmail)) {
-            axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Auth/password_forgot.php', {
+            let route = '/ReactProject/App'
+            axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/password_forgot.php', {
                 params: {
                     'email': this.state.valueEmail,
                 },

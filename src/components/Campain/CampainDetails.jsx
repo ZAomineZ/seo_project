@@ -52,7 +52,8 @@ class CampainDetails extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/DataCampain.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/DataCampain.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -74,7 +75,8 @@ class CampainDetails extends PureComponent {
     }
 
     handleClickReceived(event, id, type) {
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/UpdateData.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateData.php", {
             headers: {
                 'Content-Type': 'application/json',
             },

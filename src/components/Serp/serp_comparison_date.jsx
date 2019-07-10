@@ -56,7 +56,8 @@ class SerpComparisonDate extends PureComponent {
     componentDidMount() {
         if (sessionStorage.getItem('Auth')) {
             if (this.props.location.state !== undefined) {
-                axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/SerpComparaisonDate.php', {
+                let route = '/ReactProject/App'
+                axios.get('http://' + window.location.hostname + route + '/Ajax/SerpComparaisonDate.php', {
                     headers: {
                         'Content-Type': 'application/json',
                     },

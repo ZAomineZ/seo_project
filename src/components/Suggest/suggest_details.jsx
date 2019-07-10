@@ -25,7 +25,8 @@ class SuggestDetails extends PureComponent{
     }
 
     componentDidMount() {
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Suggest.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/Suggest.php", {
             headers: {
                 'Content-Type': 'application/json',
             },

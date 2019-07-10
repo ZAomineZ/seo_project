@@ -45,7 +45,8 @@ class ResponsiveTable extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Crawl.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/Crawl.php", {
             headers: {
                 'Content-Type': 'application/json',
             },

@@ -53,7 +53,8 @@ class SerpAnalyseDetails extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/WebSite.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/WebSite.php", {
             headers: {
                 'Content-Type': 'application/json',
             },

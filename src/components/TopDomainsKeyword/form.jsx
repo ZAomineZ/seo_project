@@ -111,7 +111,8 @@ class CampainForm extends PureComponent {
 
     AjaxSpace (split)
     {
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/ErrorSearch.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -143,7 +144,8 @@ class CampainForm extends PureComponent {
 
     AjaxNoSpace (value)
     {
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/ErrorSearch.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
             headers: {
                 'Content-Type': 'application/json',
             },

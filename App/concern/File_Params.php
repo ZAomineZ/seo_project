@@ -20,7 +20,7 @@ class File_Params
     public static function TokenImgExplode (string $file) : string
     {
         $explode = explode('/', $file);
-        $explode_domain = explode('-', $explode[11]);
+        $explode_domain = explode('-', $explode[count($explode) - 1]);
         $explode_token = explode('.', $explode_domain[count($explode_domain) - 1]);
         return $explode_token[0];
     }

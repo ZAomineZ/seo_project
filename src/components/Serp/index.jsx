@@ -65,7 +65,8 @@ class CryptoDashboard extends PureComponent {
             NotificationSystem.newInstance({}, n => notification = n);
             setTimeout(() => showNotification(this.props.location.state[0].error, 'danger'), 700);
         }
-        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Serp.php', {
+        let route = '/ReactProject/App'
+        axios.get('http://' + window.location.hostname + route + '/Ajax/Serp.php', {
             headers: {
                 'Content-Type': 'application/json',
             },

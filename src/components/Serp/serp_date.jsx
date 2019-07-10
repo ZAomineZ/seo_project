@@ -69,7 +69,8 @@ class SerpDate extends PureComponent {
                 setTimeout(() => showNotification('The modification of the dates of the calendar have been modified with success !!!', 'success'), 700);
 
                 // Ajax Load Data Rank !!!
-                axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/SerpDate.php', {
+                let route = '/ReactProject/App'
+                axios.get('http://' + window.location.hostname + route + '/Ajax/SerpDate.php', {
                     headers: {
                         'Content-Type': 'application/json',
                     },
