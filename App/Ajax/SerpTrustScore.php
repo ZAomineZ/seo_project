@@ -14,7 +14,7 @@ $bl = new \App\Actions\Json_File($goutte);
 $curl_keyword = new \App\Actions\Url\Curl_Keyword();
 $crawl = new \Symfony\Component\DomCrawler\Crawler();
 $top = new \App\Model\TopKeyword($table);
-$controller = new \App\Controller\TopKeywordController($curl_keyword, $crawl, $str, $bl, $top);
+$controller = new \App\Controller\TopKeywordController($curl_keyword, $crawl, $str, $bl, $top, $table);
 $website = new \App\Model\WebSite($goutte, $controller, $curl_keyword, $bl);
 
 $format = new \Stillat\Numeral\Numeral();

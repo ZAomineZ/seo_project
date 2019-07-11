@@ -70,7 +70,8 @@ class Layout extends Component {
                 let split_string = this.getCookie('remember_me_auth').split('__');
                 let id = split_string[1];
                 if (id !== '') {
-                    axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Auth/ReconnectCookie.php', {
+                    let route = '/ReactProject/App';
+                    axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                         params: {
                             'id': id
                         },
@@ -98,7 +99,8 @@ class Layout extends Component {
                     let split_string = this.getCookie('auth_today').split('__');
                     let id = split_string[1];
                     if (id !== '') {
-                        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/Auth/ReconnectCookie.php', {
+                        let route = '/ReactProject/App';
+                        axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                             params: {
                                 'id': id
                             },
