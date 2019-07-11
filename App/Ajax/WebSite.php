@@ -9,7 +9,7 @@ $curl = new \App\Actions\Url\Curl_Url();
 $curl_keyword = new \App\Actions\Url\Curl_Keyword();
 $str = new \App\concern\Str_options();
 $top = new \App\Model\TopKeyword($table);
-$controller = new \App\Controller\TopKeywordController($curl_keyword, $crawl, $str, $bl, $top);
+$controller = new \App\Controller\TopKeywordController($curl_keyword, $crawl, $str, $bl, $top, $table);
 $model = new \App\Model\WebSite($goutte, $controller, $curl_keyword, $bl);
 
 $ajax = new \App\concern\Ajax();

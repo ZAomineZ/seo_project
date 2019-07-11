@@ -11,5 +11,5 @@ $table = new \App\Table\Website($pdo);
 $model = new \App\Model\TopKeyword($table);
 $ajax->HeaderProtect();
 
-$keyword = new \App\Controller\TopKeywordController($curl, $crawl, $str, $scrap, $model);
+$keyword = new \App\Controller\TopKeywordController($curl, $crawl, $str, $scrap, $model, $table);
 $keyword->CsvDownload($_GET['data']);

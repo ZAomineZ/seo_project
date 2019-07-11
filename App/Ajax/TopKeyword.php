@@ -9,7 +9,8 @@ $scrap = new \App\Actions\Json_File($client);
 $pdo = new \App\Model\PDO_Model();
 $table = new \App\Table\Website($pdo);
 $model = new \App\Model\TopKeyword($table);
+$website_table = new \App\Table\Website($pdo);
 $ajax->HeaderProtect();
 
-$keyword = new \App\Controller\TopKeywordController($curl, $crawl, $str, $scrap, $model);
+$keyword = new \App\Controller\TopKeywordController($curl, $crawl, $str, $scrap, $model, $website_table);
 $keyword->ResultJson($_GET['domain']);

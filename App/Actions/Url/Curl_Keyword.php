@@ -29,7 +29,7 @@ class Curl_Keyword
      */
     private function CurlSet ($ch, string $domain)
     {
-        $this->CurlSetopt($ch, CURLOPT_URL, "http://api.scraperapi.com/?api_key=dbb9dfa69dd802f374bb567981665ddb&url=https://fr.semrush.com/fr/info/c$domain&keep_headers=true");
+        $this->CurlSetopt($ch, CURLOPT_URL, "http://api.scraperapi.com/?api_key=dbb9dfa69dd802f374bb567981665ddb&url=https://fr.semrush.com/fr/info/$domain&keep_headers=true");
         $this->CurlSetopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $this->CurlSetopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
         $this->CurlSetopt($ch, CURLOPT_ENCODING, 'gzip, deflate');

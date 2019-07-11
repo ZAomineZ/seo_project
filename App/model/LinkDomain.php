@@ -40,7 +40,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
     public function TokenImgExplode(string $file): string
     {
         $explode = explode('/', $file);
-        $explode_domain = explode('-', $explode[9]);
+        $explode_domain = explode('-', $explode[count($explode) - 1]);
         $explode_token = explode('.', $explode_domain[count($explode_domain) - 1]);
         return $explode_token[0];
     }

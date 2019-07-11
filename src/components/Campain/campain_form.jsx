@@ -72,7 +72,8 @@ class CampainForm extends PureComponent {
         if (this.state.valueInput.length !== 0) {
             if (this.state.valueInput.indexOf('/') === -1 && this.state.valueInput.indexOf('.') === -1) {
                 const value = this.state.valueInput;
-                axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/Campain.php", {
+                let route = "/ReactProject/App";
+                axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/Campain.php", {
                     headers: {
                         'Content-Type': 'application/json',
                     },

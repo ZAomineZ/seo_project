@@ -111,7 +111,8 @@ class CampainDetails extends PureComponent {
 
     handleSubmit(event, id, bl) {
         event.preventDefault();
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/UpdateDataBl.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateDataBl.php", {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -159,7 +160,8 @@ class CampainDetails extends PureComponent {
     handleSubmitLink(event) {
         event.preventDefault();
         if (this.state.website !== '' && this.state.platform !== '' && this.state.cost !== '') {
-            axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/CampainDetails.php", {
+            let route = '/ReactProject/App'
+            axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainDetails.php", {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -188,7 +190,8 @@ class CampainDetails extends PureComponent {
     }
 
     onDeleteBackLink(event, id) {
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/Campain/CampainItemDelete.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainItemDelete.php", {
             headers: {
                 'Content-Type': 'application/json',
             },

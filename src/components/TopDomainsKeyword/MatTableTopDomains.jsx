@@ -65,7 +65,8 @@ export default class MatTable extends PureComponent {
 
     Download(event, data) {
         event.preventDefault();
-        axios.get("http://" + window.location.hostname + "/ReactProject/App/Ajax/TopKeywordCsv.php", {
+        let route = '/ReactProject/App'
+        axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeywordCsv.php", {
             headers: {
                 'Content-Type': 'application/csv',
             },

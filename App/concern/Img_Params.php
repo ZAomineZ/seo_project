@@ -29,7 +29,7 @@ class Img_Params
 
     public static function PowerImg (string $size)
     {
-        $google = self::FileGetSize(dirname(__DIR__, 2). '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-876fe3e2287e3de02576f93d4cda88bd.png');
+        $google = self::FileGetSize(dirname(__DIR__, 2). '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-cad8a0ac1ac6c51ba99a52fed20d8a69.png');
         $part_gl = $google / 100;
         $rem_fb =  $part_gl - 100;
         $part = $size / 100;

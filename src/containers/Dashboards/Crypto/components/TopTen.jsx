@@ -249,7 +249,8 @@ export default class TopTen extends PureComponent {
 
     TrustScoreRank = (event, domain, id) => {
         event.preventDefault();
-        axios.get('http://' + window.location.hostname + '/ReactProject/App/Ajax/SerpTrustScore.php', {
+        let route = "ReactProject/App";
+        axios.get('http://' + window.location.hostname + route + '/Ajax/SerpTrustScore.php', {
             headers: {
                 'Content-Type': 'application/json',
             },

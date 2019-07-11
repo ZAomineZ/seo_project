@@ -87,7 +87,7 @@ class RegisterForm extends PureComponent {
         event.preventDefault();
         if (this.state.valueUsername !== '' && this.state.valueEmail !== '' && this.state.valuePassword !== '') {
             if (this.state.valueUsername.length >= 5 && this.state.valuePassword.length >= 5 && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.valueEmail)) {
-                let route = '/ReactProject/App'
+                let route = '/ReactProject/App';
                 axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/register.php', {
                     params: {
                         'username': this.state.valueUsername,

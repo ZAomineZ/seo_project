@@ -111,7 +111,7 @@ class CampainForm extends PureComponent {
 
     AjaxSpace (split)
     {
-        let route = '/ReactProject/App'
+        let route = '/ReactProject/App';
         axios.get("http://" + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
             headers: {
                 'Content-Type': 'application/json',
