@@ -2,7 +2,6 @@
 import React, {PureComponent} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import RegisterForm from './components/RegisterForm';
-import axios from "axios";
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../../shared/components/Notification";
 
