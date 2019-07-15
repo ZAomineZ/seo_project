@@ -18,13 +18,16 @@ export default class TopTenComparaison extends PureComponent {
         title: PropTypes.string,
         TopOrLose: PropTypes.bool,
         array_rank: PropTypes.object.isRequired,
-        keyword: PropTypes.string.isRequired
+        keyword: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired
     };
 
     static defaultProps = {
         buttonExist: '',
         title: '',
         TopOrLose: false,
+        keyword: '',
+        value: ''
     };
 
     state = {
@@ -128,6 +131,7 @@ export default class TopTenComparaison extends PureComponent {
                 title={this.props.title ? this.props.title : ''}
                 button={this.props.buttonExist ? this.props.buttonExist : ''}
                 keyword={this.props.keyword}
+                value={this.props.value}
             >
                 <MatTableToolbar
                     numSelected={selected.length}

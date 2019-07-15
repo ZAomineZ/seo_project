@@ -73,10 +73,18 @@ class Layout extends Component {
                     let route = '/ReactProject/App';
                     axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                         params: {
-                            'id': id
+                            'id': id,
+                            'cookie': this.getCookie('remember_me_auth')
                         },
                         headers: {
-                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'text/plain',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                            'Access-Control-Allow-Credentials': true,
+                            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                            'Access-Control-Max-Age': 1728000,
+                            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                         },
                     }).then((response) => {
                         if (response && response.status === 200) {
@@ -102,10 +110,18 @@ class Layout extends Component {
                         let route = '/ReactProject/App';
                         axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                             params: {
-                                'id': id
+                                'id': id,
+                                'cookie': this.getCookie('auth_today')
                             },
                             headers: {
-                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Content-Type': 'text/plain',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                                'Access-Control-Allow-Credentials': true,
+                                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                                'Access-Control-Max-Age': 1728000,
+                                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                             },
                         }).then((response) => {
                             if (response && response.status === 200) {

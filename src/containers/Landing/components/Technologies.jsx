@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 
@@ -11,18 +12,16 @@ const Technologies = () => (
     <Container>
       <Row>
         <Col md={12}>
-          <h3 className="landing__section-title">The EasyDev based on popular and powerful technological stack.
-                That’s why it allows you to create massive and serious projects easily.
-          </h3>
+          <h3 className="landing__section-title">The app proposes to give some metrics to rate each site with an estimated traffic curve and many other data.</h3>
         </Col>
       </Row>
       <Row className="landing__code">
         <Col md={6} sm={12} xs={12}>
           <div className="landing__code-text">
             <div className="landing__code-wrap">
-              <h3 className="landing__section-title">Fully Responsive</h3>
-              <p>{'You can use the Easydev on all devices - it\'ll look great everywhere!'}</p>
-              <p>Lazy loading allows your device to display the graphic content softly and correctly</p>
+              <h3 className="landing__section-title">Anchors + Backlinks</h3>
+              <p>{'You can see the anchors and the percentage of their use for each site'}</p>
+              <p>There is also the possibility to follow the advanced referrings and backlinks in time.</p>
             </div>
           </div>
         </Col>
@@ -38,13 +37,9 @@ const Technologies = () => (
         <Col md={6} sm={12} xs={12}>
           <div className="landing__code-text">
             <div className="landing__code-wrap">
-              <h3 className="landing__section-title">Clean and Professional Code</h3>
-              <p>We have created a quality product that will be convenient for developers to use. The main advantage
-                    is a clean, correct and easy to understand code.
-              </p>
-              <p>React framework allows you to create a component architecture, get the best productivity and
-                    render changes automatically.
-              </p>
+              <h3 className="landing__section-title">Serp analysis (Google)</h3>
+              <p>We created a system that retrieves the serp with the info for each site and a follow-up with a visualization.</p>
+              <p>There is the possibility to see some metrics for each site.</p>
             </div>
           </div>
         </Col>

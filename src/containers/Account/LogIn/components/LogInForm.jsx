@@ -98,25 +98,13 @@ class LogInForm extends PureComponent {
         return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
     }
 
-    generateRandomString(length, username) {
-        let text = "";
-        let string = username;
-
-        for (let i = 0; i < length; i++)
-            text += string.charAt(Math.floor(Math.random() * string.length));
-
-        return text;
-    }
-
     CookieLogIn (session_remember_me, auth_user)
     {
         auth_user = JSON.parse(auth_user);
         if (session_remember_me === 'TRUE') {
-            let string_username = this.generateRandomString(8, auth_user.username);
-            return this.SetCookie('remember_me_auth', Math.random().toString(36).substring(7) + '_' + string_username + '_' + auth_user.confirmation_token + '__' + auth_user.id, 30)
+            return this.SetCookie('remember_me_auth', auth_user.token_user + '__' + auth_user.id, 30)
         } else {
-            let string_username = this.generateRandomString(8, auth_user.username);
-            return this.SetCookie('auth_today', Math.random().toString(36).substring(7) + '_' + string_username + '__' + auth_user.id, 1)
+            return this.SetCookie('auth_today', auth_user.token_user + '__' + auth_user.id, 1)
         }
     }
 
@@ -142,7 +130,14 @@ class LogInForm extends PureComponent {
                         'password': this.state.valuePassword
                     },
                     headers: {
-                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'text/plain',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                        'Access-Control-Max-Age': 1728000,
+                        'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                     },
                 }).then((response) => {
                     if (response && response.status === 200)  {

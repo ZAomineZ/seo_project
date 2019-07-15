@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Actions\Json_File;
 use App\Actions\Url\Curl_Keyword;
 use App\Actions\Url\Curl_Url;
+use App\concern\Ajax;
 use App\concern\File_Params;
 use App\concern\Str_options;
 use App\Model\WebSite;
@@ -25,6 +26,7 @@ class WebSiteController
     private static $curl;
     private static $curl_keyword;
     private static $controller;
+    private static $ajax;
 
     /**
      * WebSiteController constructor.
@@ -36,7 +38,7 @@ class WebSiteController
      * @param Curl_Keyword $curl_keyword
      * @param TopKeywordController $controller
      */
-    public function __construct(\App\Table\Website $table, Json_File $bl, WebSite $web, Numeral $format, Curl_Url $curl, Curl_Keyword $curl_keyword, TopKeywordController $controller)
+    public function __construct(\App\Table\Website $table, Json_File $bl, WebSite $web, Numeral $format, Curl_Url $curl, Curl_Keyword $curl_keyword, TopKeywordController $controller, Ajax $ajax)
     {
         self::$table = $table;
         self::$bl = $bl;
@@ -45,6 +47,7 @@ class WebSiteController
         self::$curl = $curl;
         self::$curl_keyword = $curl_keyword;
         self::$controller = $controller;
+        self::$ajax = $ajax;
     }
 
     /**
@@ -355,19 +358,43 @@ class WebSiteController
 
     /**
      * @param string $domain
+     * @param array $file_result
      * @throws \Exception
      */
-    public function WebSite (string $domain)
+    private function ScrapDataWebsite (string $domain, array $file_result)
+    {
+        $filter = self::$web->FilterRank($domain);
+        $json = self::$web->JsonReturn($filter);
+        self::CreateFileDomain($domain, $json);
+        return self::ResultJson($file_result['dir'], $file_result['domain_str'], $domain);
+    }
+
+    /**
+     * @param string $domain
+     * @param int $id
+     * @throws \Exception
+     */
+    public function WebSite (string $domain, int $id)
     {
         if ($domain) {
             if (self::$bl->ReqBl($domain)->status === "Not Found" || self::$bl->ReqBl($domain)->status === "Validation Error : target") {
                 return self::ResultJsonError(self::$bl->ReqBl($domain)->status);
             } else {
-                $filter = self::$web->FilterRank($domain);
-                $json = self::$web->JsonReturn($filter);
                 $file_result = self::DirectoryWebSite($domain);
-                self::CreateFileDomain($domain, $json);
-                return self::ResultJson($file_result['dir'], $file_result['domain_str'], $domain);
+                $req = self::$table->SelectToken($domain);
+                if ($req) {
+                    $file = self::FilesDomain($file_result['dir'], $file_result['domain_str'], $req->token, date("Y-m-d"));
+                    $file_dir = self::FileSystem($file_result['dir'], $req->token, $file);
+                    if (file_exists($file_dir[1]) && file_exists($file_dir[0]) && file_exists($file_dir[2]) && file_exists($file_dir[3]) && file_exists($file_dir[4]) && file_exists($file_dir[5])) {
+                        return self::ResultJson($file_result['dir'], $file_result['domain_str'], $domain);
+                    } else {
+                        self::$ajax->UserRate((int)$id);
+                        return $this->ScrapDataWebsite($domain, $file_result);
+                    }
+                } else {
+                    self::$ajax->UserRate((int)$id);
+                    return $this->ScrapDataWebsite($domain, $file_result);
+                }
             }
         }
         throw new \Exception("Request Ajax not Valid !!!");

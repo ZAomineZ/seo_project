@@ -89,7 +89,8 @@ class IntervalDatePickerField extends PureComponent {
                         {
                             'type': true,
                             'StartDate': this.state.startDate === null ? this.props[0].valueStartDate : this.state.startDate.format("LL"),
-                            'EndDate': this.state.endDate === null ? this.props[0].valueEndDate : this.state.endDate.format("LL")
+                            'EndDate': this.state.endDate === null ? this.props[0].valueEndDate : this.state.endDate.format("LL"),
+                            'value': this.props[0].value
                         }
                     ]
                 }}/>
@@ -98,6 +99,7 @@ class IntervalDatePickerField extends PureComponent {
             return (
                 <Redirect to={{
                     pathname: '/seo/serp/' + this.props[0].keyword,
+                    state: {'value': this.props[0].value}
                 }}/>
             )
         }
@@ -153,7 +155,8 @@ renderIntervalDatePickerField.propTypes = {
         valueEndDate: PropTypes.string,
         date_array: PropTypes.array,
         keyword: PropTypes.string,
-        type_btn: PropTypes.bool
+        type_btn: PropTypes.bool,
+        value: PropTypes.string
     }).isRequired,
 };
 

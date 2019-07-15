@@ -64,8 +64,12 @@ class CampainController
     protected function DataDelete (string $table, string $slug, int $user_id)
     {
         $select = $this->table->SelectIdCampain($table, $slug, $user_id);
-        $this->table->DeleteCampainDetails($select->id, 'list_campaign');
-        return $this->table->DeleteCampain($table, $slug, $user_id);
+        if ($select) {
+            $this->table->DeleteCampainDetails($select->id, 'list_campaign');
+            return $this->table->DeleteCampain($table, $slug, $user_id);
+        } else {
+            die('Invalid Token !!!');
+        }
     }
 
     /**
@@ -109,15 +113,19 @@ class CampainController
     public function InsertCampain (string $website, string $platform, string $cost, string $slug, object $auth)
     {
         $select = $this->table->SelectIdCampain("campaign", $slug, $auth->id);
-        $this->DataCampainDetails('list_campaign', [
-            'campain' => $select->id,
-            'website' => $website,
-            'platform' => $platform,
-            'cost' => $cost,
-            'date' => date("Y-m-d")
-        ]);
-        $select_date = $this->table->SelectDateAsc("list_campaign", $select->id);
-        return $this->SelectEchoJsonData($select->id, 'data_chart', $select_date->date);
+        if ($select) {
+            $this->DataCampainDetails('list_campaign', [
+                'campain' => $select->id,
+                'website' => $website,
+                'platform' => $platform,
+                'cost' => $cost,
+                'date' => date("Y-m-d")
+            ]);
+            $select_date = $this->table->SelectDateAsc("list_campaign", $select->id);
+            return $this->SelectEchoJsonData($select->id, 'data_chart', $select_date->date);
+        } else {
+            die('Invalid Toekn !!!');
+        }
     }
 
     /**
@@ -127,7 +135,12 @@ class CampainController
      */
     public function CampainData (string $value, object $auth)
     {
-       return $this->data_insert($value, $auth->id);
+       $campain_exist = $this->table->SelectCampainExist('campaign', $auth->id, $value);
+       if ($campain_exist->name === $value) {
+           echo \GuzzleHttp\json_encode(['error' => 'This campaign already exists !!!']);
+       } else {
+           return $this->data_insert($value, $auth->id);
+       }
     }
 
     /**
@@ -158,15 +171,18 @@ class CampainController
      */
     public function DeleteItemCampain (string $id, string $slug, object $auth)
     {
-        $this->table->DeleteCampainItem($id, 'list_campaign');
-        $select = $this->table->SelectIdCampain("campaign", $slug, $auth->id);
-        $select_item = $this->table->SelectBlLink('list_campaign', $select->id);
-        if ($select_item->id_count >= 1) {
-            $select_date = $this->table->SelectDateAsc("list_campaign", $select->id);
-            echo \GuzzleHttp\json_encode($this->campain->ChartData($select_date->date, $select->id));
+        if ($this->table->SelectIdCampain("campaign", $slug, $auth->id)) {
+            $this->table->DeleteCampainItem($id, 'list_campaign');
+            $select = $this->table->SelectIdCampain("campaign", $slug, $auth->id);
+            $select_item = $this->table->SelectBlLink('list_campaign', $select->id);
+            if ($select_item->id_count >= 1) {
+                $select_date = $this->table->SelectDateAsc("list_campaign", $select->id);
+                echo \GuzzleHttp\json_encode($this->campain->ChartData($select_date->date, $select->id));
+            } else {
+                echo \GuzzleHttp\json_encode([]);
+            }
         } else {
-            echo \GuzzleHttp\json_encode([]);
-
+            die('Invalid Token !!!');
         }
     }
 
@@ -204,7 +220,11 @@ class CampainController
      */
     public function UpdateData (string $id, $type)
     {
-        return $this->table->UpdateDataReceived('list_campaign', $id, $type);
+        if ($this->table->SelectExistCampaignList('list_campaign', $id)) {
+            return $this->table->UpdateDataReceived('list_campaign', $id, $type);
+        } else {
+            die('Invalid Token');
+        }
     }
 
     /**
@@ -218,8 +238,12 @@ class CampainController
     public function UpdateDataBl (string $id, string $value, string $slug, string $bl, object $auth)
     {
         $select = $this->table->SelectIdCampain("campaign", $slug, $auth->id);
-        $this->table->UpdateDataBl('list_campaign', $id, $value);
-        $this->campain->CrawlBl($bl, $value, $id);
-        return $this->SelectEchoJsonData($select->id);
+        if ($select && $this->table->SelectExistCampaignList('list_campaign', $id)) {
+            $this->table->UpdateDataBl('list_campaign', $id, $value);
+            $this->campain->CrawlBl($bl, $value, $id);
+            return $this->SelectEchoJsonData($select->id);
+        } else {
+            die('Token Invalid !!!');
+        }
     }
 }

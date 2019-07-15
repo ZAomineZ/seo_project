@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import MainWrapper from './MainWrapper';
 import Layout from '../Layout/index';
+import Legal from '../../components/legal';
 
 import NotFound404 from '../DefaultPage/404/index';
 import LogIn from '../Account/LogIn/index';
@@ -62,6 +63,7 @@ const Router = () => (
     <main>
       <Switch>
         <Route exact path="/" component={Landing} />
+        <Route exact path="/legal" component={Legal} />
         <Route exact path="/log_in" component={LogIn} />
         <Route exact path="/log_in/:token" component={LogInToken} />
         <Route exact path="/log_out" component={LogOut} />

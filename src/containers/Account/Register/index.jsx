@@ -52,8 +52,8 @@ class Register extends PureComponent {
                     <div className="account__card">
                         <div className="account__head">
                             <h3 className="account__title">Welcome to
-                                <span className="account__logo"> Easy
-              <span className="account__logo-accent">DEV</span>
+                                <span className="account__logo"> Machin
+              <span className="account__logo-accent">Ools</span>
             </span>
                             </h3>
                             <h4 className="account__subhead subhead">Create an account</h4>

@@ -2,7 +2,7 @@
 import React, {PureComponent} from 'react';
 import {Area, AreaChart, ResponsiveContainer, Tooltip} from 'recharts';
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown, Table} from 'reactstrap';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TablePagination from '@material-ui/core/TablePagination/TablePagination';
 import Checkbox from '@material-ui/core/Checkbox/Checkbox';
@@ -127,7 +127,8 @@ export default class TopTen extends PureComponent {
         array_date: PropTypes.array.isRequired,
         keyword: PropTypes.string.isRequired,
         date_comparaison: PropTypes.bool.isRequired,
-        state_location: PropTypes.array
+        state_location: PropTypes.array,
+        value: PropTypes.string.isRequired
     };
 
     static defaultProps = {
@@ -145,7 +146,8 @@ export default class TopTen extends PureComponent {
         page: 0,
         rowsPerPage: 10,
         loading: true,
-        loaded: false
+        loaded: false,
+        redirectSerp: false
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -247,38 +249,86 @@ export default class TopTen extends PureComponent {
         this.setState({data: copyData, selected: []});
     };
 
+    SetCookie (name_cookie, value_cookie, expire_days)
+    {
+        let date = new Date();
+        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
+        let expire_cookie = "expires=" + date.toUTCString();
+        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
+    }
+
+    getCookie(name_cookie) {
+        let name = name_cookie + '=';
+        let cookie = document.cookie.split(';');
+        for (let i = 0; i < cookie.length; i++) {
+            let cook = cookie[i];
+            while (cook.charAt(0) == ' ') {
+                cook = cook.substring(1);
+            }
+            if (cook.indexOf(name) == 0) {
+                return cook.substring(name.length, cook.length);
+            }
+            return '';
+        }
+    }
+
+    CookieReset (token, id)
+    {
+        if (this.getCookie('remember_me_auth')) {
+            this.SetCookie('remember_me_auth', token + '__' + id, 30)
+        } else {
+            this.SetCookie('auth_today', token + '__' + id, 1)
+        }
+        this.setState({ redirectSerp : !this.state.redirectSerp})
+    }
+
     TrustScoreRank = (event, domain, id) => {
         event.preventDefault();
-        let route = "ReactProject/App";
+        let route = "/ReactProject/App";
         axios.get('http://' + window.location.hostname + route + '/Ajax/SerpTrustScore.php', {
             headers: {
-                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
             params: {
-                domain: domain
+                domain: domain,
+                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
             }
         }).then((response) => {
             if (response && response.status === 200) {
-                this.setState({
-                    data: this.state.data.map(d => {
-                        if (d.id === id) {
-                            return {
-                                description: d.description,
-                                id: d.id,
-                                title: d.title,
-                                url: d.url,
-                                ip_subnets: response.data.ip_subnets,
-                                score_rank: response.data.score_rank,
-                                trust_rank: response.data.trust_rank
+                if (response.data.error) {
+                    if (response.data.error === 'Invalid Token') {
+                        this.CookieReset(response.data.token, response.data.id)
+                    }
+                } else {
+                    this.setState({
+                        data: this.state.data.map(d => {
+                            if (d.id === id) {
+                                return {
+                                    description: d.description,
+                                    id: d.id,
+                                    title: d.title,
+                                    url: d.url,
+                                    ip_subnets: response.data.ip_subnets,
+                                    score_rank: response.data.score_rank,
+                                    trust_rank: response.data.trust_rank
+                                }
                             }
-                        }
-                        return d
-                    }),
-                    loading: false
-                });
-                setTimeout(() => this.setState({ loaded: true }), 500);
-                this.setState({ loading: true });
-                this.setState({ loaded: false });
+                            return d
+                        }),
+                        loading: false
+                    });
+                    setTimeout(() => this.setState({ loaded: true }), 500);
+                    this.setState({ loading: true });
+                    this.setState({ loaded: false });
+                }
             }
         });
     };
@@ -310,6 +360,18 @@ export default class TopTen extends PureComponent {
                                 18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"/>
         </svg>;
 
+        if (this.state.redirectSerp === true) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            );
+        }
+
+        if (typeof (this.props.location) == undefined) {
+            this.props.location.state = []
+        }
+
         return (
             <Panel
                 title={this.props.title ? this.props.title : ''}
@@ -317,6 +379,7 @@ export default class TopTen extends PureComponent {
                 keyword={this.props.keyword}
                 date_comparaison={this.props.date_comparaison}
                 state_location={this.props.state_location}
+                value={this.props.value}
             >
                 <MatTableToolbar
                     numSelected={selected.length}

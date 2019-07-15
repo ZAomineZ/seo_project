@@ -75,14 +75,22 @@ class PasswordFagotForm extends PureComponent {
         e.preventDefault();
         if (this.state.valuePassword !== '' && this.state.valuePasswordConfirm !== '' && this.state.valuePassword.length >= 5 && this.state.valuePasswordConfirm.length >= 5) {
             if (this.state.valuePassword === this.state.valuePasswordConfirm) {
-                axios.get('http://localhost/ReactProject/App/Ajax/Auth/password_forgot_confirm.php', {
+                let route = '/ReactProject/App';
+                axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/password_forgot_confirm.php', {
                     params: {
                         'token': this.props.token,
                         'password': this.state.valuePassword,
                         'password_confirm': this.state.valuePasswordConfirm
                     },
                     headers: {
-                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'text/plain',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                        'Access-Control-Max-Age': 1728000,
+                        'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                     },
                 }).then((response) => {
                     if (response && response.status === 200) {

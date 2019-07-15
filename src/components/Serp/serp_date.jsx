@@ -50,7 +50,8 @@ class SerpDate extends PureComponent {
             loading: true,
             loaded: false,
             redirectError: false,
-            auth: ''
+            auth: '',
+            redirectSerp: false
         }
     }
 
@@ -61,8 +62,44 @@ class SerpDate extends PureComponent {
         this.props.dispatch(deleteCryptoTableData(arrayCopy));
     };
 
+    SetCookie (name_cookie, value_cookie, expire_days)
+    {
+        let date = new Date();
+        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
+        let expire_cookie = "expires=" + date.toUTCString();
+        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
+    }
+
+    getCookie(name_cookie) {
+        let name = name_cookie + '=';
+        let cookie = document.cookie.split(';');
+        for (let i = 0; i < cookie.length; i++) {
+            let cook = cookie[i];
+            while (cook.charAt(0) == ' ') {
+                cook = cook.substring(1);
+            }
+            if (cook.indexOf(name) == 0) {
+                return cook.substring(name.length, cook.length);
+            }
+            return '';
+        }
+    }
+
+    CookieReset (token, id)
+    {
+        if (this.getCookie('remember_me_auth')) {
+            this.SetCookie('remember_me_auth', token + '__' + id, 30)
+        } else {
+            this.SetCookie('auth_today', token + '__' + id, 1)
+        }
+        this.setState({ redirectSerp : !this.state.redirectSerp})
+    }
+
     componentDidMount() {
         if (sessionStorage.getItem('Auth')) {
+            if (typeof (this.props.location) == 'undefined') {
+                this.setState({ redirectSerp : !this.state.redirectSerp})
+            }
             if (this.props.location.state !== undefined) {
                 // Load Notification !!!
                 NotificationSystem.newInstance({}, n => notification = n);
@@ -72,23 +109,43 @@ class SerpDate extends PureComponent {
                 let route = '/ReactProject/App'
                 axios.get('http://' + window.location.hostname + route + '/Ajax/SerpDate.php', {
                     headers: {
-                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'text/plain',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                        'Access-Control-Max-Age': 1728000,
+                        'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                     },
                     params: {
                         keyword: this.props.match.params.keyword,
-                        state_location: this.props.location.state
+                        value: this.props.location.state[0].value,
+                        state_location: this.props.location.state,
+                        cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+                        auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
                     }
                 }).then((response) => {
                     if (response && response.status === 200) {
-                        this.setState({
-                            url: response.data.url,
-                            description: response.data.description,
-                            rank: response.data.rank,
-                            date: response.data.date,
-                            date_format: response.data.date_format,
-                            loading: false
-                        });
-                        setTimeout(() => this.setState({ loaded: true }), 500);
+                        if (response.data.error) {
+                            if (response.data.error === 'Invalid Token') {
+                                this.CookieReset(response.data.token, response.data.id)
+                            } else if (response.data.error && response.data.error === 'Invalid Value') {
+                                this.setState({ redirectSerp : !this.state.redirectSerp})
+                                NotificationSystem.newInstance({}, n => notification = n);
+                                setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
+                            }
+                        } else {
+                            this.setState({
+                                url: response.data.url,
+                                description: response.data.description,
+                                rank: response.data.rank,
+                                date: response.data.date,
+                                date_format: response.data.date_format,
+                                loading: false
+                            });
+                            setTimeout(() => this.setState({ loaded: true }), 500);
+                        }
                     }
                 });
             } else {
@@ -119,37 +176,33 @@ class SerpDate extends PureComponent {
                     ]
                 }}/>
             )
-        }
-        return (
-            <Container className="dashboard">
-                <Row>
-                    <Col md={12}>
-                        <h3 className="page-title">{t('Serp Dashboard')}</h3>
-                    </Col>
-                </Row>
-                <Row>
-                    <DatePickers top_10_url={this.state.url.slice(0, 10)}
-                                 top_20_url={this.state.url.slice(0, 20)}
-                                 top_30_url={this.state.url.slice(0, 30)}
-                                 top_50_url={this.state.url.slice(0, 50)}
-                                 top_100_url={this.state.url.slice(0, this.state.url.length)}
-                                 date_array={this.state.date_format}
-                                 dt_array={this.state.date}
-                                 type_btn={true}
-                                 keyword={this.props.match.params.keyword} />
-                </Row>
-                <Row>
-                    {!this.state.loaded &&
-                    <div className="panel__refresh">
-                        <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
-                        </svg>
-                    </div>
-                    }
-                    <SimpleLineChart data_url={this.state.url} date_array={this.state.date} rank_object={this.state.rank}/>
-                </Row>
-                <Row>
-                    <div className="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+        } else if (this.state.redirectSerp === true) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            );
+        } else if (this.props.location.state !== undefined) {
+            return (
+                <Container className="dashboard">
+                    <Row>
+                        <Col md={12}>
+                            <h3 className="page-title">{t('Serp Dashboard')}</h3>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <DatePickers top_10_url={this.state.url.slice(0, 10)}
+                                     top_20_url={this.state.url.slice(0, 20)}
+                                     top_30_url={this.state.url.slice(0, 30)}
+                                     top_50_url={this.state.url.slice(0, 50)}
+                                     top_100_url={this.state.url.slice(0, this.state.url.length)}
+                                     date_array={this.state.date_format}
+                                     dt_array={this.state.date}
+                                     type_btn={true}
+                                     keyword={this.props.match.params.keyword}
+                                     value={this.props.location.state[0].value}/>
+                    </Row>
+                    <Row>
                         {!this.state.loaded &&
                         <div className="panel__refresh">
                             <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -157,24 +210,43 @@ class SerpDate extends PureComponent {
                             </svg>
                         </div>
                         }
-                        <TopTen
-                            TopOrLose
-                            title="Dashboard Serp"
-                            buttonExist="Top/Lose"
-                            cryptoTable={this.props.cryptoTable}
-                            onDeleteCryptoTableData={this.onDeleteCryptoTableData}
-                            array_description={this.state.description}
-                            array_url={this.state.url}
-                            array_date={this.state.date}
-                            array_rank={this.state.rank}
-                            keyword={this.props.match.params.keyword}
-                            date_comparaison={true}
-                            state_location={this.props.location.state}
-                        />
-                    </div>
-                </Row>
-            </Container>
-        );
+                        <SimpleLineChart data_url={this.state.url} date_array={this.state.date} rank_object={this.state.rank}/>
+                    </Row>
+                    <Row>
+                        <div className="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                            {!this.state.loaded &&
+                            <div className="panel__refresh">
+                                <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
+                                </svg>
+                            </div>
+                            }
+                            <TopTen
+                                TopOrLose
+                                title="Dashboard Serp"
+                                buttonExist="Top/Lose"
+                                cryptoTable={this.props.cryptoTable}
+                                onDeleteCryptoTableData={this.onDeleteCryptoTableData}
+                                array_description={this.state.description}
+                                array_url={this.state.url}
+                                array_date={this.state.date}
+                                array_rank={this.state.rank}
+                                keyword={this.props.match.params.keyword}
+                                date_comparaison={true}
+                                state_location={this.props.location.state}
+                                value={this.props.location.state[0].value}
+                            />
+                        </div>
+                    </Row>
+                </Container>
+            );
+        } else {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            );
+        }
     }
 }
 

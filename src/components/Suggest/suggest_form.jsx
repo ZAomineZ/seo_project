@@ -8,7 +8,6 @@ import { Redirect } from 'react-router-dom';
 import validate from '../../containers/Form/FormValidation/components/validate';
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
-import axios from "axios";
 
 const renderField = ({
                          input, placeholder, type, meta: { touched, error },
@@ -21,12 +20,12 @@ const renderField = ({
 
 let notification = null;
 
-const showNotification = (error) => {
+const showNotification = (error, message) => {
     notification.notice({
         content: <BasicNotification
             color="danger"
             title={error}
-            message="This Url is invalid !!!"
+            message={message ? message : 'This Url is invalid !!!'}
         />,
         duration: 5,
         closable: true,
@@ -71,7 +70,25 @@ class SuggestForm extends PureComponent {
         e.preventDefault();
         if (this.state.valueInput.length !== 0) {
             if (this.state.valueInput.indexOf('/') === -1 && this.state.valueInput.indexOf('.') === -1) {
-                this.setState({ redirectTo: !this.state.redirectTo })
+                if (/^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF' ]*$/i.test(this.state.valueInput)) {
+                    if (this.state.valueInput.indexOf(' ') !== -1) {
+                        let string = '';
+                        let string_ = this.state.valueInput.split(' ');
+                        string_.map(d => {
+                            let replace_data = d.replace(' ', '-');
+                            return string += replace_data + '-'
+                        });
+                        let last_str = string.substr(0, string.length - 1);
+                        this.setState({valueInput: last_str});
+                    } else {
+                        let replace_string = this.state.valueInput;
+                        this.setState({valueInput: replace_string});
+                    }
+                    this.setState({redirectTo: !this.state.redirectTo})
+                } else {
+                    NotificationSystem.newInstance({}, n => notification = n);
+                    setTimeout(() => showNotification('Error Find !!!', 'THe field is invalid'), 700);
+                }
             } else {
                 NotificationSystem.newInstance({}, n => notification = n);
                 setTimeout(() => showNotification('Your domain is invalid !!!'), 700);
@@ -86,10 +103,12 @@ class SuggestForm extends PureComponent {
     render() {
         const { t, location } = this.props;
         const redirectMe = this.state.redirectTo;
+        let Slugify = require('slugifyjs').fromLocale('en');
         if (redirectMe) {
             return (
                 <Redirect to={{
-                    pathname: '/seo/suggest/' + this.state.valueInput,
+                    pathname: '/seo/suggest/' + Slugify.parse(this.state.valueInput),
+                    state: { value: this.state.valueInput }
                 }}/>
             );
         }
@@ -101,18 +120,18 @@ class SuggestForm extends PureComponent {
                 <Card>
                     <CardBody>
                         <div className="card__title">
-                            <h5 className="bold-text">{t('FROM Keywoard')}</h5>
-                            <h5 className="subhead">Write your Keywoard !!!</h5>
+                            <h5 className="bold-text">{t('FROM Keyword')}</h5>
+                            <h5 className="subhead">Write your Keyword !!!</h5>
                         </div>
                         <form className="form form--horizontal" onSubmit={e => this.onSubmit(e)}>
                             <div className="form__form-group">
-                                <span className="form__form-group-label">Keywoard</span>
+                                <span className="form__form-group-label">Keyword</span>
                                 <div className="form__form-group-field">
                                     <Field
                                         name="text"
                                         component={renderField}
                                         type="text"
-                                        placeholder="Your Keywoard..."
+                                        placeholder="Your Keyword..."
                                         onChange={this.onChangeInput}
                                     />
                                 </div>

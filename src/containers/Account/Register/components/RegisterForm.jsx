@@ -95,13 +95,24 @@ class RegisterForm extends PureComponent {
                         'password': this.state.valuePassword
                     },
                     headers: {
-                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'text/plain',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                        'Access-Control-Max-Age': 1728000,
+                        'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                     },
                 }).then(response => {
                     if (response && response.status === 200) {
                         this.setState({message: response.data, emailReceived: response.data.success ? !this.state.emailReceived : false});
                         NotificationSystem.newInstance({}, n => notification = n);
-                        setTimeout(() => showNotification(this.state.message, response.data.error ? 'danger' : 'success'), 700);
+                        if (response.data.username || response.data.email) {
+                            setTimeout(() => showNotification(response.data.username ? response.data.username : response.data.email ? response.data.email : '', 'danger'), 700);
+                        } else {
+                            setTimeout(() => showNotification(this.state.message, response.data.error ? 'danger' : 'success'), 700);
+                        }
                     }
                 })
             }

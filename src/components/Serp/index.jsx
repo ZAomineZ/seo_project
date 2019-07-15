@@ -37,6 +37,21 @@ class CryptoDashboard extends PureComponent {
         dispatch: PropTypes.func.isRequired,
     };
 
+    getCookie(name_cookie) {
+        let name = name_cookie + '=';
+        let cookie = document.cookie.split(';');
+        for (let i = 0; i < cookie.length; i++) {
+            let cook = cookie[i];
+            while (cook.charAt(0) == ' ') {
+                cook = cook.substring(1);
+            }
+            if (cook.indexOf(name) == 0) {
+                return cook.substring(name.length, cook.length);
+            }
+            return '';
+        }
+    }
+
     constructor() {
         super();
         console.error = () => {};
@@ -49,7 +64,8 @@ class CryptoDashboard extends PureComponent {
             rank: [],
             loading: true,
             loaded: false,
-            error: false
+            error: false,
+            redirectSerp: false
         }
     }
 
@@ -60,43 +76,102 @@ class CryptoDashboard extends PureComponent {
         this.props.dispatch(deleteCryptoTableData(arrayCopy));
     };
 
+    SetCookie (name_cookie, value_cookie, expire_days)
+    {
+        let date = new Date();
+        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
+        let expire_cookie = "expires=" + date.toUTCString();
+        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
+    }
+
+    getCookie(name_cookie) {
+        let name = name_cookie + '=';
+        let cookie = document.cookie.split(';');
+        for (let i = 0; i < cookie.length; i++) {
+            let cook = cookie[i];
+            while (cook.charAt(0) == ' ') {
+                cook = cook.substring(1);
+            }
+            if (cook.indexOf(name) == 0) {
+                return cook.substring(name.length, cook.length);
+            }
+            return '';
+        }
+    }
+
+    CookieReset (token, id)
+    {
+        if (this.getCookie('remember_me_auth')) {
+            this.SetCookie('remember_me_auth', token + '__' + id, 30)
+        } else {
+            this.SetCookie('auth_today', token + '__' + id, 1)
+        }
+        this.setState({ redirectSerp : !this.state.redirectSerp})
+    }
+
     componentDidMount() {
-        if (this.props.location.state && this.props.location.state[0].error) {
+        if (this.props.location.state && this.props.location.state.value === undefined && this.props.location.state[0].error) {
+            this.setState({ redirectSerp : !this.state.redirectSerp})
             NotificationSystem.newInstance({}, n => notification = n);
             setTimeout(() => showNotification(this.props.location.state[0].error, 'danger'), 700);
-        }
-        let route = '/ReactProject/App'
-        axios.get('http://' + window.location.hostname + route + '/Ajax/Serp.php', {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            params: {
-                keyword: this.props.match.params.keyword,
-            }
-        }).then((response) => {
-            if (response && response.status === 200) {
-                this.setState({
-                    url: response.data.url,
-                    description: response.data.description,
-                    rank: response.data.rank,
-                    date: response.data.date,
-                    date_format: response.data.date_format,
-                    loading: false
-                });
-                setTimeout(() => this.setState({loaded: true}), 500);
-                if (this.state.description && this.state.description.length === 0) {
-                    this.setState({ error: !this.state.error });
-                    NotificationSystem.newInstance({}, n => notification = n);
-                    setTimeout(() => showNotification('A error has been detected, this error will be fixed as soon as possible', 'danger'), 700);
+        } else if (this.props.location.state === undefined) {
+            this.setState({ redirectSerp : !this.state.redirectSerp})
+        } else {
+            let route = '/ReactProject/App'
+            axios.get('http://' + window.location.hostname + route + '/Ajax/Serp.php', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'text/plain',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                    'Access-Control-Max-Age': 1728000,
+                    'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+                },
+                params: {
+                    keyword: this.props.match.params.keyword,
+                    value: this.props.location.state !== undefined ? this.props.location.state.value : '',
+                    cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+                    auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
                 }
-            }
-        });
+            }).then((response) => {
+                if (response && response.status === 200) {
+                    if (response.data.error) {
+                        if (response.data.error === 'Invalid Token') {
+                            this.CookieReset(response.data.token, response.data.id)
+                        } else if (response.data.error && response.data.error === 'Invalid Value') {
+                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            NotificationSystem.newInstance({}, n => notification = n);
+                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                        } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
+                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            NotificationSystem.newInstance({}, n => notification = n);
+                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                        }
+                    } else {
+                        this.setState({
+                            url: response.data.url,
+                            description: response.data.description,
+                            rank: response.data.rank,
+                            date: response.data.date,
+                            date_format: response.data.date_format,
+                            loading: false
+                        });
+                        setTimeout(() => this.setState({loaded: true}), 500);
+                        if (this.state.description && this.state.description.length === 0) {
+                            this.setState({ error: !this.state.error });
+                            NotificationSystem.newInstance({}, n => notification = n);
+                            setTimeout(() => showNotification('A error has been detected, this error will be fixed as soon as possible', 'danger'), 700);
+                        }
+                    }
+                }
+            });
+        }
     }
 
     render() {
         const {t} = this.props;
-
-        const url_data = this.state.url.filter(d => d !== null);
 
         if (this.state.error === true) {
             return (
@@ -105,38 +180,36 @@ class CryptoDashboard extends PureComponent {
                 }}/>
             );
         }
+        if (this.state.redirectSerp === true) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            );
+        }
+        const url_data = this.props.location.state !== undefined ? this.state.url.filter(d => d !== null) : '';
 
-        return (
-            <Container className="dashboard">
-                <Row>
-                    <Col md={12}>
-                        <h3 className="page-title">{t('Serp Dashboard')}</h3>
-                    </Col>
-                </Row>
-                <Row>
-                    <DatePickers top_10_url={url_data.slice(0, 10)}
-                                 top_20_url={url_data.slice(0, 20)}
-                                 top_30_url={url_data.slice(0, 30)}
-                                 top_50_url={url_data.slice(0, 50)}
-                                 top_100_url={url_data.slice(0, url_data.length)}
-                                 date_array={this.state.date_format}
-                                 dt_array={[]}
-                                 type_btn={false}
-                                 keyword={this.props.match.params.keyword}/>
-                </Row>
-                <Row>
-                    {!this.state.loaded &&
-                    <div className="panel__refresh">
-                        <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
-                        </svg>
-                    </div>
-                    }
-                    <SimpleLineChart data_url={url_data} date_array={this.state.date}
-                                     rank_object={this.state.rank}/>
-                </Row>
-                <Row>
-                    <div className="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+        if (this.props.location.state !== undefined) {
+            return (
+                <Container className="dashboard">
+                    <Row>
+                        <Col md={12}>
+                            <h3 className="page-title">{t('Serp Dashboard')}</h3>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <DatePickers top_10_url={url_data.slice(0, 10)}
+                                     top_20_url={url_data.slice(0, 20)}
+                                     top_30_url={url_data.slice(0, 30)}
+                                     top_50_url={url_data.slice(0, 50)}
+                                     top_100_url={url_data.slice(0, url_data.length)}
+                                     date_array={this.state.date_format}
+                                     dt_array={[]}
+                                     type_btn={false}
+                                     keyword={this.props.match.params.keyword}
+                                     value={typeof (this.props.location.state) == 'undefined' ? '' : this.props.location.state.value}/>
+                    </Row>
+                    <Row>
                         {!this.state.loaded &&
                         <div className="panel__refresh">
                             <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -144,23 +217,43 @@ class CryptoDashboard extends PureComponent {
                             </svg>
                         </div>
                         }
-                        <TopTen
-                            TopOrLose
-                            title="Dashboard Serp"
-                            buttonExist="Top/Lose"
-                            cryptoTable={this.props.cryptoTable}
-                            onDeleteCryptoTableData={this.onDeleteCryptoTableData}
-                            array_description={this.state.description}
-                            array_url={url_data}
-                            array_date={this.state.date}
-                            array_rank={this.state.rank}
-                            keyword={this.props.match.params.keyword}
-                            date_comparaison={false}
-                        />
-                    </div>
-                </Row>
-            </Container>
-        );
+                        <SimpleLineChart data_url={url_data} date_array={this.state.date}
+                                         rank_object={this.state.rank}/>
+                    </Row>
+                    <Row>
+                        <div className="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                            {!this.state.loaded &&
+                            <div className="panel__refresh">
+                                <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
+                                </svg>
+                            </div>
+                            }
+                            <TopTen
+                                TopOrLose
+                                title="Dashboard Serp"
+                                buttonExist="Top/Lose"
+                                cryptoTable={this.props.cryptoTable}
+                                onDeleteCryptoTableData={this.onDeleteCryptoTableData}
+                                array_description={this.state.description}
+                                array_url={url_data}
+                                array_date={this.state.date}
+                                array_rank={this.state.rank}
+                                keyword={this.props.match.params.keyword}
+                                date_comparaison={false}
+                                value={typeof (this.props.location.state) == 'undefined' ? '' : this.props.location.state.value}
+                            />
+                        </div>
+                    </Row>
+                </Container>
+            );
+        } else {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            );
+        }
     }
 }
 

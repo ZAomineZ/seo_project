@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Col, Row, Container } from 'reactstrap';
 
@@ -9,8 +10,8 @@ const Footer = () => (
     <Container>
       <Row>
         <Col md={12}>
-          <p className="landing__footer-text">Made with love and tons of coffee in
-            <a href="http://themes.aspirity.com/"> Aspirity Studio</a>
+          <p className="landing__footer-text">Made with love with React -
+            <a href="/legal"> Legal</a>
           </p>
         </Col>
       </Row>

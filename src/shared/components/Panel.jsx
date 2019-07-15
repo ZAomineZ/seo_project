@@ -21,7 +21,8 @@ export default class AlertComponent extends PureComponent {
         button: PropTypes.string,
         keyword: PropTypes.string,
         date_comparaison: PropTypes.bool,
-        state_location: PropTypes.array
+        state_location: PropTypes.array,
+        value: PropTypes.string.isRequired
     };
 
     static defaultProps = {
@@ -33,6 +34,7 @@ export default class AlertComponent extends PureComponent {
         icon: '',
         panelClass: '',
         button: '',
+        value: ''
     };
 
     constructor() {
@@ -96,14 +98,20 @@ export default class AlertComponent extends PureComponent {
                                             state: [
                                                 {
                                                     'StartDate': this.props.state_location[0].StartDate,
-                                                    'EndDate': this.props.state_location[0].EndDate
+                                                    'EndDate': this.props.state_location[0].EndDate,
+                                                    'value': this.props.value ? this.props.value : ''
                                                 }
                                             ]
                                         }}>{button}</Link> :
-                                        <a href={'/seo/serp_comparison/' + this.props.keyword}
-                                           className="btn_style btn-outline-primary">
-                                            {button}
-                                        </a>
+                                        <Link className="btn_style btn-outline-primary"
+                                              to={{
+                                                  pathname: '/seo/serp_comparison/' + this.props.keyword,
+                                                  state: [
+                                                      {
+                                                          'value': this.props.value ? this.props.value : ''
+                                                      }
+                                                  ]
+                                              }}>{button}</Link>
                                     : ''}
                             </h5>
                             <h5 className="subhead">{subhead}</h5>

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { Col, Row, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -10,14 +12,10 @@ const Header = () => (
     <Container>
       <Row>
         <Col md={12}>
-          <h2 className="landing__header-title">The best documented and cleanest coded
-            <b> React Bootstrap 4</b> Admin Template <br />+ <b>Seed Project</b> Inside!
+          <h2 className="landing__header-title">The free App for checking your SEO <br/>
+            <b> 6 Tools </b> created with <br /> <b>React + Laravel !</b>
           </h2>
-          <p className="landing__header-subhead">We guarantee you will always get the actual version of the template
-            with a bunch of{' '}
-            <Link className="landing__header-subhead-update" to="/documentation/changelog" target="_blank">
-              freshest updates
-            </Link>.
+          <p className="landing__header-subhead">We created this application to have free support to analyze a site quickly and easily.
           </p>
           <Link className="landing__btn landing__btn--header" to="/log_in">
             Sign In

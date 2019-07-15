@@ -89,8 +89,8 @@ class Landing extends PureComponent {
                                 <div className="landing__menu-wrap">
                                     <p className="landing__menu-logo">
                                         <h3 className="account__title">
-                                            <span className="account__logo"> Easy
-                                                <span className="account__logo-accent">DEV</span>
+                                            <span className="account__logo"> Machin
+                                                <span className="account__logo-accent">Ools</span>
                                             </span>
                                         </h3>
                                     </p>
@@ -102,7 +102,7 @@ class Landing extends PureComponent {
                                                 duration: 1000
                                             })}
                                         >
-                                            About EasyDEV
+                                            About MachinOols
                                         </button>
                                         <button onClick={() => scrollToComponent(this.Features, {
                                             offset: -50,

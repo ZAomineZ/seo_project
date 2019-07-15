@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import CloseIcon from 'mdi-react/CloseIcon';
@@ -60,7 +61,7 @@ export default class Customizer extends PureComponent {
               <CloseIcon />
             </button>
           </div>
-          <p className="customizer__caption">This customizer allows you to see the different variations of the EasyDev.
+          <p className="customizer__caption">This customizer allows you to see the different variations of the App.
             Create your own visual style for every project you do!
           </p>
           <ToggleCollapsedMenu changeSidebarVisibility={changeSidebarVisibility} sidebar={sidebar} />

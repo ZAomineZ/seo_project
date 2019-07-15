@@ -40,7 +40,8 @@ class CampainDetails extends PureComponent {
             cost: '',
             modal: false,
             Popper: false,
-            redirectCampain: false
+            redirectCampain: false,
+            redirectSerp: false
         };
         this.onChange = this.onChange.bind(this);
         this.handleSubmitLink = this.handleSubmitLink.bind(this);
@@ -51,24 +52,73 @@ class CampainDetails extends PureComponent {
         this.toggleModal = this.toggleModal.bind(this);
     }
 
+    SetCookie (name_cookie, value_cookie, expire_days)
+    {
+        let date = new Date();
+        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
+        let expire_cookie = "expires=" + date.toUTCString();
+        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
+    }
+
+    getCookie(name_cookie) {
+        let name = name_cookie + '=';
+        let cookie = document.cookie.split(';');
+        for (let i = 0; i < cookie.length; i++) {
+            let cook = cookie[i];
+            while (cook.charAt(0) == ' ') {
+                cook = cook.substring(1);
+            }
+            if (cook.indexOf(name) == 0) {
+                return cook.substring(name.length, cook.length);
+            }
+            return '';
+        }
+    }
+
+    CookieReset (token, id)
+    {
+        if (this.getCookie('remember_me_auth')) {
+            this.SetCookie('remember_me_auth', token + '__' + id, 30)
+        } else {
+            this.SetCookie('auth_today', token + '__' + id, 1)
+        }
+        this.setState({ redirectSerp : !this.state.redirectSerp})
+    }
+
     componentDidMount() {
         let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/DataCampain.php", {
             headers: {
-                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
             params: {
                 slug: this.props.match.params.web,
-                auth: sessionStorage.getItem('Auth')
+                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
             }
         }).then((response) => {
             if (response && response.status === 200) {
                 if (response.data && !response.data.error) {
                     this.setState({data: response.data.data, data_chart: response.data.data_chart})
                 } else {
-                    this.setState({ redirectCampain: !this.state.redirectCampain });
-                    NotificationSystem.newInstance({}, n => notification = n);
-                    setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
+                    if (response.data.error && response.data.error === 'Invalid Token') {
+                        this.CookieReset(response.data.token, response.data.id)
+                    }  else if (response.data.error && response.data.error === 'Invalid Value') {
+                        this.setState({ redirectSerp : !this.state.redirectSerp})
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
+                    } else {
+                        this.setState({ redirectCampain: !this.state.redirectCampain });
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
+                    }
                 }
             }
         });
@@ -78,33 +128,48 @@ class CampainDetails extends PureComponent {
         let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateData.php", {
             headers: {
-                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
             params: {
                 id: id,
-                type: type
+                type: type,
+                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
             }
         }).then((response) => {
             if (response && response.status === 200) {
-                this.setState({
-                    data: this.state.data.map((d) => {
-                        if (d.id === id) {
-                            return {
-                                id: d.id,
-                                website: d.website,
-                                platform: d.platform,
-                                cost: d.cost,
-                                date: d.date,
-                                received: type,
-                                backlink: d.backlink,
-                                bl_found: d.bl_found,
-                                date_check: d.date_check,
-                                Popper: this.state.Popper,
-                            };
-                        }
-                        return d;
-                    }),
-                });
+                if (response.data.error) {
+                    if (response.data.error === 'Invalid Token') {
+                        this.CookieReset(response.data.token, response.data.id)
+                    }
+                } else {
+                    this.setState({
+                        data: this.state.data.map((d) => {
+                            if (d.id === id) {
+                                return {
+                                    id: d.id,
+                                    website: d.website,
+                                    platform: d.platform,
+                                    cost: d.cost,
+                                    date: d.date,
+                                    received: type,
+                                    backlink: d.backlink,
+                                    bl_found: d.bl_found,
+                                    date_check: d.date_check,
+                                    Popper: this.state.Popper,
+                                };
+                            }
+                            return d;
+                        }),
+                    });
+                }
             }
         });
     }
@@ -114,21 +179,35 @@ class CampainDetails extends PureComponent {
         let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateDataBl.php", {
             headers: {
-                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
             params: {
                 id: id,
                 value: this.state.value,
                 bl: bl,
                 slug: this.props.match.params.web,
-                auth: sessionStorage.getItem('Auth')
+                auth:sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
             }
         }).then((response) => {
             if (response && response.status === 200) {
-                this.setState({data: response.data.data}),
-                    this.setState({
-                        value: ''
-                    });
+                if (response.data.error) {
+                    if (response.data.error === 'Invalid Token') {
+                        this.CookieReset(response.data.token, response.data.id)
+                    }
+                } else {
+                    this.setState({data: response.data.data}),
+                        this.setState({
+                            value: ''
+                        });
+                }
             }
         });
     }
@@ -163,26 +242,40 @@ class CampainDetails extends PureComponent {
             let route = '/ReactProject/App'
             axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainDetails.php", {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'text/plain',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                    'Access-Control-Max-Age': 1728000,
+                    'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                 },
                 params: {
                     website: this.state.website,
                     platform: this.state.platform,
                     cost: this.state.cost,
                     slug: this.props.match.params.web,
-                    auth: sessionStorage.getItem('Auth')
+                    auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+                    cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
                 }
             }).then((response) => {
                 if (response && response.status === 200) {
-                    this.setState({data: response.data.data, data_chart: response.data.data_chart});
-                    this.setState({
-                        website: '',
-                        platform: '',
-                        cost: '',
-                        modal: false,
-                    });
-                    NotificationSystem.newInstance({}, n => notification = n);
-                    setTimeout(() => showNotification('Success Message', 'Your backlink has been add !!!', 'success'), 700);
+                    if (response.data.error) {
+                        if (response.data.error === 'Invalid Token') {
+                            this.CookieReset(response.data.token, response.data.id)
+                        }
+                    } else {
+                        this.setState({data: response.data.data, data_chart: response.data.data_chart});
+                        this.setState({
+                            website: '',
+                            platform: '',
+                            cost: '',
+                            modal: false,
+                        });
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification('Success Message', 'Your backlink has been add !!!', 'success'), 700);
+                    }
                 }
             });
         }
@@ -193,19 +286,33 @@ class CampainDetails extends PureComponent {
         let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainItemDelete.php", {
             headers: {
-                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
             params: {
                 id: id,
                 slug: this.props.match.params.web,
-                auth: sessionStorage.getItem('Auth')
+                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
             }
         }).then((response) => {
             if (response && response.status === 200) {
-                const data_bl = this.state.data.filter(i => i.id !== id);
-                this.setState({data: data_bl, data_chart: response.data});
-                NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification('Success Message', 'Your backlink has been delete !!!', 'success'), 700);
+                if (response.data.error) {
+                    if (response.data.error === 'Invalid Token') {
+                        this.CookieReset(response.data.token, response.data.id)
+                    }
+                } else {
+                    const data_bl = this.state.data.filter(i => i.id !== id);
+                    this.setState({data: data_bl, data_chart: response.data});
+                    NotificationSystem.newInstance({}, n => notification = n);
+                    setTimeout(() => showNotification('Success Message', 'Your backlink has been delete !!!', 'success'), 700);
+                }
             }
         });
     }
@@ -239,7 +346,13 @@ class CampainDetails extends PureComponent {
     }
 
     render() {
-
+        if (this.state.redirectSerp === true) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            );
+        }
         if (this.state.redirectCampain) {
             return (
                 <Redirect to={{

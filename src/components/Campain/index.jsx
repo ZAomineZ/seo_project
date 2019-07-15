@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {PureComponent} from 'react';
-import { Link } from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import BarCampain from '../Campain/BarCampain';
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
@@ -29,8 +29,42 @@ class Campain extends PureComponent {
       console.error = () => {}
       console.error();
       this.state = {
-          data: []
+          data: [],
+          redirectSerp: false
       };
+    }
+
+    SetCookie (name_cookie, value_cookie, expire_days)
+    {
+        let date = new Date();
+        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
+        let expire_cookie = "expires=" + date.toUTCString();
+        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
+    }
+
+    getCookie(name_cookie) {
+        let name = name_cookie + '=';
+        let cookie = document.cookie.split(';');
+        for (let i = 0; i < cookie.length; i++) {
+            let cook = cookie[i];
+            while (cook.charAt(0) == ' ') {
+                cook = cook.substring(1);
+            }
+            if (cook.indexOf(name) == 0) {
+                return cook.substring(name.length, cook.length);
+            }
+            return '';
+        }
+    }
+
+    CookieReset (token, id)
+    {
+        if (this.getCookie('remember_me_auth')) {
+            this.SetCookie('remember_me_auth', token + '__' + id, 30)
+        } else {
+            this.SetCookie('auth_today', token + '__' + id, 1)
+        }
+        this.setState({ redirectSerp : !this.state.redirectSerp})
     }
 
     componentDidMount() {
@@ -41,16 +75,34 @@ class Campain extends PureComponent {
             }
         }
         let route = '/ReactProject/App'
-        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainIndex.php", {
+        axios.get("http://" + window.location.hostname  + route + "/Ajax/Campain/CampainIndex.php", {
             params: {
-                auth: sessionStorage.getItem('Auth')
+                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
             },
             headers: {
-                'Content-Type': 'application/json',
-            }
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+            },
         }).then((response) => {
             if (response && response.status === 200) {
-                this.setState({ data : response.data})
+                if (response.data.error) {
+                    if (response.data.error === 'Invalid Token') {
+                        this.CookieReset(response.data.token, response.data.id)
+                    } else {
+                        this.setState({ redirectSerp : !this.state.redirectSerp})
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification('danger', response.data.error, '👋 Success Message'), 700);
+                    }
+                } else {
+                    this.setState({ data : response.data})
+                }
             }
         })
     }
@@ -68,23 +120,48 @@ class Campain extends PureComponent {
         let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainDelete.php", {
             headers: {
-                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
             params: {
                 'slug': slug,
-                'auth': sessionStorage.getItem('Auth')
+                'auth': sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+                'cookie': this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
             }
         }).then((response) => {
             if (response && response.status === 200) {
-                const data_delete = this.state.data.filter(i => i.slug !== slug);
-                this.setState({data : data_delete});
-                NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification('success', 'Your Campain has been delete !!!', '👋 Success Message'), 700);
+                if (response.data.error) {
+                    if (response.data.error === 'Invalid Token') {
+                        this.CookieReset(response.data.token, response.data.id)
+                    } else {
+                        this.setState({redirectSerp: !this.state.redirectSerp})
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification('danger', response.data.error, '👋 Success Message'), 700);
+                    }
+                } else {
+                    const data_delete = this.state.data.filter(i => i.slug !== slug);
+                    this.setState({data : data_delete});
+                    NotificationSystem.newInstance({}, n => notification = n);
+                    setTimeout(() => showNotification('success', 'Your Campain has been delete !!!', '👋 Success Message'), 700);
+                }
             }
         })
     }
 
     render() {
+        if (this.state.redirectSerp) {
+            return (
+                <Redirect to={{
+                    pathname: 'serp',
+                }}/>
+            );
+        }
         return (
             <div className="dashboard container">
                 <div className="row">

@@ -20,7 +20,7 @@ class PDO_Model
 
     public function GetPdo ()
     {
-        $db = new \PDO("mysql:host=" . self::HOST . ";dbname=" . self::DB_NAME, self::USER, self::PASSWORD);
+        $db = new \PDO("mysql:host=" . self::HOST . ";dbname=" . self::DB_NAME . ';charset=utf8', self::USER, self::PASSWORD);
         $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $db->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
         return $this->pdo = $db;

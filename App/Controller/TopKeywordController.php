@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Actions\Json_File;
 use App\Actions\Url\Curl_Keyword;
+use App\concern\Ajax;
 use App\concern\File_Params;
 use App\concern\Str_options;
 use App\Model\TopKeyword;
@@ -25,6 +26,7 @@ class TopKeywordController
     private $scrap;
     private $model;
     private $table;
+    private $ajax;
 
     /**
      * TopKeywordController constructor.
@@ -35,7 +37,7 @@ class TopKeywordController
      * @param TopKeyword $model
      * @param Website $table
      */
-    public function __construct(Curl_Keyword $curl, Crawler $crawl, Str_options $str, Json_File $scrap, TopKeyword $model, Website $table)
+    public function __construct(Curl_Keyword $curl, Crawler $crawl, Str_options $str, Json_File $scrap, TopKeyword $model, Website $table, Ajax $ajax)
     {
         $this->curl = $curl;
         $this->crawl = $crawl;
@@ -43,6 +45,7 @@ class TopKeywordController
         $this->scrap = $scrap;
         $this->model = $model;
         $this->table = $table;
+        $this->ajax = $ajax;
     }
 
     /**
@@ -87,9 +90,10 @@ class TopKeywordController
 
     /**
      * @param string $domain
+     * @param int $id
      * @throws \Exception
      */
-    public function ResultJson(string $domain)
+    public function ResultJson(string $domain, int $id)
     {
         // and Use Method SearchData !!!
         $string = str_replace('-', '.', $domain);
@@ -98,6 +102,7 @@ class TopKeywordController
             $explode = explode('&', $domain);
             if (count($explode) <= 5) {
                 foreach ($explode as $ex) {
+                    $this->ajax->VerifValueRegex($ex);
                     $string_ex = str_replace('-', '.', $ex);
                     $req_verif = $this->table->SelectToken($string_ex);
                     if ($req_verif) {
@@ -105,7 +110,7 @@ class TopKeywordController
                     } else {
                         // Recuperate Api_key and Export_Hash with DomCrawler
                         $html = $this->CrawlHtml($this->curl->Curl($string_ex));
-                        $data[] = $this->DomainParam($string_ex, $html);
+                        $data[] = $this->DomainParam($string_ex, $html, $id);
                     }
                 }
                 echo \GuzzleHttp\json_encode($data);
@@ -119,7 +124,7 @@ class TopKeywordController
             } else {
                 // Recuperate Api_key and Export_Hash with DomCrawler
                 $html = $this->CrawlHtml($this->curl->Curl($domain));
-                $data = $this->DomainParam($string, $html);
+                $data = $this->DomainParam($string, $html, $id);
                 echo \GuzzleHttp\json_encode($data);
             }
         }
@@ -176,17 +181,22 @@ class TopKeywordController
     /**
      * @param string $domain
      * @param array $html
+     * @param int $id
      * @return array
      * @throws \Exception
      */
-    protected function DomainParam(string $domain, array $html)
+    protected function DomainParam(string $domain, array $html, int $id)
     {
         // Create Url with the results to Method CrawlHtml !!!
+        if (!is_string($html['api_key']) || !is_string($html['export_hash'])) {
+            echo json_encode(['error' => 'Domain Name does not exist !!!']);
+            die();
+        }
         $url = $this->UrlTraffic($domain, $html['api_key'], $html['export_hash']);
 
         // Scrap Url and Create a json with the result Traffic Keyword !!!
         // We create a file to save the results Traffic by Domain !!!
-        $result = $this->model->FileTrafficByKeyword($this->scrap->ReqTrafficKeyword($url), $domain);
+        $result = $this->model->FileTrafficByKeyword($this->scrap->ReqTrafficKeyword($url), $domain, $id);
 
         // Create Data with the result $result to render data in the JSON !!!
         // We are use the model TopKeyword with Method CreateJson !!!

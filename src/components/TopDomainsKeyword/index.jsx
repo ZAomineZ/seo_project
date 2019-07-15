@@ -3,6 +3,24 @@ import React, { PureComponent } from 'react';
 import TabMaterielTopDomains from './TabMaterielTopDomains';
 import axios from "axios";
 import {Redirect} from "react-router-dom";
+import {BasicNotification} from "../../shared/components/Notification";
+import NotificationSystem from "rc-notification";
+
+let notification = null;
+
+const showNotification = (message, type) => {
+    notification.notice({
+        content: <BasicNotification
+            color={type}
+            title={type === 'danger' ? '👋 Danger !!!' : '👋 Well done !!!'}
+            message={message}
+        />,
+        duration: 5,
+        closable: true,
+        style: {top: 0, left: 'calc(100vw - 100%)'},
+        className: 'left-up',
+    });
+};
 
 class DomainsKeyword extends PureComponent {
     constructor(props) {
@@ -13,26 +31,87 @@ class DomainsKeyword extends PureComponent {
             data: [],
             loading: true,
             loaded: false,
-            error_message: ''
+            error_message: '',
+            redirectSerp: false
         }
+    }
+
+    SetCookie (name_cookie, value_cookie, expire_days)
+    {
+        let date = new Date();
+        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
+        let expire_cookie = "expires=" + date.toUTCString();
+        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
+    }
+
+    getCookie(name_cookie) {
+        let name = name_cookie + '=';
+        let cookie = document.cookie.split(';');
+        for (let i = 0; i < cookie.length; i++) {
+            let cook = cookie[i];
+            while (cook.charAt(0) == ' ') {
+                cook = cook.substring(1);
+            }
+            if (cook.indexOf(name) == 0) {
+                return cook.substring(name.length, cook.length);
+            }
+            return '';
+        }
+    }
+
+    CookieReset (token, id)
+    {
+        if (this.getCookie('remember_me_auth')) {
+            this.SetCookie('remember_me_auth', token + '__' + id, 30)
+        } else {
+            this.SetCookie('auth_today', token + '__' + id, 1)
+        }
+        this.setState({ redirectSerp : !this.state.redirectSerp})
     }
 
     componentDidMount() {
         let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeyword.php", {
             headers: {
-                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
             params: {
-                'domain': this.PropsChange(this.props.match.params.keyword)
+                domain: this.PropsChange(this.props.match.params.keyword),
+                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
             }
         }).then(response => {
             if (response && response.status === 200) {
-                if (response.data === "You have enjoyed more to 10 domain, while the limit 10 !!!") {
+                if (response.data === "You have enjoyed more to 5 domain, while the limit 5 !!!") {
                     this.setState({ error_message : response.data })
                 } else {
-                    this.setState({ data: response.data, loading: false });
-                    setTimeout(() => this.setState({ loaded: true }), 500);
+                    if (response.data.error) {
+                        if (response.data.error === 'Invalid Token') {
+                            this.CookieReset(response.data.token, response.data.id)
+                        } else if (response.data.error === 'Invalid Value') {
+                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            NotificationSystem.newInstance({}, n => notification = n);
+                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                        } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
+                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            NotificationSystem.newInstance({}, n => notification = n);
+                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                        } else if (response.data.error && response.data.error === 'Domain Name does not exist !!!') {
+                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            NotificationSystem.newInstance({}, n => notification = n);
+                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                        }
+                    } else {
+                        this.setState({ data: response.data, loading: false });
+                        setTimeout(() => this.setState({ loaded: true }), 500);
+                    }
                 }
             }
         })
@@ -47,6 +126,13 @@ class DomainsKeyword extends PureComponent {
     }
 
     render() {
+        if (this.state.redirectSerp === true) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            );
+        }
         if (this.state.error_message === "You have enjoyed more to 5 domain, while the limit 5 !!!") {
             return (
                 <Redirect to={{

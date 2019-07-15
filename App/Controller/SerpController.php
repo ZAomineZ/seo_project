@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Actions\Json_File;
+use App\concern\Ajax;
 use App\concern\Date_Format;
 use App\concern\File_Params;
 use App\Http\Controllers\Controller;
@@ -199,11 +200,13 @@ class SerpController extends Controller
 
     /**
      * @param string $keyword
+     * @param string $value
+     * @param int $id
      */
-    public function ResultTop (string $keyword)
+    public function ResultTop (string $keyword, string $value, int $id)
     {
         $keyword = str_replace('-', '%20', $keyword);
-        $create_file = $this->serp->FileData($keyword);
+        $create_file = $this->serp->FileData($keyword, $value, $id);
         $dom_result = $this->serp->DomResultSerp($create_file, $keyword);
         echo \GuzzleHttp\json_encode($dom_result);
     }
@@ -221,12 +224,14 @@ class SerpController extends Controller
 
     /**
      * @param string $keyword
+     * @param string $value
+     * @param int $id
      */
-    public function ResultTopAndLose (string $keyword)
+    public function ResultTopAndLose (string $keyword, string $value, int $id)
     {
         $dir = $this->serp->DIRLoad($keyword);
         $rank_data = $this->serp->DataDateRank(scandir($dir), $dir);
-        $create_file = $this->serp->FileData($keyword);
+        $create_file = $this->serp->FileData($keyword, $value, $id);
         $dom_result = $this->serp->DomResultSerp($create_file, $keyword);
         echo \GuzzleHttp\json_encode(['rank' => count($rank_data['rank']) > 7 ? array_slice($rank_data['rank'], count($rank_data['rank']) - 2, count($rank_data['rank'])) : $rank_data['rank'], "url" => $dom_result['url']]);
     }

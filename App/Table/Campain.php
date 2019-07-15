@@ -42,6 +42,21 @@ class Campain extends Table
         return $select->fetchAll();
     }
 
+    /**
+     * @param string $table
+     * @param int $user_id
+     * @param string $value
+     * @return array
+     */
+    public function SelectCampainExist (string $table, int $user_id, string $value)
+    {
+        $select = $this->pdo
+            ->GetPdo()
+            ->prepare("SELECT * FROM $table WHERE user_id = :user_id AND name = :value ORDER BY id ASC");
+        $select->execute(['user_id' => $user_id, 'value' => $value]);
+        return $select->fetch();
+    }
+
     public function SelectDateAsc (string $table, string $id)
     {
         $select = $this->pdo
@@ -167,6 +182,18 @@ class Campain extends Table
     {
         $update = $this->pdo->GetPdo()->prepare("UPDATE $table SET received = :received WHERE id = :id");
         return $update->execute(['id' => $id, 'received' => $type]);
+    }
+
+    /**
+     * @param string $table
+     * @param string $id
+     * @return bool
+     */
+    public function SelectExistCampaignList (string $table, string $id)
+    {
+        $select = $this->pdo->GetPdo()->prepare("SELECT id FROM $table WHERE id = :id");
+        $select->execute(['id' => $id]);
+        return $select->fetch();
     }
 
     /**

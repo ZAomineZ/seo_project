@@ -51,7 +51,8 @@ class RegisterController
             'email' => $email,
             'password' => $password,
             'created_at' => date('Y-m-d H:i:s'),
-            'confirmation_token' =>  bin2hex(random_bytes(32))
+            'confirmation_token' =>  bin2hex(random_bytes(32)),
+            'token_user' => NULL
         ]);
     }
 
@@ -77,7 +78,8 @@ class RegisterController
                     echo \GuzzleHttp\json_encode($mail);
                 }
             }
+        } else {
+            echo \GuzzleHttp\json_encode($error_exist);
         }
     }
-
 }

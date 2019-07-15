@@ -72,7 +72,7 @@ class LogIn extends PureComponent {
                         <div className="account__head">
                             <h3 className="account__title">Welcome to
                                 <span className="account__logo"> Machin
-              <span className="account__logo-accent">ools</span>
+              <span className="account__logo-accent">Ools</span>
             </span>
                             </h3>
                             <h4 className="account__subhead subhead">Start your SEO easily</h4>

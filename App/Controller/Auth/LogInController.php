@@ -76,7 +76,11 @@ class LogInController
      */
     public function ReconnectCookieData (int $id)
     {
-        echo \GuzzleHttp\json_encode($this->DataUserbyID($id));
+        if (is_int($id)) {
+            echo \GuzzleHttp\json_encode($this->DataUserbyID($id));
+        } else {
+            echo 'Invalid Token !!!';
+        }
     }
 
     /**
@@ -90,7 +94,8 @@ class LogInController
             $req = $this->DataUser($username);
             if ($req && password_verify($password, $req->password)) {
                 if ($req->confirmation_at == 1) {
-                    return $this->login->AuthUser($req->password, $password, $req);
+                    $this->table->UpdateTokenUser(bin2hex(random_bytes(32)), $req->id);
+                    return $this->login->AuthUser($req->password, $password, $this->DataUser($username));
                 }
                 return $this->login->MessageError("Your account hasn't been confirmed !!!");
             }

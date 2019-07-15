@@ -37,6 +37,7 @@ class DatePickers extends PureComponent {
         dt_array: PropTypes.array.isRequired,
         type_btn: PropTypes.bool.isRequired,
         keyword: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired
     };
 
     constructor(props) {
@@ -119,7 +120,8 @@ class DatePickers extends PureComponent {
                                                             : moment(this.props.dt_array[1]).format('LL'),
                                                         'date_array': this.props.date_array,
                                                         'keyword': this.props.keyword,
-                                                        'type_btn': this.props.type_btn
+                                                        'type_btn': this.props.type_btn,
+                                                        'value': this.props.value
                                                     }
                                                     ]}
                                                 />

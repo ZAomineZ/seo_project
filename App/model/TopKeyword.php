@@ -9,6 +9,7 @@
 namespace App\Model;
 
 
+use App\concern\Ajax;
 use App\concern\File_Params;
 use App\concern\Str_options;
 
@@ -16,23 +17,26 @@ class TopKeyword
 {
 
     private $table;
+    private $ajax;
 
     /**
      * TopKeyword constructor.
      * @param \App\Table\Website $table
      */
-    public function __construct(\App\Table\Website $table)
+    public function __construct(\App\Table\Website $table, Ajax $ajax)
     {
         $this->table = $table;
+        $this->ajax = $ajax;
     }
 
     /**
      * @param object $data
      * @param string $domain
+     * @param int $id
      * @return mixed
      * @throws \Exception
      */
-    public function FileTrafficByKeyword(object $data, string $domain)
+    public function FileTrafficByKeyword(object $data, string $domain, int $id)
     {
         $req = $this->table->SelectToken($domain);
         $domain_str = Str_options::str_replace_domain($domain);
@@ -42,6 +46,7 @@ class TopKeyword
             if (!is_dir($dir)) {
                 $mkdir = mkdir($dir, 0777, true);
                 if ($mkdir && !file_exists($file)) {
+                    $this->ajax->UserRate((int)$id);
                     $json = $this->JsonData($data);
                     File_Params::CreateParamsFile($file, $dir, $json, true);
                     $this->ReqDataInsert(File_Params::TokenImgExplode($file), $domain);
@@ -52,6 +57,7 @@ class TopKeyword
             $dir = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'datas' . DIRECTORY_SEPARATOR . 'website' . DIRECTORY_SEPARATOR . $req->directory . DIRECTORY_SEPARATOR . $domain_str;
             $file = $dir . DIRECTORY_SEPARATOR . 'traffic-' . $req->token . '.json';
             if (!file_exists($file)) {
+                $this->ajax->UserRate((int)$id);
                 $json = $this->JsonData($data);
                 File_Params::CreateParamsFile($file, $dir, $json, true);
             } else {

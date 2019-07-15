@@ -37,7 +37,14 @@ class PasswordForgotConfirm extends PureComponent {
                 'token': this.props.match.params.token,
             },
             headers: {
-                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
         }).then((response) => {
             if (response && response.status === 200) {
@@ -64,8 +71,8 @@ class PasswordForgotConfirm extends PureComponent {
                     <div className="account__card">
                         <div className="account__head">
                             <h3 className="account__title">Welcome to
-                                <span className="account__logo"> Easy
-              <span className="account__logo-accent">DEV</span>
+                                <span className="account__logo"> Machin
+              <span className="account__logo-accent">Ools</span>
             </span>
                             </h3>
                             <h4 className="account__subhead subhead">Fomulate your new Password !!!</h4>
