@@ -7,6 +7,7 @@ import TopTenComparaison from './top_comparaison';
 import {CryptoTableProps} from '../../shared/prop-types/TablesProps';
 import {deleteCryptoTableData} from '../../redux/actions/cryptoTableActions';
 import axios from "axios";
+import {route} from '../../const'
 import {Redirect} from "react-router-dom";
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
@@ -84,7 +85,6 @@ class SerpComparison extends PureComponent {
     }
 
     componentDidMount() {
-        let route = '/ReactProject/App'
         axios.get('http://' + window.location.hostname + route + '/Ajax/SerpComparaison.php', {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',

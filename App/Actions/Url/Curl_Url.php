@@ -18,7 +18,7 @@ class Curl_Url
      * @param $value
      * @return bool
      */
-    protected function CurlSetopt ($curl, $option, $value)
+    protected function CurlSetopt ($curl, $option, $value) : bool
     {
         return curl_setopt($curl, $option, $value);
     }
@@ -42,7 +42,7 @@ class Curl_Url
      * @param array $headers
      * @return array
      */
-    private function CurlSetHeader (array $headers = [])
+    private function CurlSetHeader (array $headers = []) : array
     {
         $headers[] = 'Cookie: _ym_uid=1553891720585475788; _ym_d=1553891720; __utma=176069412.446332031.1553891720.1553891720.1553891720.1; __utmc=176069412; __utmz=176069412.1553891720.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); __utmt_UA-33243258-1=1; _ym_visorc_23767645=w; _ym_isad=2; PHPSESSID=phampgoliotr2j3nircnhh0p16; 59db1c1865406acf972686b16458e6cd=9084df0f1c1e8a7ba5ce1431285968fcdecc5fcea%3A4%3A%7Bi%3A0%3Bs%3A6%3A%22474277%22%3Bi%3A1%3Bs%3A5%3A%22Monic%22%3Bi%3A2%3Bi%3A604800%3Bi%3A3%3Ba%3A0%3A%7B%7D%7D; SWIFT_checkStatus=true; __utmb=176069412.4.10.1553891720';
         $headers[] = 'Origin: https://webmeup.com';

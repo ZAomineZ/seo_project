@@ -8,13 +8,18 @@
 
 namespace App\Controller;
 
-
 use App\Table\Campain;
 use Illuminate\Support\Str;
 
 class CampainController
 {
+    /**
+     * @var Campain
+     */
     protected $table;
+    /**
+     * @var \App\Model\Campain
+     */
     protected $campain;
 
     /**
@@ -47,7 +52,7 @@ class CampainController
      * @param int $user_id
      * @return array
      */
-    protected function DataReq (string $table, string $slug = '', int $user_id = 0)
+    protected function DataReq (string $table, string $slug = '', int $user_id = 0) : array
     {
         if ($slug !== '') {
             return $this->table->SelectCampainDetails($slug, $table);
@@ -61,7 +66,7 @@ class CampainController
      * @param int $user_id
      * @return bool
      */
-    protected function DataDelete (string $table, string $slug, int $user_id)
+    protected function DataDelete (string $table, string $slug, int $user_id) : bool
     {
         $select = $this->table->SelectIdCampain($table, $slug, $user_id);
         if ($select) {
@@ -97,7 +102,7 @@ class CampainController
      * @param array $data
      * @return bool
      */
-    protected function DataCampainDetails (string $table, array $data)
+    protected function DataCampainDetails (string $table, array $data) : bool
     {
         return $this->table->InsertData($data, $table);
     }
@@ -133,7 +138,7 @@ class CampainController
      * @param object $auth
      * @return bool
      */
-    public function CampainData (string $value, object $auth)
+    public function CampainData (string $value, object $auth) : bool
     {
        $campain_exist = $this->table->SelectCampainExist('campaign', $auth->id, $value);
        if ($campain_exist->name === $value) {
@@ -145,7 +150,6 @@ class CampainController
 
     /**
      * @param object $auth
-     * @return array
      */
     public function ReqCampain (object $auth)
     {
@@ -158,7 +162,7 @@ class CampainController
      * @param object $auth
      * @return bool
      */
-    public function DeleteCampain (string $slug, object $auth)
+    public function DeleteCampain (string $slug, object $auth) : bool
     {
         return $this->DataDelete("campaign", $slug, $auth->id);
     }
@@ -218,7 +222,7 @@ class CampainController
      * @param $type
      * @return bool
      */
-    public function UpdateData (string $id, $type)
+    public function UpdateData (string $id, $type) : bool
     {
         if ($this->table->SelectExistCampaignList('list_campaign', $id)) {
             return $this->table->UpdateDataReceived('list_campaign', $id, $type);

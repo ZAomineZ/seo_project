@@ -13,8 +13,14 @@ use App\Actions\Suggest_Data;
 
 class SuggestController
 {
+    /**
+     * @var Suggest_Data
+     */
     private $json;
 
+    /**
+     * CONST QUESTIONS DATA KEYWORD GOOGLE
+     */
     CONST QUESTIONS = [
         'que' => 'que',
         'ou' => 'ou',
@@ -28,6 +34,9 @@ class SuggestController
         'quel' => 'quel',
         'quoi' => 'quoi'
     ];
+    /**
+     * CONST PREPOSITIONS DATA KEYWORD GOOGLE
+     */
     CONST PREPOSITIONS = [
         'au' => 'au',
         'avec' => 'avec',
@@ -38,12 +47,18 @@ class SuggestController
         'sans' => 'sans'
 
     ];
+    /**
+     * CONST COMPARISONS DATA KEYWORD GOOGLE
+     */
     CONST COMPARISONS = [
         'contre' => 'contre',
         'et' => 'et',
         'ou' => 'ou',
         'vs' => 'vs'
     ];
+    /**
+     * CONST ALPHA DATA KEYWORD GOOGLE
+     */
     CONST ALPHA = [
         'a' => 'a',
         'b' => 'b',

@@ -9,6 +9,7 @@ import validate from '../../containers/Form/FormValidation/components/validate';
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import axios from "axios";
+import {route} from '../../const'
 
 const renderField = ({
   input, placeholder, type, meta: { touched, error },
@@ -118,7 +119,6 @@ class FormAnalyse extends PureComponent {
 
     VerifError (domain)
     {
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -205,11 +205,25 @@ class FormAnalyse extends PureComponent {
     render() {
       const { t, location } = this.props;
       const redirectMe = this.state.redirectTo;
-      const route = `serp_analyse/${this.state.valueInput}`;
-      if (redirectMe) {
-        return (
-          <Redirect to={route} />
-        );
+        if (redirectMe) {
+          if (this.state.valueInput.indexOf('.') !== -1) {
+              let split_point = this.state.valueInput.split('.');
+              let value_end_state = split_point[split_point.length - 2] + '-' + split_point[split_point.length - 1];
+              let value_st = this.state.valueInput.split('-');
+              let val = value_st.join('.');
+              let val_slice = value_end_state.indexOf('/', -1) !== -1 ? value_end_state.replace('/', '') : value_end_state;
+              return (
+                  <Redirect to={{
+                      pathname: '/seo/serp_analyse/' + val_slice,
+                      state: { domain : val.indexOf('/', -1) !== -1 ? val.replace('/', '') : val }
+                  }} />
+              );
+          } else {
+              const route = `serp_analyse/${this.state.valueInput}`;
+              return (
+                  <Redirect to={route} />
+              );
+          }
       }
         if (this.state.redirectSerp === true) {
             return (

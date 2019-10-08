@@ -14,9 +14,11 @@ import {changeMobileSidebarVisibility, changeSidebarVisibility} from '../../redu
 import {changeThemeToDark, changeThemeToLight} from '../../redux/actions/themeActions';
 import {changeBorderRadius, toggleBoxShadow, toggleTopNavigation} from '../../redux/actions/customizerActions';
 import {CustomizerProps, SidebarProps, ThemeProps} from '../../shared/prop-types/ReducerProps';
-import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
+import {BasicNotification} from "../../shared/components/Notification";
+import {route} from '../../const'
 import axios from "axios";
+
 
 let notification = null;
 
@@ -64,13 +66,25 @@ class Layout extends Component {
         }
     }
 
+    SetCookie (name_cookie, value_cookie, expire_days)
+    {
+        let date = new Date();
+        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
+        let expire_cookie = "expires=" + date.toUTCString();
+        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
+    }
+
+    DeleteCookie (name_cookie)
+    {
+        return this.SetCookie(name_cookie, '', -1);
+    }
+
     componentDidMount() {
         if (this.getCookie('remember_me_auth') !== '') {
             if (!sessionStorage.getItem('Auth')) {
                 let split_string = this.getCookie('remember_me_auth').split('__');
                 let id = split_string[1];
                 if (id !== '') {
-                    let route = '/ReactProject/App';
                     axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                         params: {
                             'id': id,
@@ -89,17 +103,22 @@ class Layout extends Component {
                     }).then((response) => {
                         if (response && response.status === 200) {
                             if (response.data !== '') {
-                                let JSON_DECODE = JSON.stringify(response.data);
-                                sessionStorage.setItem('Auth', JSON_DECODE);
-                                sessionStorage.setItem('Remember_me', 'TRUE');
-                                NotificationSystem.newInstance({}, n => notification = n);
-                                setTimeout(() => showNotification('You are connected !!!', 'success'), 700);
+                                if (response.data.error && response.data.error === 'Invalid Token') {
+                                    this.DeleteCookie('remember_me_auth')
+                                    this.DeleteCookieNotExist();
+                                    NotificationSystem.newInstance({}, n => notification = n);
+                                    setTimeout(() => showNotification('Your account is used by another platform', 'danger'), 700);
+                                } else {
+                                    let JSON_DECODE = JSON.stringify(response.data);
+                                    sessionStorage.setItem('Auth', JSON_DECODE);
+                                    sessionStorage.setItem('Remember_me', 'TRUE');
+                                    NotificationSystem.newInstance({}, n => notification = n);
+                                    setTimeout(() => showNotification('You are connected !!!', 'success'), 700);
+                                }
                             }
                         }
                     })
                 }
-            } else {
-                //
             }
         } else {
             if (this.getCookie('auth_today') !== '') {
@@ -107,7 +126,6 @@ class Layout extends Component {
                     let split_string = this.getCookie('auth_today').split('__');
                     let id = split_string[1];
                     if (id !== '') {
-                        let route = '/ReactProject/App';
                         axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                             params: {
                                 'id': id,
@@ -126,11 +144,18 @@ class Layout extends Component {
                         }).then((response) => {
                             if (response && response.status === 200) {
                                 if (response.data !== '') {
-                                    let JSON_DECODE = JSON.stringify(response.data);
-                                    sessionStorage.setItem('Auth', JSON_DECODE);
-                                    sessionStorage.setItem('Remember_me', 'FALSE');
-                                    NotificationSystem.newInstance({}, n => notification = n);
-                                    setTimeout(() => showNotification('You are connected !!!', 'success'), 700);
+                                    if (response.data.error && response.data.error === 'Invalid Token') {
+                                        this.DeleteCookie('auth_today')
+                                        this.DeleteCookieNotExist();
+                                        NotificationSystem.newInstance({}, n => notification = n);
+                                        setTimeout(() => showNotification('Your account is used by another platform', 'danger'), 700);
+                                    } else {
+                                        let JSON_DECODE = JSON.stringify(response.data);
+                                        sessionStorage.setItem('Auth', JSON_DECODE);
+                                        sessionStorage.setItem('Remember_me', 'FALSE');
+                                        NotificationSystem.newInstance({}, n => notification = n);
+                                        setTimeout(() => showNotification('You are connected !!!', 'success'), 700);
+                                    }
                                 }
                             }
                         })

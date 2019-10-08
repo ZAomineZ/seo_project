@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -12,7 +13,7 @@ class MainWrapper extends PureComponent {
     children: PropTypes.element.isRequired,
   };
 
-  render() {
+    render() {
     const { theme, customizer } = this.props;
 
     const wrapperClass = classNames({

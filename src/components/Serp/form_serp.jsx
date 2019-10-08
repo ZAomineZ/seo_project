@@ -70,7 +70,7 @@ class CampainForm extends PureComponent {
         e.preventDefault();
         if (this.state.valueInput.length !== 0 && this.state.valueInput.length >= 3) {
             if (this.state.valueInput.indexOf('/') === -1 && this.state.valueInput.indexOf(',') === -1) {
-                if (/^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF' ]*$/i.test(this.state.valueInput)) {
+                if (/^[a-zA-Z0-9\u00C0-\u024F\u1E00-\u1EFF' ]*$/i.test(this.state.valueInput)) {
                     if (this.state.valueInput.indexOf(' ') !== -1) {
                         let string = '';
                         let string_ = this.state.valueInput.split(' ');

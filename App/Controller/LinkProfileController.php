@@ -18,12 +18,30 @@ use Goutte\Client;
 
 class LinkProfileController extends \App\Http\Controllers\Controller
 {
+    /**
+     * URL MAJESTIC !!!
+     */
     CONST URL = "https://fr.majestic.com/reports/majestic-million?domain=";
 
+    /**
+     * @var LinkDomain
+     */
     private $link;
+    /**
+     * @var Client
+     */
     private $crawler;
+    /**
+     * @var PDO_Model
+     */
     private $pdo_model;
+    /**
+     * @var LinkProfile
+     */
     private $table;
+    /**
+     * @var Backlink_Profile
+     */
     private $profile;
 
     /**
@@ -34,7 +52,12 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      * @param LinkProfile $table
      * @param Backlink_Profile $profile
      */
-    public function __construct(LinkDomain $link, Client $crawler, PDO_Model $pdo, LinkProfile $table, Backlink_Profile $profile)
+    public function __construct(
+        LinkDomain $link,
+        Client $crawler,
+        PDO_Model $pdo,
+        LinkProfile $table,
+        Backlink_Profile $profile)
     {
         $this->link = $link;
         $this->crawler = $crawler;
@@ -47,10 +70,10 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      * @param string $url
      * @return string
      */
-    protected function DomainUrl (string $url) : string
+    protected function DomainUrl(string $url): string
     {
         $domain = $url;
-        return self::URL . $domain ;
+        return self::URL . $domain;
     }
 
     /**
@@ -58,7 +81,7 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      * @param $mode
      * @return bool|resource
      */
-    protected function FopenFile (string $file, $mode)
+    protected function FopenFile(string $file, $mode)
     {
         return fopen($file, $mode);
     }
@@ -69,9 +92,9 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      * @param string $url
      * @return bool
      */
-    protected function CreateParamsFile (string $file, string $dir, string $url) : bool
+    protected function CreateParamsFile(string $file, string $dir, string $url): bool
     {
-        chmod($dir,0777);
+        chmod($dir, 0777);
         $this->FopenFile($file, "w");
         file_put_contents($file, $this->FopenFile($url, "r"));
         return true;
@@ -82,20 +105,46 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      * @param string $dir
      * @param string $url
      * @param string $domain
-     * @return array
+     * @return bool
      */
-    protected function LinkSave (string $file, string $dir, string $url, string $domain)
+    public function LinkSave(string $file, string $dir, string $url, string $domain)
     {
         if (!is_dir($dir)) {
             $mkdir = mkdir($dir, 0777, true);
             if ($mkdir && !file_exists($file)) {
                 $this->CreateParamsFile($file, $dir, $url);
                 $this->table->InsertDomain([
-                    'power' => Img_Params::PowerImg(Img_Params::FileGetSize($file)),
+                    'power' => Img_Params::PowerImg(Img_Params::FileGetSize($file)) > 100 ? 100 : Img_Params::PowerImg(Img_Params::FileGetSize($file)),
                     'token' => $this->link->TokenImgExplode($file),
                     'domain' => $domain,
                     'date' => date("Y-m-d H:i:s")
                 ]);
+                return true;
+            }
+        } else {
+            if (!file_exists($file)) {
+                $req = $this->table->SelectPowerbyDomain($domain);
+                if ($req) {
+                    if (self::DateNoTime($req->date) === (string)date("Y-m-d")) {
+                        return false;
+                    } else {
+                        $this->CreateParamsFile($file, $dir, $url);
+                        $this->table->InsertDomain([
+                            'power' => Img_Params::PowerImg(Img_Params::FileGetSize($file)) > 100 ? 100 : Img_Params::PowerImg(Img_Params::FileGetSize($file)),
+                            'token' => $this->link->TokenImgExplode($file),
+                            'domain' => $domain,
+                            'date' => date("Y-m-d H:i:s")
+                        ]);
+                    }
+                } else {
+                    $this->CreateParamsFile($file, $dir, $url);
+                    $this->table->InsertDomain([
+                        'power' => Img_Params::PowerImg(Img_Params::FileGetSize($file)) > 100 ? 100 : Img_Params::PowerImg(Img_Params::FileGetSize($file)),
+                        'token' => $this->link->TokenImgExplode($file),
+                        'domain' => $domain,
+                        'date' => date("Y-m-d H:i:s")
+                    ]);
+                }
             }
         }
     }
@@ -104,11 +153,11 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      * @param string $domain
      * @return array
      */
-    private function DomainMajectic (string  $domain) : array
+    public function DomainMajectic(string $domain): array
     {
         $url = "https://fr.majestic.com/charts/linkprofile/2/?target=$domain&IndexDataSource=F";
         $domain_str = Str_options::str_replace_domain($domain);
-        $dir =  dirname(__DIR__, 2) . '/' . 'storage' . '/' . 'datas' . '/' . 'imastic' . '/' . 'LinkProfile-' . $domain_str;
+        $dir = dirname(__DIR__, 2) . '/' . 'storage' . '/' . 'datas' . '/' . 'imastic' . '/' . 'LinkProfile-' . $domain_str;
         $domain_url = $this->DomainUrl($domain);
         return [
             "url" => $url,
@@ -122,21 +171,20 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      * @param string $date
      * @return mixed
      */
-    protected static function DateNoTime (string $date)
+    protected static function DateNoTime(string $date)
     {
-        $explode =  explode(" ", $date);
+        $explode = explode(" ", $date);
         return $explode[0];
     }
 
     /**
      * @param string $domain
      * @param $majestic
-     * @return |null
      */
-    protected function ExistDateDomain (string $domain, $majestic)
+    protected function ExistDateDomain(string $domain, $majestic)
     {
-        if(self::DateNoTime($this->table->SelectPowerbyDomain($domain)->date) !== (string)date("Y-m-d")) {
-            $file =  $majestic["dir"] . '/' . $majestic["domain_str"] . '-' .$this->table->SelectPowerbyDomain($domain)->token . '.png';
+        if (self::DateNoTime($this->table->SelectPowerbyDomain($domain)->date) !== (string)date("Y-m-d")) {
+            $file = $majestic["dir"] . '/' . $majestic["domain_str"] . '-' . $this->table->SelectPowerbyDomain($domain)->token . '.png';
             $url = "https://fr.majestic.com/charts/linkprofile/2/?target=$domain&IndexDataSource=F";
             file_put_contents($file, $this->FopenFile($url, "r"));
             $this->table->InsertDomain([
@@ -154,7 +202,7 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      * @return false|string
      * @throws \Exception
      */
-    protected function ReturnHtml (string $domain, $json)
+    protected function ReturnHtml(string $domain, $json)
     {
         $majestic = $this->DomainMajectic($domain);
         $file = $majestic["dir"] . '/' . $majestic["domain_str"] . '-' . $this->link->TokenImg() . '.png';
@@ -162,7 +210,7 @@ class LinkProfileController extends \App\Http\Controllers\Controller
         $this->LinkSave($file, $majestic["dir"], $majestic["url"], $domain);
         $this->ExistDateDomain($domain, $majestic);
 
-        $power = $this->table->SelectPowerAll($domain);
+        $power = array_reverse($this->table->SelectPowerAll($domain));
         $power_last = $this->table->SelectPowerbyDomain($domain);
 
         return $this->link->UrlHtml($majestic["domain_url"], $power, $power_last, $this->table->SelectDate($domain), $json);
@@ -173,7 +221,7 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      * @return string
      * @throws \Exception
      */
-    public function linkProfile (string $domain)
+    public function linkProfile(string $domain): ?string
     {
         if ($this->profile->ReqIpRef($domain)->status === "Not Found" || $this->profile->ReqIpRef($domain)->status === "Validation Error : target") {
             return $this->link->UrlHtml('', '', '', '', $this->profile->ReqIpRef($domain));

@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import MatTableHead from './MatTableHeadTopDomains';
 import MatTableToolbarTopDomain from './MatTableToolbarTopDomain';
 import axios from "axios";
+import {route} from "../../const";
 import {Redirect} from "react-router-dom";
 
 let counter = 0;
@@ -100,7 +101,6 @@ export default class MatTable extends PureComponent {
 
     Download(event, data) {
         event.preventDefault();
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeywordCsv.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -124,7 +124,7 @@ export default class MatTable extends PureComponent {
                         this.CookieReset(response.data.token, response.data.id)
                     }
                 } else {
-                    window.location = response.request.responseURL
+                    window.location.href = response.request.responseURL;
                 }
             }
         })
@@ -141,7 +141,7 @@ export default class MatTable extends PureComponent {
         const data_arr_last = data_obj.map((d) => {
             let data_obj_d = Object.values(d);
             if (data_obj.length > 1) {
-                if (data_obj_d[0].length !== 0 && data_obj_d[0].length === 1) {
+                if (data_obj_d.length !== 0 && data_obj_d[0].length !== 0 && data_obj_d[0].length === 1) {
                     return {
                         id: i++,
                         date: data_obj_d[0][data_obj_d[0].length - 1].date,
@@ -153,7 +153,7 @@ export default class MatTable extends PureComponent {
                         top_51_100: data_obj_d[0][data_obj_d[0].length - 1].top_51_100,
                         traffic: data_obj_d[0][data_obj_d[0].length - 1].traffic,
                     }
-                } else if (data_obj_d[0].length !== 0 && data_obj_d[0].length > 1) {
+                } else if (data_obj_d.length !== 0 && data_obj_d[0].length !== 0 && data_obj_d[0].length > 1) {
                     return {
                         id: i++,
                         date: data_obj_d[0][data_obj_d[0].length - 2].date,
@@ -221,7 +221,7 @@ export default class MatTable extends PureComponent {
         const data_arr_now = data_obj.map((d) => {
             let data_obj_d = Object.values(d);
             if (data_obj.length > 1) {
-                if (data_obj_d[0].length !== 0 && data_obj_d[0].length === 1) {
+                if (data_obj_d.length !== 0 && data_obj_d[0].length !== 0 && data_obj_d[0].length === 1) {
                     return {
                         id: i++,
                         date: data_obj_d[0][data_obj_d[0].length - 1].date,
@@ -233,7 +233,7 @@ export default class MatTable extends PureComponent {
                         top_51_100: data_obj_d[0][data_obj_d[0].length - 1].top_51_100,
                         traffic: data_obj_d[0][data_obj_d[0].length - 1].traffic,
                     }
-                } else if (data_obj_d[0].length !== 0 && data_obj_d[0].length > 1) {
+                } else if (data_obj_d.length !== 0 && data_obj_d[0].length !== 0 && data_obj_d[0].length > 1) {
                     return {
                         id: i++,
                         date: data_obj_d[0][data_obj_d[0].length - 1].date,
@@ -410,15 +410,17 @@ export default class MatTable extends PureComponent {
                                                     >
                                                         <p className="">{d.traffic}</p>
                                                         {
-                                                            d.diff_traffic !== undefined ?
+                                                            d.diff_traffic !== undefined && d.traffic !== 0 ?
                                                                 Math.sign(d.diff_traffic) === -1 ?
                                                                     svg_red : svg_green
                                                                 : ''
                                                         }
                                                         <p>
-                                                            {d.diff_traffic !== undefined ? Math.sign(d.diff_traffic) === -1 ?
-                                                                d.diff_traffic
-                                                                : '+' + (d.diff_traffic) : ''}</p>
+                                                            {d.diff_traffic !== undefined && d.traffic !== 0 ?
+                                                                Math.sign(d.diff_traffic) === -1 ?
+                                                                    d.diff_traffic
+                                                                : '+' + (d.diff_traffic) : ''}
+                                                                </p>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="material-table__cell">
@@ -427,13 +429,13 @@ export default class MatTable extends PureComponent {
                                                     >
                                                         <p className="">{d.top_3}</p>
                                                         {
-                                                            d.diff_top_3 !== undefined ?
+                                                            d.diff_top_3 !== undefined && d.top_3 !== 0 ?
                                                                 Math.sign(d.diff_top_3) === -1 ?
                                                                     svg_red : svg_green
                                                             : ''
                                                         }
                                                         <p>{
-                                                            d.diff_top_3 !== undefined ?
+                                                            d.diff_top_3 !== undefined && d.top_3 !== 0 ?
                                                                 Math.sign(d.diff_top_3) === -1 ?
                                                                     d.diff_top_3
                                                                     : '+' + (d.diff_top_3)
@@ -446,13 +448,13 @@ export default class MatTable extends PureComponent {
                                                     >
                                                         <p className="">{d.top_4_10}</p>
                                                         {
-                                                            d.diff_top_4_10 !== undefined ?
+                                                            d.diff_top_4_10 !== undefined && d.top_4_10 !== 0 ?
                                                                 Math.sign(d.diff_top_4_10) === -1 ?
                                                                     svg_red : svg_green
                                                             : ''
                                                         }
                                                         <p>{
-                                                            d.diff_top_4_10 !== undefined ?
+                                                            d.diff_top_4_10 !== undefined && d.top_4_10 !== 0 ?
                                                                 Math.sign(d.diff_top_4_10) === -1 ?
                                                                 d.diff_top_4_10
                                                                 : '+' + (d.diff_top_4_10)
@@ -465,12 +467,12 @@ export default class MatTable extends PureComponent {
                                                     >
                                                         <p className="">{d.top_11_20}</p>
                                                         {
-                                                            d.diff_top_11_20 !== undefined ?
+                                                            d.diff_top_11_20 !== undefined && d.top_11_20 !== 0 ?
                                                                 Math.sign(d.diff_top_11_20) === -1 ?
                                                                 svg_red : svg_green
                                                             : ''
                                                         }
-                                                        <p>{ d.diff_top_11_20 !== undefined ?
+                                                        <p>{ d.diff_top_11_20 !== undefined && d.top_11_20 !== 0 ?
                                                                 Math.sign(d.diff_top_11_20) === -1 ?
                                                                 d.diff_top_11_20
                                                             : '+' + (d.diff_top_11_20)
@@ -483,13 +485,13 @@ export default class MatTable extends PureComponent {
                                                     >
                                                         <p className="">{d.top_21_50}</p>
                                                         {
-                                                            d.diff_top_21_50 !== undefined ?
-                                                                Math.sign(d.diff_top_21_50) === -1 ?
+                                                            d.diff_top_21_50 !== undefined && d.top_21_50 !== 0 ?
+                                                                Math.sign(d.top_21_50) === -1 ?
                                                                     svg_red : svg_green
                                                             : ''
                                                         }
                                                         <p>{
-                                                            d.diff_top_21_50 !== undefined ?
+                                                            d.diff_top_21_50 !== undefined && d.top_21_50 !== 0 ?
                                                                 Math.sign(d.diff_top_21_50) === -1 ?
                                                                  d.diff_top_21_50
                                                                     : '+' + (d.diff_top_21_50)
@@ -502,13 +504,13 @@ export default class MatTable extends PureComponent {
                                                     >
                                                         <p className="">{d.top_51_100}</p>
                                                         {
-                                                            d.diff_top_51_100 !== undefined ?
+                                                            d.diff_top_51_100 !== undefined && d.top_51_100 !== 0 ?
                                                                 Math.sign(d.diff_top_51_100) === -1 ?
                                                                     svg_red : svg_green
                                                             : ''
                                                         }
                                                         <p>{
-                                                            d.diff_top_51_100 !== undefined ?
+                                                            d.diff_top_51_100 !== undefined && d.top_51_100 !== 0 ?
                                                                 Math.sign(d.diff_top_51_100) === -1 ?
                                                                     d.diff_top_51_100
                                                                         : '+' + (d.diff_top_51_100)

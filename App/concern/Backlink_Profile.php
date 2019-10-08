@@ -9,6 +9,7 @@
 namespace App\concern;
 
 use Goutte\Client;
+use Symfony\Component\DomCrawler\Crawler;
 
 class Backlink_Profile
 {
@@ -33,7 +34,7 @@ class Backlink_Profile
      * @param string $domain
      * @return string
      */
-    public static function Backlink (string $domain)
+    public static function Backlink (string $domain) : string
     {
         $backlink = "https://bl.backend.semrush.com/?key=" . self::KEY . "&target=$domain&type=backlinks_overview&method=nojsonp&target_type=root_domain&export_columns=backlinks_anchors%2Cdomains_num%2Chosts_num%2Ctexts_num%2Curls_num%2Cips_num%2Cipclassc_num%2Cgeodomains%2Czones%2Cfollows_num%2Cforms_num%2Cframes_num%2Cimages_num%2Cbacklinks%2Cbacklinks_pages%2Cbacklinks_refdomains";
         return $backlink;
@@ -44,7 +45,7 @@ class Backlink_Profile
      * @param string $url
      * @return \Symfony\Component\DomCrawler\Crawler
      */
-    protected function FileOpenJson (Client $goutte, string $url)
+    protected function FileOpenJson (Client $goutte, string $url) : Crawler
     {
         $gt = $goutte->request("GET", $url);
         $gt_response = $goutte->getResponse()->getContent();

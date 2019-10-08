@@ -8,7 +8,13 @@ use Goutte\Client;
 
 class LinkDomain extends \Illuminate\Database\Eloquent\Model
 {
+    /**
+     * @var Client
+     */
     private $goutte;
+    /**
+     * @var Str_options
+     */
     private $str;
 
     /**
@@ -23,6 +29,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
     }
 
     /**
+     * Create Token for each Image Majestic with the function random_bytes()
      * @return string
      * @throws \Exception
      * Create a token !!!
@@ -69,7 +76,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @return array
      * Return string with two explode by $params and $params_second and use the delimiter !!!
      */
-    private function ExplodeHtmlTwo(string $params, string $str_update, string $params_second)
+    private function ExplodeHtmlTwo(string $params, string $str_update, string $params_second) : array
     {
         $explode = explode($params, $str_update);
         $explode_end = explode($params_second, $explode[0]);
@@ -84,7 +91,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param bool $replace
      * @return array
      */
-    private function FilterUrlHtml($crawl, string $params, string $explode_second, string $search, bool $replace)
+    private function FilterUrlHtml($crawl, string $params, string $explode_second, string $search, bool $replace) : array
     {
         $crawl_clss = $this->FilterCrawl($crawl, $search, $replace);
         if (isset($crawl_clss[1])) {
@@ -131,7 +138,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @return array
      * Recuperate all the date to FetchAll and Format DateTime in Table link_profile for implode in the array !!!
      */
-    protected static function ForDate($power)
+    protected static function ForDate($power) : array
     {
         $power_end = [];
         foreach ($power as $puissance) {
@@ -145,7 +152,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param $anchor
      * @return array
      */
-    protected static function ForAnchors($anchor)
+    protected static function ForAnchors($anchor) : array
     {
         $anchor_end = [];
         foreach ($anchor as $anchors) {
@@ -158,7 +165,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param $label
      * @return array
      */
-    protected static function ForLabelsAnchor($label)
+    protected static function ForLabelsAnchor($label) : array
     {
         $labels_end = [];
         foreach ($label as $labels) {
@@ -171,7 +178,7 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param $date
      * @return float
      */
-    protected static function DiffDate($date)
+    protected static function DiffDate($date) : float
     {
         $date_two = [];
         foreach ($date as $dt) {
@@ -184,9 +191,9 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
     /**
      * @param $crawl
      * @return array
-     * Implode two $this->FilterUrlHtml() in the array for use in the method $this->>FilterReturnResult !!!
+     * Implode two $this->FilterUrlHtml() in the array for use in the method $this->FilterReturnResult !!!
      */
-    protected function FilterReturnResult($crawl): array
+    protected function FilterReturnResult($crawl) : array
     {
         $filter1 = $this->FilterUrlHtml($crawl, '', '', "tr.highlight > td[align=\"right\"] font", FALSE);
         $filter2 = $this->FilterUrlHtml($crawl, ">", '"', "tr.highlight > td[align=\"right\"] span", TRUE);

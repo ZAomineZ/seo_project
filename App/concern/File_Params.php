@@ -8,7 +8,6 @@
 
 namespace App\concern;
 
-
 class File_Params
 {
 
@@ -56,7 +55,7 @@ class File_Params
      */
     public static function OpenFile (string $file, string $dir, bool $string_r = false)
     {
-        chmod($dir,0777);
+        chmod($dir, 0777);
         self::FopenFile($file, 'r');
         return $string_r === false ?
             \GuzzleHttp\json_decode(file_get_contents($file))
@@ -81,6 +80,12 @@ class File_Params
         return false;
     }
 
+    /**
+     * @param string $file
+     * @param string $dir
+     * @param $options
+     * @return bool|int
+     */
     public static function UpdateFileExist (string $file, string $dir, $options)
     {
         chmod($dir, 0777);
@@ -101,7 +106,6 @@ class File_Params
      */
     public static function CreateParamsFile (string $file, string $dir, $options, $json = false) : bool
     {
-        chmod($dir,0777);
         $fopen = self::FopenFile($file, "w");
         if ($options !== null) {
             if ($json && !is_array($options)) {

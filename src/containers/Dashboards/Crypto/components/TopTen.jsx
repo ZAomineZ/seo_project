@@ -125,6 +125,7 @@ export default class TopTen extends PureComponent {
             PropTypes.object
         ]),
         array_date: PropTypes.array.isRequired,
+        dataVl: PropTypes.array.isRequired,
         keyword: PropTypes.string.isRequired,
         date_comparaison: PropTypes.bool.isRequired,
         state_location: PropTypes.array,
@@ -173,7 +174,13 @@ export default class TopTen extends PureComponent {
                         id: key + 1,
                         description: d,
                         url: nextProps.array_url[key],
-                        title: title
+                        title: title,
+                        cpc: nextProps.dataVl[key] ?
+                            Math.round(nextProps.dataVl[key].cpc * 100) / 100
+                            : 0,
+                        volume: nextProps.dataVl[key] ?
+                            Math.round(nextProps.dataVl[key].volume)
+                            : 0,
                     }
                 }),
                 data_diff: Object.entries(nextProps.array_rank).map((d) => {
@@ -249,8 +256,7 @@ export default class TopTen extends PureComponent {
         this.setState({data: copyData, selected: []});
     };
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
+    SetCookie(name_cookie, value_cookie, expire_days) {
         let date = new Date();
         date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
         let expire_cookie = "expires=" + date.toUTCString();
@@ -272,14 +278,13 @@ export default class TopTen extends PureComponent {
         }
     }
 
-    CookieReset (token, id)
-    {
+    CookieReset(token, id) {
         if (this.getCookie('remember_me_auth')) {
             this.SetCookie('remember_me_auth', token + '__' + id, 30)
         } else {
             this.SetCookie('auth_today', token + '__' + id, 1)
         }
-        this.setState({ redirectSerp : !this.state.redirectSerp})
+        this.setState({redirectSerp: !this.state.redirectSerp})
     }
 
     TrustScoreRank = (event, domain, id) => {
@@ -325,9 +330,9 @@ export default class TopTen extends PureComponent {
                         }),
                         loading: false
                     });
-                    setTimeout(() => this.setState({ loaded: true }), 500);
-                    this.setState({ loading: true });
-                    this.setState({ loaded: false });
+                    setTimeout(() => this.setState({loaded: true}), 500);
+                    this.setState({loading: true});
+                    this.setState({loaded: false});
                 }
             }
         });
@@ -443,7 +448,11 @@ export default class TopTen extends PureComponent {
                                             </div>
                                         </td>
                                         <td>
-                                            {d.url}
+                                            {
+                                                d.url ?
+                                                    d.url.length > 97 ? d.url.substring(0, 97) + '...' : d.url
+                                                    : ''
+                                            }
                                             <MinimalCollapse url={d.url} description={d.description} title={d.title}/>
                                         </td>
                                         <td>
@@ -451,15 +460,15 @@ export default class TopTen extends PureComponent {
                                                 {
                                                     this.props.TopOrLose ?
                                                         data_diff[data_diff.length - 2] ?
-                                                        data_diff[data_diff.length - 2][d.url] && data_diff[data_diff.length - 1][d.url] !== undefined
-                                                            ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) !== -1
-                                                            ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) !== 0
-                                                                ? svg_green
+                                                            data_diff[data_diff.length - 2][d.url] && data_diff[data_diff.length - 1][d.url] !== undefined
+                                                                ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) !== -1
+                                                                ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) !== 0
+                                                                    ? svg_green
+                                                                    : ''
+                                                                : svg_red
                                                                 : ''
-                                                            : svg_red
                                                             : ''
-                                                        : ''
-                                                            :
+                                                        :
                                                         <svg
                                                             className="mdi-icon dashboard_top_serp_icon"
                                                             width="24"
@@ -476,21 +485,27 @@ export default class TopTen extends PureComponent {
                                                 <p className=
                                                        {
                                                            data_diff[data_diff.length - 2] ?
-                                                           data_diff[data_diff.length - 2][d.url] && data_diff[data_diff.length - 1][d.url] !== undefined
-                                                               ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) === 0
-                                                               ? 'dashboard__total-stat cl_green' : 'dashboard__total-stat' : 'dashboard__total-stat cl_green' : ''}>
+                                                               data_diff[data_diff.length - 2][d.url] && data_diff[data_diff.length - 1][d.url] !== undefined
+                                                                   ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) === 0
+                                                                   ? 'dashboard__total-stat cl_green' : 'dashboard__total-stat' : 'dashboard__total-stat cl_green' : ''}>
                                                     {
                                                         data_diff[data_diff.length - 2] ?
-                                                        data_diff[data_diff.length - 2][d.url] && data_diff[data_diff.length - 1][d.url] !== undefined
-                                                            ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) !== -1
-                                                            ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) !== 0
-                                                                ? '+' + (data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)
-                                                                : '='
-                                                            : (data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)
-                                                            : 'IN' : 'Place not defined'
+                                                            data_diff[data_diff.length - 2][d.url] && data_diff[data_diff.length - 1][d.url] !== undefined
+                                                                ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) !== -1
+                                                                ? Math.sign((data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)) !== 0
+                                                                    ? '+' + (data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)
+                                                                    : '='
+                                                                : (data_diff[data_diff.length - 2][d.url].rank) - (data_diff[data_diff.length - 1][d.url].rank)
+                                                                : 'IN' : 'Place not defined'
                                                     }
                                                 </p>
                                             </div>
+                                        </td>
+                                        <td>
+                                            {d.volume}
+                                        </td>
+                                        <td>
+                                            {d.cpc}
                                         </td>
                                         <td className="dashboard__table-crypto-chart">
                                             <ResponsiveContainer height={36} className="dashboard__chart-container">

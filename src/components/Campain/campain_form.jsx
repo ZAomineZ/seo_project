@@ -104,7 +104,7 @@ class CampainForm extends PureComponent {
         e.preventDefault();
         if (this.state.valueInput.length !== 0) {
             if (this.state.valueInput.indexOf('/') === -1 && this.state.valueInput.indexOf('.') === -1) {
-                if (/^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF' ]*$/i.test(this.state.valueInput)) {
+                if (/^[a-zA-Z0-9\u00C0-\u024F\u1E00-\u1EFF' ]*$/i.test(this.state.valueInput)) {
                     const value = this.state.valueInput;
                     let route = "/ReactProject/App";
                     axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/Campain.php", {
@@ -155,13 +155,13 @@ class CampainForm extends PureComponent {
     render() {
         const { t, location } = this.props;
         const redirectMe = this.state.redirectTo;
-        let value_end = ''
+        let value_end = '';
         if (this.state.valueInput.indexOf(' ')) {
-            let mot = this.state.valueInput.split(' ')
+            let mot = this.state.valueInput.split(' ');
             let mot_array = mot.map((val) => {
                 return val
-            })
-            let mot_end = ''
+            });
+            let mot_end = '';
             for (let i = 0; i < mot_array.length; i++) {
                 mot_end += mot_array[i] + '-'
             }

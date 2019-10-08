@@ -135,11 +135,25 @@ class HorizontalForm extends PureComponent {
     render() {
         const { t, location } = this.props;
         let redirectMe = this.state.redirectTo;
-        let route = 'linkprofile/' + this.state.valueInput;
         if (redirectMe) {
-            return (
-                <Redirect to={route} />
-            );
+            if (this.state.valueInput.indexOf('.') !== -1) {
+                let split_point = this.state.valueInput.split('.');
+                let value_end_state = split_point[split_point.length - 2] + '-' + split_point[split_point.length - 1];
+                let value_st = this.state.valueInput.split('-');
+                let val = value_st.join('.');
+                let val_slice = value_end_state.indexOf('/', -1) !== -1 ? value_end_state.replace('/', '') : value_end_state;
+                return (
+                    <Redirect to={{
+                        pathname: '/seo/linkprofile/' + val_slice,
+                        state: { domain : val.indexOf('/', -1) !== -1 ? val.replace('/', '') : val }
+                    }} />
+                );
+            } else {
+                let route = 'linkprofile/' + this.state.valueInput;
+                return (
+                    <Redirect to={route} />
+                );
+            }
         } else {
             if (this.props.location.substr(-1) === "/") {
                 return <Redirect to={location.substr(0, location.length - 1)} />;

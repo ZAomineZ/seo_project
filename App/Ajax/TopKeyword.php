@@ -1,5 +1,15 @@
 <?php
 require '../../vendor/autoload.php';
+
+use App\Actions\Json_File;
+use App\Actions\Url\Curl_Keyword;
+use App\concern\Str_options;
+use App\Model\PDO_Model;
+use App\Model\TopKeyword;
+use App\Table\Website;
+use Goutte\Client;
+use Symfony\Component\DomCrawler\Crawler;
+
 $ajax = new \App\concern\Ajax();
 $ajax->HeaderProtect();
 
@@ -13,15 +23,15 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $ajax->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
                     $ajax->VerifValueRegex($_GET['domain']);
 
-                    $curl = new \App\Actions\Url\Curl_Keyword();
-                    $crawl = new \Symfony\Component\DomCrawler\Crawler();
-                    $str = new \App\concern\Str_options();
-                    $client = new \Goutte\Client();
-                    $scrap = new \App\Actions\Json_File($client);
-                    $pdo = new \App\Model\PDO_Model();
-                    $table = new \App\Table\Website($pdo);
-                    $model = new \App\Model\TopKeyword($table, $ajax);
-                    $website_table = new \App\Table\Website($pdo);
+                    $curl = new Curl_Keyword();
+                    $crawl = new Crawler();
+                    $str = new Str_options();
+                    $client = new Client();
+                    $scrap = new Json_File($client);
+                    $pdo = new PDO_Model();
+                    $table = new Website($pdo);
+                    $model = new TopKeyword($table, $ajax);
+                    $website_table = new Website($pdo);
 
                     $keyword = new \App\Controller\TopKeywordController($curl, $crawl, $str, $scrap, $model, $website_table, $ajax);
                     $keyword->ResultJson($_GET['domain'], $auth->id);

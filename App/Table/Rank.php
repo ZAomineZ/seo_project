@@ -1,0 +1,141 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: bissboss
+ * Date: 02/10/19
+ * Time: 03:30
+ */
+
+namespace App\Table;
+
+use App\Model\PDO_Model;
+use PDOStatement;
+
+class Rank extends Table
+{
+    public function __construct(PDO_Model $PDO_Model)
+    {
+        parent::__construct($PDO_Model);
+    }
+
+    /**
+     * @param array $data
+     * @param string $table
+     * @return bool
+     */
+    public function InsertData(array $data, string $table): bool
+    {
+        return parent::InsertData($data, $table);
+    }
+
+    /**
+     * @param string|int $id
+     * @param bool $limit
+     * @return mixed
+     */
+    public function selectRank($id, bool $limit = false)
+    {
+        if ($limit) {
+            $statement =  $this->pdo->GetPdo()
+                ->prepare("SELECT * FROM rank WHERE user_id = ? ORDER BY id DESC LIMIT 1");
+        } else {
+            $statement =  $this->pdo->GetPdo()
+                ->prepare("SELECT * FROM rank WHERE id = ?");
+        }
+        $statement->execute([$id]);
+        return $statement->fetch();
+    }
+
+    /**
+     * @param int $user_id
+     * @return array
+     */
+    public function SelectAllProjectByUser(int $user_id): array
+    {
+        $statement =  $this->pdo->GetPdo()
+            ->prepare("SELECT * FROM rank WHERE user_id = ? ORDER BY id DESC");
+        $statement->execute([$user_id]);
+        return $statement->fetchAll();
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function UpdateData(array $data): bool
+    {
+        $statement = $this->pdo->GetPdo()
+            ->prepare("UPDATE rank SET project = :project, website = :website, content = :content, created_at = :created_at, keywords = :keywords WHERE id = :id");
+        return $statement->execute([
+            'project' => $data['project'],
+            'website' => $data['website'],
+            'content' => $data['content'],
+            'created_at' => $data['created_at'],
+            'keywords' => $data['keywords'],
+            'id' => (int)$data['id']
+        ]);
+    }
+
+    /**
+     * @param $auth
+     * @param string $project
+     * @param null|string|int $id
+     * @return mixed
+     */
+    public function selectProject($auth, string $project, $id = null)
+    {
+        if (!is_null($id)) {
+            $statement = $this->pdo->GetPdo()
+                ->prepare("SELECT id FROM rank WHERE project = :project AND user_id = :userID AND id != :id");
+            $statement->execute([
+                'userID' => $auth->id,
+                'project' => $project,
+                'id' => $id
+            ]);
+        } else {
+            $statement = $this->pdo->GetPdo()
+                ->prepare("SELECT id FROM rank WHERE project = :project AND user_id = :userID");
+            $statement->execute([
+                'userID' => $auth->id,
+                'project' => $project
+            ]);
+        }
+        $fetch = $statement->fetch();
+        if ($fetch && $fetch->id) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $auth
+     * @param string $id
+     * @return bool|PDOStatement
+     */
+    public function deleteProject($auth, string $id)
+    {
+        $statement = $this->pdo
+            ->GetPdo()
+            ->prepare('DELETE FROM rank WHERE id = :id AND user_id = :userID');
+        $statement->execute([
+            'id' => $id,
+            'userID' => $auth->id
+        ]);
+        return $statement;
+    }
+
+    /**
+     * @param string|int $userID
+     * @return mixed
+     */
+    public function countProjectByUser($userID)
+    {
+        $statement = $this->pdo
+            ->GetPdo()
+            ->prepare('SELECT count(id) as idCount FROM rank WHERE user_id = :userID');
+        $statement->execute([
+            'userID' => $userID
+        ]);
+        return $statement->fetch();
+    }
+}

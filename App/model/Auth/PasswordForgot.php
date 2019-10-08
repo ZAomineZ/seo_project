@@ -8,21 +8,18 @@
 
 namespace App\Model\Auth;
 
-
 class PasswordForgot
 {
-
     /**
      * @param string $message
      * @param string $type
      * @return array
      */
-    public function MessageFront (string $message, string $type)
+    public function MessageFront (string $message, string $type) : array
     {
         if ($type === 'error') {
             return [$type => $message];
         }
         return[$type => $message];
     }
-
 }

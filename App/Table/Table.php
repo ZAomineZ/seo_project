@@ -8,14 +8,19 @@
 
 namespace App\Table;
 
-
 use App\Model\PDO_Model;
 
 class Table
 {
-
+    /**
+     * @var PDO_Model
+     */
     protected $pdo;
 
+    /**
+     * Table constructor.
+     * @param PDO_Model $PDO_Model
+     */
     public function __construct(PDO_Model $PDO_Model)
     {
         $this->pdo = $PDO_Model;
@@ -26,7 +31,7 @@ class Table
      * @param string $table
      * @return bool
      */
-    public function InsertData (array $data, string $table)
+    public function InsertData (array $data, string $table) : bool
     {
         $arr = [];
         $params = [];

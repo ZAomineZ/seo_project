@@ -1,15 +1,13 @@
 /* eslint-disable */
 import React, {PureComponent} from 'react';
 import {Field, reduxForm} from 'redux-form';
-import EyeIcon from 'mdi-react/EyeIcon';
 import validate from '../../containers/Form/FormValidation/components/validate';
-import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import PropTypes from 'prop-types';
-import renderCheckBoxField from '../../shared/components/form/CheckBox';
 import {BasicNotification} from "../../shared/components/Notification";
 import MailRuIcon from "mdi-react/MailRuIcon";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
+import {route} from '../../const'
 import NotificationSystem from "rc-notification";
 
 
@@ -82,7 +80,6 @@ class PasswordFagotForm extends PureComponent {
     {
         e.preventDefault();
         if (this.state.valueEmail !== '' && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.valueEmail)) {
-            let route = '/ReactProject/App'
             axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/password_forgot.php', {
                 params: {
                     'email': this.state.valueEmail,

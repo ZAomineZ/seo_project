@@ -95,7 +95,7 @@ export default class ModalAnchors extends PureComponent {
                             {
                                 this.props.data_asc.map((item) => (
                                     <tr>
-                                        <td>{ item.url.substring(0, 100)  }</td>
+                                        <td>{ item.url.split('/')[0] + '//' +  item.url.split('/')[2] }</td>
                                         <td>{ item.anchorUrl.substring(0, 100) }</td>
                                         <td>{ item.anchorText }</td>
                                         <td>
@@ -110,7 +110,7 @@ export default class ModalAnchors extends PureComponent {
                             }{
                                 this.props.data_desc.map((item) => (
                                     <tr>
-                                        <td>{ item.url.substring(0, 100)  }</td>
+                                        <td>{ item.url.split('/')[0] + '//' +  item.url.split('/')[2] }</td>
                                         <td>{ item.anchorUrl.substring(0, 100)  }</td>
                                         <td>{ item.anchorText }</td>
                                         <td>
@@ -125,7 +125,7 @@ export default class ModalAnchors extends PureComponent {
                             }{
                                 this.props.data_url.map((item) => (
                                     <tr>
-                                        <td>{ item.url.substring(0, 100)  }</td>
+                                        <td>{ item.url.split('/')[0] + '//' +  item.url.split('/')[2] }</td>
                                         <td>{ item.anchorUrl.substring(0, 100)  }</td>
                                         <td>{ item.anchorText }</td>
                                         <td>
@@ -140,7 +140,7 @@ export default class ModalAnchors extends PureComponent {
                             }{
                                 this.props.data_assortUrl.map((item) => (
                                     <tr>
-                                        <td>{ item.url.substring(0, 100)  }</td>
+                                        <td>{ item.url.split('/')[0] + '//' +  item.url.split('/')[2] }</td>
                                         <td>{ item.anchorUrl.substring(0, 100)  }</td>
                                         <td>{ item.anchorText }</td>
                                         <td>

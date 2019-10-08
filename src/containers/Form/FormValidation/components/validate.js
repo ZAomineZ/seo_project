@@ -8,7 +8,9 @@ const validate = (values) => {
   }
 
   if (!values.url) {
-    errors.url = 'Url field shouldn’t be empty';
+      errors.url = 'Url field shouldn’t be empty';
+  } else if (!/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(values.url)){
+      errors.url = 'Url field is not valid';
   }
 
   if (!values.email) {

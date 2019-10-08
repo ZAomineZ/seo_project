@@ -6,6 +6,7 @@ import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import Form from './campain_form';
 import axios from "axios";
+import {route} from '../../const'
 
 let notification = null;
 
@@ -74,7 +75,6 @@ class Campain extends PureComponent {
                 setTimeout(() => showNotification('error', 'This Campain is not authorized', '👋 A Error is present !!!'), 700);
             }
         }
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname  + route + "/Ajax/Campain/CampainIndex.php", {
             params: {
                 auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
@@ -117,7 +117,6 @@ class Campain extends PureComponent {
 
     DeleteData (event, slug)
     {
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainDelete.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -140,7 +139,7 @@ class Campain extends PureComponent {
                     if (response.data.error === 'Invalid Token') {
                         this.CookieReset(response.data.token, response.data.id)
                     } else {
-                        this.setState({redirectSerp: !this.state.redirectSerp})
+                        this.setState({redirectSerp: !this.state.redirectSerp});
                         NotificationSystem.newInstance({}, n => notification = n);
                         setTimeout(() => showNotification('danger', response.data.error, '👋 Success Message'), 700);
                     }

@@ -1,5 +1,30 @@
 <?php
 require '../../vendor/autoload.php';
+
+use App\Actions\Json_File;
+use App\Actions\Url\Curl_Api;
+use App\Actions\Url\Curl_Keyword;
+use App\Actions\Url\Curl_Url;
+use App\Actions\Url\Curl_Volume;
+use App\concern\Backlink_Profile;
+use App\concern\Str_options;
+use App\Controller\LinkProfileController;
+use App\Controller\SerpController;
+use App\Controller\TopKeywordController;
+use App\Controller\WebSiteController;
+use App\Model\LinkDomain;
+use App\Model\PDO_Model;
+use App\Model\Serp;
+use App\Model\TopKeyword;
+use App\Table\LinkProfile;
+use App\Table\Website as WebSiteTable;
+use App\Model\WebSite as WebsiteModel;
+use Goutte\Client;
+use Illuminate\Support\Str;
+use Stillat\Numeral\Languages\LanguageManager;
+use Stillat\Numeral\Numeral;
+use Symfony\Component\DomCrawler\Crawler;
+
 $ajax = new \App\concern\Ajax();
 $ajax->HeaderProtect();
 
@@ -13,26 +38,39 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $ajax->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
                     $ajax->VerifValueRegex($_GET['keyword']);
 
-                    $curl = new \App\Actions\Url\Curl_Api();
-                    $str = new \App\concern\Str_options();
+                    $curl = new Curl_Api();
+                    $curlVolume = new Curl_Volume();
+                    $curl_keyword = new Curl_Keyword();
+                    $curlUrl = new Curl_Url();
+
+                    $str = new Str_options();
                     $dom = new DOMDocument();
-                    $pdo = new \App\Model\PDO_Model();
-                    $table = new \App\Table\Website($pdo);
-                    $model = new \App\Model\Serp($curl, $str, $dom, $table, $ajax);
-                    $goutte = new \Goutte\Client();
-                    $bl = new \App\Actions\Json_File($goutte);
-                    $crawl = new \Symfony\Component\DomCrawler\Crawler();
-                    $curl_keyword = new \App\Actions\Url\Curl_Keyword();
-                    $str = new \App\concern\Str_options();
-                    $top = new \App\Model\TopKeyword($table, $ajax);
-                    $controller = new \App\Controller\TopKeywordController($curl_keyword, $crawl, $str, $bl, $top, $table, $ajax);
-                    $website = new \App\Model\WebSite($goutte, $controller, $curl_keyword, $bl);
+                    $pdo = new PDO_Model();
 
-                    $format = new \Stillat\Numeral\Numeral();
-                    $format->setLanguageManager(new \Stillat\Numeral\Languages\LanguageManager());
+                    $table = new WebSiteTable($pdo);
+                    $model = new Serp($curl, $str, $dom, $table, $ajax, $curlVolume);
 
-                    $serp = new \App\Controller\SerpController($model, $table, $bl, $format, $website);
-                    $serp->ResultDate(\Illuminate\Support\Str::slug($_GET['keyword']), $_GET['state_location']);
+                    $goutte = new Client();
+                    $bl = new Json_File($goutte);
+                    $crawl = new Crawler();
+                    $str = new Str_options();
+                    $blProfile = new Backlink_Profile($goutte);
+
+                    $top = new TopKeyword($table, $ajax);
+                    $controller = new TopKeywordController($curl_keyword, $crawl, $str, $bl, $top, $table, $ajax);
+                    $website = new WebsiteModel($goutte, $controller, $curl_keyword, $bl);
+
+                    $format = new Numeral();
+                    $format->setLanguageManager(new LanguageManager());
+
+                    $linkTable = new LinkProfile($pdo);
+                    $linkModel = new LinkDomain($goutte, $str);
+                    $linkController = new LinkProfileController($linkModel, $goutte, $pdo, $linkTable, $blProfile);
+
+                    $websiteController = new WebSiteController($table, $bl, $website, $format, $curlUrl, $curl_keyword, $controller, $ajax, $linkTable, $linkController, $linkModel);
+
+                    $serp = new SerpController($model, $table, $bl, $format, $website, $websiteController);
+                    $serp->ResultDate(Str::slug($_GET['keyword']), $_GET['state_location']);
                 } else {
                     echo 'Invalid Token !!!';
                 }

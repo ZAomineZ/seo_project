@@ -13,6 +13,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class Suggest_Data
 {
+    /**
+     * @var Client
+     */
     private $client;
 
     /**
@@ -25,10 +28,11 @@ class Suggest_Data
     }
 
     /**
+     * Load XML with class DOMDocument for create a html Render !!!
      * @param $request
      * @return \DOMDocument
      */
-    protected function LoadXmlItem ($request)
+    protected function LoadXmlItem ($request) : \DOMDocument
     {
         if ($request) {
             $response = $this->client->getResponse()->getContent();
@@ -87,7 +91,7 @@ class Suggest_Data
      * @param bool $alpha
      * @return array
      */
-    public function ReqSuggest (string $keyword, array $array = [], bool $alpha = false)
+    public function ReqSuggest (string $keyword, array $array = [], bool $alpha = false) : array
     {
         if (!empty($array)) {
             $req = $this->DataCrawl($keyword, $array);

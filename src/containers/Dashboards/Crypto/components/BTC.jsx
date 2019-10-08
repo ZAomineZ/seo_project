@@ -8,7 +8,7 @@ import TrendingDownIcon from "mdi-react/TrendingDownIcon";
 
 export default class BTC extends PureComponent {
     static propTypes = {
-        dash_stats: PropTypes.array.isRequired,
+        dash_stats: PropTypes.array.isRequired
     };
 
     constructor(props) {
@@ -23,7 +23,7 @@ export default class BTC extends PureComponent {
       const Bottom = <TrendingDownIcon className="dashboard_top_serp_icon" />;
 
       const data = this.props.dash_stats.map(d => {
-          return { name: '', btc : d.trust };
+          return { name: '', btc : Math.round(d.trust ) };
       });
 
         const CustomTooltip = ({ active, payload }) => {

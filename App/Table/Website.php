@@ -8,7 +8,6 @@
 
 namespace App\Table;
 
-
 use App\Model\PDO_Model;
 
 class Website extends Table
@@ -26,7 +25,7 @@ class Website extends Table
      * @param array $data
      * @return bool
      */
-    public function InsertDomain (array $data)
+    public function InsertDomain (array $data) : bool
     {
         return $this->InsertData($data, 'website');
     }

@@ -8,10 +8,11 @@
 
 namespace App\Model\Auth;
 
-
 class LogIn
 {
     /**
+     * Message Error with json_encode !!!
+     * Encode Array with key Error !!!
      * @param string $message_error
      */
     public function MessageError (string $message_error)
@@ -20,6 +21,7 @@ class LogIn
     }
 
     /**
+     * Verify if the password to FORM is equal to DB PassWord !!!
      * @param string $password_user
      * @param string $password_form
      * @param $req

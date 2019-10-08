@@ -10,6 +10,7 @@ import ModalReferring from './modal_referring';
 import ModalReferringInfo from './modal_referring-info';
 import PropTypes from "prop-types";
 import axios from "axios";
+import {route} from '../../const'
 import {Redirect} from "react-router-dom";
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
@@ -120,7 +121,6 @@ class tab_linkprofile extends PureComponent {
     }
 
     componentDidMount() {
-        let route = '/ReactProject/App'
         axios.get('http://' + window.location.hostname + route + '/Ajax/linkprofile_mount.php', {
             params: {
                 domain: this.PropsChange(this.props.domain),
@@ -139,15 +139,18 @@ class tab_linkprofile extends PureComponent {
              },
         }).then((response) => {
                     if (response.data.error && response.data.error === 'Invalid Token') {
-                        this.CookieReset(response.data.token, response.data.id)
+                        this.CookieReset(response.data.token, response.data.id);
                     } else if (response.data.error && response.data.error === 'Invalid Value') {
-                        this.setState({ redirectSerp : !this.state.redirectSerp})
+                        this.setState({ redirectSerp : !this.state.redirectSerp});
                         NotificationSystem.newInstance({}, n => notification = n);
                         setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
                     } else {
                         if (response.data.error && response.data.error !== 'Invalid Value' && response.data.error !== 'Invalid Token') {
                             this.setState({ error : !this.state.error, error_message: response.data.error });
                         } else {
+                            if (response.data && response.data === 'Invalid Token !!!') {
+                                this.setState({ redirectSerp : !this.state.redirectSerp});
+                            }
                             this.setState({
                                 ip_referring: response.data.ip_referring,
                                 referring: response.data.referring,
@@ -181,7 +184,7 @@ class tab_linkprofile extends PureComponent {
     }
 
     render() {
-        if (this.state.redirectSerp === true) {
+        if (this.state.redirectSerp) {
             return (
                 <Redirect to={{
                     pathname: '/seo/serp'

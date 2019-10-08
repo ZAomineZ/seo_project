@@ -8,7 +8,6 @@
 
 namespace App\Actions\Url;
 
-
 class Curl_Keyword
 {
 
@@ -18,7 +17,7 @@ class Curl_Keyword
      * @param string $value
      * @return bool
      */
-    private function CurlSetopt ($ch, $mode, $value)
+    private function CurlSetopt ($ch, $mode, $value) : bool
     {
         return curl_setopt($ch, $mode, $value);
     }
@@ -41,7 +40,7 @@ class Curl_Keyword
      * @param string $domain
      * @return array
      */
-    private function CurlSetHeaders(array $headers = [], string $domain)
+    private function CurlSetHeaders(array $headers = [], string $domain) : array
     {
         $headers[] = 'Authority: fr.semrush.com';
         $headers[] = 'X-MyHeader: 123';
@@ -50,7 +49,7 @@ class Curl_Keyword
         $headers[] = 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36';
         $headers[] = 'Accept: application/json,text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3';
         $headers[] = 'Accept-Language: fr,es;q=0.9,en-US;q=0.8,en;q=0.7';
-        $headers[] = "Cookie: ref_code=15200283; marketing=%7B%22user_cmp%22%3A%22%22%2C%22user_label%22%3A%22%22%7D; db_date=current; visit_first=1536183951000; firstVisitLangPopover=1539848670872; insp_uid=2599517799; cfduid=d87ec02def0fa0f3fc23b959207c7098d1541534908; _ga=GA1.2.1436480744.1541534910; userdata=%7B%22tz%22%3A%22GMT+1%22%2C%22ol%22%3A%22fr%22%7D; cookies_notification=accepted; sem_user_voice=min; referer_url=https%3A%2F%2Fwww.google.fr%2F; zlcmid=pUhoDyGLsEAOML; _gcl_au=1.1.1933707709.1549380294; _fbp=fb.1.1549380295283.270533753; insp_ss=1550397568906; db=fr; auth_token=4oTCXbSXK71gnUHs8BncLXtSwK2GMDu3qaEtpx2VXod0MSCKlN8t9ZcAl4XK; usertype=Free-User; _ga=GA1.3.1436480744.1541534910; PHPSESSID=llgwlgx0n7b90qfnd2rcx3k9qjtyy17q; n_userid=LuWkzVy0dWwBTQAoBrIsAg==; _gid=GA1.2.1541287717.1555330417; community_layout=hi94f34uaue88m7d4k998mu2e2; XSRF-TOKEN=pklR9SMtayeuxE4lSDpv97bLrsHImkMG6zj6kkhV; community-semrush=PvcNgPPARWIVnRL3u2enMLBfBYvkA42WTCVCscrS; insp_wid=206492775; insp_nv=false; insp_targlpu=aHR0cHM6Ly9mci5zZW1ydXNoLmNvbS9mci9pbmZvL2NvbG9vcmkuY29t; confirmation_back_url=https%3A%2F%2Ffr.semrush.com%2Ffr%2Finfo%2F$domain; insp_slim=1555332039602";
+        $headers[] = "cookie: __cfduid=deeec7758e2037c5181d963bc5b6561321560777092; ref_code=__default__; _ga=GA1.2.1768315721.1560777094; _fbp=fb.1.1560777094707.651669042; marketing=%7B%22user_cmp%22%3A%22%22%2C%22user_label%22%3A%22%22%7D; db_date=current; userdata=%7B%22tz%22%3A%22GMT+2%22%2C%22ol%22%3A%22fr%22%7D; visit_first=1560777094000; referer_purchase=https%3A%2F%2Fwww.semrush.com%2Ffr%2Finfo%$domain; utz=Europe%2FLuxembourg; tracker_ai_user=F1GDl|2019-06-18T08:13:43.429Z; mindboxDeviceUUID=201d293c-7a9d-4031-aba9-f39ad7a8ca47; directCrm-session=%7B%22deviceGuid%22%3A%22201d293c-7a9d-4031-aba9-f39ad7a8ca47%22%7D; cookies_notification=accepted; confirmation_back_url=https%3A%2F%2Ffr.semrush.com%2Ffr%2Finfo%2F$domain; firstVisitLangPopover=1562957741854; __zlcmid=tFiNfpkrfqvpnS; localization=%7B%22locale%22%3A%22fr%22%2C%22db%22%3A%22fr%22%7D; _ga=GA1.3.1768315721.1560777094; _gcl_au=1.1.2094215161.1568923276; blog_split=A; n_userid=LuWkzV2R37qXxwAMCHvZAg==; __cflb=3437946050; _gid=GA1.2.1822450735.1569841085; community_layout=cf5feufjqtjj13nb88tn47agd5; XSRF-TOKEN=Vrkx0Lrf2k3hU5e2l5IezGItmWRr1vqOxVsRIrYH; uvts=c37710e8-3786-40c8-4029-d7e09340e176; lux_uid=156984275599328975; db=fr; semrush_counter_cookie=deleted; _gat=1; __insp_wid=1764246400; __insp_nv=true; __insp_targlpu=aHR0cHM6Ly9mci5zZW1ydXNoLmNvbS9mci9pbmZvL2NvbG9vcmkuY29t; __insp_targlpt=Y29sb29yaS5jb20gLSBSYXBwb3J0IGdsb2JhbCBkdSBkb21haW5l; __insp_norec_howoften=true; __insp_norec_sess=true; PHPSESSID=r39lx6d0rsltw6ty9fvg77b94886zy2z; SSO-JWT=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJyMzlseDZkMHJzbHR3NnR5OWZ2Zzc3Yjk0ODg2enkyeiIsImlhdCI6MTU2OTg0MzkzNywiaXNzIjoic3NvIiwidWlkIjoyNjE2MjI4fQ.F6C9UVbIYbeN8mcHlRNWgCcWTg8vtcHJCY_q3IBkfyD02eJDeiNAU2VS5wsnEB-IEa0KUsMp_D5bM1PLVeVmYg; sso_token=9e56f6fe92208e898b8e17fc22b1b8c9761004d3ebdf0c5f893cd6805893117e; usertype=Free-User; __insp_slim=1569843940150; community-semrush=xFKkkySnSFpMw8YeCJiSmCnNcVaFSmSiTwwvFl6R; _derived_epik=dj0yJnU9aXdKZUk3R1ZBX3pRSUhfVUlvb1Q3ZFQ3YVF6WjJrNUsmbj03V1g2SFRTdVNOMmN0QUh6SXdvUjJnJm09MSZ0PUFBQUFBRjJSNnVVJnJtPTEmcnQ9QUFBQUFGMlI2dVU";
         return $headers;
     }
 

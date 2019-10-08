@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { PureComponent } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
@@ -15,7 +16,7 @@ export default class PaginationComponent extends PureComponent {
 
   static defaultProps = {
     pageSize: 1,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -62,7 +63,7 @@ export default class PaginationComponent extends PureComponent {
     const currentPage = curPage || 1;
 
     // default page size is 10
-    const pageSize = pSize || 10;
+    const pageSize = pSize || 1;
 
     // calculate total Ajax
     const totalPages = Math.ceil(totalItems / pageSize);

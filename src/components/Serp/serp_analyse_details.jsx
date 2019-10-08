@@ -11,6 +11,7 @@ import TabsData from '../tabs/tabs_data';
 import TopBacklinks from "./top_backlinks";
 import Occupancy from '../../containers/Dashboards/Booking/components/Occupancy';
 import axios from "axios";
+import {route} from '../../const'
 import TradeHistory from "../../containers/Dashboards/Crypto/components/TradeHistory";
 import Bar from "../../containers/Charts/ReactVis/components/Bar";
 import {Redirect} from "react-router-dom";
@@ -56,6 +57,8 @@ class SerpAnalyseDetails extends PureComponent {
             data_desc: [],
             data_url: [],
             data_assortUrl: [],
+            power: 0,
+            power_trust: 0,
             error: false,
             error_message: '',
             loading: true,
@@ -106,7 +109,6 @@ class SerpAnalyseDetails extends PureComponent {
     }
 
     componentDidMount() {
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/WebSite.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -119,7 +121,9 @@ class SerpAnalyseDetails extends PureComponent {
                 'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
             params: {
-                domain: this.PropsChange(this.props.match.params.domain),
+                domain: this.props.location.state !== undefined ?
+                    this.props.location.state.domain :
+                    this.PropsChange(this.props.match.params.domain),
                 cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
                 auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
             }
@@ -143,6 +147,8 @@ class SerpAnalyseDetails extends PureComponent {
                     data_url: response.data.data_url,
                     data_assortUrl: response.data.data_assortUrl,
                     error: response.data.error,
+                    power: response.data.power,
+                    power_trust: response.data.power_trust,
                     loading: false
                 });
                 setTimeout(() => this.setState({ loaded: true }), 500);
@@ -150,11 +156,11 @@ class SerpAnalyseDetails extends PureComponent {
                 if (response.data.error === 'Invalid Token') {
                     this.CookieReset(response.data.token, response.data.id)
                 } else if (response.data.error && response.data.error === 'Invalid Value') {
-                    this.setState({ redirectSerp : !this.state.redirectSerp})
+                    this.setState({ redirectSerp : !this.state.redirectSerp});
                     NotificationSystem.newInstance({}, n => notification = n);
                     setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
                 } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
-                    this.setState({ redirectSerp : !this.state.redirectSerp})
+                    this.setState({ redirectSerp : !this.state.redirectSerp});
                     NotificationSystem.newInstance({}, n => notification = n);
                     setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
                 } else {
@@ -166,7 +172,9 @@ class SerpAnalyseDetails extends PureComponent {
 
     RatioRank()
     {
-        return Math.round((this.state.trust_rank / this.state.score_rank) * 100);
+        return this.state.power !== 0  ?
+            Math.round(((this.state.power_trust <= 3 ? this.state.trust_rank : this.state.power_trust) / this.state.power) * 100) :
+            Math.round(((this.state.power_trust <= 3 ? this.state.trust_rank : this.state.power_trust) / this.state.score_rank) * 100);
     }
 
     render() {
@@ -202,9 +210,11 @@ class SerpAnalyseDetails extends PureComponent {
                         </div>
                     </div>
                     <div className="row">
-                        <DefaultTabs trust_rank={this.state.trust_rank} dash_stats={this.state.dash_stats} />
-                        <TabsCalorie score_rank={this.state.score_rank} dash_stats={this.state.dash_stats} />
-                        <TabsSteps ratio_rank={this.RatioRank()} dash_stats={this.state.dash_stats} />
+                        <DefaultTabs trust_rank={this.state.power_trust <= 3 ? Math.round(this.state.trust_rank) : this.state.power_trust } dash_stats={this.state.dash_stats} />
+                        <TabsCalorie score_rank={this.state.power === 0 ? this.state.score_rank : this.state.power} dash_stats={this.state.dash_stats} />
+                        <TabsSteps
+                            ratio_rank={this.RatioRank()}
+                            dash_stats={this.state.dash_stats} />
                         <TabsDistance referring_domain={this.state.referring_domain}
                                       referring_domain_int={this.state.referring_domain_int}
                                       backlink={this.state.backlink}

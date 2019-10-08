@@ -10,7 +10,6 @@ import BTC from '../../../Dashboards/Crypto/components/BTC';
 class DefaultTabs extends PureComponent {
   static propTypes = {
     t: PropTypes.func.isRequired,
-    trust_rank: PropTypes.number.isRequired,
     dash_stats: PropTypes.array.isRequired,
   };
 

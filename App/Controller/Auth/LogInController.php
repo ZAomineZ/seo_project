@@ -8,14 +8,24 @@
 
 namespace App\Controller\Auth;
 
-
 use App\Model\Auth\LogIn;
 
 class LogInController
 {
+    /**
+     * @var LogIn
+     */
     private $login;
+    /**
+     * @var \App\Table\Auth\LogIn
+     */
     private $table;
 
+    /**
+     * LogInController constructor.
+     * @param LogIn $login
+     * @param \App\Table\Auth\LogIn $table
+     */
     public function __construct(LogIn $login, \App\Table\Auth\LogIn $table)
     {
         $this->login = $login;
@@ -86,7 +96,7 @@ class LogInController
     /**
      * @param string $username
      * @param string $password
-     * @return mixed
+     * @throws \Exception
      */
     public function LoginData (string $username, string $password)
     {

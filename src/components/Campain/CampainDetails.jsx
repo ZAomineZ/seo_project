@@ -1,11 +1,11 @@
 /* eslint-disable */
 import React, {PureComponent} from 'react';
-import moment from 'moment';
 import BarCampainDetails from '../Campain/BarCampainDetails';
 import ModalCampainAddLink from '../Campain/ModalCampainAddLink';
 import ModalAddBacklink from '../Campain/ModalAddBacklink';
 import {Button, ButtonToolbar, Popover, PopoverHeader} from 'reactstrap';
 import axios from "axios";
+import {route} from '../../const'
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import {Redirect} from "react-router-dom";
@@ -86,7 +86,6 @@ class CampainDetails extends PureComponent {
     }
 
     componentDidMount() {
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/DataCampain.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -125,7 +124,6 @@ class CampainDetails extends PureComponent {
     }
 
     handleClickReceived(event, id, type) {
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateData.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -176,7 +174,6 @@ class CampainDetails extends PureComponent {
 
     handleSubmit(event, id, bl) {
         event.preventDefault();
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateDataBl.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -239,7 +236,6 @@ class CampainDetails extends PureComponent {
     handleSubmitLink(event) {
         event.preventDefault();
         if (this.state.website !== '' && this.state.platform !== '' && this.state.cost !== '') {
-            let route = '/ReactProject/App'
             axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainDetails.php", {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -283,7 +279,6 @@ class CampainDetails extends PureComponent {
     }
 
     onDeleteBackLink(event, id) {
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainItemDelete.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',

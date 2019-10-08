@@ -61,7 +61,7 @@ class Occupancy extends PureComponent {
                 <td className="td-head">Ip</td>
                   {
                       this.props.dash_stats.map(d => (
-                          <td className="td-green">{ numbro(d.ip).format({average: true, mantissa: 2}) }</td>
+                          <td className="td-green">{ numbro(d.ip_subnets).format({average: true, mantissa: 2}) }</td>
                       ))
                   }
               </tr>

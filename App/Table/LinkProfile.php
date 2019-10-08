@@ -25,7 +25,7 @@ class LinkProfile extends Table
      * @param array $data
      * @return bool
      */
-    public function InsertDomain (array $data)
+    public function InsertDomain (array $data) : bool
     {
         return $this->InsertData($data, 'link_profile');
     }
@@ -45,9 +45,9 @@ class LinkProfile extends Table
      * @param $domain
      * @return array
      */
-    public function SelectPowerAll ($domain)
+    public function SelectPowerAll ($domain): array
     {
-        $select = $this->pdo->GetPdo()->prepare("SELECT * FROM link_profile WHERE domain = ? ORDER BY id ASC LIMIT 30 ");
+        $select = $this->pdo->GetPdo()->prepare("SELECT * FROM link_profile WHERE domain = ? ORDER BY id DESC LIMIT 30 ");
         $select->execute([$domain]);
         return $select->fetchAll();
     }
@@ -56,7 +56,7 @@ class LinkProfile extends Table
      * @param $domain
      * @return array
      */
-    public function SelectDate ($domain)
+    public function SelectDate ($domain) : array
     {
         $select = $this->pdo->GetPdo()->prepare("SELECT power FROM link_profile WHERE domain = ? ORDER BY date DESC LIMIT 2 ");
         $select->execute([$domain]);

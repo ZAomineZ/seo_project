@@ -53,14 +53,6 @@ class Landing extends PureComponent {
         }
     }
 
-    componentDidMount() {
-        if (sessionStorage.getItem('Auth')) {
-            this.setState({auth: 'Auth'});
-            NotificationSystem.newInstance({}, n => notification = n);
-            setTimeout(() => showNotification('You are already connected, it is impossible to access page Home !!!', 'danger'), 700);
-        }
-    }
-
     changeToDark = () => {
         this.props.dispatch(changeThemeToDark());
     };

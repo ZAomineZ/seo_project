@@ -9,6 +9,7 @@
 namespace App\Actions;
 
 use Goutte\Client;
+use Symfony\Component\DomCrawler\Crawler;
 
 class Json_File
 {
@@ -34,7 +35,7 @@ class Json_File
      * @param string $domain
      * @return string
      */
-    public static function JsonTrafic (string $domain)
+    public static function JsonTrafic (string $domain) : string
     {
         $link = "https://online.seranking.com/research.organic.html?ajax=Chart&source=fr&engine=google&input=$domain&filter=base_domain&type=traffic_sum&line=both";
         return $link;
@@ -44,7 +45,7 @@ class Json_File
      * @param string $domain
      * @return string
      */
-    public static function JsonKeyword (string $domain)
+    public static function JsonKeyword (string $domain) : string
     {
         $link = "https://online.seranking.com/research.organic.html?ajax=Chart&source=fr&engine=google&input=$domain&filter=base_domain&type=keywords_count&line=both";
         return $link;
@@ -54,7 +55,7 @@ class Json_File
      * @param string $domain
      * @return string
      */
-    public static function JsonBacklink (string $domain)
+    public static function JsonBacklink (string $domain) : string
     {
         return "https://bl.backend.semrush.com/?key=_&type=backlinks_overview&export_columns=backlinks_anchors%2Cdomains_num%2Chosts_num%2Ctexts_num%2Curls_num%2Cips_num%2Cipclassc_num%2Cgeodomains%2Czones%2Cfollows_num%2Cforms_num%2Cframes_num%2Cimages_num%2Cbacklinks_historical%2Cscores%2Ctopics&display_limit=100&target_type=root_domain&target=$domain&_=" . self::KEY_NUM;
     }
@@ -63,7 +64,7 @@ class Json_File
      * @param string $domain
      * @return string
      */
-    public static function JsonTopBl (string $domain)
+    public static function JsonTopBl (string $domain) : string
     {
         return "https://bl.backend.semrush.com/?key=_&type=backlinks_overview&target_type=root_domain&target=$domain&export_columns=backlinks&_=" . self::KEY_NUM;
     }
@@ -73,7 +74,7 @@ class Json_File
      * @param string $url
      * @return \Symfony\Component\DomCrawler\Crawler
      */
-    protected function FileOpenJson (Client $goutte, string $url)
+    protected function FileOpenJson (Client $goutte, string $url) : Crawler
     {
         $gt = $goutte->request("GET", $url);
         $gt_response = $goutte->getResponse()->getContent();

@@ -10,6 +10,7 @@ import TopTen from '../../containers/Dashboards/Crypto/components/TopTen';
 import DatePickers from '../../containers/Form/FormPicker/components/DatePickers';
 import SimpleLineChart from '../../containers/Charts/Recharts/components/SimpleLineChart';
 import axios from "axios";
+import {route} from '../../const'
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
@@ -61,6 +62,7 @@ class CryptoDashboard extends PureComponent {
             url: [],
             date: [],
             date_format: [],
+            dataVl: [],
             rank: [],
             loading: true,
             loaded: false,
@@ -117,7 +119,6 @@ class CryptoDashboard extends PureComponent {
         } else if (this.props.location.state === undefined) {
             this.setState({ redirectSerp : !this.state.redirectSerp})
         } else {
-            let route = '/ReactProject/App'
             axios.get('http://' + window.location.hostname + route + '/Ajax/Serp.php', {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -141,11 +142,15 @@ class CryptoDashboard extends PureComponent {
                         if (response.data.error === 'Invalid Token') {
                             this.CookieReset(response.data.token, response.data.id)
                         } else if (response.data.error && response.data.error === 'Invalid Value') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            this.setState({ redirectSerp : !this.state.redirectSerp});
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
                         } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            this.setState({ redirectSerp : !this.state.redirectSerp});
+                            NotificationSystem.newInstance({}, n => notification = n);
+                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                        } else if (response.data.error && response.data.error === 'Any Result found !!!') {
+                            this.setState({ redirectSerp : !this.state.redirectSerp});
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
                         }
@@ -156,6 +161,7 @@ class CryptoDashboard extends PureComponent {
                             rank: response.data.rank,
                             date: response.data.date,
                             date_format: response.data.date_format,
+                            dataVl: response.data.dataVolume.result,
                             loading: false
                         });
                         setTimeout(() => this.setState({loaded: true}), 500);
@@ -239,6 +245,7 @@ class CryptoDashboard extends PureComponent {
                                 array_url={url_data}
                                 array_date={this.state.date}
                                 array_rank={this.state.rank}
+                                dataVl={this.state.dataVl}
                                 keyword={this.props.match.params.keyword}
                                 date_comparaison={false}
                                 value={typeof (this.props.location.state) == 'undefined' ? '' : this.props.location.state.value}

@@ -8,11 +8,14 @@
 
 namespace App\Table;
 
-
 use App\Model\PDO_Model;
 
 class Campain extends Table
 {
+    /**
+     * Campain constructor.
+     * @param PDO_Model $PDO_Model
+     */
     public function __construct(PDO_Model $PDO_Model)
     {
         parent::__construct($PDO_Model);
@@ -23,7 +26,7 @@ class Campain extends Table
      * @param string $table
      * @return bool
      */
-    public function CreateCampain (array $data, string $table)
+    public function CreateCampain (array $data, string $table) : bool
     {
         return $this->InsertData($data, $table);
     }
@@ -33,7 +36,7 @@ class Campain extends Table
      * @param int $user_id
      * @return array
      */
-    public function SelectCampain (string $table, int $user_id)
+    public function SelectCampain (string $table, int $user_id) : array
     {
         $select = $this->pdo
             ->GetPdo()
@@ -46,7 +49,7 @@ class Campain extends Table
      * @param string $table
      * @param int $user_id
      * @param string $value
-     * @return array
+     * @return mixed
      */
     public function SelectCampainExist (string $table, int $user_id, string $value)
     {
@@ -57,6 +60,11 @@ class Campain extends Table
         return $select->fetch();
     }
 
+    /**
+     * @param string $table
+     * @param string $id
+     * @return mixed
+     */
     public function SelectDateAsc (string $table, string $id)
     {
         $select = $this->pdo
@@ -71,7 +79,7 @@ class Campain extends Table
      * @param string $table
      * @return array
      */
-    public function SelectCampainDetails (string $slug, string $table)
+    public function SelectCampainDetails (string $slug, string $table) : array
     {
         $select = $this->pdo
             ->GetPdo()
@@ -114,7 +122,7 @@ class Campain extends Table
      * @param $id
      * @return array
      */
-    public function SelectCost (string $table, $id)
+    public function SelectCost (string $table, $id) : array
     {
         $select = $this->pdo->GetPdo()->prepare("SELECT cost FROM $table WHERE campain = ?");
         $select->execute([$id]);
@@ -128,7 +136,7 @@ class Campain extends Table
      * @param string $date_end
      * @return array
      */
-    public function SelectCostByDate (string $table, string $id, string $date_start, string $date_end)
+    public function SelectCostByDate (string $table, string $id, string $date_start, string $date_end) : array
     {
         $select = $this->pdo->GetPdo()->prepare("SELECT cost FROM $table 
         WHERE campain = :id AND date 
@@ -144,7 +152,7 @@ class Campain extends Table
      * @param int $user_id
      * @return bool
      */
-    public function DeleteCampain (string $table, string $slug, int $user_id)
+    public function DeleteCampain (string $table, string $slug, int $user_id) : bool
     {
         $delete = $this->pdo->GetPdo()->prepare("DELETE FROM $table WHERE slug = :slug AND user_id = :user_id");
         return $delete->execute(['slug' => $slug, 'user_id' => $user_id]);
@@ -155,7 +163,7 @@ class Campain extends Table
      * @param string $table
      * @return bool
      */
-    public function DeleteCampainItem (string $id, string $table)
+    public function DeleteCampainItem (string $id, string $table) : bool
     {
         $delete = $this->pdo->GetPdo()->prepare("DELETE FROM $table WHERE id = ? ");
         return $delete->execute([$id]);
@@ -166,7 +174,7 @@ class Campain extends Table
      * @param string $table
      * @return bool
      */
-    public function DeleteCampainDetails (int $campain, string $table)
+    public function DeleteCampainDetails (int $campain, string $table) : bool
     {
         $delete = $this->pdo->GetPdo()->prepare("DELETE FROM $table WHERE campain = :campain ");
         return $delete->execute(['campain' => $campain]);
@@ -178,7 +186,7 @@ class Campain extends Table
      * @param $type
      * @return bool
      */
-    public function UpdateDataReceived (string $table, string $id, $type)
+    public function UpdateDataReceived (string $table, string $id, $type) : bool
     {
         $update = $this->pdo->GetPdo()->prepare("UPDATE $table SET received = :received WHERE id = :id");
         return $update->execute(['id' => $id, 'received' => $type]);
@@ -187,7 +195,7 @@ class Campain extends Table
     /**
      * @param string $table
      * @param string $id
-     * @return bool
+     * @return mixed
      */
     public function SelectExistCampaignList (string $table, string $id)
     {
@@ -202,7 +210,7 @@ class Campain extends Table
      * @param string $value
      * @return bool
      */
-    public function UpdateDataBl (string $table, string $id, string $value)
+    public function UpdateDataBl (string $table, string $id, string $value) : bool
     {
         $update = $this->pdo->GetPdo()->prepare("UPDATE $table SET backlink = :backlink WHERE id = :id");
         return $update->execute(['id' => $id, 'backlink' => $value]);
@@ -213,7 +221,7 @@ class Campain extends Table
      * @param string $id
      * @return bool
      */
-    public function UpdateDataBlFound (string $table, string $id)
+    public function UpdateDataBlFound (string $table, string $id) : bool
     {
         $update = $this->pdo->GetPdo()->prepare("UPDATE $table SET bl_found = :bl_found, date_check = :date_check WHERE id = :id");
         return $update->execute(['id' => $id, 'bl_found' => '1', 'date_check' => date('Y-m-d')]);

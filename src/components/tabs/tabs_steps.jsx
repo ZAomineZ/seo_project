@@ -11,7 +11,7 @@ class DefaultTabs extends PureComponent {
     static propTypes = {
       t: PropTypes.func.isRequired,
       ratio_rank: PropTypes.number.isRequired,
-      dash_stats: PropTypes.array.isRequired,
+      dash_stats: PropTypes.array.isRequired
     };
 
     constructor() {

@@ -52,7 +52,7 @@ export default class ModalInfoReferring extends PureComponent {
                   <table className="table--bordered table">
                     <thead>
                       <tr>
-                        <th>Nomber</th>
+                        <th>Number</th>
                         <th>Url</th>
                         <th>IP</th>
                         <th>Backlinks</th>
@@ -66,7 +66,7 @@ export default class ModalInfoReferring extends PureComponent {
                                   <span className="badge badge-primary">{ d.domain_trust_score }</span>
                               </td>
                               <td>
-                                  <a href="http://www.meilleurduweb.com/">{ d.domain }</a>
+                                  <a href={"http://www." + d.domain} target='_blank'>{ d.domain }</a>
                               </td>
                               <td><span className="badge badge-success">{ d.ip }</span></td>
                               <td><span className="span_primary_tab badge badge-primary">{ d.backlinks_num }</span></td>

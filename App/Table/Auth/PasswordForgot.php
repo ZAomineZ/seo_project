@@ -14,7 +14,10 @@ use App\Table\Table;
 
 class PasswordForgot extends Table
 {
-
+    /**
+     * PasswordForgot constructor.
+     * @param PDO_Model $PDO_Model
+     */
     public function __construct(PDO_Model $PDO_Model)
     {
         parent::__construct($PDO_Model);
@@ -50,7 +53,7 @@ class PasswordForgot extends Table
      * @param float $id
      * @return bool
      */
-    public function UpdateData (float $id)
+    public function UpdateData (float $id) : bool
     {
         $update = $this->pdo
             ->GetPdo()
@@ -64,7 +67,7 @@ class PasswordForgot extends Table
      * @param string $password
      * @return bool
      */
-    public function UpdatePassword (string $token, string $password)
+    public function UpdatePassword (string $token, string $password) : bool
     {
         $update = $this->pdo
             ->GetPdo()
@@ -72,5 +75,4 @@ class PasswordForgot extends Table
         $update->execute(['token' => $token, 'confirmation_at' => 1, 'password' => $password]);
         return TRUE;
     }
-
 }

@@ -15,8 +15,13 @@ use App\concern\Str_options;
 
 class TopKeyword
 {
-
+    /**
+     * @var \App\Table\Website
+     */
     private $table;
+    /**
+     * @var Ajax
+     */
     private $ajax;
 
     /**
@@ -74,7 +79,7 @@ class TopKeyword
      * @param object $data
      * @return string
      */
-    private function JsonData(object $data)
+    private function JsonData(object $data) : string
     {
         return \GuzzleHttp\json_encode([
             'data' => $data->rank_history->data
@@ -86,7 +91,7 @@ class TopKeyword
      * @param string $domain
      * @return bool
      */
-    private function ReqDataInsert(string $token, string $domain)
+    private function ReqDataInsert(string $token, string $domain) : bool
     {
         return $this->table->InsertDomain([
             'token' => $token,
@@ -97,11 +102,12 @@ class TopKeyword
     }
 
     /**
+     * Render and Create JSON to TOP Keyword !!!
      * @param object $result
      * @param string $domain
      * @return array
      */
-    public function CreateJson(object $result, string $domain = ''): array
+    public function CreateJson(object $result, string $domain = '') : array
     {
         if ($result) {
             $option = [];

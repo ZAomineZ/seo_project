@@ -10,6 +10,7 @@ import TopTen from '../../containers/Dashboards/Crypto/components/TopTen';
 import DatePickers from '../../containers/Form/FormPicker/components/DatePickers';
 import SimpleLineChart from '../../containers/Charts/Recharts/components/SimpleLineChart';
 import axios from "axios";
+import {route} from '../../const'
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
@@ -46,6 +47,7 @@ class SerpDate extends PureComponent {
             url: [],
             date: [],
             date_format: [],
+            dataVl: [],
             rank: [],
             loading: true,
             loaded: false,
@@ -106,7 +108,6 @@ class SerpDate extends PureComponent {
                 setTimeout(() => showNotification('The modification of the dates of the calendar have been modified with success !!!', 'success'), 700);
 
                 // Ajax Load Data Rank !!!
-                let route = '/ReactProject/App'
                 axios.get('http://' + window.location.hostname + route + '/Ajax/SerpDate.php', {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
@@ -142,6 +143,7 @@ class SerpDate extends PureComponent {
                                 rank: response.data.rank,
                                 date: response.data.date,
                                 date_format: response.data.date_format,
+                                dataVl: response.data.dataVolume.result,
                                 loading: false
                             });
                             setTimeout(() => this.setState({ loaded: true }), 500);
@@ -231,6 +233,7 @@ class SerpDate extends PureComponent {
                                 array_url={this.state.url}
                                 array_date={this.state.date}
                                 array_rank={this.state.rank}
+                                dataVl={this.state.dataVl}
                                 keyword={this.props.match.params.keyword}
                                 date_comparaison={true}
                                 state_location={this.props.location.state}

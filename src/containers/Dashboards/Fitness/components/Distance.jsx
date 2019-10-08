@@ -12,6 +12,7 @@ class Distance extends PureComponent {
         referring_domain_int: PropTypes.number.isRequired,
         backlink: PropTypes.number.isRequired,
         domain: PropTypes.number.isRequired,
+        dash_stats: PropTypes.array.isRequired
     };
 
     constructor (props) {

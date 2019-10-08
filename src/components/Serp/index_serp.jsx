@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import Form from './form_serp';
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
+import {Redirect} from "react-router-dom";
 
 let notification = null;
 

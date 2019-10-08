@@ -10,7 +10,9 @@ class linkprofile extends PureComponent {
     }
 
     render() {
-        const param_domain = this.props.match.params.domain;
+        const param_domain = this.props.location.state !== undefined ?
+            this.props.location.state.domain :
+            this.props.match.params.domain;
         return (
             <div className="dashboard container">
                 <div className="row">

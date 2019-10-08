@@ -8,7 +8,6 @@
 
 namespace App\Actions\Url;
 
-
 class Curl_Api
 {
     /**
@@ -17,7 +16,7 @@ class Curl_Api
      * @param $value
      * @return bool
      */
-    private function CurlSetopt ($ch, $option, $value)
+    private function CurlSetopt ($ch, $option, $value) : bool
     {
         return curl_setopt($ch, $option, $value);
     }

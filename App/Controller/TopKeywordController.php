@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-
 use App\Actions\Json_File;
 use App\Actions\Url\Curl_Keyword;
 use App\concern\Ajax;
@@ -20,12 +19,33 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class TopKeywordController
 {
+    /**
+     * @var Curl_Keyword
+     */
     private $curl;
+    /**
+     * @var Crawler
+     */
     private $crawl;
+    /**
+     * @var Str_options
+     */
     private $str;
+    /**
+     * @var Json_File
+     */
     private $scrap;
+    /**
+     * @var TopKeyword
+     */
     private $model;
+    /**
+     * @var Website
+     */
     private $table;
+    /**
+     * @var Ajax
+     */
     private $ajax;
 
     /**
@@ -37,7 +57,14 @@ class TopKeywordController
      * @param TopKeyword $model
      * @param Website $table
      */
-    public function __construct(Curl_Keyword $curl, Crawler $crawl, Str_options $str, Json_File $scrap, TopKeyword $model, Website $table, Ajax $ajax)
+    public function __construct(
+        Curl_Keyword $curl,
+        Crawler $crawl,
+        Str_options $str,
+        Json_File $scrap,
+        TopKeyword $model,
+        Website $table,
+        Ajax $ajax)
     {
         $this->curl = $curl;
         $this->crawl = $crawl;
@@ -71,9 +98,9 @@ class TopKeywordController
 
     /**
      * @param string $filename
-     * @@return bool
+     * @return bool
      */
-    private function ColCsv(string $filename)
+    private function ColCsv(string $filename) : bool
     {
         // Format the page Header in CSV !!!
         header('Content-Type: application/csv');
@@ -97,15 +124,17 @@ class TopKeywordController
     {
         // and Use Method SearchData !!!
         $string = str_replace('-', '.', $domain);
+        $string = $this->str->searchDoubleString('.', $string);
         $data = [];
         if (strstr($domain, '&')) {
             $explode = explode('&', $domain);
             if (count($explode) <= 5) {
                 foreach ($explode as $ex) {
+                    $ex = $this->str->searchDoubleString('.', $ex);
                     $this->ajax->VerifValueRegex($ex);
                     $string_ex = str_replace('-', '.', $ex);
                     $req_verif = $this->table->SelectToken($string_ex);
-                    if ($req_verif) {
+                    if ($req_verif && file_exists($this->DirAndFileCall($req_verif->token, str_replace('.', '-', $ex))['file'])) {
                         $data[] = $this->model->CreateJson(File_Params::OpenFile($this->DirAndFileCall($req_verif->token, str_replace('.', '-', $ex))['file'], $this->DirAndFileCall($req_verif->token, str_replace('.', '-', $ex))['dir']), $req_verif->domain);
                     } else {
                         // Recuperate Api_key and Export_Hash with DomCrawler
@@ -119,7 +148,7 @@ class TopKeywordController
             }
         } else {
             $req_verif = $this->table->SelectToken($string);
-            if ($req_verif) {
+            if ($req_verif && file_exists($this->DirAndFileCall($req_verif->token, str_replace('.', '-', $domain))['file'])) {
                 echo \GuzzleHttp\json_encode($this->model->CreateJson(File_Params::OpenFile($this->DirAndFileCall($req_verif->token, str_replace('.', '-', $domain))['file'], $this->DirAndFileCall($req_verif->token, str_replace('.', '-', $domain))['dir']), $domain));
             } else {
                 // Recuperate Api_key and Export_Hash with DomCrawler
@@ -135,7 +164,7 @@ class TopKeywordController
      * @param string $domain
      * @return array
      */
-    private function DirAndFileCall(string $token, string $domain)
+    private function DirAndFileCall(string $token, string $domain) : array
     {
         $dir = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'datas' . DIRECTORY_SEPARATOR . 'website' . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . $domain;
         return ['dir' => $dir, 'file' => $dir . DIRECTORY_SEPARATOR . 'traffic-' . $token . '.json'];
@@ -146,7 +175,7 @@ class TopKeywordController
      * @param $response
      * @return array
      */
-    public function CrawlHtml($response)
+    public function CrawlHtml($response) : array
     {
         //Crawl the Response $response !!!
         $crawl = new Crawler($response);
@@ -154,9 +183,23 @@ class TopKeywordController
             return $node->html();
         });
         // Explode for recuperate the element required !!!
-        $api_key = $this->SearchData($filter[$this->str->array_find('"apiKey":', $filter)], '"apiKey":');
-        $exportHashH = $this->SearchData($filter[$this->str->array_find('"exportHashH":', $filter)], '"exportHashH":');
-        return ["api_key" => $api_key, "export_hash" => $exportHashH];
+        $api_key = $this->SearchData($filter[$this->str->array_find(
+            '"apiKey":', $filter)],
+            '"apiKey":');
+        $exportHashH = $this->SearchData(
+            $filter[$this->str->array_find('"exportHashH":', $filter)],
+            '"exportHashH":');
+        if (isset($filter['55']) && !empty($filter['55'])) {
+            $exportHashHCut = explode('"exportHash":', $filter['55'])[23];
+        } else {
+            $exportHashHCut = explode('"exportHash":', $filter['53'])[23];
+        }
+        $exportHashHTraffic = $this->str->strReplaceString(
+            '"',
+            '',
+            explode(',', $exportHashHCut)[0]
+        );
+        return ["api_key" => $api_key, "export_hash" => $exportHashH, "export_hash_traffic" => $exportHashHTraffic];
     }
 
     /**
@@ -185,13 +228,15 @@ class TopKeywordController
      * @return array
      * @throws \Exception
      */
-    protected function DomainParam(string $domain, array $html, int $id)
+    protected function DomainParam(string $domain, array $html, int $id) : array
     {
         // Create Url with the results to Method CrawlHtml !!!
         if (!is_string($html['api_key']) || !is_string($html['export_hash'])) {
             echo json_encode(['error' => 'Domain Name does not exist !!!']);
             die();
         }
+        $domain = $this->str->searchDoubleStringDomainNotExist('.', $domain);
+
         $url = $this->UrlTraffic($domain, $html['api_key'], $html['export_hash']);
 
         // Scrap Url and Create a json with the result Traffic Keyword !!!
@@ -212,7 +257,7 @@ class TopKeywordController
      * @param string $exportHash
      * @return string
      */
-    protected function UrlTraffic(string $domain, string $key, string $exportHash)
+    protected function UrlTraffic(string $domain, string $key, string $exportHash) : string
     {
         return "https://www.semrush.com/dpa/api?database=fr&export=json&key=$key&domain=$domain&display_hash=$exportHash&action=report&type=domain_rank_history&display_sort=dt_asc&_=1558542130813";
     }

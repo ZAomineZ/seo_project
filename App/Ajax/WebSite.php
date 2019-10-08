@@ -1,6 +1,28 @@
 <?php
 require '../../vendor/autoload.php';
-$ajax = new \App\concern\Ajax();
+
+use App\Actions\Json_File;
+use App\Actions\Url\Curl_Backlink;
+use App\Actions\Url\Curl_Keyword;
+use App\Actions\Url\Curl_Url;
+use App\concern\Ajax;
+use App\concern\Backlink_Profile;
+use App\concern\Str_options;
+use App\Controller\LinkProfileController;
+use App\Controller\TopKeywordController;
+use App\Controller\WebSiteController;
+use App\Model\LinkDomain;
+use App\Model\PDO_Model;
+use App\Model\TopKeyword;
+use App\Table\LinkProfile;
+use App\Table\Website as WebsiteTable;
+use App\Model\WebSite as WebsiteModel;
+use Goutte\Client;
+use Stillat\Numeral\Languages\LanguageManager;
+use Stillat\Numeral\Numeral;
+use Symfony\Component\DomCrawler\Crawler;
+
+$ajax = new Ajax();
 $ajax->HeaderProtect();
 if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     if (isset($_GET['auth']) && $_GET['auth'] !== '') {
@@ -11,24 +33,32 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $ajax->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
                     $ajax->VerifValueRegex($_GET['domain']);
 
-                    $goutte = new \Goutte\Client();
-                    $crawl = new \Symfony\Component\DomCrawler\Crawler();
-                    $pdo = new \App\Model\PDO_Model();
-                    $table = new \App\Table\Website($pdo);
-                    $bl = new \App\Actions\Json_File($goutte);
-                    $curl = new \App\Actions\Url\Curl_Url();
-                    $curl_keyword = new \App\Actions\Url\Curl_Keyword();
-                    $str = new \App\concern\Str_options();
-                    $top = new \App\Model\TopKeyword($table, $ajax);
-                    $controller = new \App\Controller\TopKeywordController($curl_keyword, $crawl, $str, $bl, $top, $table, $ajax);
-                    $model = new \App\Model\WebSite($goutte, $controller, $curl_keyword, $bl);
+                    $goutte = new Client();
+                    $crawl = new Crawler();
 
+                    $pdo = new PDO_Model();
+                    $table = new WebsiteTable($pdo);
+                    $linkTable = new LinkProfile($pdo);
 
-                    $format = new \Stillat\Numeral\Numeral();
-                    $format->setLanguageManager(new \Stillat\Numeral\Languages\LanguageManager());
+                    $bl = new Json_File($goutte);
+                    $curl = new Curl_Url();
+                    $curl_keyword = new Curl_Keyword();
 
-                    $website = new \App\Controller\WebSiteController($table, $bl, $model, $format, $curl, $curl_keyword, $controller, $ajax);
-                    $website->WebSite($_GET['domain'], (int)$auth->id);
+                    $str = new Str_options();
+                    $top = new TopKeyword($table, $ajax);
+
+                    $controller = new TopKeywordController($curl_keyword, $crawl, $str, $bl, $top, $table, $ajax);
+                    $model = new WebsiteModel($goutte, $controller, $curl_keyword, $bl);
+
+                    $format = new Numeral();
+                    $format->setLanguageManager(new LanguageManager());
+
+                    $backlink_profile = new Backlink_Profile($goutte);
+                    $linkDomain = new LinkDomain($goutte, $str);
+                    $linkController = new LinkProfileController($linkDomain, $goutte, $pdo, $linkTable, $backlink_profile);
+
+                    $website = new WebSiteController($table, $bl, $model, $format, $curl, $curl_keyword, $controller, $ajax, $linkTable, $linkController, $linkDomain);
+                    $website->WebSite($str->searchDoubleString('.', $_GET['domain']), (int)$auth->id);
                 } else {
                     echo 'Invalid Token !!!';
                 }

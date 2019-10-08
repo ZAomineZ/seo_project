@@ -15,9 +15,20 @@ use Goutte\Client;
 
 class CrawlController
 {
+    /**
+     * @var Client
+     */
     private $goutte;
+    /**
+     * @var Crawl
+     */
     private $crawl;
 
+    /**
+     * CrawlController constructor.
+     * @param Client $goutte
+     * @param Crawl $crawl
+     */
     public function __construct(Client $goutte, Crawl $crawl)
     {
         $this->goutte = $goutte;

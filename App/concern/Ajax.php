@@ -7,6 +7,9 @@ use App\User;
 
 class Ajax
 {
+    /**
+     * Method Header Ajax Request !!!
+     */
     public function HeaderProtect ()
     {
         //header('Content-Type: text/plain');

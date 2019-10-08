@@ -8,17 +8,34 @@
 
 namespace App\Controller\Auth;
 
-
 use App\concern\Mail;
 use App\Table\Auth\PasswordForgot;
 
 class PasswordForgotController
 {
+    /**
+     * @var PasswordForgot
+     */
     private $table;
+    /**
+     * @var \App\Model\Auth\PasswordForgot
+     */
     private $password;
+    /**
+     * @var Mail
+     */
     private $mail;
 
-    public function __construct(PasswordForgot $table, \App\Model\Auth\PasswordForgot $password, Mail $mail)
+    /**
+     * PasswordForgotController constructor.
+     * @param PasswordForgot $table
+     * @param \App\Model\Auth\PasswordForgot $password
+     * @param Mail $mail
+     */
+    public function __construct(
+        PasswordForgot $table,
+        \App\Model\Auth\PasswordForgot $password,
+        Mail $mail)
     {
         $this->table = $table;
         $this->password = $password;
@@ -29,7 +46,7 @@ class PasswordForgotController
      * @param float $id
      * @return bool
      */
-    private function UpdateData (float $id)
+    private function UpdateData (float $id) : bool
     {
         return $this->table->UpdateData($id);
     }
@@ -39,7 +56,7 @@ class PasswordForgotController
      * @param string $password
      * @return bool
      */
-    private function UpdateUserToken (string $token, string $password)
+    private function UpdateUserToken (string $token, string $password) : bool
     {
         $password = password_hash($password, PASSWORD_DEFAULT);
         return $this->table->UpdatePassword($token, $password);
@@ -65,7 +82,7 @@ class PasswordForgotController
         $request = $this->table->ReqEmailExist($email);
         if ($request && $request->confirmation_at == 1) {
             $mail = $this->mail->SendMail($request->username, $request->email, $request->confirmation_token);
-            if ($mail && $mail['success']) {
+            if ($mail && isset($mail['success'])) {
                 $this->UpdateData($request->id);
                 echo \GuzzleHttp\json_encode($this->password->MessageFront('Message has been sent !!!', 'success'));
             } else {

@@ -1,5 +1,10 @@
 <?php
 require '../../vendor/autoload.php';
+
+use App\Actions\Suggest_Data;
+use App\Controller\SuggestController;
+use Goutte\Client;
+
 $ajax = new \App\concern\Ajax();
 $ajax->HeaderProtect();
 
@@ -13,10 +18,10 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $ajax->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
                     $ajax->VerifValueRegex($_GET['keyword']);
 
-                    $goutte = new \Goutte\Client();
-                    $json = new \App\Actions\Suggest_Data($goutte);
+                    $goutte = new Client();
+                    $json = new Suggest_Data($goutte);
 
-                    $suggest = new \App\Controller\SuggestController($json);
+                    $suggest = new SuggestController($json);
                     $suggest->JsonData($_GET['value']);
                 } else {
                     echo 'Invalid Token !!!';

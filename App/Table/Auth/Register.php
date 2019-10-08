@@ -14,6 +14,10 @@ use App\Table\Table;
 
 class Register extends Table
 {
+    /**
+     * Register constructor.
+     * @param PDO_Model $PDO_Model
+     */
     public function __construct(PDO_Model $PDO_Model)
     {
         parent::__construct($PDO_Model);
@@ -23,11 +27,16 @@ class Register extends Table
      * @param array $data
      * @return bool
      */
-    public function RegisterUser (array $data)
+    public function RegisterUser (array $data) : bool
     {
         return $this->InsertData($data, 'users');
     }
 
+    /**
+     * @param string $username
+     * @param string $email
+     * @return mixed
+     */
     public function UserExist (string $username, string $email)
     {
         $select = $this->pdo

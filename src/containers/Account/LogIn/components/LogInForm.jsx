@@ -9,6 +9,7 @@ import {Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
 import axios from "axios";
+import {route} from '../../../../const'
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../../../shared/components/Notification";
 
@@ -114,7 +115,8 @@ class LogInForm extends PureComponent {
         return JSON.stringify({
                 'id': json.id,
                 'username': json.username,
-                'email': json.email
+                'email': json.email,
+                'confirmation_at': json.confirmation_at
             })
     }
 
@@ -123,7 +125,6 @@ class LogInForm extends PureComponent {
         e.preventDefault();
         if (this.state.valueUsername !== '' && this.state.valuePassword !== '') {
             if (this.state.valueUsername.length >= 5 && this.state.valuePassword.length >= 5) {
-                let route = '/ReactProject/App'
                 axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/login.php', {
                     params: {
                         'username': this.state.valueUsername,

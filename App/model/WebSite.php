@@ -11,6 +11,7 @@ namespace App\Model;
 use App\Actions\Json_File;
 use App\Actions\Url\Curl_Keyword;
 use App\concern\File_Params;
+use App\concern\Str_options;
 use App\Controller\TopKeywordController;
 use Goutte\Client;
 
@@ -21,9 +22,21 @@ class WebSite
      */
     CONST URL = "https://www.alexa.com/siteinfo/";
 
+    /**
+     * @var Client
+     */
     private $crawl;
+    /**
+     * @var TopKeywordController
+     */
     private $controller;
+    /**
+     * @var Curl_Keyword
+     */
     private $curl_keyword;
+    /**
+     * @var Json_File
+     */
     private $json;
 
     /**
@@ -59,7 +72,7 @@ class WebSite
      * @param string $domain
      * @return string
      */
-    protected function JsonTrafic (string $domain)
+    protected function JsonTrafic (string $domain) : string
     {
         $html = $this->controller->CrawlHtml($this->curl_keyword->Curl($domain));
         $key = $html['api_key'];
@@ -72,7 +85,7 @@ class WebSite
      * @param string $domain
      * @return array
      */
-    public function FilterRank (string $domain)
+    public function FilterRank (string $domain) : array
     {
         $crawl = $this->crawl->request("GET", self::URL . $domain);
         $find = $crawl->filter("body section.rank div.rank-global p.big.data")->each(function ($node) {
@@ -83,21 +96,24 @@ class WebSite
 
     /**
      * @param array $find
-     * @return string
+     * @return string|null
      */
-    public function FindRank (array $find)
+    public function FindRank (array $find) : ?string
     {
-        $explode = explode("\n", $find[0]);
-        $explode_strip = explode('span', $explode[1]);
-        $explode_int = explode('>', $explode_strip[2]);
-        return strip_tags(trim($explode_int[1]));
+        if (!empty($find)) {
+            $explode = explode("\n", $find[0]);
+            $explode_strip = explode('span', $explode[1]);
+            $explode_int = explode('>', $explode_strip[2]);
+            return strip_tags(trim($explode_int[1]));
+        }
+        return null;
     }
 
     /**
      * @param string $file
      * @return string
      */
-    public static function FindDateFile (string $file)
+    public static function FindDateFile (string $file) : string
     {
         $explode = explode('/', $file);
         $date_ex = explode('-', $explode[11]);
@@ -106,9 +122,9 @@ class WebSite
 
     /**
      * @param $data
-     * @return string
+     * @return string|null
      */
-    public function JsonReturn ($data)
+    public function JsonReturn ($data) : ?string
     {
         return $this->FindRank($data);
     }
@@ -128,7 +144,8 @@ class WebSite
      * @param $key
      * @return array
      */
-    public function unique_multidim_array($array, $key) {
+    public function unique_multidim_array($array, $key) : array
+    {
         $temp_array = [];
         $i = 0;
         $key_array = [];
@@ -148,7 +165,7 @@ class WebSite
      * @param $type = ''
      * @return array
      */
-    public function DataDefault ($data, $type = '')
+    public function DataDefault ($data, $type = '') : array
     {
         $data_end = [];
         foreach ($data as $key => $item) {
@@ -163,9 +180,10 @@ class WebSite
 
     /**
      * @param $data_traffic
+     * @param $data_traffic_now
      * @return array
      */
-    public function ForData ($data_traffic)
+    public function ForData ($data_traffic, $data_traffic_now) : array
     {
         $data_end = [];
         $data_end_asort = [];
@@ -176,13 +194,19 @@ class WebSite
             $data['date'] = date("F Y",  strtotime($dt->Dt));
             $data['keyword'] = $dt->Oc;
             $data['traffic'] = $dt->Ot;
-            $data_end[] = $data;
+            $data_end[strtotime($dt->Dt)] = $data;
         }
+        // Data Traffic Now : We Create an array similar !!!
+        $dataWithNowTraffic =  $this->DataNowTraffic($data_traffic_now, $data_end);
         // Change order Array by Years !!!
-        asort($data_end);
+        usort($dataWithNowTraffic, function($v1, $v2) {
+            $date_1 = strtotime($v1['date']);
+            $date_2 = strtotime($v2['date']);
+            return $date_1 - $date_2;
+        });
 
         // We continued and use foreach for create a new array !!!
-        foreach ($data_end as $data_e) {
+        foreach ($dataWithNowTraffic as $data_e) {
             $data_asort['years'] = $data_e['years'];
             $data_asort['date'] = $data_e['date'];
             $data_asort['keyword'] = $data_e['keyword'];
@@ -193,11 +217,12 @@ class WebSite
     }
 
     /**
+     * Change date with the Format corresponding !!!
      * @param $data
      * @param $format
      * @return array
      */
-    public function ChangeData ($data, $format)
+    public function ChangeData ($data, $format) : array
     {
         $data_end = [];
         foreach ($data as $dt) {
@@ -213,7 +238,7 @@ class WebSite
      * @param $format
      * @return array
      */
-    public function ChangeDataItem ($data, $format)
+    public function ChangeDataItem ($data, $format) : array
     {
         $data_end = [];
         foreach ($data as $item => $dt) {
@@ -240,5 +265,123 @@ class WebSite
             return File_Params::CreateParamsFile($file, $dir, $this->JsonTrafic($domain), TRUE);
         }
         return null;
+    }
+
+    /**
+     * @param string $dir
+     * @param string $domain
+     * @return bool|string
+     */
+    public function ChangeDir(string $dir, string $domain)
+    {
+        if ($dir) {
+            $dirArray = explode('datas/', $dir)[0];
+            $dirNew = $dirArray . 'datas/imastic/' . 'LinkProfile-' .
+                Str_options::str_replace_domain($domain) . '/';
+            return $dirNew;
+        }
+        return false;
+    }
+
+    /**
+     * @param float|int $powerSize
+     * @param  float|int $trust_rank
+     * @param int $scoreRank
+     * @return int
+     */
+    public function ChangePowerSize($powerSize, $trust_rank, int $scoreRank)
+    {
+        if (!is_null($powerSize) && !is_null($trust_rank)) {
+            $powerRound = round($powerSize);
+            if ($trust_rank > 30) {
+                return call_user_func([$this, 'TrustPower'], $powerRound, $trust_rank);
+            } elseif ($trust_rank <= 20 && $trust_rank >= 15 && $scoreRank < 20) {
+                return $trust_rank / 2;
+            } elseif ($trust_rank >= 21 && $trust_rank < 30) {
+                if ($powerSize >= 1 && $powerSize <= 3) {
+                    return $trust_rank - 4;
+                } elseif ($powerSize >= 4 && $powerSize <= 6) {
+                    return $trust_rank - 2;
+                } elseif ($powerSize >= 7 && $powerSize <= 9){
+                    return $trust_rank - 1;
+                }
+            }
+            return 0;
+        }
+    }
+
+    /**
+     * @param string $domain
+     * @param string $dir
+     * @param string $token
+     * @return string
+     */
+    public function SaveImgPower(string $domain, string $dir, string $token)
+    {
+        $ImgMajestic = "https://majestic.com/charts/linkprofile/2/?target=$domain&datatype=1&IndexDataSource=F";
+        $fileCreate = $this->ChangeDir($dir, $domain) .
+            Str_options::str_replace_domain($domain) . '-' .
+            $token . '-domain.png';
+        if (!is_dir($this->ChangeDir($dir, $domain))) {
+            $mkdir = mkdir($this->ChangeDir($dir, $domain), 0777, true);
+            if ($mkdir && !file_exists($fileCreate)) {
+                File_Params::CreateParamsFile($fileCreate, $this->ChangeDir($dir, $domain), $ImgMajestic);
+                return $fileCreate;
+            }
+        } else {
+            if (!file_exists($fileCreate)) {
+                File_Params::CreateParamsFile($fileCreate, $this->ChangeDir($dir, $domain), $ImgMajestic);
+            }
+        }
+        return $fileCreate;
+    }
+
+    /**
+     * @param $data_traffic_now
+     * @param array $data
+     * @return array
+     */
+    private function DataNowTraffic($data_traffic_now, array $data): array
+    {
+        $data_traffic = [];
+        foreach ($data_traffic_now as $dt) {
+            $data_traffic['years'] = date("Y",  strtotime($dt->Dt));
+            $data_traffic['date'] = date("F Y",  strtotime($dt->Dt));
+            $data_traffic['keyword'] = $dt->Oc;
+            $data_traffic['traffic'] = $dt->Ot;
+            $data[strtotime($dt->Dt)] = $data_traffic;
+        }
+        return $data;
+    }
+
+    /**
+     * @param int $powerRound
+     * @param int $trustRank
+     * @return int
+     */
+    private function TrustPower(int $powerRound, int $trustRank): int
+    {
+        if ($powerRound === 1) {
+            return $trustRank - 26;
+        } elseif ($powerRound === 2) {
+            return $trustRank - 24;
+        } elseif ($powerRound === 3) {
+            return $trustRank - 22;
+        } elseif ($powerRound === 4) {
+            return $trustRank - 20;
+        } elseif ($powerRound === 5) {
+            return $trustRank - 17;
+        } elseif ($powerRound === 6) {
+            return $trustRank - 15;
+        } elseif ($powerRound === 7) {
+            return $trustRank - 13;
+        } elseif ($powerRound === 8) {
+            return $trustRank - 10;
+        } elseif ($powerRound === 9) {
+            return $trustRank - 6;
+        } elseif ($powerRound > 20 && $powerRound < 55) {
+            return $trustRank + 8;
+        }
+        return 0;
     }
 }

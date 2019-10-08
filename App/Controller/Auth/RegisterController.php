@@ -12,10 +12,20 @@ use App\Model\Auth\Register;
 
 class RegisterController
 {
-
+    /**
+     * @var Register
+     */
     private $register;
+    /**
+     * @var \App\Table\Auth\Register
+     */
     private $table;
 
+    /**
+     * RegisterController constructor.
+     * @param Register $register
+     * @param \App\Table\Auth\Register $table
+     */
     public function __construct(Register $register, \App\Table\Auth\Register $table)
     {
         $this->register = $register;

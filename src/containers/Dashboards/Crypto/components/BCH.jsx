@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 export default class BCH extends PureComponent {
     static propTypes = {
-        dash_stats: PropTypes.array.isRequired,
+        dash_stats: PropTypes.array.isRequired
     };
 
     constructor(props) {
@@ -23,7 +23,7 @@ export default class BCH extends PureComponent {
         const Bottom = <TrendingDownIcon className="dashboard_top_serp_icon" />;
 
         const data = this.props.dash_stats.map(d => {
-            return { name: '', bch : Math.round((d.trust / d.score_rank) * 100) };
+            return { name: '', bch : Math.round((d.trust / d.score_rank) * 100)};
         });
 
         const CustomTooltip = ({ active, payload }) => {

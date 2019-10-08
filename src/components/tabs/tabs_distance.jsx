@@ -76,6 +76,7 @@ class DefaultTabs extends PureComponent {
                           backlink={this.props.backlink}
                           domain={this.props.domain}
                           referring_domain_int={this.props.referring_domain_int}
+                          dash_stats={this.props.dash_stats}
                       />
                     </TabPane>
                     <TabPane tabId="2">

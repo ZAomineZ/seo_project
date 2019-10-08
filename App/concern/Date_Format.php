@@ -15,7 +15,7 @@ class Date_Format
      * @param $format = null
      * @return array
      */
-    public static function DateDayAndMonth ($date, $format = null)
+    public static function DateDayAndMonth ($date, $format = null) : array
     {
         $date_format_end = [];
         foreach ($date as $dt) {

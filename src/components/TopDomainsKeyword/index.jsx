@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import TabMaterielTopDomains from './TabMaterielTopDomains';
 import axios from "axios";
+import {route} from '../../const'
 import {Redirect} from "react-router-dom";
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
@@ -70,7 +71,6 @@ class DomainsKeyword extends PureComponent {
     }
 
     componentDidMount() {
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeyword.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -83,7 +83,9 @@ class DomainsKeyword extends PureComponent {
                 'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
             },
             params: {
-                domain: this.PropsChange(this.props.match.params.keyword),
+                domain: this.props.location.state !== undefined ?
+                    this.props.location.state.domain :
+                    this.PropsChange(this.props.match.params.keyword),
                 cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
                 auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
             }
@@ -109,6 +111,11 @@ class DomainsKeyword extends PureComponent {
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
                         }
                     } else {
+                        if (response.data.length === 0) {
+                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            NotificationSystem.newInstance({}, n => notification = n);
+                            setTimeout(() => showNotification('No information was found for this Domain !!!', 'danger'), 700);
+                        }
                         this.setState({ data: response.data, loading: false });
                         setTimeout(() => this.setState({ loaded: true }), 500);
                     }

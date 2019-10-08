@@ -8,7 +8,9 @@ import {Redirect} from 'react-router-dom';
 import validate from '../../containers/Form/FormValidation/components/validate';
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
+import {route} from '../../const'
 import axios from "axios";
+
 
 const renderField = ({
                          input, placeholder, type, meta: {touched, error},
@@ -145,7 +147,6 @@ class CampainForm extends PureComponent {
 
     AjaxSpace (split)
     {
-        let route = '/ReactProject/App';
         axios.get("http://" + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -210,7 +211,6 @@ class CampainForm extends PureComponent {
 
     AjaxNoSpace (value)
     {
-        let route = '/ReactProject/App'
         axios.get("http://" + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -273,7 +273,8 @@ class CampainForm extends PureComponent {
                     let domain = split.map(str => {
                         return this.DomainSplit(str)
                     });
-                    let domain_end = domain.map(str => {
+                    let filter_domain = domain.filter(d => d !== undefined);
+                    let domain_end = filter_domain.map(str => {
                         return str.replace('-', '.')
                     });
                     let domain_last = this.VerifString(domain_end, '/');
@@ -309,10 +310,73 @@ class CampainForm extends PureComponent {
             );
         }
         if (redirectMe) {
-            console.log(this.state.valueInput);
+            if (this.state.valueInput.indexOf('&', -1)) {
+                if (this.state.valueInput.indexOf('.') !== -1) {
+                    let end_value = this.state.valueInput.split('&');
+                    let value = end_value.map(d => {
+                        return d.replace('&', '')
+                    })
+                    let filter_value = value.filter(d => d !== '');
+                    let dom_map = filter_value.map(d => d.replace('.', '-'));
+                    let domain = dom_map.join('&');
+
+                    let end_value_st = this.state.valueInput.split('&');
+                    let value_st = end_value_st.map(d => {
+                        return d.replace('&', '')
+                    })
+                    let filter_value_st = value_st.filter(d => d !== '');
+                    let dom_map_st = filter_value_st.map(d => d.replace('-', '.'));
+
+                    let state_filter = dom_map_st.map(d => {
+                        var count = 0;
+                        for(var i = 0; d.length > i; i++){
+                            if(d.charAt(i) == '.'){
+                                ++count;
+                            }
+                        }
+                        if (count > 1) {
+                            return d;
+                        } else {
+                            return d.replace('.', '-')
+                        }
+                    });
+                    let domain_stat = state_filter.join('&');
+                    return (
+                        <Redirect to={{
+                            pathname: 'keyworddomains/' + domain,
+                            state: {domain : domain_stat.indexOf('/', -1) !== -1 ? domain_stat.replace('/', '') : domain_stat}
+                        }}/>
+                    );
+                } else {
+                    let end_value = this.state.valueInput.split('&');
+                    let value = end_value.map(d => {
+                        return d.replace('&', '')
+                    })
+                    let filter_value = value.filter(d => d !== '');
+                    let domain = filter_value.join('&');
+                    return (
+                        <Redirect to={{
+                            pathname: 'keyworddomains/' + domain,
+                        }}/>
+                    );
+                }
+            }
+            if (this.state.valueInput.indexOf('.') !== -1) {
+                let split_point = this.state.valueInput.split('.');
+                let value_end_state = split_point[split_point.length - 2] + '-' + split_point[split_point.length - 1];
+                let value_st = this.state.valueInput.split('-');
+                let val = value_st.join('.');
+                let val_slice = value_end_state.indexOf('/', -1) !== -1 ? value_end_state.replace('/', '') : value_end_state;
+                return (
+                    <Redirect to={{
+                        pathname: 'keyworddomains/' + val_slice,
+                        state: {domain : val.indexOf('/', -1) !== -1 ? val.replace('/', '') : val}
+                    }}/>
+                );
+            }
             return (
                 <Redirect to={{
-                    pathname: 'keyworddomains/' + this.state.valueInput,
+                    pathname: 'keyworddomains/' + this.state.valueInput
                 }}/>
             );
         }

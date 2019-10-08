@@ -32,6 +32,8 @@ import Campain from '../../components/Campain/index';
 import CampainDetails from '../../components/Campain/CampainDetails';
 import KeywordDomains from '../../components/TopDomainsKeyword/index';
 import TopKeywordIndex from '../../components/TopDomainsKeyword/top_index';
+import RankToIndex from '../../components/RankTo/index';
+import RankToIndexKeyword from '../../components/RankTo/indexKeyword';
 
 const wrappedRoutes = () => (
   <div>
@@ -54,6 +56,8 @@ const wrappedRoutes = () => (
       <Route exact path="/seo/serp/:keyword" component={SerpDetails} />
       <Route exact path="/seo/serp/:keyword/:date" component={SerpDateDetails} />
       <Route exact path="/seo/serp" component={SerpIndex} />
+      <Route exact path="/seo/rankTo" component={RankToIndex} />
+      <Route exact path="/seo/rankTo/:project" component={RankToIndexKeyword} />
     </div>
   </div>
 );

@@ -8,12 +8,15 @@
 
 namespace App\Table\Auth;
 
-
 use App\Model\PDO_Model;
 use App\Table\Table;
 
 class LogIn extends Table
 {
+    /**
+     * LogIn constructor.
+     * @param PDO_Model $PDO_Model
+     */
     public function __construct(PDO_Model $PDO_Model)
     {
         parent::__construct($PDO_Model);
@@ -107,7 +110,7 @@ class LogIn extends Table
     {
         $update = $this->pdo
             ->GetPdo()
-            ->prepare("UPDATE users SET confirmation_at = :confirmation_at,  WHERE id = :id");
+            ->prepare("UPDATE users SET confirmation_at = :confirmation_at WHERE id = :id");
         $update->execute(['confirmation_at' => 1, 'id' => $id]);
         return $update;
     }

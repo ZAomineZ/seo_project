@@ -28,10 +28,10 @@ export default class PanelBacklinks extends PureComponent {
                         <table className="table--bordered table">
                             <thead>
                             <tr>
-                                <th>Nomber</th>
+                                <th>Number</th>
                                 <th>Url</th>
                                 <th>Label Name</th>
-                                <th>Keywoard</th>
+                                <th>Keyword</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -42,7 +42,7 @@ export default class PanelBacklinks extends PureComponent {
                                             <span className="badge badge-primary">{ d.page_trust_score }</span>
                                         </td>
                                         <td>
-                                            <a href="http://www.meilleurduweb.com/">{ d.source_url }</a>
+                                            <a href={d.source_url} target='_blank'>{ d.source_url }</a>
                                         </td>
                                         <td><span className={d.nofollow === false ? 'badge badge-success' : 'badge badge-danger' }>
                                             { d.nofollow === false ? 'Follow' : 'NoFollow' }
@@ -64,7 +64,7 @@ export default class PanelBacklinks extends PureComponent {
                             <thead>
                             <tr>
                                 <th>Url</th>
-                                <th>Nomber</th>
+                                <th>Number</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -72,7 +72,7 @@ export default class PanelBacklinks extends PureComponent {
                               this.props.data_page.map(data => (
                                   <tr>
                                       <td>
-                                          <a href="http://www.meilleurduweb.com/">{ data.source_url }</a>
+                                          <a href={data.source_url} target='_blank'>{ data.source_url }</a>
                                       </td>
                                       <td><span className="span_primary_tab badge badge-primary">{ data.backlinks_num }</span></td>
                                   </tr>
