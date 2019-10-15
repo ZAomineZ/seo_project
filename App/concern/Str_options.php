@@ -1,8 +1,24 @@
 <?php
 namespace App\concern;
 
+use App\Model\RankModel;
+
 class Str_options
 {
+    /**
+     * @param string $keywords
+     * @param string $search
+     * @return string
+     */
+    public static function KeywordsInput(string $keywords, string $search): string
+    {
+        $kArray = explode($search, $keywords);
+        $arrayKeywords = array_map('trim', $kArray);
+        $arrayKeywords = array_filter($arrayKeywords, function ($value) {return $value !== '';});
+        $keywords = implode(',', $arrayKeywords);
+        return $keywords;
+    }
+
     /**
      * @param string $crawl_string
      * @return mixed

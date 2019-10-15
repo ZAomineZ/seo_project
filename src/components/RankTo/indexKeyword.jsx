@@ -3,12 +3,38 @@ import React, {PureComponent} from "react";
 import ChartRank from "./ChartRank";
 import axios from "axios";
 import {route} from "../../const";
+import {BasicNotification} from "../../shared/components/Notification";
+import NotificationSystem from "rc-notification";
+import RankTable from "./RankTable";
+import {Redirect} from "react-router-dom";
+
+let notification = null;
+
+const showNotification = (type, title, message) => {
+    notification.notice({
+        content: <BasicNotification
+            color={type}
+            title={title}
+            message={message}
+        />,
+        duration: 5,
+        closable: true,
+        style: {top: 0, left: 'calc(100vw - 100%)'},
+        className: 'left-up',
+    });
+};
 
 export default class indexKeyword extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            dataKeywordsByWebsite: [],
+            countKeywords: 0,
+            loading: true,
+            loaded: false,
+            redirectTo: false,
+            redirectSerp: false
         }
     }
 
@@ -62,6 +88,11 @@ export default class indexKeyword extends PureComponent {
         this.setState({redirectSerp: !this.state.redirectSerp})
     }
 
+    submitNotification(type, title, message) {
+        NotificationSystem.newInstance({}, n => notification = n);
+        setTimeout(() => showNotification(type, title, message), 700);
+    }
+
     componentDidMount() {
         let project = this.props.match.params.project;
         if (project !== '') {
@@ -86,14 +117,55 @@ export default class indexKeyword extends PureComponent {
                         : ''
                 }
             }).then((response) => {
-                console.log(response);
+                if (response && response.status === 200) {
+                    if (response.data.error) {
+                        if (response.data.error === 'Invalid Token') {
+                            this.CookieReset(response.data.token, response.data.id)
+                        } else {
+                            this.setState({redirectTo: !this.state.redirectTo});
+                            this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
+                        }
+                    } else {
+                        if (response.data.data && response.data.dataKeywordsByWebsite) {
+                            const data = Object.values(response.data.data);
+                            const dataKeywordsByWebsite = Object.values(response.data.dataKeywordsByWebsite);
+                            this.setState({
+                                data: data,
+                                dataKeywordsByWebsite: dataKeywordsByWebsite,
+                                countKeywords: response.data.countKeywords,
+                                loading: false
+                            });
+                            setTimeout(() => this.setState({loaded: true}), 500);
+                        }
+                    }
+                }
             })
         }
     }
 
     render() {
+        if (this.state.redirectTo) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/rankTo'
+                }}/>
+            )
+        } else if (this.state.redirectSerp) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            )
+        }
         return (
             <div className='dashboard container'>
+                {!this.state.loaded &&
+                <div className="panel__refresh">
+                    <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
+                    </svg>
+                </div>
+                }
                 <div className="row">
                     <div className="col-md-12">
                         <h3 className="page-title">Rank To</h3>
@@ -102,7 +174,14 @@ export default class indexKeyword extends PureComponent {
                         </h3>
                     </div>
                     <div className="col-xl-12">
-                        <ChartRank data={[]} project={this.props.match.params.project}/>
+                        <ChartRank data={this.state.data} project={this.props.match.params.project}/>
+                    </div>
+                    <div className="col-xl-12">
+                        <RankTable
+                            title={'Dashboard Rank Keyword (' + this.state.countKeywords + ')'}
+                            project={this.props.match.params.project}
+                            data={this.state.dataKeywordsByWebsite}
+                        />
                     </div>
                 </div>
             </div>

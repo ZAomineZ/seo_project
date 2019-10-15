@@ -1,14 +1,14 @@
 /* eslint-disable */
 import React, {PureComponent} from 'react';
 import PropTypes from "prop-types";
-import {Button, Card, CardBody, Col, Progress} from "reactstrap";
+import {Button, Card, CardBody, Col, ButtonToolbar, Modal} from "reactstrap";
 import StatsRankChart from "./StatsRankChart";
-import ModalRank from "./ModalRank";
 import axios from "axios";
 import {route} from "../../const";
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import ModalRankDelete from "./ModalRankDelete";
+import {Redirect} from "react-router-dom";
 
 let notification = null;
 
@@ -38,6 +38,7 @@ export default class RankFront extends PureComponent {
             PropTypes.array,
             PropTypes.object
         ]),
+        modal: PropTypes.bool.isRequired,
         modalDelete: PropTypes.bool.isRequired,
         toggleDelete: PropTypes.func.isRequired,
         deleteProject: PropTypes.func.isRequired
@@ -54,13 +55,43 @@ export default class RankFront extends PureComponent {
             keywords: '',
             date: '',
             loading: true,
-            loaded: true
+            loaded: true,
+            errorMess: '',
+            errorStatus: false,
+            redirectSerp: false
         };
         this.toggle = this.toggle.bind(this);
         this.handleChangeProject = this.handleChangeProject.bind(this);
-        this.handleChangeWebsite = this.handleChangeWebsite.bind(this);
         this.handleChangeDescription = this.handleChangeDescription.bind(this);
+        this.handleChangeWebsite = this.handleChangeWebsite.bind(this);
         this.handleChangeKeywords = this.handleChangeKeywords.bind(this);
+        this.ErrorRenderState = this.ErrorRenderState.bind(this);
+    }
+
+    ErrorRenderState() {
+        let urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+        if (this.state.website === '' || !urlRegex.test(this.state.website)) {
+            this.setState({errorMess: 'Url field is Invalid !!!'});
+            this.setState({errorStatus: !this.state.errorStatus})
+        } else {
+            this.setState({errorStatus: false})
+        }
+    }
+
+    handleChangeProject(event) {
+        this.setState({project: event.target.value})
+    }
+
+    handleChangeWebsite(event) {
+        this.setState({website: event.target.value})
+    }
+
+    handleChangeDescription(event) {
+        this.setState({description: event.target.value})
+    }
+
+    handleChangeKeywords(event) {
+        this.setState({keywords: event.target.value})
     }
 
     submitNotification(type, title, message) {
@@ -147,12 +178,18 @@ export default class RankFront extends PureComponent {
                 }
             }).then((response) => {
                 if (response.data && response.status === 200) {
-                    this.setState({
-                        website: response.data.website,
-                        description: response.data.content,
-                        project: response.data.project,
-                        keywords: response.data.keywords
-                    });
+                    if (response.data.error) {
+                        if (response.data.error === 'Invalid Token') {
+                            this.CookieReset(response.data.token, response.data.id)
+                        }
+                    } else {
+                        this.setState({
+                            website: response.data.website,
+                            description: response.data.content,
+                            project: response.data.project,
+                            keywords: response.data.keywords
+                        });
+                    }
                 }
             })
         }
@@ -199,9 +236,13 @@ export default class RankFront extends PureComponent {
                 }).then((response) => {
                     if (response && response.status === 200) {
                         if (response.data.error) {
-                            this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
-                            this.setState({loading: false});
-                            setTimeout(() => this.setState({loaded: true}), 500);
+                            if (response.data.error === 'Invalid Token') {
+                                this.CookieReset(response.data.token, response.data.id)
+                            } else {
+                                this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
+                                this.setState({loading: false});
+                                setTimeout(() => this.setState({loaded: true}), 500);
+                            }
                         } else {
                             this.setState({
                                 project: response.data.result.project,
@@ -227,26 +268,18 @@ export default class RankFront extends PureComponent {
         }
     }
 
-    handleChangeProject(event) {
-        this.setState({project: event.target.value})
-    }
-
-    handleChangeWebsite(event) {
-        this.setState({website: event.target.value})
-    }
-
-    handleChangeDescription(event) {
-        this.setState({description: event.target.value})
-    }
-
-    handleChangeKeywords(event) {
-        this.setState({keywords: event.target.value})
-    }
-
     render() {
         const dataR = Object.values(this.props.dataRankKeywords);
         let moment = require('moment');
         let Slugify = require('slugifyjs').fromLocale('en');
+
+        if (this.state.redirectSerp) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            )
+        }
 
         return (
             <Col md={12} lg={12} xl={12}>
@@ -264,23 +297,84 @@ export default class RankFront extends PureComponent {
                         <div className="project-summary">
                             <div className="card__title project-summary__card-title">
                                 <h5 className="bold-text">Project {this.props.project}</h5>
-                                <Button className="project-summary__btn btn-right" color='danger' outline size="sm"
-                                        onClick={e => this.toggleClick(e, this.props.id, 'deleteModal')}>Delete</Button>
-                                <Button className="project-summary__btn" outline size="sm"
+                                <Button className="project-summary__btn btn-right" outline size="sm"
                                         onClick={e => this.toggleClick(e, this.props.id)}>Edit</Button>
+                                <Button className="project-summary__btn" color='danger' outline size="sm"
+                                        onClick={e => this.toggleClick(e, this.props.id, 'deleteModal')}>Delete</Button>
                             </div>
-                            <ModalRank toggle={this.toggle}
-                                       modal={this.state.modal}
-                                       keywords={this.state.keywords}
-                                       description={this.state.description}
-                                       project={this.state.project}
-                                       website={this.state.website}
-                                       handleChangeKeywords={this.handleChangeKeywords}
-                                       handleChangeDescription={this.handleChangeDescription}
-                                       handleChangeWebsite={this.handleChangeWebsite}
-                                       handleChangeProject={this.handleChangeProject}
-                                       onSubmit={e => this.onSubmit(e)}
-                            />
+                            <Modal
+                                isOpen={this.state.modal}
+                                toggle={this.toggle}
+                                className='modalClasses modalWebSite'
+                            >
+                                <form className='form' onSubmit={e => this.onSubmit(e)}>
+                                    <div className="form__form-group">
+                                        <span className="form__form-group-label typography-message">Your new Project</span>
+                                        <div className="form__form-group-field">
+                                            <input
+                                                type="text"
+                                                name='project'
+                                                placeholder="Your Project.."
+                                                required
+                                                value={this.state.project}
+                                                onChange={this.handleChangeProject}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="form__form-group">
+                                        <span className="form__form-group-label typography-message">Your new Website</span>
+                                        <div className="form__form-group-field">
+                                            <div className="form__form-group-input-wrap form__form-group-input-wrap--error-above">
+                                                <input
+                                                    type='url'
+                                                    name='url'
+                                                    placeholder="https://themeforest.net"
+                                                    required
+                                                    value={this.state.website}
+                                                    onChange={this.handleChangeWebsite}
+                                                    onKeyDownCapture={this.ErrorRenderState}
+                                                    onClick={this.ErrorRenderState}
+                                                    onBlur={this.ErrorRenderState}
+                                                />
+                                                {this.state.errorStatus ?
+                                                    <span className="form__form-group-error">{this.state.errorMess}</span>
+                                                    : ''
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="form__form-group">
+                                        <span className="form__form-group-label typography-message">Your new Description</span>
+                                        <div className="form__form-group-field">
+                                    <textarea
+                                        placeholder="Your Description.."
+                                        required
+                                        name='content'
+                                        value={this.state.description}
+                                        className='border-textarea'
+                                        onChange={this.handleChangeDescription}
+                                    />
+                                        </div>
+                                    </div>
+                                    <div className="form__form-group">
+                                        <span className="form__form-group-label typography-message">Yours new Keywords</span>
+                                        <div className="form__form-group-field">
+                                    <textarea
+                                        placeholder="Yours Keywords.."
+                                        name='keywords'
+                                        value={this.state.keywords}
+                                        className='border-textarea'
+                                        onChange={this.handleChangeKeywords}
+                                    />
+                                        </div>
+                                    </div>
+
+                                    <ButtonToolbar className="form__button-toolbar">
+                                        <Button color="primary" type="submit">Add</Button>
+                                        <Button type="button" onClick={this.toggle}>Cancel</Button>
+                                    </ButtonToolbar>
+                                </form>
+                            </Modal>
                             <ModalRankDelete
                                 message='Are you sure to delete this project ?!'
                                 toggle={this.props.toggleDelete}
@@ -313,19 +407,21 @@ export default class RankFront extends PureComponent {
                                 </tr>
                                 </tbody>
                             </table>
-                            <p className="typography-message">{this.state.content !== '' ? this.state.content : this.props.content}</p>
+                            <p className="typography-message">{this.state.description !== '' ? this.state.description : this.props.content}</p>
                             {
-                                this.state.dataRankKeywords === undefined ? '' :
+                                !this.props.modal && !this.state.modal ?
+                                    this.state.dataRankKeywords === undefined ? '' :
                                     this.state.dataKeywords && this.state.dataKeywords.length !== 0 ?
                                         <hr/> : dataR && dataR.length !== 0 && dataR[0].length !== 0 && dataR[1].length !== 0 ?
-                                        <hr/> : ''
+                                        <hr/> : '' : ''
                             }
                             {
+                                !this.props.modal && !this.state.modal ?
                                 this.state.dataKeywords && this.state.dataKeywords.length !== 0 ?
                                     <StatsRankChart id={this.props.id}
                                                     dataResultRank={this.state.dataKeywords}/> : dataR && dataR.length !== 0 ?
                                     <StatsRankChart id={this.props.id}
-                                                    dataResultRank={dataR}/> : ''
+                                                    dataResultRank={dataR}/> : '' : ''
                             }
                         </div>
                     </CardBody>

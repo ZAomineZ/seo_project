@@ -17,7 +17,7 @@ $header->HeaderProtect();
 if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
 {
     // Get Params Body
-    $id = htmlentities($_GET['id']);
+    $id = htmlspecialchars($_GET['id']);
     if (isset($_GET['auth']) && $_GET['auth'] !== '') {
         try {
             if (isset($id) && !empty($id)) {

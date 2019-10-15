@@ -34,6 +34,8 @@ import KeywordDomains from '../../components/TopDomainsKeyword/index';
 import TopKeywordIndex from '../../components/TopDomainsKeyword/top_index';
 import RankToIndex from '../../components/RankTo/index';
 import RankToIndexKeyword from '../../components/RankTo/indexKeyword';
+import CorrelationIndex from '../../components/CorrelationAnalyse/indexCorrelation';
+import CorrelationShow from '../../components/CorrelationAnalyse/showCorrelation';
 
 const wrappedRoutes = () => (
   <div>
@@ -58,6 +60,8 @@ const wrappedRoutes = () => (
       <Route exact path="/seo/serp" component={SerpIndex} />
       <Route exact path="/seo/rankTo" component={RankToIndex} />
       <Route exact path="/seo/rankTo/:project" component={RankToIndexKeyword} />
+      <Route exact path="/seo/correlationData" component={CorrelationIndex} />
+      <Route exact path="/seo/correlationData/:keyword" component={CorrelationShow} />
     </div>
   </div>
 );

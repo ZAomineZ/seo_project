@@ -18,7 +18,7 @@ class StatsRank extends PureComponent {
     constructor() {
         super();
         this.state = {
-            yearly: true,
+            yearly: false,
         };
     }
 
@@ -66,9 +66,9 @@ class StatsRank extends PureComponent {
                 <label htmlFor={name} className="toggle-btn dashboard__sales-toggle">
                     <input className="toggle-btn__input" type="checkbox" name={name} id={name}
                            onChange={this.handleChange}/>
-                    <span className="dashboard__sales-toggle-left">By Month</span>
+                    <span className="dashboard__sales-toggle-left">By Day</span>
                     <span className="toggle-btn__input-label"/>
-                    <span className="dashboard__sales-toggle-right">By Day</span>
+                    <span className="dashboard__sales-toggle-right">By Month</span>
                 </label>
             </div>
         );

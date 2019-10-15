@@ -170,6 +170,7 @@ export default class TopTen extends PureComponent {
                             }
                         }
                     }
+                    console.log(nextProps);
                     return {
                         id: key + 1,
                         description: d,

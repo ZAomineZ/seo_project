@@ -14,17 +14,15 @@ use App\Table\Website;
 
 $header = new Ajax();
 $header->HeaderProtect();
-if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
-{
-    // Get Params Body
-    $id = htmlspecialchars($_GET['id']);
+
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+
+    // GET PARAMS BODY
     $project = htmlspecialchars($_GET['project']);
-    $website = htmlspecialchars($_GET['website']);
-    $content = htmlspecialchars($_GET['content']);
-    $keywords = $_GET['keywords'];
-    if (isset($_GET['auth']) && $_GET['auth'] !== '') {
-        try {
-            if (isset($id) && !empty($id) && isset($project) && $project !== '' && isset($website) && $website !== '' && isset($content) && $content !== '' && isset($keywords)) {
+
+    if (isset($project) && !empty($project)) {
+        if (isset($_GET['auth']) && $_GET['auth'] !== '') {
+            try {
                 $auth = \GuzzleHttp\json_decode($_GET['auth']);
                 if (isset($auth->id) && isset($auth->username) && isset($auth->email) && isset($_GET['cookie']) && $_GET['cookie'] !== '' && $auth->id !== '' && $auth->username !== '' && $auth->email !== '') {
                     // Instance Controller RankController For tools RankTo !!!
@@ -41,14 +39,14 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $rankTable = new Rank($pdoModel);
                     $rankModel = new RankModel($rankTable, $serpModel);
                     $rankController = new RankController($rankModel, $rankTable);
-                    $rankController->UpdateProject($id, $project, $website, $content, $keywords, $_GET['auth']);
+                    $rankController->projectData($project, $_GET['auth']);
                 } else {
                     echo 'Invalid Token !!!';
                 }
-            } else {
+            } catch (Exception $exception) {
                 echo 'Invalid Token !!!';
             }
-        } catch (Exception $exception) {
+        } else {
             echo 'Invalid Token !!!';
         }
     } else {

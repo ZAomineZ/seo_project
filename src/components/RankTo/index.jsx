@@ -6,6 +6,7 @@ import BodyFormRank from "./BodyFormRank";
 import axios from "axios";
 import {route} from "../../const";
 import RankTop from "./RankTop";
+import {Redirect} from "react-router-dom";
 
 let notification = null;
 
@@ -24,13 +25,14 @@ const showNotification = () => {
 };
 
 export default class RankToIndex extends PureComponent {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             projectData: [],
             keywordsRank: [],
             loading: true,
-            loaded: false
+            loaded: false,
+            redirectSerp: false
         };
     }
 
@@ -81,7 +83,7 @@ export default class RankToIndex extends PureComponent {
         } else {
             this.SetCookie('auth_today', token + '__' + id, 1)
         }
-        this.setState({redirectSerp: !this.state.redirectSerp})
+        this.setState({redirectSerp: !this.state.redirectSerp});
     }
 
     RequestAjax() {
@@ -105,11 +107,17 @@ export default class RankToIndex extends PureComponent {
                     : ''
             }
         }).then((response) => {
-            this.setState({
-                projectData: response.data.result,
-                keywordsRank: response.data[0],
-                loading: false
-            });
+            if (response.data.error) {
+                if (response.data.error === 'Invalid Token') {
+                    this.CookieReset(response.data.token, response.data.id)
+                }
+            } else {
+                this.setState({
+                    projectData: response.data.result,
+                    keywordsRank: response.data[0],
+                    loading: false
+                });
+            }
             setTimeout(() => this.setState({ loaded: true }), 500);
         })
     }
@@ -133,6 +141,13 @@ export default class RankToIndex extends PureComponent {
     }
 
     render() {
+        if (this.state.redirectSerp) {
+            return (
+                <Redirect to={{
+                    pathname: '/seo/serp'
+                }}/>
+            )
+        }
         return (
             <div className="dashboard container">
                 {!this.state.loaded &&

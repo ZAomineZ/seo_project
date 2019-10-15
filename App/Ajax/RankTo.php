@@ -17,10 +17,10 @@ $header->HeaderProtect();
 if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
 {
     // Get Params Body
-    $project = htmlentities($_GET['project']);
-    $website = htmlentities($_GET['website']);
-    $content = htmlentities($_GET['content']);
-    $keywords = htmlentities($_GET['keywords']);
+    $project = htmlspecialchars($_GET['project']);
+    $website = htmlspecialchars($_GET['website']);
+    $content = htmlspecialchars($_GET['content']);
+    $keywords = htmlspecialchars($_GET['keywords']);
     if (isset($_GET['auth']) && $_GET['auth'] !== '') {
         try {
             if (isset($project) && $project !== '' && isset($website) && $website !== '' && isset($content) && $content !== '' && isset($keywords)) {

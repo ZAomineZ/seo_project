@@ -65,9 +65,10 @@ class Rank extends Table
     public function UpdateData(array $data): bool
     {
         $statement = $this->pdo->GetPdo()
-            ->prepare("UPDATE rank SET project = :project, website = :website, content = :content, created_at = :created_at, keywords = :keywords WHERE id = :id");
+            ->prepare("UPDATE rank SET project = :project, website = :website, slug = :slug, content = :content, created_at = :created_at, keywords = :keywords WHERE id = :id");
         return $statement->execute([
             'project' => $data['project'],
+            'slug' => $data['slug'],
             'website' => $data['website'],
             'content' => $data['content'],
             'created_at' => $data['created_at'],
@@ -109,6 +110,23 @@ class Rank extends Table
 
     /**
      * @param $auth
+     * @param string $project
+     * @return mixed
+     */
+    public function selectProjectBySlug($auth, string $project)
+    {
+        $statement = $this->pdo
+            ->GetPdo()
+            ->prepare("SELECT id, project, keywords, website FROM rank WHERE slug = :slug AND user_id = :userID");
+        $statement->execute([
+            'slug' => $project,
+            'userID' => $auth->id
+        ]);
+        return $statement->fetch();
+    }
+
+    /**
+     * @param $auth
      * @param string $id
      * @return bool|PDOStatement
      */
@@ -137,5 +155,14 @@ class Rank extends Table
             'userID' => $userID
         ]);
         return $statement->fetch();
+    }
+
+    /**
+     * @return array
+     */
+    public function selectAllKeywords()
+    {
+        $statement = $this->pdo->GetPdo()->query('SELECT keywords FROM rank');
+        return $statement->fetchAll();
     }
 }

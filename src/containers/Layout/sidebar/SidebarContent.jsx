@@ -60,6 +60,12 @@ class SidebarContent extends Component {
               route="/seo/rankTo"
               onClick={this.hideSidebar}
             />
+            <SidebarLink
+              title="Correction Analyse"
+              icon="apartment"
+              route="/seo/correlationData"
+              onClick={this.hideSidebar}
+            />
             <SidebarCategory title="Switch layout" icon="layers">
               <button className="sidebar__link" onClick={this.props.changeToLight}>
                 <p className="sidebar__link-title">Light Theme</p>

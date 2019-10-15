@@ -8,7 +8,9 @@
 
 namespace App\Model;
 
+use App\concern\Str_options;
 use App\Table\Rank;
+use Illuminate\Support\Str;
 
 class RankModel
 {
@@ -33,6 +35,26 @@ class RankModel
     }
 
     /**
+     * Verify If the news keywords exist already or no !!!
+     * @param string $value
+     * @param null|string $keywordsProject
+     */
+    public static function keywordExist(string $value, ?string $keywordsProject)
+    {
+        if (!empty($keywordsProject) || !is_null($keywordsProject)) {
+            $value = explode(',', $value);
+            $keywordsProject = explode(',', $keywordsProject);
+            $newKeywords = array_diff_key($value, $keywordsProject);
+            foreach ($newKeywords as $item) {
+                if (in_array($item, $keywordsProject)) {
+                    echo \GuzzleHttp\json_encode(['error' => 'This keyword exist already in the project !!!']);
+                    die();
+                }
+            }
+        }
+    }
+
+    /**
      * @param array $data
      * @param string $table
      * @return bool
@@ -53,13 +75,22 @@ class RankModel
      */
     public function KeywordsNotEmpty(string $project, string $website, string $content, string $keywords, $auth, $id = null): array
     {
-        $keywords = trim($keywords);
+        $request = $this->rankTable->selectRank($id);
         if (strpos($keywords, "\n")) {
-            $kArray = explode("\n", $keywords);
-            $keywords = implode(',', $kArray);
+            $keywords = Str_options::KeywordsInput($keywords, "\n");
+            if ($request) {
+                RankModel::keywordExist($keywords, $request->keywords);
+            }
+        } elseif (strpos($keywords, ",")) {
+            $keywords = Str_options::KeywordsInput($keywords, ",");
+            if ($request) {
+                RankModel::keywordExist($keywords, $request->keywords);
+            }
         }
+        $this->RegexKeywords($keywords);
         $data = [
             'project' => $project,
+            'slug' => Str::slug($project),
             'website' => $website,
             'content' => $content,
             'created_at' => date('Y-m-d H:i:s'),
@@ -90,6 +121,7 @@ class RankModel
             $this->rankTable
                 ->UpdateData([
                     'project' => $project,
+                    'slug' => Str::slug($project),
                     'website' => $website,
                     'content' => $content,
                     'keywords' => null,
@@ -100,6 +132,7 @@ class RankModel
         }
         $this->DataInsert([
             'project' => $project,
+            'slug' => Str::slug($project),
             'website' => $website,
             'content' => $content,
             'created_at' => date('Y-m-d H:i:s'),
@@ -121,24 +154,36 @@ class RankModel
      * @param array $data
      * @param string $website
      * @param string|int $option
+     * @param bool $dataRankReq
+     * @param array|null $keywords
      * @return array
      */
-    public function FormatDataRank(array $data, string $website, $option): array
+    public function FormatDataRank(array $data, string $website, $option, bool $dataRankReq = false, array $keywords = null): array
     {
         $dataRank = [];
         $dataDate = [];
+        $i = 0;
         foreach ($data as $key => $value) {
             foreach ($value['rank'] as $k => $v) {
                 foreach ($v as $k_ => $v_) {
+                    $i++;
                     if (strpos($v_, (string)$website) !== false) {
-                        $dataRank[$key][$k][$v_] = $k_ + 1;
+                        $dataRank[$key][$k][$i]['rank'] = $k_ + 1;
+                        $dataRank[$key][$k][$i]['url'] = $v_;
+                        if (!is_null($keywords)) {
+                            $dataRank[$key][$k][$i]['keyword'] = $keywords[$key];
+                        }
                         $dataDate[$key] = $value['date'];
                     }
                 }
             }
         }
-        $dataResultMontly = $this->DataResultRkDate($dataRank, $dataDate, 'd.m');
-        $dataResultYears = $this->DataResultRkDate($dataRank, $dataDate, 'M');
+        if ($dataRankReq !== false) {
+            return $dataRank;
+        }
+
+        $dataResultMontly = $this->DataResultRkDate($dataRank, $dataDate, 'd.m', $keywords);
+        $dataResultYears = $this->DataResultRkDate($dataRank, $dataDate, 'M', $keywords);
         return [
             'dataResultYearly' => $dataResultYears,
             'dataResultMontly' => $dataResultMontly,
@@ -154,10 +199,16 @@ class RankModel
     public function DataAllProjectRank(array $data, $auth): array
     {
         $dataResult = [];
+        $keywordsArray = [];
         foreach ($data as $dt) {
             if (!is_null($dt->keywords)) {
+                if (strpos($dt->keywords, ',') !== false) {
+                    $keywordsArray = explode(',', $dt->keywords);
+                } else {
+                    $keywordsArray[] = $dt->keywords;
+                }
                 $dataResultKeywords = $this->SerpResultKeywords($dt->keywords, $auth);
-                $dataResult[] = $this->FormatDataRank($dataResultKeywords, $dt->website, $dt->id);
+                $dataResult[] = $this->FormatDataRank($dataResultKeywords, $dt->website, $dt->id, false, $keywordsArray);
             } else {
                 $dataResult[] = [];
             }
@@ -206,6 +257,92 @@ class RankModel
     }
 
     /**
+     * @param string $project
+     * @param $auth
+     * @return array
+     */
+    public function projectUser(string $project, $auth)
+    {
+        $auth = \GuzzleHttp\json_decode($auth);
+        $request = $this->rankTable->selectProjectBySlug($auth, $project);
+        if ($request) {
+            if ($request->keywords != '') {
+                // Params Attr
+                $keywords = trim($request->keywords);
+                $keywordsCount = 1;
+                $keywordsArray = [];
+
+                // If project get many keywords, we create an array Data Keywords And we the count !!!
+                if (strpos($keywords, ',') !== false) {
+                    $keywordsArray = explode(',', $keywords);
+                    $keywordsCount = count($keywordsArray);
+                } else {
+                    $keywordsArray[] = $keywords;
+                }
+
+                $id = $request->id;
+                $website = $request->website;
+
+                // Data Rank By Keywords
+                $data = $this->SerpResultKeywords($keywords, $auth);
+
+                // Return And Format Rank Array Data by Day !!!
+                $dataResultKeywords = $this->FormatDataRank($data, $website, $id, FALSE, $keywordsArray);
+
+                return [
+                    'countKeywords' => $keywordsCount,
+                    'arrayKeywords' => $keywordsArray,
+                    'dataResult' => $dataResultKeywords
+                ];
+            }
+        } else {
+            echo \GuzzleHttp\json_encode(['error' => 'This project don\'t exist in our database or does not belong to you !!!']);
+            die();
+        }
+    }
+
+    /**
+     * @param array $result
+     * @param string $rank
+     * @return array
+     */
+    public function DataFormatRankByDay(array $result, string $rank)
+    {
+        if (!empty($result)) {
+            $data = [];
+            if (isset($result['dataResultMontly'])) {
+                foreach ($result['dataResultMontly'] as $vMonth) {
+                    $data[$vMonth['date']][$rank] = $vMonth[$rank];
+                    $data[$vMonth['date']]['volume'] = $vMonth['volume'];
+                    $data[$vMonth['date']]['date'] = $vMonth['date'];
+                    $data[$vMonth['date']]['dateUsort'] = $vMonth['dateUsort'];
+                }
+            }
+            return $this->UsortData($data);
+        }
+        echo \GuzzleHttp\json_encode(['error' => 'Your(s) Keyword(s) is(are) found in the Serp !!!']);
+        die();
+    }
+
+    public function DataByKeyword(string $project, $auth)
+    {
+        // Json Decode AUTH !!!
+        // Recuperate Keywords by the slug Project !!!
+        $auth = \GuzzleHttp\json_decode($auth);
+        $request = $this->rankTable->selectProjectBySlug($auth, $project);
+
+        // Params Request
+        $keywords = $request->keywords;
+        $website = $request->website;
+        $option = $request->id;
+
+        // Result Data, Rank By keywords !!!
+        $rankResult = $this->SerpResultKeywords($keywords, $auth);
+        $dataRank = $this->FormatDataRank($rankResult, $website, $option, TRUE);
+        return $this->rankFormatTableKeyword($dataRank, $keywords, $rankResult, $website);
+    }
+
+    /**
      * @param $result
      * @param string $keyword
      * @return array
@@ -231,16 +368,21 @@ class RankModel
      * @param $auth
      * @return array
      */
-    private function SerpResultKeywords(string $keywords, $auth)
+    public function SerpResultKeywords(string $keywords, $auth = null)
     {
         $dataArray = [];
         $arrKywords = explode(',', $keywords);
         foreach ($arrKywords as $key => $value) {
-            $valueFirst = $value;
+            $valueFirst = trim($value);
+            $value = trim($value);
             if (strpos($value, " ")) {
                 $value = str_replace(" ", '-', $valueFirst);
             }
-            $data = $this->serp->FileData($value, $valueFirst, $auth->id);
+            if (is_null($auth)) {
+                $data = $this->serp->FileData($value, $valueFirst);
+            } else {
+                $data = $this->serp->FileData($value, $valueFirst, $auth->id);
+            }
             $dataArray[] = $this->dataRankByWebsite($data, $value);
         }
         return $dataArray;
@@ -250,31 +392,37 @@ class RankModel
      * @param array $dataRank
      * @param array $dataDate
      * @param string $format
+     * @param array|null $keywords
      * @return array
      */
-    private function DataResultRkDate(array $dataRank, array $dataDate, string $format): array
+    private function DataResultRkDate(array $dataRank, array $dataDate, string $format, array $keywords = null): array
     {
         $data = [];
+
+        if (isset($keywords) && !is_null($keywords)) {
+            // Data Volume by keywords !!!
+            $dataVl = $this->keywordsValueVolume($keywords);
+        }
+
         // Array Data Classes the rank in the data !!!
         foreach ($dataDate as $kD => $vD) {
             foreach ($vD as $key => $value) {
                 for ($i = 0; $i < count($dataRank); $i++) {
                     if (isset($dataRank[$i][$value])) {
-                        $data[$value][$i] = $dataRank[$i][$value];
+                        foreach ($dataRank[$i][$value] as $k => $v) {
+                            $data[$value][$v['keyword']]['rank'] = $v['rank'];
+                            $data[$value][$v['keyword']]['url'] = $v['url'];
+                            if (isset($keywords) && !is_null($keywords)) {
+                                $data[$value][$v['keyword']]['volume'] = isset($dataVl[$v['keyword']]['volume'][$v['rank'] - 1]['volume']) ?
+                                    $dataVl[$v['keyword']]['volume'][$v['rank'] - 1]['volume']
+                                    : 0;
+                            }
+                        }
                     }
                 }
             }
         }
-        // Rank Combined Array Data by Date
-        $dataRankEnd = [];
-        $dataRankWebSite = [];
-        foreach($data as $dtKey => $dtValue) {
-            foreach($dtValue as $dKey =>  $dValue) {
-                $dataRankEnd = array_merge($dataRankEnd, $dValue);
-            }
-            $dataRankWebSite[$dtKey] = $dataRankEnd;
-        }
-        return $this->ResultDataRankByTop($dataRankWebSite, $format);
+        return $this->ResultDataRankByTop($data, $format);
     }
 
     /**
@@ -299,6 +447,7 @@ class RankModel
             $data = $this->DataRankTopByWebsite($dataByMonth, $format);
         }
 
+
         // Order Array Data by Date !!!
         $dataR = $this->UsortData($data);
 
@@ -318,7 +467,7 @@ class RankModel
         $dataNew = [];
 
         // We utilised usort function for ranked the Data Array !!!
-        usort($data, function($v1, $v2) {
+        usort($data, function ($v1, $v2) {
             $date_1 = strtotime($v1['dateUsort']);
             $date_2 = strtotime($v2['dateUsort']);
             return $date_1 - $date_2;
@@ -338,7 +487,7 @@ class RankModel
      * @param string $format
      * @return array
      */
-    private function DataRankTopByWebsite (array $data, string $format) : array
+    private function DataRankTopByWebsite(array $data, string $format): array
     {
         $dataReturn = [];
         foreach ($data as $key => $value) {
@@ -347,9 +496,10 @@ class RankModel
             $top10 = 0;
             $top50 = 0;
             $top100 = 0;
-            foreach ($value as $k => $v) {
+            $volume = 0;
+            foreach ($value as $k => $kValueRank) {
                 $keyDate = date($format, strtotime($key));
-                if ($v === 1) {
+                if ($kValueRank['rank'] === 1) {
                     $top1++;
                     $top3++;
                     $top10++;
@@ -360,7 +510,7 @@ class RankModel
                     $dataReturn[$keyDate]['top10'] = $top10;
                     $dataReturn[$keyDate]['top50'] = $top50;
                     $dataReturn[$keyDate]['top100'] = $top100;
-                } elseif ($v <= 1 || $v <= 3) {
+                } elseif ($kValueRank['rank'] <= 1 || $kValueRank <= 3) {
                     $top3++;
                     $top10++;
                     $top50++;
@@ -369,24 +519,28 @@ class RankModel
                     $dataReturn[$keyDate]['top10'] = $top10;
                     $dataReturn[$keyDate]['top50'] = $top50;
                     $dataReturn[$keyDate]['top100'] = $top100;
-                } elseif ($v <= 1 || $v <= 10) {
+                } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 10) {
                     $top10++;
                     $top50++;
                     $top100++;
                     $dataReturn[$keyDate]['top10'] = $top10;
                     $dataReturn[$keyDate]['top50'] = $top50;
                     $dataReturn[$keyDate]['top100'] = $top100;
-                } elseif ($v <= 1 || $v <= 50) {
+                } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 50) {
                     $top50++;
                     $top100++;
                     $dataReturn[$keyDate]['top50'] = $top50;
                     $dataReturn[$keyDate]['top100'] = $top100;
-                } elseif ($v <= 1 || $v <= 100) {
+                } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 100) {
                     $top100++;
                     $dataReturn[$keyDate]['top100'] = $top100;
                 }
+                if (isset($kValueRank['volume'])) {
+                    $volume += $kValueRank['volume'];
+                    $dataReturn[$keyDate]['volume'] = $volume;
+                }
                 $dataReturn[$keyDate]['date'] = $keyDate;
-                $dataReturn[$keyDate]['dateUsort'] =  date('Y-m-d', strtotime($key));
+                $dataReturn[$keyDate]['dateUsort'] = date('Y-m-d', strtotime($key));
             }
         }
         return $dataReturn;
@@ -411,5 +565,293 @@ class RankModel
     private function projectRank($auth, string $id)
     {
         return $this->rankTable->selectRank($id);
+    }
+
+    /**
+     * @param array $dataRank
+     * @param string $keywords
+     * @param array $rankResult
+     * @param string $website
+     * @return array
+     */
+    private function rankFormatTableKeyword(
+        array $dataRank,
+        string $keywords,
+        array $rankResult,
+        string $website
+    ) : array
+    {
+        // Verification than Array DataRank isn't empty and we found keywords !!
+        if (!empty($dataRank) && !empty($keywords)) {
+            $data = [];
+            $dataRankDiff = [];
+            if (strpos($keywords, ',')) {
+                $keywords = explode(',', $keywords);
+            }
+
+            // Create Data Array Rank by Website with like value (keyword, rank, url, date)
+            foreach ($dataRank as $keyR => $dt) {
+                // Recuperate last result Data Rank !!!
+                $dtURI = array_slice($dt, count($dt) - 1);
+                // Recuperate two last result Data Rank for diffDataRank !!!
+                if (count($dt) >= 7) {
+                    $dataRankDiff[] = array_merge(
+                        array_slice($dt, count($dt) - 7, 1),
+                        array_slice($dt, count($dt) - 1)
+                    );
+                } else {
+                    $dataRankDiff[] = array_slice($dt, count($dt) - 2);
+                }
+
+                // Create Data !!!
+                foreach ($dtURI as $k => $d) {
+                    foreach ($d as $key => $item) {
+                        if (is_array($keywords)) {
+                            if (isset($keywords[$keyR])) {
+                                $data[$keywords[$keyR]][$key]['keyword'] = $keywords[$keyR];
+                                $data[$keywords[$keyR]][$key]['rank'] = $item['rank'];
+                                $data[$keywords[$keyR]][$key]['url'] = $item['url'];
+                                $data[$keywords[$keyR]][$key]['date'] = $k;
+                            }
+                        } else {
+                            $data[$keywords][$key]['keyword'] = $keywords;
+                            $data[$keywords][$key]['rank'] = $item['rank'];
+                            $data[$keywords][$key]['url'] = $item['url'];
+                            $data[$keywords][$key]['date'] = $k;
+                        }
+                    }
+                }
+            }
+
+            // Format Data Array Rank for get diff keyword Rank check Today and the last result found !!!
+            $data = $this->diffDataRank($data, $dataRankDiff);
+
+            // Format Data Array Rank for get volume !!!
+            $data = $this->volumeAddDataRank($data, $keywords);
+
+            // Format Data Array Rank For Push array data Rank by Day to Website
+            $data = $this->addRankByWebsite($data, $rankResult, $website, $keywords);
+
+            return $data;
+        }
+        return [];
+    }
+
+    /**
+     * @param array $dataRnk
+     * @param array $dataRnkDiff
+     * @return array
+     */
+    private function diffDataRank(array $dataRnk, array $dataRnkDiff): array
+    {
+        $dataNumberDiff = [];
+        $dataDiff = [];
+        $data = [];
+        // Format DataRankDiff without the Date like KEY !!!
+        foreach ($dataRnkDiff as $key => $diff) {
+            $i = -1;
+            foreach ($diff as $k => $dfUrl) {
+                $i++;
+                foreach ($dfUrl as $dKey => $dItem) {
+                    $dataDiff[$i][$key][$dKey] = $dItem;
+                }
+            }
+        }
+
+        // Diff between two last result if exist !!!
+        foreach ($dataDiff as $key => $diff) {
+            // Diff Rank
+            foreach ($diff as $k => $dfUrl) {
+                foreach ($dfUrl as $kRank => $vRank) {
+                    if (count($diff) >= 1) {
+                        if (isset($dataDiff[0][$k][$kRank]) && isset($dataDiff[1][$k][$kRank])) {
+                            $dataNumberDiff[$kRank] = $dataDiff[0][$k][$kRank] - $dataDiff[1][$k][$kRank];
+                        }
+                    } else {
+                        $dataNumberDiff[$kRank] = 0;
+                    }
+                }
+            }
+        }
+
+        // Add Diff Number in the array Data Rank !!!
+        foreach ($dataRnk as $k => $d) {
+            foreach ($d as $kV => $dV) {
+                $data[$k][$kV]['keyword'] = $dV['keyword'];
+                $data[$k][$kV]['rank'] = $dV['rank'];
+                $data[$k][$kV]['url'] = $dV['url'];
+                $data[$k][$kV]['date'] = $dV['date'];
+                $data[$k][$kV]['diff'] = isset($dataNumberDiff[$dV['url']]) ? $dataNumberDiff[$dV['url']] : 0;
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * @param array $dataRank
+     * @param array|string $keywords
+     * @return array
+     */
+    private function volumeAddDataRank(array $dataRank, $keywords): array
+    {
+        $data = [];
+        // We created now a new file with Curl_Volume class
+        // If File Exist we returned the result in JSON !!!
+        // Statistic Volume And CPC
+        // Search keywords is array ou string !!!
+        if (is_array($keywords)) {
+
+            // Implement in the Array Data Volume by Keywords
+            $dataVl = $this->keywordsValueVolume($keywords);
+
+            // Data Render !!!
+            foreach ($dataRank as $k => $d) {
+                foreach ($d as $kV => $dV) {
+                    $data[$k][$kV]['keyword'] = $dV['keyword'];
+                    $data[$k][$kV]['rank'] = $dV['rank'];
+                    $data[$k][$kV]['url'] = $dV['url'];
+                    $data[$k][$kV]['date'] = $dV['date'];
+                    $data[$k][$kV]['diff'] = $dV['diff'];
+                    $data[$k][$kV]['volume'] = isset($dataVl[$dV['keyword']]['volume'][$dV['rank'] - 1]['volume']) ?
+                        $dataVl[$dV['keyword']]['volume'][$dV['rank'] - 1]['volume']
+                        : 0;
+                }
+            }
+        } else {
+            $DataFileVolume = $this->serp->FileVolumeData($keywords);
+            $volumeResult = Serp::VolumeData($DataFileVolume);
+            foreach ($dataRank as $k => $d) {
+                foreach ($d as $kV => $dV) {
+                    $data[$k][$kV]['keyword'] = $dV['keyword'];
+                    $data[$k][$kV]['rank'] = $dV['rank'];
+                    $data[$k][$kV]['url'] = $dV['url'];
+                    $data[$k][$kV]['date'] = $dV['date'];
+                    $data[$k][$kV]['diff'] = $dV['diff'];
+                    if (isset($volumeResult->error)) {
+                        $data[$k][$kV]['volume'] = 0;
+                    } else {
+                        if (isset($volumeResult['result'][$dV['rank'] - 1])) {
+                            $data[$k][$kV]['volume'] = $volumeResult['result'][$dV['rank'] - 1]['volume'];
+                        } else {
+                            $data[$k][$kV]['volume'] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @param array $rankResult
+     * @param string $website
+     * @param array|string $keywords
+     * @return array
+     */
+    private function addRankByWebsite(array $data, array $rankResult, string $website, $keywords): array
+    {
+        $dtRankChart = [];
+        $dRankChart = [];
+        $dataRankChart = [];
+        $dataEnd = [];
+
+        // Create Array Chart in Foreach by Keywords for Ranked by day the websites !!!
+        foreach ($rankResult as $kk => $result) {
+            $rank = $result['rank'];
+            foreach ($rank as $date => $rk) {
+                foreach ($rk as $key => $web) {
+                    if (strpos($web, $website) !== false) {
+                        // Verification if keyword is array or string !!!
+                        if (is_array($keywords)) {
+                            $dRankChart[$keywords[$kk]][$date][$key][$web] = $key + 1;
+                            if (count($dRankChart[$keywords[$kk]][$date]) > 1) {
+                                $rankSlice = array_slice($dRankChart[$keywords[$kk]][$date], 0, -1);
+                                $rank = array_values($rankSlice[0]);
+                                $dtRankChart[$keywords[$kk]][$date][$web] = $rank[0];
+                            } else {
+                                $dtRankChart[$keywords[$kk]][$date][$web] = $key + 1;
+                            }
+                        } else {
+                            $dRankChart[$keywords][$date][$key][$web] = $key + 1;
+                            if (count($dRankChart[$keywords][$date]) > 1) {
+                                $rankSlice = array_slice($dRankChart[$keywords][$date], 0, -1);
+                                $rank = array_values($rankSlice[0]);
+                                $dtRankChart[$keywords][$date][$web] = $rank[0];
+                            } else {
+                                $dtRankChart[$keywords][$date][$web] = $key + 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Format dtRankChart for ranked by each Website !!!
+        foreach ($dtRankChart as $key => $dt) {
+            foreach ($dt as $date => $value) {
+                foreach ($value as $url => $item) {
+                    // Verification if keyword is array or string !!!
+                    if (is_array($keywords)) {
+                        $dataRankChart[$key][$url][$date]['rank'] = $item;
+                    } else {
+                        $dataRankChart[$key][$url][$date]['rank'] = $item;
+                    }
+                }
+            }
+        }
+
+        // Implemented dataChartRank in Data Array !!!
+        $i = 0;
+        foreach ($data as $k => $d) {
+            foreach ($d as $kV => $dV) {
+                $i++;
+                $dataEnd[$i]['keyword'] = $dV['keyword'];
+                $dataEnd[$i]['rank'] = $dV['rank'];
+                $dataEnd[$i]['url'] = $dV['url'];
+                $dataEnd[$i]['date'] = $dV['date'];
+                $dataEnd[$i]['diff'] = $dV['diff'];
+                $dataEnd[$i]['volume'] = $dV['volume'];
+                $dataEnd[$i]['chart'] = $dataRankChart[$dV['keyword']][$dV['url']];
+            }
+        }
+        return $dataEnd;
+    }
+
+    /**
+     * @param string $value
+     */
+    private function RegexKeywords(string $value)
+    {
+        $value_ex = explode(',', $value);
+        foreach ($value_ex as $item) {
+            if (empty($item) || !preg_match('#^[\p{L}\p{Nd}\s]+$#u', $item)) {
+                echo \GuzzleHttp\json_encode(['error' => 'Invalid Value !!!']);
+                die ();
+            }
+        }
+    }
+
+    /**
+     * @param $keywords
+     * @return array
+     */
+    private function keywordsValueVolume($keywords): array
+    {
+        $dataVl = [];
+        foreach ($keywords as $key => $item) {
+            if (strpos($item, " ")) {
+                $item = str_replace(" ", '-', $item);
+            }
+            $DataFileVolume = $this->serp->FileVolumeData($item);
+            $volumeResult = Serp::VolumeData($DataFileVolume);
+            if (isset($volumeResult['result'])) {
+                foreach ($volumeResult as $keyVl => $vl) {
+                    $itemKey = str_replace('-', ' ', $item);
+                    $dataVl[$itemKey]['volume'] = $vl;
+                }
+            }
+        }
+        return $dataVl;
     }
 }

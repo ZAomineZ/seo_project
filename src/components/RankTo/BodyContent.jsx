@@ -16,6 +16,7 @@ export default class BodyContent extends PureComponent{
             PropTypes.object
         ]),
         modalDelete: PropTypes.bool.isRequired,
+        modal: PropTypes.bool.isRequired,
         toggleDelete: PropTypes.func.isRequired,
         deleteProject: PropTypes.func.isRequired
     };
@@ -31,6 +32,7 @@ export default class BodyContent extends PureComponent{
                        dataRankKeywords={this.props.dataRankKeywords}
                        deleteProject={this.props.deleteProject}
                        modalDelete={this.props.modalDelete}
+                       modal={this.props.modal}
                        toggleDelete={this.props.toggleDelete} />
         )
     }
