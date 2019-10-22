@@ -161,13 +161,13 @@ class RankController
         // Create Data Array RANK by Day
         // Format this Data in Data Rank Top 100 by Day !!!
         $result = $this->rankModel->projectUser($project, $auth);
-        $dataRankByDay = $this->rankModel->DataFormatRankByDay($result['dataResult'], 'top100');
+        $dataRankByDay = $this->rankModel->DataFormatRankByDay($result['dataResult'], 'top100', 'top10');
 
         // Create data Array by Keyword and by URL Website !!!
         $dataRankByKeyword = $this->rankModel->DataByKeyword($project, $auth);
 
         // Format Array Rank If result keywords not found !!!
-        $dataRankFormatEmptyKeyword = $this->renderDataKeywordsEmptyData($dataRankByKeyword, $result['arrayKeywords']);
+        $dataRankFormatEmptyKeyword = $this->renderDataKeywordsEmptyData($dataRankByKeyword);
         echo \GuzzleHttp\json_encode([
             'data' => $dataRankByDay,
             'dataKeywordsByWebsite' => $dataRankFormatEmptyKeyword,
@@ -177,35 +177,28 @@ class RankController
 
     /**
      * @param array $dataRankByKeyword
-     * @param array $arrayKeywords
      * @return array
      */
-    private function renderDataKeywordsEmptyData(array $dataRankByKeyword, array $arrayKeywords): array
+    private function renderDataKeywordsEmptyData(array $dataRankByKeyword): array
     {
         $dataRank = [];
-        $d = 0;
-        foreach ($arrayKeywords as $key => $item) {
-            $i = 0;
-            $d++;
-            if (isset($dataRankByKeyword[$key + 1])) {
-                foreach ($dataRankByKeyword as $k => $v) {
-                    $i++;
-                    $dataRank[$i]['keyword'] = $v['keyword'];
-                    $dataRank[$i]['rank'] = $v['rank'];
-                    $dataRank[$i]['url'] = $v['url'];
-                    $dataRank[$i]['date'] = $v['date'];
-                    $dataRank[$i]['diff'] = $v['diff'];
-                    $dataRank[$i]['volume'] = $v['volume'];
-                    $dataRank[$i]['chart'] = $v['chart'];
-                }
+        foreach ($dataRankByKeyword as $k => $v) {
+            if ($v['url'] === 'Not Found') {
+                $dataRank[$k]['keyword'] = $v['keyword'];
+                $dataRank[$k]['rank'] = 'Not Found';
+                $dataRank[$k]['url'] = 'Not Found';
+                $dataRank[$k]['date'] = 'Not Found';
+                $dataRank[$k]['diff'] = 'Not Found';
+                $dataRank[$k]['volume'] = 'Not Found';
+                $dataRank[$k]['chart'] = 'Not Found';
             } else {
-                $dataRank[$d]['keyword'] = $item;
-                $dataRank[$d]['rank'] = 'Not Found';
-                $dataRank[$d]['url'] = 'Not Found';
-                $dataRank[$d]['date'] = 'Not Found';
-                $dataRank[$d]['diff'] = 'Not Found';
-                $dataRank[$d]['volume'] = 'Not Found';
-                $dataRank[$d]['chart'] = 'Not Found';
+                $dataRank[$k]['keyword'] = $v['keyword'];
+                $dataRank[$k]['rank'] = $v['rank'];
+                $dataRank[$k]['url'] = $v['url'];
+                $dataRank[$k]['date'] = $v['date'];
+                $dataRank[$k]['diff'] = $v['diff'];
+                $dataRank[$k]['volume'] = $v['volume'];
+                $dataRank[$k]['chart'] = $v['chart'];
             }
         }
         return $dataRank;

@@ -38,7 +38,7 @@ class Img_Params
      */
     public static function PowerImg (string $size)
     {
-        $google = self::FileGetSize(dirname(__DIR__, 2). '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-daf9092b1c98c529f26913dbc939186d.png');
+        $google = self::FileGetSize(dirname(__DIR__, 2). '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-dd250e1e7154a1406dd53fa8d373324c.png');
         $part_gl = $google / 100;
         $rem_fb =  $part_gl - 100;
         $part = $size / 100;
@@ -53,7 +53,7 @@ class Img_Params
      */
     public static function PowerGoogleSize($size)
     {
-        $google = self::FileGetSize(dirname(__DIR__, 2). '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-f61ef723f4eedcb0f3a3fb4b873765cb-domain.png');
+        $google = self::FileGetSize(dirname(__DIR__, 2). '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-157fd60976bc6b154bec3e899a497b34-domain.png');
         $part_gl = $google - 7408;
         $part = $size - 7408;
         return  $part * 100 / $part_gl;

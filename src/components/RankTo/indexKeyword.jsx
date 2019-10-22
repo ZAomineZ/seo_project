@@ -27,6 +27,8 @@ const showNotification = (type, title, message) => {
 export default class indexKeyword extends PureComponent {
     constructor(props) {
         super(props);
+        console.error = () => {};
+        console.error();
         this.state = {
             data: [],
             dataKeywordsByWebsite: [],

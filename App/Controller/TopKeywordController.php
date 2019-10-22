@@ -190,7 +190,15 @@ class TopKeywordController
             $filter[$this->str->array_find('"exportHashH":', $filter)],
             '"exportHashH":');
         if (isset($filter['55']) && !empty($filter['55'])) {
-            $exportHashHCut = explode('"exportHash":', $filter['55'])[23];
+            $arrayExplode = explode('"exportHash":', $filter['55']);
+            if (isset($arrayExplode[23])) {
+                $exportHashHCut = $arrayExplode[23];
+            } else {
+                $arrayHash = explode('"exportHash":', $filter['57']);
+                if (isset($arrayHash[1])) {
+                    $exportHashHCut = $arrayHash[2];
+                }
+            }
         } else {
             $exportHashHCut = explode('"exportHash":', $filter['53'])[23];
         }

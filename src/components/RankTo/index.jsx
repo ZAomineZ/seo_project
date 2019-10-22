@@ -27,6 +27,8 @@ const showNotification = () => {
 export default class RankToIndex extends PureComponent {
     constructor() {
         super();
+        console.error = () => {};
+        console.error();
         this.state = {
             projectData: [],
             keywordsRank: [],

@@ -24,6 +24,7 @@ class Ajax
     /**
      * @param int $user_id
      * @param string $cookie
+     * @param array $data
      */
     public function VerifAuthMe (int $user_id, string $cookie, array $data = [])
     {
@@ -123,5 +124,18 @@ class Ajax
                 die();
             }
         }
+    }
+
+    /**
+     * @param string $keyword
+     * @return bool
+     */
+    public function regexKeyword(string $keyword): bool
+    {
+        if (empty($keyword) || !preg_match('#^[\p{L}\p{Nd}\s-]+$#u', $keyword)) {
+            echo \GuzzleHttp\json_encode(['error' => 'Invalid Value !!!']);
+            die ();
+        }
+        return true;
     }
 }

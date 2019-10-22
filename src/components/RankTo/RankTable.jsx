@@ -207,7 +207,7 @@ export default class RankTable extends PureComponent {
                                                     <p className={d.diff === 0 ? 'dashboard__total-stat cl_green' : ''}>
                                                         {
                                                             d.diff === 0 ? '=' :
-                                                                Math.sign(d.diff) === 1 ? '+' + d.diff : '-' + d.diff
+                                                                Math.sign(d.diff) === 1 ? '+' + d.diff : d.diff
                                                         }
                                                     </p>
                                                 </div>

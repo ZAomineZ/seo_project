@@ -113,7 +113,13 @@ export default class TopBacklinks extends PureComponent {
                     }
                     </tbody>
                 </Table>
-                {modal}
+                {
+                    data_asc.length === 0 &&
+                    data_desc.length === 0 &&
+                    data_url.length === 0 &&
+                    data_assortUrl.length === 0 ?
+                    '' : modal
+                }
             </Panel>
         );
     }

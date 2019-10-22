@@ -20,6 +20,29 @@ class Str_options
     }
 
     /**
+     * @param string $name
+     * @return array
+     */
+    public static function TransformUrlToDomain(string $name): array
+    {
+        $nameDomain = '';
+        $nameExplodeUrl = explode('/', $name);
+        foreach ($nameExplodeUrl as $item) {
+            if (strpos($item, 'www.') !== false) {
+                $url = explode('www.', $item);
+                $nameDomain .= $url[count($url) - 1];
+            }
+        }
+        if (empty($nameDomain)) {
+            $nameDomain .= $nameExplodeUrl[2];
+        }
+        return [
+            'defaultValue' => $nameDomain,
+            'valueWebsite' => self::str_replace_domain($nameDomain)
+        ];
+    }
+
+    /**
      * @param string $crawl_string
      * @return mixed
      */

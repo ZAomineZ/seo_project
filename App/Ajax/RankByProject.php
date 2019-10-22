@@ -25,6 +25,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
             try {
                 $auth = \GuzzleHttp\json_decode($_GET['auth']);
                 if (isset($auth->id) && isset($auth->username) && isset($auth->email) && isset($_GET['cookie']) && $_GET['cookie'] !== '' && $auth->id !== '' && $auth->username !== '' && $auth->email !== '') {
+                    $header->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
                     // Instance Controller RankController For tools RankTo !!!
                     // Dependencies used : RankModel, RankTable, PDO_Model
                     $pdoModel = new PDO_Model();

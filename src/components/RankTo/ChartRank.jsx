@@ -35,6 +35,7 @@ class ChartRank extends PureComponent {
             return {
                 name: d.date,
                 top100: d.top100,
+                top10: d.top10,
                 volume: Math.round(d.volume)
             }
         });
@@ -62,6 +63,16 @@ class ChartRank extends PureComponent {
                                             this.toggle('2');
                                         }}
                                     >
+                                        Top 10
+                                    </NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink
+                                        className={classnames({active: this.state.activeTab === '3'})}
+                                        onClick={() => {
+                                            this.toggle('3');
+                                        }}
+                                    >
                                         Volume
                                     </NavLink>
                                 </NavItem>
@@ -81,6 +92,21 @@ class ChartRank extends PureComponent {
                                                     <CartesianGrid/>
                                                     <Area name="top100" type="monotone" dataKey="top100" fill="#70bbfd"
                                                           stroke="#70bbfd" fillOpacity={0.2}/>
+                                                </AreaChart>
+                                            </ResponsiveContainer>
+                                        </Panel> : this.state.activeTab === '2' ?
+                                        <Panel xs={12} lg={12}
+                                               title={"Top 10 positions keywords (" + this.props.project + ')'}>
+                                            <ResponsiveContainer height={300} className="dashboard__area">
+                                                <AreaChart data={data} margin={{top: 20, left: -15, bottom: 20}}>
+                                                    <XAxis dataKey="name" tickLine={false}/>
+                                                    <YAxis tickLine={false} type="number" domain={['auto', 'auto']}
+                                                           width={70}/>
+                                                    <Tooltip/>
+                                                    <Legend/>
+                                                    <CartesianGrid/>
+                                                    <Area name="top10" type="monotone" dataKey="top10" fill="#F66C7D"
+                                                          stroke="#F66C7D" fillOpacity={0.2} />
                                                 </AreaChart>
                                             </ResponsiveContainer>
                                         </Panel> :

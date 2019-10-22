@@ -128,7 +128,7 @@ class WebSiteController
      * @param string $token
      * @return mixed|null
      */
-    protected static function ReqDataDomain(string $domain, string $token)
+    public static function ReqDataDomain(string $domain, string $token)
     {
         $insert = self::$table->InsertDomain([
             'domain' => $domain,
@@ -192,12 +192,18 @@ class WebSiteController
      * @param string $domain
      * @return string
      */
-    protected static function JsonTrafic(string $domain): string
+    public static function JsonTrafic(string $domain): string
     {
+        // Format Domain For traffic !!!
+        $domainArray = explode('.', $domain);
+        $domain = $domainArray[count($domainArray) - 2] . '.' . $domainArray[count($domainArray) - 1];
+
         $html = self::$controller->CrawlHtml(self::$curl_keyword->Curl($domain));
+
         $key = $html['api_key'];
         $exportHash = $html['export_hash'];
         $exportHashTraffic = $html['export_hash_traffic'];
+
         $traffic = self::$bl->ReqTrafficKeyword("https://www.semrush.com/dpa/api?database=fr&amp;export=json&key=$key&domain=$domain&display_hash=$exportHash&currency=usd&action=report&type=domain_rank_history&display_sort=dt_asc&_=1555332238625");
         $traffic_now = self::$bl->ReqTrafficKeyword("https://fr.semrush.com/dpa/api?database=fr&export=json&key=$key&domain=$domain&display_hash=$exportHashTraffic&action=report&type=domain_rank");
         if (isset($traffic->error) && $traffic->error !== '') {
@@ -281,9 +287,15 @@ class WebSiteController
         $result_second = self::$curl->Curl($domain, "false", 'url');
         $result_anchorUrl = self::$curl->Curl($domain, "true", 'anchorUrl');
         if ($first) {
-            return \GuzzleHttp\json_encode([$result_first]);
+            return \GuzzleHttp\json_encode([
+                $result_first === false ? [] : $result_first
+            ]);
         }
-        return \GuzzleHttp\json_encode([$result, $result_second, $result_anchorUrl]);
+        return \GuzzleHttp\json_encode([
+            $result === false ? [] : $result,
+            $result_second === false ? [] : $result_second,
+            $result_anchorUrl === false ? [] : $result_anchorUrl
+        ]);
     }
 
     /**
@@ -449,18 +461,27 @@ class WebSiteController
                     ->historical
                     ->domain_stat
                     ->weeks, "M j"),
-            'data_asc' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[0]
-                ->backlink
-                ->backlink, 'UNIQUE'),
-            'data_desc' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][0]
-                ->backlink
-                ->backlink, 'UNIQUE'),
-            'data_url' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][1]
-                ->backlink
-                ->backlink, 'UNIQUE'),
-            'data_assortUrl' => self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][2]
-                ->backlink
-                ->backlink, 'UNIQUE'),
+            'data_asc' => isset(File_Params::OpenFile($file[5], $dir)[0]) &&
+            File_Params::OpenFile($file[5], $dir)[0] === [] ?
+                [] : self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[0]
+                    ->backlink
+                    ->backlink, 'UNIQUE'),
+            'data_desc' => isset(File_Params::OpenFile($file[5], $dir)[1][0]) &&
+            File_Params::OpenFile($file[5], $dir)[1][0] === [] ?
+                [] :
+                self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][0]
+                    ->backlink
+                    ->backlink, 'UNIQUE'),
+            'data_url' => isset(File_Params::OpenFile($file[5], $dir)[1][1]) &&
+            File_Params::OpenFile($file[5], $dir)[1][1] === [] ?
+                [] : self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][1]
+                    ->backlink
+                    ->backlink, 'UNIQUE'),
+            'data_assortUrl' => isset(File_Params::OpenFile($file[5], $dir)[1][2]) &&
+            File_Params::OpenFile($file[5], $dir)[1][2] === [] ?
+                [] : self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][2]
+                    ->backlink
+                    ->backlink, 'UNIQUE'),
             'power' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
             'power_trust' => self::$web->ChangePowerSize(
                 Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)),
@@ -557,12 +578,13 @@ class WebSiteController
 
     /**
      * @param string $domain
+     * @param string $dir
      * @param $option
      * @return string
      * @throws \Exception
      */
-    public function getJsonWebSite(string $domain, $option): string
+    public function getJsonWebSite(string $domain, string $dir, $option = null): string
     {
-        return self::JsonWebSite($domain, $option);
+        return self::JsonWebSite($domain, $dir, $option);
     }
 }

@@ -79,6 +79,10 @@ class Curl_Url
             echo 'Error:' . curl_error($ch);
         }
 
+        if (strpos(curl_exec($ch), 'PHP Error') !== false) {
+            return false;
+        }
+
         //Execute the CURL !!!
         return \GuzzleHttp\json_decode(curl_exec($ch));
     }

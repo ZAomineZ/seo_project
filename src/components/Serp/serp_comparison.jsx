@@ -108,7 +108,7 @@ class SerpComparison extends PureComponent {
                     if (response.data.error === 'Invalid Token') {
                         this.CookieReset(response.data.token, response.data.id)
                     } else if (response.data.error === 'Invalid Value') {
-                        this.setState({ redirectSerp : !this.state.redirectSerp})
+                        this.setState({ redirectSerp : !this.state.redirectSerp});
                         NotificationSystem.newInstance({}, n => notification = n);
                         setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
                     }

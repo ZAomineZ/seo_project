@@ -81,6 +81,11 @@ class TopKeyword
      */
     private function JsonData(object $data) : string
     {
+        if (is_null($data)) {
+            return \GuzzleHttp\json_encode([
+                'data' => []
+            ]);
+        }
         return \GuzzleHttp\json_encode([
             'data' => $data->rank_history->data
         ]);

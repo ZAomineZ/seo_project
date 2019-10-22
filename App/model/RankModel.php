@@ -162,6 +162,8 @@ class RankModel
     {
         $dataRank = [];
         $dataDate = [];
+        $dataRankEnd = [];
+
         $i = 0;
         foreach ($data as $key => $value) {
             foreach ($value['rank'] as $k => $v) {
@@ -177,13 +179,36 @@ class RankModel
                     }
                 }
             }
-        }
-        if ($dataRankReq !== false) {
-            return $dataRank;
+            foreach ($dataRank as $kk => $item) {
+                if (isset($dataRank[$key])) {
+                    foreach ($item as $kVal => $dVal) {
+                        foreach ($dVal as $kkKey => $vvValue) {
+                            $dataRankEnd[$kk][$kVal][$kkKey]['rank'] = $vvValue['rank'];
+                            $dataRankEnd[$kk][$kVal][$kkKey]['url'] = $vvValue['url'];
+                            if (!is_null($keywords)) {
+                                $dataRankEnd[$kk][$kVal][$kkKey]['keyword'] = $vvValue['keyword'];
+                            }
+                        }
+                    }
+                } else {
+                    $keyArray = $key;
+                    foreach ($data[$key]['rank'] as $keyy => $valuee) {
+                        $dataRankEnd[$keyArray][$keyy][0]['rank'] = 0;
+                        $dataRankEnd[$keyArray][$keyy][0]['url'] = 'Not Found';
+                        if (!is_null($keywords)) {
+                            $dataRankEnd[$keyArray][$keyy][0]['keyword'] = $keywords[$keyArray];
+                        }
+                    }
+                }
+            }
         }
 
-        $dataResultMontly = $this->DataResultRkDate($dataRank, $dataDate, 'd.m', $keywords);
-        $dataResultYears = $this->DataResultRkDate($dataRank, $dataDate, 'M', $keywords);
+        if ($dataRankReq !== false) {
+            return $dataRankEnd;
+        }
+
+        $dataResultMontly = $this->DataResultRkDate($dataRankEnd, $dataDate, 'd.m', $keywords);
+        $dataResultYears = $this->DataResultRkDate($dataRankEnd, $dataDate, 'M', $keywords);
         return [
             'dataResultYearly' => $dataResultYears,
             'dataResultMontly' => $dataResultMontly,
@@ -230,6 +255,11 @@ class RankModel
         }
     }
 
+    /**
+     * @param string $id
+     * @param $auth
+     * @return bool
+     */
     public function ProjectDelete(string $id, $auth)
     {
         $request = $this->projectRank($auth, $id);
@@ -304,15 +334,17 @@ class RankModel
     /**
      * @param array $result
      * @param string $rank
+     * @param string $rank10
      * @return array
      */
-    public function DataFormatRankByDay(array $result, string $rank)
+    public function DataFormatRankByDay(array $result, string $rank, string $rank10)
     {
         if (!empty($result)) {
             $data = [];
             if (isset($result['dataResultMontly'])) {
                 foreach ($result['dataResultMontly'] as $vMonth) {
-                    $data[$vMonth['date']][$rank] = $vMonth[$rank];
+                    $data[$vMonth['date']][$rank] = isset($vMonth[$rank]) ? $vMonth[$rank] : 0;
+                    $data[$vMonth['date']][$rank10] = isset($vMonth[$rank10]) ? $vMonth[$rank10] : 0;
                     $data[$vMonth['date']]['volume'] = $vMonth['volume'];
                     $data[$vMonth['date']]['date'] = $vMonth['date'];
                     $data[$vMonth['date']]['dateUsort'] = $vMonth['dateUsort'];
@@ -347,19 +379,20 @@ class RankModel
      * @param string $keyword
      * @return array
      */
-    private function dataRankByWebsite($result, string $keyword): array
+    private
+    function dataRankByWebsite($result, string $keyword): array
     {
         // Request Html DomCrawler
         $this->serp->LoadHtmlDom($result);
 
         // Convert Url and Desc SERP int the an array !!!
         $data = $this->serp->DataDateRank(scandir($this->serp->DIRLoad(str_replace('%20', '-', $keyword))), $this->serp->DIRLoad(str_replace('%20', '-', $keyword)));
-
         // Return Array Result Data for the Front !!!
         return [
             "date_format" => $this->serp->DateFormat($data['date']),
             "date" => $data['date'],
-            "rank" => $data['rank']
+            "rank" => $data['rank'],
+            "title" => $data['title']
         ];
     }
 
@@ -368,7 +401,8 @@ class RankModel
      * @param $auth
      * @return array
      */
-    public function SerpResultKeywords(string $keywords, $auth = null)
+    public
+    function SerpResultKeywords(string $keywords, $auth = null)
     {
         $dataArray = [];
         $arrKywords = explode(',', $keywords);
@@ -395,7 +429,8 @@ class RankModel
      * @param array|null $keywords
      * @return array
      */
-    private function DataResultRkDate(array $dataRank, array $dataDate, string $format, array $keywords = null): array
+    private
+    function DataResultRkDate(array $dataRank, array $dataDate, string $format, array $keywords = null): array
     {
         $data = [];
 
@@ -430,7 +465,8 @@ class RankModel
      * @param string $format
      * @return array
      */
-    private function ResultDataRankByTop(array $dataRank, string $format): array
+    private
+    function ResultDataRankByTop(array $dataRank, string $format): array
     {
         $dataByMonth = [];
         if ($format === 'd.m') {
@@ -459,7 +495,8 @@ class RankModel
      * @param array $data
      * @return array
      */
-    private function UsortData(array $data): array
+    private
+    function UsortData(array $data): array
     {
         /**
          * @var $dataNew array
@@ -487,7 +524,8 @@ class RankModel
      * @param string $format
      * @return array
      */
-    private function DataRankTopByWebsite(array $data, string $format): array
+    private
+    function DataRankTopByWebsite(array $data, string $format): array
     {
         $dataReturn = [];
         foreach ($data as $key => $value) {
@@ -499,48 +537,50 @@ class RankModel
             $volume = 0;
             foreach ($value as $k => $kValueRank) {
                 $keyDate = date($format, strtotime($key));
-                if ($kValueRank['rank'] === 1) {
-                    $top1++;
-                    $top3++;
-                    $top10++;
-                    $top50++;
-                    $top100++;
-                    $dataReturn[$keyDate]['top1'] = $top1;
-                    $dataReturn[$keyDate]['top3'] = $top3;
-                    $dataReturn[$keyDate]['top10'] = $top10;
-                    $dataReturn[$keyDate]['top50'] = $top50;
-                    $dataReturn[$keyDate]['top100'] = $top100;
-                } elseif ($kValueRank['rank'] <= 1 || $kValueRank <= 3) {
-                    $top3++;
-                    $top10++;
-                    $top50++;
-                    $top100++;
-                    $dataReturn[$keyDate]['top3'] = $top3;
-                    $dataReturn[$keyDate]['top10'] = $top10;
-                    $dataReturn[$keyDate]['top50'] = $top50;
-                    $dataReturn[$keyDate]['top100'] = $top100;
-                } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 10) {
-                    $top10++;
-                    $top50++;
-                    $top100++;
-                    $dataReturn[$keyDate]['top10'] = $top10;
-                    $dataReturn[$keyDate]['top50'] = $top50;
-                    $dataReturn[$keyDate]['top100'] = $top100;
-                } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 50) {
-                    $top50++;
-                    $top100++;
-                    $dataReturn[$keyDate]['top50'] = $top50;
-                    $dataReturn[$keyDate]['top100'] = $top100;
-                } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 100) {
-                    $top100++;
-                    $dataReturn[$keyDate]['top100'] = $top100;
+                if($kValueRank['url'] !== 'Not Found') {
+                    if ($kValueRank['rank'] === 1) {
+                        $top1++;
+                        $top3++;
+                        $top10++;
+                        $top50++;
+                        $top100++;
+                        $dataReturn[$keyDate]['top1'] = $top1;
+                        $dataReturn[$keyDate]['top3'] = $top3;
+                        $dataReturn[$keyDate]['top10'] = $top10;
+                        $dataReturn[$keyDate]['top50'] = $top50;
+                        $dataReturn[$keyDate]['top100'] = $top100;
+                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank <= 3) {
+                        $top3++;
+                        $top10++;
+                        $top50++;
+                        $top100++;
+                        $dataReturn[$keyDate]['top3'] = $top3;
+                        $dataReturn[$keyDate]['top10'] = $top10;
+                        $dataReturn[$keyDate]['top50'] = $top50;
+                        $dataReturn[$keyDate]['top100'] = $top100;
+                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 10) {
+                        $top10++;
+                        $top50++;
+                        $top100++;
+                        $dataReturn[$keyDate]['top10'] = $top10;
+                        $dataReturn[$keyDate]['top50'] = $top50;
+                        $dataReturn[$keyDate]['top100'] = $top100;
+                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 50) {
+                        $top50++;
+                        $top100++;
+                        $dataReturn[$keyDate]['top50'] = $top50;
+                        $dataReturn[$keyDate]['top100'] = $top100;
+                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 100) {
+                        $top100++;
+                        $dataReturn[$keyDate]['top100'] = $top100;
+                    }
+                    if (isset($kValueRank['volume'])) {
+                        $volume += $kValueRank['volume'];
+                        $dataReturn[$keyDate]['volume'] = $volume;
+                    }
+                    $dataReturn[$keyDate]['date'] = $keyDate;
+                    $dataReturn[$keyDate]['dateUsort'] = date('Y-m-d', strtotime($key));
                 }
-                if (isset($kValueRank['volume'])) {
-                    $volume += $kValueRank['volume'];
-                    $dataReturn[$keyDate]['volume'] = $volume;
-                }
-                $dataReturn[$keyDate]['date'] = $keyDate;
-                $dataReturn[$keyDate]['dateUsort'] = date('Y-m-d', strtotime($key));
             }
         }
         return $dataReturn;
@@ -552,7 +592,8 @@ class RankModel
      * @param null|string|int $id
      * @return mixed
      */
-    private function ProjectSimilar($auth, string $project, $id = null)
+    private
+    function ProjectSimilar($auth, string $project, $id = null)
     {
         return $this->rankTable->selectProject($auth, $project, $id);
     }
@@ -562,7 +603,8 @@ class RankModel
      * @param string $id
      * @return mixed
      */
-    private function projectRank($auth, string $id)
+    private
+    function projectRank($auth, string $id)
     {
         return $this->rankTable->selectRank($id);
     }
@@ -574,12 +616,13 @@ class RankModel
      * @param string $website
      * @return array
      */
-    private function rankFormatTableKeyword(
+    private
+    function rankFormatTableKeyword(
         array $dataRank,
         string $keywords,
         array $rankResult,
         string $website
-    ) : array
+    ): array
     {
         // Verification than Array DataRank isn't empty and we found keywords !!
         if (!empty($dataRank) && !empty($keywords)) {
@@ -642,7 +685,8 @@ class RankModel
      * @param array $dataRnkDiff
      * @return array
      */
-    private function diffDataRank(array $dataRnk, array $dataRnkDiff): array
+    private
+    function diffDataRank(array $dataRnk, array $dataRnkDiff): array
     {
         $dataNumberDiff = [];
         $dataDiff = [];
@@ -658,14 +702,20 @@ class RankModel
             }
         }
 
-        // Diff between two last result if exist !!!
+
         foreach ($dataDiff as $key => $diff) {
             // Diff Rank
             foreach ($diff as $k => $dfUrl) {
                 foreach ($dfUrl as $kRank => $vRank) {
-                    if (count($diff) >= 1) {
-                        if (isset($dataDiff[0][$k][$kRank]) && isset($dataDiff[1][$k][$kRank])) {
-                            $dataNumberDiff[$kRank] = $dataDiff[0][$k][$kRank] - $dataDiff[1][$k][$kRank];
+                    if (isset($dataDiff[0][$k]) && isset($dataDiff[1][$k])) {
+                        $key1 = array_keys($dataDiff[0][$k])[0];
+                        $key2 = array_keys($dataDiff[1][$k])[0];
+                        if (count($dataDiff) === 2) {
+                            if (isset($dataDiff[0][$k][$key1]) && isset($dataDiff[1][$k][$key2])) {
+                                $dataNumberDiff[$kRank] = $dataDiff[0][$k][$key1]['rank'] - $dataDiff[1][$k][$key2]['rank'];
+                            }
+                        } else {
+                            $dataNumberDiff[$kRank] = 0;
                         }
                     } else {
                         $dataNumberDiff[$kRank] = 0;
@@ -681,7 +731,7 @@ class RankModel
                 $data[$k][$kV]['rank'] = $dV['rank'];
                 $data[$k][$kV]['url'] = $dV['url'];
                 $data[$k][$kV]['date'] = $dV['date'];
-                $data[$k][$kV]['diff'] = isset($dataNumberDiff[$dV['url']]) ? $dataNumberDiff[$dV['url']] : 0;
+                $data[$k][$kV]['diff'] = isset($dataNumberDiff[$kV]) ? $dataNumberDiff[$kV] : 0;
             }
         }
         return $data;
@@ -766,9 +816,16 @@ class RankModel
                         if (is_array($keywords)) {
                             $dRankChart[$keywords[$kk]][$date][$key][$web] = $key + 1;
                             if (count($dRankChart[$keywords[$kk]][$date]) > 1) {
-                                $rankSlice = array_slice($dRankChart[$keywords[$kk]][$date], 0, -1);
-                                $rank = array_values($rankSlice[0]);
-                                $dtRankChart[$keywords[$kk]][$date][$web] = $rank[0];
+                                if (count($dRankChart[$keywords[$kk]][$date]) >= 2) {
+                                    foreach ($dRankChart[$keywords[$kk]][$date] as $valueRr) {
+                                        $rank = array_values($valueRr);
+                                        $dtRankChart[$keywords[$kk]][$date][$web] = $rank[0];
+                                    }
+                                } else {
+                                    $rankSlice = array_slice($dRankChart[$keywords[$kk]][$date], 0, -1);
+                                    $rank = array_values($rankSlice[0]);
+                                    $dtRankChart[$keywords[$kk]][$date][$web] = $rank[0];
+                                }
                             } else {
                                 $dtRankChart[$keywords[$kk]][$date][$web] = $key + 1;
                             }
@@ -812,7 +869,7 @@ class RankModel
                 $dataEnd[$i]['date'] = $dV['date'];
                 $dataEnd[$i]['diff'] = $dV['diff'];
                 $dataEnd[$i]['volume'] = $dV['volume'];
-                $dataEnd[$i]['chart'] = $dataRankChart[$dV['keyword']][$dV['url']];
+                $dataEnd[$i]['chart'] = isset($dataRankChart[$dV['keyword']][$dV['url']]) ? $dataRankChart[$dV['keyword']][$dV['url']] : 0;
             }
         }
         return $dataEnd;
@@ -821,7 +878,8 @@ class RankModel
     /**
      * @param string $value
      */
-    private function RegexKeywords(string $value)
+    private
+    function RegexKeywords(string $value)
     {
         $value_ex = explode(',', $value);
         foreach ($value_ex as $item) {
@@ -836,7 +894,8 @@ class RankModel
      * @param $keywords
      * @return array
      */
-    private function keywordsValueVolume($keywords): array
+    private
+    function keywordsValueVolume($keywords): array
     {
         $dataVl = [];
         foreach ($keywords as $key => $item) {
