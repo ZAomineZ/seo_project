@@ -67,13 +67,13 @@ class BarCampainDetails extends PureComponent {
         };
 
       return (
-        <Col md={12} lg={12} xl={12}>
+        <Col md={12} lg={12} xl={12} className={'chart-top'}>
           <Card>
             <CardBody>
               <div className="card__title">
                 <h5 className="bold-text">{t('charts.react_chartjs.random_animated_bars')}</h5>
               </div>
-              <Bar data={initialState} options={options} />
+              <Bar width={200} height={75} data={initialState} options={options} />
             </CardBody>
           </Card>
         </Col>

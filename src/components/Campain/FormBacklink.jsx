@@ -1,4 +1,5 @@
 /* eslint-disable react/no-children-prop */
+/* eslint-disable */
 import React, { PureComponent } from 'react';
 import { Card, CardBody, Col, Button, ButtonToolbar } from 'reactstrap';
 import { reduxForm } from 'redux-form';
@@ -41,11 +42,25 @@ renderTextField.defaultProps = {
 };
 
 class FormBacklink extends PureComponent {
+    constructor() {
+        super();
+        this.state = {
+            loaded: true
+        }
+    }
+
     static propTypes = {
       onSubmit: PropTypes.func.isRequired,
       value: PropTypes.string.isRequired,
       onChange: PropTypes.func.isRequired,
+      loading: PropTypes.bool.isRequired
     };
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.loading === true) {
+            setTimeout(() => this.setState({loaded: false}), 500);
+        }
+    }
 
     render() {
       return (
@@ -57,16 +72,24 @@ class FormBacklink extends PureComponent {
                   <span className="form__form-group-label">Backlink</span>
                   <div className="form__form-group-field">
                     <input
-                      type="url"
+                      type='url'
                       name="backlink"
                       placeholder="Backlink"
                       value={this.props.value}
+                      disabled={!this.state.loaded}
                       onChange={this.props.onChange}
                     />
                   </div>
                 </div>
                 <ButtonToolbar className="form__button-toolbar">
-                  <Button color="primary" type="submit">Submit</Button>
+                    <button type="submit" className={!this.state.loaded ? 'icon expand expand--load btn btn-primary' : 'icon expand btn btn-primary'}>
+                        <p>
+                            <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
+                            </svg>
+                            Submit
+                        </p>
+                    </button>
                 </ButtonToolbar>
               </form>
             </CardBody>

@@ -24,7 +24,11 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
         $table = new PasswordForgotTable($pdo);
 
         $forgot_password = new PasswordForgotController($table, $model, $mail);
-        $forgot_password->NewReqPassword($_GET['token'], $_GET['password'], $_GET['password_confirm']);
+        $forgot_password->NewReqPassword(
+            htmlspecialchars($_GET['token']),
+            htmlspecialchars($_GET['password']),
+            htmlspecialchars($_GET['password_confirm'])
+        );
     } else {
         echo 'Invalid Token !!!';
     }

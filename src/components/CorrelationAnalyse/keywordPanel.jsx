@@ -13,6 +13,7 @@ class KeywordPanel extends PureComponent {
     static propTypes = {
         title: PropTypes.string.isRequired,
         charts: PropTypes.bool.isRequired,
+        description: PropTypes.string,
 
         Top3TitleCharts: PropTypes.string,
         Top5TitleCharts: PropTypes.string,
@@ -35,7 +36,13 @@ class KeywordPanel extends PureComponent {
 
     render() {
         return (
-            <Panel title={this.props.title} subhead="List of correlation data">
+            <Panel title={this.props.title}
+                   subhead={
+                       this.props.description ?
+                           'List of correlation data' + this.props.description
+                           :
+                           'List of correlation data'
+                   }>
                 {
                     this.props.charts ?
                         <div className={'row'}>
@@ -66,7 +73,7 @@ class KeywordPanel extends PureComponent {
                                 </div>
                             </div>
                             <div className='col-md-6 col-xs-6'>
-                                <ChartsStats data={this.props.data} />
+                                <ChartsStats data={this.props.data}/>
                             </div>
                         </div>
                         :

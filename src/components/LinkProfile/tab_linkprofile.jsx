@@ -208,7 +208,6 @@ class tab_linkprofile extends PureComponent {
 
             const img_overview1 = "https://majestic.com/charts/linkprofile/3/?target=" + this.PropsChange(this.props.domain) + "&datatype=0&IndexDataSource=F";
             const img_overview2 = "https://majestic.com/charts/linkprofile/3/?target=" + this.PropsChange(this.props.domain) + "&datatype=1&IndexDataSource=F";
-            const img_overview3 = "https://majestic.com/charts/linkprofile/3/?target=" + this.PropsChange(this.props.domain) + "&datatype=2&IndexDataSource=F";
 
             const img_backlink = "https://majestic.com/charts/backlinks-discovery-chart?w=850&h=600&IndexDataSource=F&d=" + this.PropsChange(this.props.domain);
             const img_referring = "http://majestic.com/charts/referring-domains-discovery-chart?w=850&h=600& IndexDataSource=F&d=" + this.PropsChange(this.props.domain);
@@ -271,8 +270,7 @@ class tab_linkprofile extends PureComponent {
                                     </div>
                                 </td>
                                 <td>
-                                    <ModalOverview btn="Overview" img_1={img_overview1} img_2={img_overview2}
-                                                   img_3={img_overview3}/>
+                                    <ModalOverview btn="Overview" img_1={img_overview1} img_2={img_overview2} />
                                     <img src={img_magestic} alt=""/>
                                 </td>
                                 <td>

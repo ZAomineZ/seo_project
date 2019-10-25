@@ -98,21 +98,21 @@ class DomainsKeyword extends PureComponent {
                         if (response.data.error === 'Invalid Token') {
                             this.CookieReset(response.data.token, response.data.id)
                         } else if (response.data.error === 'Invalid Value') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            this.setState({ redirectSerp : !this.state.redirectSerp});
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
                         } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            this.setState({ redirectSerp : !this.state.redirectSerp});
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
                         } else if (response.data.error && response.data.error === 'Domain Name does not exist !!!') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            this.setState({ redirectSerp : !this.state.redirectSerp});
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
                         }
                     } else {
                         if (response.data.length === 0) {
-                            this.setState({ redirectSerp : !this.state.redirectSerp})
+                            this.setState({ redirectSerp : !this.state.redirectSerp});
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification('No information was found for this Domain !!!', 'danger'), 700);
                         }

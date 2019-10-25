@@ -12,6 +12,7 @@ import {route} from '../../../../const'
 import {BasicNotification} from "../../../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import {Redirect} from "react-router-dom";
+import renderRadioButtonField from '../../../../shared/components/form/RadioButton';
 
 const renderField = ({
                          input, placeholder, type, meta: {touched, error},
@@ -67,6 +68,7 @@ class RegisterForm extends PureComponent {
             valueUsername: '',
             valueEmail: '',
             valuePassword: '',
+            valueGender: '',
             message: '',
             emailReceived: false
         };
@@ -75,6 +77,7 @@ class RegisterForm extends PureComponent {
         this.OnChangeUser = this.OnChangeUser.bind(this);
         this.OnChangeEmail = this.OnChangeEmail.bind(this);
         this.OnChangePassword = this.OnChangePassword.bind(this);
+        this.OnChangeGender = this.OnChangeGender.bind(this);
     }
 
     showPassword(e) {
@@ -86,13 +89,14 @@ class RegisterForm extends PureComponent {
 
     SubmitRegister(event) {
         event.preventDefault();
-        if (this.state.valueUsername !== '' && this.state.valueEmail !== '' && this.state.valuePassword !== '') {
+        if (this.state.valueUsername !== '' && this.state.valueEmail !== '' && this.state.valuePassword !== '' && this.state.valueGender !== '') {
             if (this.state.valueUsername.length >= 5 && this.state.valuePassword.length >= 5 && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.valueEmail)) {
                 axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/register.php', {
                     params: {
                         'username': this.state.valueUsername,
                         'email': this.state.valueEmail,
-                        'password': this.state.valuePassword
+                        'password': this.state.valuePassword,
+                        'gender': this.state.valueGender
                     },
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
@@ -106,7 +110,10 @@ class RegisterForm extends PureComponent {
                     },
                 }).then(response => {
                     if (response && response.status === 200) {
-                        this.setState({message: response.data, emailReceived: response.data.success ? !this.state.emailReceived : false});
+                        this.setState({
+                            message: response.data,
+                            emailReceived: response.data.success ? !this.state.emailReceived : false
+                        });
                         NotificationSystem.newInstance({}, n => notification = n);
                         if (response.data.username || response.data.email) {
                             setTimeout(() => showNotification(response.data.username ? response.data.username : response.data.email ? response.data.email : '', 'danger'), 700);
@@ -129,6 +136,10 @@ class RegisterForm extends PureComponent {
 
     OnChangePassword(e) {
         this.setState({valuePassword: e.target.value})
+    }
+
+    OnChangeGender(e) {
+        this.setState({valueGender: e[0]});
     }
 
     render() {
@@ -170,6 +181,26 @@ class RegisterForm extends PureComponent {
                             type="email"
                             placeholder="example@mail.com"
                             onChange={this.OnChangeEmail}
+                        />
+                    </div>
+                </div>
+                <div className="form__form-group">
+                    <span className="form__form-group-label">Gender</span>
+                    <div className="form__form-group-field">
+                        <Field
+                            name="gender"
+                            component={renderRadioButtonField}
+                            label="Male"
+                            radioValue="M"
+                            defaultChecked
+                            onChange={this.OnChangeGender}
+                        />
+                        <Field
+                            name="gender"
+                            component={renderRadioButtonField}
+                            label="Female"
+                            radioValue="F"
+                            onChange={this.OnChangeGender}
                         />
                     </div>
                 </div>

@@ -61,7 +61,7 @@ class SidebarContent extends Component {
               onClick={this.hideSidebar}
             />
             <SidebarLink
-              title="Correction Analyse"
+              title="Correlation Analyse"
               icon="apartment"
               route="/seo/correlationData"
               onClick={this.hideSidebar}

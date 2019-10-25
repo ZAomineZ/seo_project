@@ -20,7 +20,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
 
         // Request Method Token Data !!!
         $auth = new LogInController($login, $table);
-        $auth->TokenData($_GET['token']);
+        $auth->TokenData(htmlspecialchars($_GET['token']));
     } else {
         echo 'Invalid Token !!!';
     }

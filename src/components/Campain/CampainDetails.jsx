@@ -29,7 +29,8 @@ const showNotification = (title, message, color) => {
 class CampainDetails extends PureComponent {
     constructor(props) {
         super(props);
-        console.error = () => {};
+        console.error = () => {
+        };
         console.error();
         this.state = {
             data: [],
@@ -41,7 +42,8 @@ class CampainDetails extends PureComponent {
             modal: false,
             Popper: false,
             redirectCampain: false,
-            redirectSerp: false
+            redirectSerp: false,
+            loading: false
         };
         this.onChange = this.onChange.bind(this);
         this.handleSubmitLink = this.handleSubmitLink.bind(this);
@@ -52,8 +54,7 @@ class CampainDetails extends PureComponent {
         this.toggleModal = this.toggleModal.bind(this);
     }
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
+    SetCookie(name_cookie, value_cookie, expire_days) {
         let date = new Date();
         date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
         let expire_cookie = "expires=" + date.toUTCString();
@@ -75,14 +76,13 @@ class CampainDetails extends PureComponent {
         }
     }
 
-    CookieReset (token, id)
-    {
+    CookieReset(token, id) {
         if (this.getCookie('remember_me_auth')) {
             this.SetCookie('remember_me_auth', token + '__' + id, 30)
         } else {
             this.SetCookie('auth_today', token + '__' + id, 1)
         }
-        this.setState({ redirectSerp : !this.state.redirectSerp})
+        this.setState({redirectSerp: !this.state.redirectSerp})
     }
 
     componentDidMount() {
@@ -109,12 +109,12 @@ class CampainDetails extends PureComponent {
                 } else {
                     if (response.data.error && response.data.error === 'Invalid Token') {
                         this.CookieReset(response.data.token, response.data.id)
-                    }  else if (response.data.error && response.data.error === 'Invalid Value') {
-                        this.setState({ redirectSerp : !this.state.redirectSerp})
+                    } else if (response.data.error && response.data.error === 'Invalid Value') {
+                        this.setState({redirectSerp: !this.state.redirectSerp})
                         NotificationSystem.newInstance({}, n => notification = n);
                         setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
                     } else {
-                        this.setState({ redirectCampain: !this.state.redirectCampain });
+                        this.setState({redirectCampain: !this.state.redirectCampain});
                         NotificationSystem.newInstance({}, n => notification = n);
                         setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
                     }
@@ -160,6 +160,8 @@ class CampainDetails extends PureComponent {
                                     received: type,
                                     backlink: d.backlink,
                                     bl_found: d.bl_found,
+                                    follow: d.follow,
+                                    indexable: d.indexable,
                                     date_check: d.date_check,
                                     Popper: this.state.Popper,
                                 };
@@ -174,39 +176,43 @@ class CampainDetails extends PureComponent {
 
     handleSubmit(event, id, bl) {
         event.preventDefault();
-        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateDataBl.php", {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'text/plain',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                'Access-Control-Allow-Credentials': true,
-                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                'Access-Control-Max-Age': 1728000,
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-            },
-            params: {
-                id: id,
-                value: this.state.value,
-                bl: bl,
-                slug: this.props.match.params.web,
-                auth:sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
-                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
-            }
-        }).then((response) => {
-            if (response && response.status === 200) {
-                if (response.data.error) {
-                    if (response.data.error === 'Invalid Token') {
-                        this.CookieReset(response.data.token, response.data.id)
-                    }
-                } else {
-                    this.setState({data: response.data.data}),
-                        this.setState({
-                            value: ''
-                        });
+        let urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+        if (this.state.value !== '' && urlRegex.test(this.state.value)) {
+            this.setState({loading: !this.state.loading});
+            axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateDataBl.php", {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'text/plain',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                    'Access-Control-Max-Age': 1728000,
+                    'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+                },
+                params: {
+                    id: id,
+                    value: this.state.value,
+                    bl: bl,
+                    slug: this.props.match.params.web,
+                    auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+                    cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
                 }
-            }
-        });
+            }).then((response) => {
+                if (response && response.status === 200) {
+                    if (response.data.error) {
+                        if (response.data.error === 'Invalid Token') {
+                            this.CookieReset(response.data.token, response.data.id)
+                        }
+                    } else {
+                        this.setState({data: response.data.data}),
+                            this.setState({
+                                value: ''
+                            });
+                    }
+                }
+            });
+        }
     }
 
     onChange(event) {
@@ -325,6 +331,8 @@ class CampainDetails extends PureComponent {
                         received: d.received,
                         backlink: d.backlink,
                         bl_found: d.bl_found,
+                        follow: d.follow,
+                        indexable: d.indexable,
                         date_check: d.date_check,
                         Popper: type,
                     };
@@ -395,6 +403,8 @@ class CampainDetails extends PureComponent {
                                                         <th>Date</th>
                                                         <th>Received</th>
                                                         <th>BL Check</th>
+                                                        <th>Follow</th>
+                                                        <th>Indexed</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                     </thead>
@@ -464,9 +474,48 @@ class CampainDetails extends PureComponent {
                                                                             <span className="red-text">Backlink not found !!!</span> :
                                                                             <ModalAddBacklink value={this.state.value}
                                                                                               onChange={this.onChange}
+                                                                                              loading={this.state.loading}
                                                                                               onSubmit={e => this.handleSubmit(e, d.id, d.website)}
                                                                                               btn="Add BL"/>}
 
+                                                                </td>
+                                                                <td>
+                                                                    <p>
+                                                                        {
+                                                                            d.follow !== '' && d.follow === '1' ?
+                                                                                <svg className="mdi-icon" width="24"
+                                                                                     height="24" fill="#4ce1b6"
+                                                                                     viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        d="M5,9V21H1V9H5M9,21C7.9,21 7,20.1 7,19V9C7,8.45 7.22,7.95 7.59,7.59L14.17,1L15.23,2.06C15.5,2.33 15.67,2.7 15.67,3.11L15.64,3.43L14.69,8H21C22.11,8 23,8.9 23,10V12C23,12.26 22.95,12.5 22.86,12.73L19.84,19.78C19.54,20.5 18.83,21 18,21H9M9,19H18.03L21,12V10H12.21L13.34,4.68L9,9.03V19Z"></path>
+                                                                                </svg> :
+                                                                                <svg className="mdi-icon " width="24"
+                                                                                     height="24" fill="#ff4861"
+                                                                                     viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M14.59,8L12,10.59L9.41,8L8,9.41L10.59,12L8,14.59L9.41,16L12,13.41L14.59,16L16,14.59L13.41,12L16,9.41L14.59,8Z"></path>
+                                                                                </svg>
+                                                                        }
+                                                                    </p>
+                                                                </td>
+                                                                <td>
+                                                                    <p>
+                                                                        {
+                                                                            d.indexable !== '' && d.indexable === '1' ?
+                                                                                <svg className="mdi-icon" width="24"
+                                                                                     height="24" fill="#4ce1b6"
+                                                                                     viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        d="M5,9V21H1V9H5M9,21C7.9,21 7,20.1 7,19V9C7,8.45 7.22,7.95 7.59,7.59L14.17,1L15.23,2.06C15.5,2.33 15.67,2.7 15.67,3.11L15.64,3.43L14.69,8H21C22.11,8 23,8.9 23,10V12C23,12.26 22.95,12.5 22.86,12.73L19.84,19.78C19.54,20.5 18.83,21 18,21H9M9,19H18.03L21,12V10H12.21L13.34,4.68L9,9.03V19Z"></path>
+                                                                                </svg> :
+                                                                                <svg className="mdi-icon " width="24"
+                                                                                     height="24" fill="#ff4861"
+                                                                                     viewBox="0 0 24 24">
+                                                                                    <path
+                                                                                        d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M14.59,8L12,10.59L9.41,8L8,9.41L10.59,12L8,14.59L9.41,16L12,13.41L14.59,16L16,14.59L13.41,12L16,9.41L14.59,8Z"></path>
+                                                                                </svg>
+                                                                        }
+                                                                    </p>
                                                                 </td>
                                                                 <td>
                                                                     <button className="btn btn-danger"

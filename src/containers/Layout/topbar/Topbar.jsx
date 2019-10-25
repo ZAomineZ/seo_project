@@ -8,7 +8,8 @@ class Topbar extends PureComponent {
   static propTypes = {
     changeMobileSidebarVisibility: PropTypes.func.isRequired,
     changeSidebarVisibility: PropTypes.func.isRequired,
-    username_auth: PropTypes.string.isRequired
+    username_auth: PropTypes.string.isRequired,
+    gender_auth: PropTypes.string.isRequired
   };
 
   render() {
@@ -24,7 +25,7 @@ class Topbar extends PureComponent {
             />
           </div>
           <div className="topbar__right">
-            <TopbarProfile username={this.props.username_auth}/>
+            <TopbarProfile username={this.props.username_auth} gender={this.props.gender_auth} />
           </div>
         </div>
       </div>

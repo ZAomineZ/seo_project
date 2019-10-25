@@ -104,7 +104,7 @@ class Layout extends Component {
                         if (response && response.status === 200) {
                             if (response.data !== '') {
                                 if (response.data.error && response.data.error === 'Invalid Token') {
-                                    this.DeleteCookie('remember_me_auth')
+                                    this.DeleteCookie('remember_me_auth');
                                     this.DeleteCookieNotExist();
                                     NotificationSystem.newInstance({}, n => notification = n);
                                     setTimeout(() => showNotification('Your account is used by another platform', 'danger'), 700);
@@ -145,7 +145,7 @@ class Layout extends Component {
                             if (response && response.status === 200) {
                                 if (response.data !== '') {
                                     if (response.data.error && response.data.error === 'Invalid Token') {
-                                        this.DeleteCookie('auth_today')
+                                        this.DeleteCookie('auth_today');
                                         this.DeleteCookieNotExist();
                                         NotificationSystem.newInstance({}, n => notification = n);
                                         setTimeout(() => showNotification('Your account is used by another platform', 'danger'), 700);
@@ -245,11 +245,13 @@ class Layout extends Component {
                     <TopbarWithNavigation
                         changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
                         username_auth={sessionStorage.getItem('Auth') ? JSON_Format.username : ''}
+                        gender_auth={sessionStorage.getItem('Auth') ? JSON_Format.gender : ''}
                     /> :
                     <Topbar
                         changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
                         changeSidebarVisibility={this.changeSidebarVisibility}
                         username_auth={sessionStorage.getItem('Auth') ? JSON_Format.username : ''}
+                        gender_auth={sessionStorage.getItem('Auth') ? JSON_Format.gender : ''}
                     />
                 }
                 {this.props.customizer.topNavigation ?

@@ -7,8 +7,7 @@ export default class ModalOverview extends PureComponent {
     static propTypes = {
       btn: PropTypes.string.isRequired,
       img_1: PropTypes.string.isRequired,
-      img_2: PropTypes.string.isRequired,
-      img_3: PropTypes.string.isRequired,
+      img_2: PropTypes.string.isRequired
     };
 
 
@@ -50,7 +49,6 @@ export default class ModalOverview extends PureComponent {
               <div>
                 <img src={this.props.img_1} alt=""/>
                 <img src={this.props.img_2} alt=""/>
-                <img src={this.props.img_3} alt=""/>
               </div>
             </div>
             <ButtonToolbar className="modal__footer">

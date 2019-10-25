@@ -46,10 +46,11 @@ class RegisterController
      * @param string $username
      * @param $email
      * @param $password
+     * @param string $gender
      * @return array|bool
      * @throws \Exception
      */
-    protected function RequestData (string $username, $email, $password)
+    protected function RequestData (string $username, $email, $password, string $gender)
     {
         $request = $this->RequestExisteField($username, $email);
         if ($request !== false) {
@@ -60,6 +61,7 @@ class RegisterController
             'username' => $username,
             'email' => $email,
             'password' => $password,
+            'gender' => $gender,
             'created_at' => date('Y-m-d H:i:s'),
             'confirmation_token' =>  bin2hex(random_bytes(32)),
             'token_user' => NULL
@@ -70,13 +72,14 @@ class RegisterController
      * @param string $username
      * @param string $email
      * @param string $password
+     * @param string $gender
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function RegisterData (string $username, string $email, string $password)
+    public function RegisterData (string $username, string $email, string $password, string $gender)
     {
         $error_exist = $this->register->DataFields($username, $email);
         if ($error_exist['username'] === [] && $error_exist['email'] === []) {
-            $request = $this->RequestData($username, $email, $password);
+            $request = $this->RequestData($username, $email, $password, $gender);
             if (is_array($request) && $request['error'] !== '') {
                 echo \GuzzleHttp\json_encode($request);
             } else {

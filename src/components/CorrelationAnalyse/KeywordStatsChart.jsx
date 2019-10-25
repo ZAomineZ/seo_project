@@ -12,6 +12,7 @@ export default class KeywordStatsChart extends PureComponent
 
     static propTypes = {
         title: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
         Top3TitleCharts: PropTypes.string.isRequired,
         Top5TitleCharts: PropTypes.string.isRequired,
         Top10TitleCharts: PropTypes.string.isRequired,
@@ -25,6 +26,7 @@ export default class KeywordStatsChart extends PureComponent
         return (
             <div className='col-md-12 col-xs-12'>
                 <KeywordPanel title={this.props.title}
+                              description={this.props.description}
                               charts={true}
                               top3Stats={this.props.top3Stats}
                               top5Stats={this.props.top5Stats}

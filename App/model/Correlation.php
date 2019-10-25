@@ -54,7 +54,7 @@ class Correlation
      */
     public function CreateOrOpenFile(array $dataSerp, array $dataTitle, string $keywordDefault): array
     {
-        $keyDataFirstSerp = array_keys($dataSerp)[0];
+        $keyDataFirstSerp = array_keys($dataSerp)[count($dataSerp) - 1];
         $dataResult = [];
 
         foreach (array_slice($dataSerp[$keyDataFirstSerp], 0, 10) as $key => $item) {

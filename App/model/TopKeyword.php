@@ -81,7 +81,7 @@ class TopKeyword
      */
     private function JsonData(object $data) : string
     {
-        if (is_null($data)) {
+        if (is_null($data) || isset($data->error)) {
             return \GuzzleHttp\json_encode([
                 'data' => []
             ]);
@@ -100,7 +100,7 @@ class TopKeyword
     {
         return $this->table->InsertDomain([
             'token' => $token,
-            'domain' => str_replace('-', '.', $domain),
+            'domain' => $domain,
             'date' => date("Y-m-d H:i:s"),
             'directory' => date("Y") . '/' . date("m")
         ]);
@@ -108,13 +108,13 @@ class TopKeyword
 
     /**
      * Render and Create JSON to TOP Keyword !!!
-     * @param object $result
+     * @param $result
      * @param string $domain
      * @return array
      */
-    public function CreateJson(object $result, string $domain = '') : array
+    public function CreateJson($result, string $domain = '') : array
     {
-        if ($result) {
+        if (!is_null($result)){
             $option = [];
             $data = [];
             if ($result->data !== null) {
@@ -141,5 +141,6 @@ class TopKeyword
             }
             return $data;
         }
+        return [];
     }
 }

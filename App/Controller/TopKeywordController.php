@@ -123,16 +123,15 @@ class TopKeywordController
     public function ResultJson(string $domain, int $id)
     {
         // and Use Method SearchData !!!
-        $string = str_replace('-', '.', $domain);
-        $string = $this->str->searchDoubleString('.', $string);
         $data = [];
+        $string = str_replace_last('-', '.', $domain);
         if (strstr($domain, '&')) {
             $explode = explode('&', $domain);
             if (count($explode) <= 5) {
                 foreach ($explode as $ex) {
                     $ex = $this->str->searchDoubleString('.', $ex);
                     $this->ajax->VerifValueRegex($ex);
-                    $string_ex = str_replace('-', '.', $ex);
+                    $string_ex = str_replace_last('-', '.', $ex);
                     $req_verif = $this->table->SelectToken($string_ex);
                     if ($req_verif && file_exists($this->DirAndFileCall($req_verif->token, str_replace('.', '-', $ex))['file'])) {
                         $data[] = $this->model->CreateJson(File_Params::OpenFile($this->DirAndFileCall($req_verif->token, str_replace('.', '-', $ex))['file'], $this->DirAndFileCall($req_verif->token, str_replace('.', '-', $ex))['dir']), $req_verif->domain);

@@ -4,7 +4,7 @@ import DefaultPanelDivider from '../../containers/UI/Panels/components/DefaultPa
 
 class linkprofile extends PureComponent {
     constructor() {
-        super()
+        super();
         console.error = () => {};
         console.error();
     }

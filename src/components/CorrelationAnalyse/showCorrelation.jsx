@@ -282,6 +282,7 @@ export default class showCorrelation extends PureComponent {
                 <Row>
                     <KeywordStatsChart
                         title={'Referring Ip Analyse'}
+                        description={' (Max Referring Ip)'}
                         top3Stats={this.state.ipStatsTop3}
                         top5Stats={this.state.ipStatsTop5}
                         top10Stats={this.state.ipStatsTop10}
@@ -292,6 +293,7 @@ export default class showCorrelation extends PureComponent {
                     />
                     <KeywordStatsChart
                         title={'Score Rank Analyse'}
+                        description={' (Max Score Rank)'}
                         top3Stats={this.state.rankScoreStatsTop3}
                         top5Stats={this.state.rankScoreStatsTop5}
                         top10Stats={this.state.rankScoreStatsTop10}
@@ -302,6 +304,7 @@ export default class showCorrelation extends PureComponent {
                     />
                     <KeywordStatsChart
                         title={'Trust Rank Analyse'}
+                        description={' (Max Trust Rank)'}
                         top3Stats={this.state.trustScoreStatsTop3}
                         top5Stats={this.state.trustScoreStatsTop5}
                         top10Stats={this.state.trustScoreStatsTop10}
@@ -312,6 +315,7 @@ export default class showCorrelation extends PureComponent {
                     />
                     <KeywordStatsChart
                         title={'Ratio Analyse'}
+                        description={' (Max Ratio Trust & Score Rank)'}
                         top3Stats={this.state.ratioStatsTop3}
                         top5Stats={this.state.ratioStatsTop5}
                         top10Stats={this.state.ratioStatsTop10}
@@ -322,6 +326,7 @@ export default class showCorrelation extends PureComponent {
                     />
                     <KeywordStatsChart
                         title={'Traffic Analyse'}
+                        description={' (Max Traffic organic)'}
                         top3Stats={this.state.trafficStatsTop3}
                         top5Stats={this.state.trafficStatsTop5}
                         top10Stats={this.state.trafficStatsTop10}
@@ -332,6 +337,7 @@ export default class showCorrelation extends PureComponent {
                     />
                     <KeywordStatsChart
                         title={'Https Analyse'}
+                        description={' (Length Url & https or not)'}
                         top3Stats={this.state.httpsStatsTop3}
                         top5Stats={this.state.httpsStatsTop5}
                         top10Stats={this.state.httpsStatsTop10}
@@ -342,6 +348,7 @@ export default class showCorrelation extends PureComponent {
                     />
                     <KeywordStatsChart
                         title={'Title Analyse'}
+                        description={' (Length Title & Title or not)'}
                         top3Stats={this.state.titleStatsTop3}
                         top5Stats={this.state.titleStatsTop5}
                         top10Stats={this.state.titleStatsTop10}

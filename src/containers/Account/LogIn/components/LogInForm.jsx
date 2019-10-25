@@ -116,7 +116,8 @@ class LogInForm extends PureComponent {
                 'id': json.id,
                 'username': json.username,
                 'email': json.email,
-                'confirmation_at': json.confirmation_at
+                'confirmation_at': json.confirmation_at,
+                'gender': json.gender
             })
     }
 

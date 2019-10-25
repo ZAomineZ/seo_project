@@ -22,7 +22,11 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
 
         // Request Method Register Data !!!
         $auth = new RegisterController($register, $table);
-        $auth->RegisterData($_GET['username'], $_GET['email'], $_GET['password']);
+        $auth->RegisterData(
+            htmlspecialchars($_GET['username']),
+            htmlspecialchars($_GET['email']),
+            htmlspecialchars($_GET['password']),
+            htmlspecialchars($_GET['gender']));
     } else {
         echo 'Invalid Token !!!';
     }

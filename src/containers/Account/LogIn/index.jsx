@@ -126,7 +126,7 @@ class LogIn extends PureComponent {
                             if (response && response.status === 200) {
                                 if (response.data !== '') {
                                     if (response.data.error && response.data.error === 'Invalid Token') {
-                                        this.DeleteCookie('auth_today')
+                                        this.DeleteCookie('auth_today');
                                         this.DeleteCookieNotExist();
                                         NotificationSystem.newInstance({}, n => notification = n);
                                         setTimeout(() => showNotification('Your account is used by another platform', 'danger'), 700);

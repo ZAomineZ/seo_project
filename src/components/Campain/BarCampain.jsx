@@ -61,10 +61,10 @@ class BarCampain extends PureComponent {
       },
     };
     return (
-      <Col md={12} lg={12} xl={12}>
+      <Col md={12} lg={12} xl={12} className={'chart-top'}>
         <Card>
           <CardBody>
-            <Bar data={initialState} options={options} />
+            <Bar width={200} height={75} data={initialState} options={options} />
           </CardBody>
         </Card>
       </Col>

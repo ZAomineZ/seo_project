@@ -219,11 +219,18 @@ class Campain extends Table
     /**
      * @param string $table
      * @param string $id
+     * @param int $follow
      * @return bool
      */
-    public function UpdateDataBlFound (string $table, string $id) : bool
+    public function UpdateDataBlFound (string $table, string $id, int $follow, int $indexable) : bool
     {
-        $update = $this->pdo->GetPdo()->prepare("UPDATE $table SET bl_found = :bl_found, date_check = :date_check WHERE id = :id");
-        return $update->execute(['id' => $id, 'bl_found' => '1', 'date_check' => date('Y-m-d')]);
+        $update = $this->pdo->GetPdo()->prepare("UPDATE $table SET bl_found = :bl_found, date_check = :date_check, follow = :follow, indexable = :indexable WHERE id = :id");
+        return $update->execute([
+            'id' => $id,
+            'bl_found' => 1,
+            'follow' => $follow,
+            'indexable' => $indexable,
+            'date_check' => date('Y-m-d')
+        ]);
     }
 }

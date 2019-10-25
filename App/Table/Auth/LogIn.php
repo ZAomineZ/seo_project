@@ -43,7 +43,7 @@ class LogIn extends Table
     {
         $select = $this->pdo
             ->GetPdo()
-            ->prepare("SELECT id, username, email, token_user FROM users WHERE id = :id");
+            ->prepare("SELECT id, username, email, token_user, gender FROM users WHERE id = :id");
         $select->execute(['id' => $id]);
         return $select->fetch();
     }
