@@ -2,7 +2,7 @@
 import React, {PureComponent} from "react";
 import ChartRank from "./ChartRank";
 import axios from "axios";
-import {route} from "../../const";
+import {route, requestUri} from "../../const";
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import RankTable from "./RankTable";
@@ -96,52 +96,56 @@ export default class indexKeyword extends PureComponent {
     }
 
     componentDidMount() {
-        let project = this.props.match.params.project;
-        if (project !== '') {
-            axios.get('http://' + window.location.hostname + route + '/Ajax/RankByProject.php', {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Content-Type': 'text/plain',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                    'Access-Control-Allow-Credentials': true,
-                    'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                    'Access-Control-Max-Age': 1728000,
-                    'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-                },
-                params: {
-                    project: project,
-                    cookie: this.getCookie('remember_me_auth') ?
-                        this.getCookie('remember_me_auth') :
-                        this.getCookie('auth_today'),
-                    auth: sessionStorage.getItem('Auth') ?
-                        sessionStorage.getItem('Auth')
-                        : ''
-                }
-            }).then((response) => {
-                if (response && response.status === 200) {
-                    if (response.data.error) {
-                        if (response.data.error === 'Invalid Token') {
-                            this.CookieReset(response.data.token, response.data.id)
+        if (sessionStorage.getItem('Auth')) {
+            let project = this.props.match.params.project;
+            if (project !== '') {
+                axios.get( requestUri + window.location.hostname + route + '/Ajax/RankByProject.php', {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'text/plain',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                        'Access-Control-Max-Age': 1728000,
+                        'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+                    },
+                    params: {
+                        project: project,
+                        cookie: this.getCookie('remember_me_auth') ?
+                            this.getCookie('remember_me_auth') :
+                            this.getCookie('auth_today'),
+                        auth: sessionStorage.getItem('Auth') ?
+                            sessionStorage.getItem('Auth')
+                            : ''
+                    }
+                }).then((response) => {
+                    if (response && response.status === 200) {
+                        if (response.data.error) {
+                            if (response.data.error === 'Invalid Token') {
+                                this.CookieReset(response.data.token, response.data.id)
+                            } else {
+                                this.setState({redirectTo: !this.state.redirectTo});
+                                this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
+                            }
                         } else {
-                            this.setState({redirectTo: !this.state.redirectTo});
-                            this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
-                        }
-                    } else {
-                        if (response.data.data && response.data.dataKeywordsByWebsite) {
-                            const data = Object.values(response.data.data);
-                            const dataKeywordsByWebsite = Object.values(response.data.dataKeywordsByWebsite);
-                            this.setState({
-                                data: data,
-                                dataKeywordsByWebsite: dataKeywordsByWebsite,
-                                countKeywords: response.data.countKeywords,
-                                loading: false
-                            });
-                            setTimeout(() => this.setState({loaded: true}), 500);
+                            if (response.data.data && response.data.dataKeywordsByWebsite) {
+                                const data = Object.values(response.data.data);
+                                const dataKeywordsByWebsite = Object.values(response.data.dataKeywordsByWebsite);
+                                this.setState({
+                                    data: data,
+                                    dataKeywordsByWebsite: dataKeywordsByWebsite,
+                                    countKeywords: response.data.countKeywords,
+                                    loading: false
+                                });
+                                setTimeout(() => this.setState({loaded: true}), 500);
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
+        } else {
+            this.setState({redirectSerp: !this.state.redirectSerp});
         }
     }
 

@@ -6,7 +6,7 @@ import SuggestPreposition from './suggest_preposition';
 import SuggestComparison from './suggest_comparison';
 import SuggestAlpha from './suggest_alpha';
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import {Redirect} from "react-router-dom";
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
@@ -80,7 +80,7 @@ class SuggestDetails extends PureComponent{
     }
 
     componentDidMount() {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/Suggest.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/Suggest.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',

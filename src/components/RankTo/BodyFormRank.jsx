@@ -6,7 +6,7 @@ import {BasicNotification} from "../../shared/components/Notification";
 import {translate} from "react-i18next";
 import NotificationSystem from "rc-notification";
 import axios from "axios";
-import {route} from "../../const";
+import {route, requestUri} from "../../const";
 import BodyContent from "./BodyContent";
 import TablePagination from "@material-ui/core/TablePagination/TablePagination";
 import {Button, ButtonToolbar, Modal} from "reactstrap";
@@ -194,7 +194,7 @@ class BodyFormRank extends PureComponent {
                 // Enjoy Params With Get Axios !!!
                 this.setState({modal: !this.state.modal});
                 setTimeout(() => this.setState({loaded: false}), 500);
-                axios.get('http://' + window.location.hostname + route + '/Ajax/RankTo.php', {
+                axios.get(requestUri + window.location.hostname + route + '/Ajax/RankTo.php', {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type': 'text/plain',
@@ -267,7 +267,7 @@ class BodyFormRank extends PureComponent {
         e.preventDefault();
         let id = document.getElementsByName("idFormDelete").value;
         if (id !== '') {
-            axios.get('http://' + window.location.hostname + route + '/Ajax/RankProjectDelete.php', {
+            axios.get(requestUri + window.location.hostname + route + '/Ajax/RankProjectDelete.php', {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type': 'text/plain',

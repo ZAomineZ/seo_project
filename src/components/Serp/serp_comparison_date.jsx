@@ -7,7 +7,7 @@ import TopTenComparaison from './top_comparaison';
 import {CryptoTableProps} from '../../shared/prop-types/TablesProps';
 import {deleteCryptoTableData} from '../../redux/actions/cryptoTableActions';
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
@@ -91,7 +91,7 @@ class SerpComparisonDate extends PureComponent {
     componentDidMount() {
         if (sessionStorage.getItem('Auth')) {
             if (this.props.location.state !== undefined) {
-                axios.get('http://' + window.location.hostname + route + '/Ajax/SerpComparaisonDate.php', {
+                axios.get(requestUri + window.location.hostname + route + '/Ajax/SerpComparaisonDate.php', {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type': 'text/plain',

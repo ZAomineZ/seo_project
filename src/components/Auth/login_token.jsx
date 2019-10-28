@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, {PureComponent} from 'react';
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import {Redirect} from "react-router-dom";
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
@@ -36,7 +36,7 @@ export default class LoginToken extends PureComponent {
             NotificationSystem.newInstance({}, n => notification = n);
             setTimeout(() => showNotification('You are already connected, it is impossible to access this page !!!', 'danger'), 700);
         }
-        axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/login_token.php', {
+        axios.get(requestUri + window.location.hostname + route + '/Ajax/Auth/login_token.php', {
             params: {
                 'token': this.props.match.params.token
             },

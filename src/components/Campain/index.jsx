@@ -6,7 +6,7 @@ import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import Form from './campain_form';
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 
 let notification = null;
 
@@ -75,7 +75,7 @@ class Campain extends PureComponent {
                 setTimeout(() => showNotification('error', 'This Campain is not authorized', '👋 A Error is present !!!'), 700);
             }
         }
-        axios.get("http://" + window.location.hostname  + route + "/Ajax/Campain/CampainIndex.php", {
+        axios.get(requestUri + window.location.hostname  + route + "/Ajax/Campain/CampainIndex.php", {
             params: {
                 auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
                 cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
@@ -117,7 +117,7 @@ class Campain extends PureComponent {
 
     DeleteData (event, slug)
     {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainDelete.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/Campain/CampainDelete.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',

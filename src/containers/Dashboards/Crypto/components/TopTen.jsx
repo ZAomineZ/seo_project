@@ -15,6 +15,7 @@ import MatTableHead from '../../../Tables/MaterialTable/components/MatTableHead'
 import MatTableToolbar from '../../../Tables/MaterialTable/components/MatTableToolbar';
 import MinimalCollapse from '../../../UI/Collapse/components/MinimalCollapse';
 import axios from 'axios';
+import {requestUri, route} from "../../../../const";
 
 function getSorting(order, orderBy) {
     return order === 'desc' ? (a, b) => b[orderBy] - a[orderBy] : (a, b) => a[orderBy] - b[orderBy];
@@ -289,8 +290,7 @@ export default class TopTen extends PureComponent {
 
     TrustScoreRank = (event, domain, id) => {
         event.preventDefault();
-        let route = "/ReactProject/App";
-        axios.get('http://' + window.location.hostname + route + '/Ajax/SerpTrustScore.php', {
+        axios.get(requestUri + window.location.hostname + route + '/Ajax/SerpTrustScore.php', {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',

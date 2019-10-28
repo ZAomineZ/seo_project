@@ -4,7 +4,7 @@ import {Container, Col, Row} from "reactstrap";
 import KeywordPanel from './keywordPanel'
 import KeywordStatsChart from './KeywordStatsChart'
 import axios from "axios";
-import {route} from "../../const";
+import {route, requestUri} from "../../const";
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import {Redirect} from "react-router-dom";
@@ -130,86 +130,90 @@ export default class showCorrelation extends PureComponent {
     }
 
     componentDidMount() {
-        let keyword = this.props.match.params.keyword;
-        if (keyword && keyword !== '') {
-            axios.get('http://' + window.location.hostname + route + '/Ajax/Correlation/CorrelationData.php', {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Content-Type': 'text/plain',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                    'Access-Control-Allow-Credentials': true,
-                    'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                    'Access-Control-Max-Age': 1728000,
-                    'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-                },
-                params: {
-                    keyword: keyword,
-                    cookie: this.getCookie('remember_me_auth') ?
-                        this.getCookie('remember_me_auth') :
-                        this.getCookie('auth_today'),
-                    auth: sessionStorage.getItem('Auth') ?
-                        sessionStorage.getItem('Auth')
-                        : ''
-                }
-            }).then((response) => {
-                if (response && response.status === 200) {
-                    if (response.data.error) {
-                        if (response.data.error === 'Invalid Token') {
-                            this.CookieReset(response.data.token, response.data.id);
-                        } else {
-                            this.setState({redirectIndex: !this.state.redirectIndex});
-                            NotificationSystem.newInstance({}, n => notification = n);
-                            setTimeout(() => showNotification('👋 Warning !!!', response.data.error), 700);
-                        }
-                    } else {
-                        let dataAverage = response.data.dataTopAverage;
-                        let dataWebsite = response.data.dataWebsiteStats;
-                        this.setState({
-                            ipStatsTop3: dataAverage.referring_ip.top3.average,
-                            rankScoreStatsTop3: dataAverage.score_rank.top3.average,
-                            trustScoreStatsTop3: dataAverage.trust_rank.top3.average,
-                            ratioStatsTop3: dataAverage.ratio.top3.average,
-                            trafficStatsTop3: dataAverage.traffic.top3.average,
-                            httpsStatsTop3: dataAverage.https.top3.average,
-                            titleStatsTop3: dataAverage.title.top3.average,
-
-                            ipStatsTop5: dataAverage.referring_ip.top5.average,
-                            rankScoreStatsTop5: dataAverage.score_rank.top5.average,
-                            trustScoreStatsTop5: dataAverage.trust_rank.top5.average,
-                            ratioStatsTop5: dataAverage.ratio.top5.average,
-                            trafficStatsTop5: dataAverage.traffic.top5.average,
-                            httpsStatsTop5: dataAverage.https.top5.average,
-                            titleStatsTop5: dataAverage.title.top5.average,
-
-                            ipStatsTop10: dataAverage.referring_ip.top10.average,
-                            rankScoreStatsTop10: dataAverage.score_rank.top10.average,
-                            trustScoreStatsTop10: dataAverage.trust_rank.top10.average,
-                            ratioStatsTop10: dataAverage.ratio.top10.average,
-                            trafficStatsTop10: dataAverage.traffic.top10.average,
-                            httpsStatsTop10: dataAverage.https.top10.average,
-                            titleStatsTop10: dataAverage.title.top10.average,
-
-                            maxStatsIp: dataAverage.referring_ip.maxValue,
-                            maxStatsRankScore: dataAverage.score_rank.maxValue,
-                            maxStatsTrustScore: dataAverage.trust_rank.maxValue,
-                            maxStatsRatio: dataAverage.ratio.maxValue,
-                            maxStatsTraffic: dataAverage.traffic.maxValue
-                        });
-                        this.setState({
-                            dataIpStats: Object.values(dataWebsite.referring_ip),
-                            dataRankScoreStats: Object.values(dataWebsite.score_rank),
-                            dataTrustScoreStats: Object.values(dataWebsite.trust_rank),
-                            dataRatioStats: Object.values(dataWebsite.ratio),
-                            dataTrafficStats: Object.values(dataWebsite.traffic),
-                            dataHttpsStats: Object.values(dataWebsite.https),
-                            dataTitleStats: Object.values(dataWebsite.title)
-                        });
-                        this.setState({ loading: !this.state.loading });
-                        setTimeout(() => this.setState({ loaded: true }), 500);
+        if (sessionStorage.getItem('Auth')) {
+            let keyword = this.props.match.params.keyword;
+            if (keyword && keyword !== '') {
+                axios.get(requestUri + window.location.hostname + route + '/Ajax/Correlation/CorrelationData.php', {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'text/plain',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                        'Access-Control-Max-Age': 1728000,
+                        'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+                    },
+                    params: {
+                        keyword: keyword,
+                        cookie: this.getCookie('remember_me_auth') ?
+                            this.getCookie('remember_me_auth') :
+                            this.getCookie('auth_today'),
+                        auth: sessionStorage.getItem('Auth') ?
+                            sessionStorage.getItem('Auth')
+                            : ''
                     }
-                }
-            })
+                }).then((response) => {
+                    if (response && response.status === 200) {
+                        if (response.data.error) {
+                            if (response.data.error === 'Invalid Token') {
+                                this.CookieReset(response.data.token, response.data.id);
+                            } else {
+                                this.setState({redirectIndex: !this.state.redirectIndex});
+                                NotificationSystem.newInstance({}, n => notification = n);
+                                setTimeout(() => showNotification('👋 Warning !!!', response.data.error), 700);
+                            }
+                        } else {
+                            let dataAverage = response.data.dataTopAverage;
+                            let dataWebsite = response.data.dataWebsiteStats;
+                            this.setState({
+                                ipStatsTop3: dataAverage.referring_ip.top3.average,
+                                rankScoreStatsTop3: dataAverage.score_rank.top3.average,
+                                trustScoreStatsTop3: dataAverage.trust_rank.top3.average,
+                                ratioStatsTop3: dataAverage.ratio.top3.average,
+                                trafficStatsTop3: dataAverage.traffic.top3.average,
+                                httpsStatsTop3: dataAverage.https.top3.average,
+                                titleStatsTop3: dataAverage.title.top3.average,
+
+                                ipStatsTop5: dataAverage.referring_ip.top5.average,
+                                rankScoreStatsTop5: dataAverage.score_rank.top5.average,
+                                trustScoreStatsTop5: dataAverage.trust_rank.top5.average,
+                                ratioStatsTop5: dataAverage.ratio.top5.average,
+                                trafficStatsTop5: dataAverage.traffic.top5.average,
+                                httpsStatsTop5: dataAverage.https.top5.average,
+                                titleStatsTop5: dataAverage.title.top5.average,
+
+                                ipStatsTop10: dataAverage.referring_ip.top10.average,
+                                rankScoreStatsTop10: dataAverage.score_rank.top10.average,
+                                trustScoreStatsTop10: dataAverage.trust_rank.top10.average,
+                                ratioStatsTop10: dataAverage.ratio.top10.average,
+                                trafficStatsTop10: dataAverage.traffic.top10.average,
+                                httpsStatsTop10: dataAverage.https.top10.average,
+                                titleStatsTop10: dataAverage.title.top10.average,
+
+                                maxStatsIp: dataAverage.referring_ip.maxValue,
+                                maxStatsRankScore: dataAverage.score_rank.maxValue,
+                                maxStatsTrustScore: dataAverage.trust_rank.maxValue,
+                                maxStatsRatio: dataAverage.ratio.maxValue,
+                                maxStatsTraffic: dataAverage.traffic.maxValue
+                            });
+                            this.setState({
+                                dataIpStats: Object.values(dataWebsite.referring_ip),
+                                dataRankScoreStats: Object.values(dataWebsite.score_rank),
+                                dataTrustScoreStats: Object.values(dataWebsite.trust_rank),
+                                dataRatioStats: Object.values(dataWebsite.ratio),
+                                dataTrafficStats: Object.values(dataWebsite.traffic),
+                                dataHttpsStats: Object.values(dataWebsite.https),
+                                dataTitleStats: Object.values(dataWebsite.title)
+                            });
+                            this.setState({ loading: !this.state.loading });
+                            setTimeout(() => this.setState({ loaded: true }), 500);
+                        }
+                    }
+                })
+            }
+        } else {
+            this.setState({redirectSerp: !this.state.redirectSerp});
         }
     }
 

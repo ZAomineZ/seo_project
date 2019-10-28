@@ -9,7 +9,7 @@ import validate from '../../containers/Form/FormValidation/components/validate';
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 
 const renderField = ({
   input, placeholder, type, meta: { touched, error },
@@ -119,7 +119,7 @@ class FormAnalyse extends PureComponent {
 
     VerifError (domain)
     {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',

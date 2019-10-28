@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {Button, Card, CardBody, Col, ButtonToolbar, Modal} from "reactstrap";
 import StatsRankChart from "./StatsRankChart";
 import axios from "axios";
-import {route} from "../../const";
+import {route, requestUri} from "../../const";
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import ModalRankDelete from "./ModalRankDelete";
@@ -156,7 +156,7 @@ export default class RankFront extends PureComponent {
     toggleClick(e, id, modalType = '') {
         e.preventDefault();
         if (id !== '' && modalType !== 'deleteModal') {
-            axios.get('http://' + window.location.hostname + route + '/Ajax/RankProjectId.php', {
+            axios.get(requestUri + window.location.hostname + route + '/Ajax/RankProjectId.php', {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type': 'text/plain',
@@ -208,8 +208,8 @@ export default class RankFront extends PureComponent {
         if (this.state.website !== '' && this.state.project !== '' && this.state.description !== '' && urlRegex.test(this.state.website)) {
             if (this.state.description.length > 10) {
                 this.setState({modal: !this.state.modal});
-                setTimeout(() => this.setState({loaded: false}), 500);
-                axios.get('http://' + window.location.hostname + route + '/Ajax/RankProjectUpdate.php', {
+                this.setState({loaded: !this.state.loaded});
+                axios.get(requestUri + window.location.hostname + route + '/Ajax/RankProjectUpdate.php', {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type': 'text/plain',
@@ -240,7 +240,6 @@ export default class RankFront extends PureComponent {
                                 this.CookieReset(response.data.token, response.data.id)
                             } else {
                                 this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
-                                this.setState({loading: false});
                                 setTimeout(() => this.setState({loaded: true}), 500);
                             }
                         } else {
@@ -285,12 +284,10 @@ export default class RankFront extends PureComponent {
             <Col md={12} lg={12} xl={12}>
                 <Card>
                     {!this.state.loaded &&
-                    <div className={`load${this.state.loading ? '' : ' loaded'}`}>
-                        <div className="load__icon-wrap">
-                            <svg className="load__icon">
-                                <path fill="#4ce1b6" d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/>
-                            </svg>
-                        </div>
+                    <div className="panel__refresh">
+                        <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
+                        </svg>
                     </div>
                     }
                     <CardBody>

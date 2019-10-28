@@ -10,7 +10,7 @@ import TopTen from '../../containers/Dashboards/Crypto/components/TopTen';
 import DatePickers from '../../containers/Form/FormPicker/components/DatePickers';
 import SimpleLineChart from '../../containers/Charts/Recharts/components/SimpleLineChart';
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
@@ -119,7 +119,7 @@ class CryptoDashboard extends PureComponent {
         } else if (this.props.location.state === undefined) {
             this.setState({ redirectSerp : !this.state.redirectSerp})
         } else {
-            axios.get('http://' + window.location.hostname + route + '/Ajax/Serp.php', {
+            axios.get(requestUri + window.location.hostname + route + '/Ajax/Serp.php', {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type': 'text/plain',

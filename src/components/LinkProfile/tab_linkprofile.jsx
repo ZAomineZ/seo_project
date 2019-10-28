@@ -10,7 +10,7 @@ import ModalReferring from './modal_referring';
 import ModalReferringInfo from './modal_referring-info';
 import PropTypes from "prop-types";
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import {Redirect} from "react-router-dom";
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
@@ -121,7 +121,7 @@ class tab_linkprofile extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get('http://' + window.location.hostname + route + '/Ajax/linkprofile_mount.php', {
+        axios.get(requestUri + window.location.hostname + route + '/Ajax/linkprofile_mount.php', {
             params: {
                 domain: this.PropsChange(this.props.domain),
                 cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),

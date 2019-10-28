@@ -5,7 +5,7 @@ import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
-import {route} from '../../../const'
+import {route, requestUri} from '../../../const'
 
 let notification = null;
 
@@ -65,7 +65,7 @@ class LogIn extends PureComponent {
                 let split_string = this.getCookie('remember_me_auth').split('__');
                 let id = split_string[1];
                 if (id !== '') {
-                    axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
+                    axios.get(requestUri + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                         params: {
                             'id': id,
                             'cookie': this.getCookie('remember_me_auth')
@@ -107,7 +107,7 @@ class LogIn extends PureComponent {
                     let split_string = this.getCookie('auth_today').split('__');
                     let id = split_string[1];
                     if (id !== '') {
-                        axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
+                        axios.get(requestUri + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                             params: {
                                 'id': id,
                                 'cookie': this.getCookie('auth_today')

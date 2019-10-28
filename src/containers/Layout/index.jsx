@@ -16,7 +16,7 @@ import {changeBorderRadius, toggleBoxShadow, toggleTopNavigation} from '../../re
 import {CustomizerProps, SidebarProps, ThemeProps} from '../../shared/prop-types/ReducerProps';
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import axios from "axios";
 
 
@@ -85,7 +85,7 @@ class Layout extends Component {
                 let split_string = this.getCookie('remember_me_auth').split('__');
                 let id = split_string[1];
                 if (id !== '') {
-                    axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
+                    axios.get(requestUri + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                         params: {
                             'id': id,
                             'cookie': this.getCookie('remember_me_auth')
@@ -126,7 +126,7 @@ class Layout extends Component {
                     let split_string = this.getCookie('auth_today').split('__');
                     let id = split_string[1];
                     if (id !== '') {
-                        axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
+                        axios.get(requestUri + window.location.hostname + route + '/Ajax/Auth/ReconnectCookie.php', {
                             params: {
                                 'id': id,
                                 'cookie': this.getCookie('auth_today')

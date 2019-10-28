@@ -8,7 +8,7 @@ import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import MailRuIcon from 'mdi-react/MailRuIcon';
 import PropTypes from 'prop-types';
 import axios from "axios";
-import {route} from '../../../../const'
+import {route, requestUri} from '../../../../const'
 import {BasicNotification} from "../../../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import {Redirect} from "react-router-dom";
@@ -91,7 +91,7 @@ class RegisterForm extends PureComponent {
         event.preventDefault();
         if (this.state.valueUsername !== '' && this.state.valueEmail !== '' && this.state.valuePassword !== '' && this.state.valueGender !== '') {
             if (this.state.valueUsername.length >= 5 && this.state.valuePassword.length >= 5 && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.valueEmail)) {
-                axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/register.php', {
+                axios.get(requestUri + window.location.hostname + route + '/Ajax/Auth/register.php', {
                     params: {
                         'username': this.state.valueUsername,
                         'email': this.state.valueEmail,

@@ -7,7 +7,7 @@ import {BasicNotification} from "../../shared/components/Notification";
 import MailRuIcon from "mdi-react/MailRuIcon";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import NotificationSystem from "rc-notification";
 
 
@@ -80,7 +80,7 @@ class PasswordFagotForm extends PureComponent {
     {
         e.preventDefault();
         if (this.state.valueEmail !== '' && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.valueEmail)) {
-            axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/password_forgot.php', {
+            axios.get(requestUri + window.location.hostname + route + '/Ajax/Auth/password_forgot.php', {
                 params: {
                     'email': this.state.valueEmail,
                 },

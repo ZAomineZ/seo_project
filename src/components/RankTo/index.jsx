@@ -4,18 +4,18 @@ import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import BodyFormRank from "./BodyFormRank";
 import axios from "axios";
-import {route} from "../../const";
+import {route, requestUri} from "../../const";
 import RankTop from "./RankTop";
 import {Redirect} from "react-router-dom";
 
 let notification = null;
 
-const showNotification = () => {
+const showNotification = (message) => {
     notification.notice({
         content: <BasicNotification
             color="danger"
             title="👋 A Error is present !!!"
-            message="This Url is invalid !!!"
+            message={message}
         />,
         duration: 5,
         closable: true,
@@ -89,7 +89,7 @@ export default class RankToIndex extends PureComponent {
     }
 
     RequestAjax() {
-        axios.get('http://' + window.location.hostname + route + '/Ajax/RankProject.php', {
+        axios.get(requestUri + window.location.hostname + route + '/Ajax/RankProject.php', {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',
@@ -128,10 +128,14 @@ export default class RankToIndex extends PureComponent {
         if (this.props.location) {
             if (this.props.location.state !== undefined) {
                 NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification(), 700);
+                setTimeout(() => showNotification('This Url is invalid !!!'), 700);
             }
         }
-        this.RequestAjax();
+        if (sessionStorage.getItem('Auth')) {
+            this.RequestAjax();
+        } else {
+            this.setState({redirectSerp: !this.state.redirectSerp});
+        }
     }
 
     componentWillUnmount() {

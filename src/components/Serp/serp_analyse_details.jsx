@@ -11,7 +11,7 @@ import TabsData from '../tabs/tabs_data';
 import TopBacklinks from "./top_backlinks";
 import Occupancy from '../../containers/Dashboards/Booking/components/Occupancy';
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import TradeHistory from "../../containers/Dashboards/Crypto/components/TradeHistory";
 import Bar from "../../containers/Charts/ReactVis/components/Bar";
 import {Redirect} from "react-router-dom";
@@ -109,7 +109,7 @@ class SerpAnalyseDetails extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/WebSite.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/WebSite.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',

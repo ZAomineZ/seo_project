@@ -8,7 +8,7 @@ import {Redirect} from 'react-router-dom';
 import validate from '../../containers/Form/FormValidation/components/validate';
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import axios from "axios";
 
 
@@ -147,7 +147,7 @@ class CampainForm extends PureComponent {
 
     AjaxSpace (split)
     {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',
@@ -211,7 +211,7 @@ class CampainForm extends PureComponent {
 
     AjaxNoSpace (value)
     {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/ErrorSearch.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',

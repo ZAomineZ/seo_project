@@ -5,7 +5,7 @@ import ModalCampainAddLink from '../Campain/ModalCampainAddLink';
 import ModalAddBacklink from '../Campain/ModalAddBacklink';
 import {Button, ButtonToolbar, Popover, PopoverHeader} from 'reactstrap';
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import {Redirect} from "react-router-dom";
@@ -86,7 +86,7 @@ class CampainDetails extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/DataCampain.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/Campain/DataCampain.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',
@@ -124,7 +124,7 @@ class CampainDetails extends PureComponent {
     }
 
     handleClickReceived(event, id, type) {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateData.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/Campain/UpdateData.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',
@@ -179,7 +179,7 @@ class CampainDetails extends PureComponent {
         let urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
         if (this.state.value !== '' && urlRegex.test(this.state.value)) {
             this.setState({loading: !this.state.loading});
-            axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/UpdateDataBl.php", {
+            axios.get(requestUri + window.location.hostname + route + "/Ajax/Campain/UpdateDataBl.php", {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type': 'text/plain',
@@ -242,7 +242,7 @@ class CampainDetails extends PureComponent {
     handleSubmitLink(event) {
         event.preventDefault();
         if (this.state.website !== '' && this.state.platform !== '' && this.state.cost !== '') {
-            axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainDetails.php", {
+            axios.get(requestUri + window.location.hostname + route + "/Ajax/Campain/CampainDetails.php", {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type': 'text/plain',
@@ -285,7 +285,7 @@ class CampainDetails extends PureComponent {
     }
 
     onDeleteBackLink(event, id) {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/CampainItemDelete.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/Campain/CampainItemDelete.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',

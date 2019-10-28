@@ -76,17 +76,24 @@ class RankModel
     public function KeywordsNotEmpty(string $project, string $website, string $content, string $keywords, $auth, $id = null): array
     {
         $request = $this->rankTable->selectRank($id);
-        if (strpos($keywords, "\n")) {
+        if (strpos($keywords, "\n") !== false) {
             $keywords = Str_options::KeywordsInput($keywords, "\n");
             if ($request) {
                 RankModel::keywordExist($keywords, $request->keywords);
             }
-        } elseif (strpos($keywords, ",")) {
+        } elseif (strpos($keywords, ",") !== false) {
+            $keywords = Str_options::KeywordsInput($keywords, ",");
+            if ($request) {
+                RankModel::keywordExist($keywords, $request->keywords);
+            }
+        } elseif (strpos($keywords, ' ') !== false) {
             $keywords = Str_options::KeywordsInput($keywords, ",");
             if ($request) {
                 RankModel::keywordExist($keywords, $request->keywords);
             }
         }
+        // Limit Count Keywords by Project !!!
+        $this->limitKeywords($request ? $request->keywords : null);
         $this->RegexKeywords($keywords);
         $data = [
             'project' => $project,
@@ -104,7 +111,10 @@ class RankModel
         } else {
             $this->DataInsert($data, 'rank');
         }
-        return $this->SerpResultKeywords($keywords, $auth);
+        return [
+            'data' => $this->SerpResultKeywords($keywords, $auth),
+            'keywords' => $keywords
+        ];
     }
 
     /**
@@ -912,5 +922,20 @@ class RankModel
             }
         }
         return $dataVl;
+    }
+
+    /**
+     * @param string|null $keywords
+     */
+    private function limitKeywords(?string $keywords)
+    {
+        if (!is_null($keywords)) {
+            $arrayKeyword = explode(',', $keywords);
+            $countKey = count($arrayKeyword);
+            if ($countKey >= 150) {
+                echo \GuzzleHttp\json_encode(['error' => '150 keywords by project is authorized !!!']);
+                die();
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import TabMaterielTopDomains from './TabMaterielTopDomains';
 import axios from "axios";
-import {route} from '../../const'
+import {route, requestUri} from '../../const'
 import {Redirect} from "react-router-dom";
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
@@ -71,7 +71,7 @@ class DomainsKeyword extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeyword.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/TopKeyword.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'text/plain',
