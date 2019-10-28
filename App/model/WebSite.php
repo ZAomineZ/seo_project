@@ -344,12 +344,14 @@ class WebSite
     private function DataNowTraffic($data_traffic_now, array $data): array
     {
         $data_traffic = [];
-        foreach ($data_traffic_now as $dt) {
-            $data_traffic['years'] = date("Y",  strtotime($dt->Dt));
-            $data_traffic['date'] = date("F Y",  strtotime($dt->Dt));
-            $data_traffic['keyword'] = $dt->Oc;
-            $data_traffic['traffic'] = $dt->Ot;
-            $data[strtotime($dt->Dt)] = $data_traffic;
+        if (!empty($data_traffic_now)) {
+            foreach ($data_traffic_now as $dt) {
+                $data_traffic['years'] = date("Y",  strtotime($dt->Dt));
+                $data_traffic['date'] = date("F Y",  strtotime($dt->Dt));
+                $data_traffic['keyword'] = $dt->Oc;
+                $data_traffic['traffic'] = $dt->Ot;
+                $data[strtotime($dt->Dt)] = $data_traffic;
+            }
         }
         return $data;
     }

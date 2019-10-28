@@ -61,14 +61,14 @@ class RankController
             $data = $this->rankModel->KeywordsEmpty($project, $website, $content, $auth);
         }
 
-        if (strpos($data['keywords'], ',') !== false) {
+        if (isset($data['keywords']) && strpos($data['keywords'], ',') !== false) {
             $keywordsArray = explode(',', $data['keywords']);
         } else {
-            $keywordsArray[] = $data['keywords'];
+            $keywordsArray[] = $keywords;
         }
 
         $dataResult = $this->rankModel->FormatDataRank(
-            $data['data'],
+            isset($data['data']) ? $data['data'] : [],
             $website,
             $this->rankTable->selectRank($auth->id, true)->id,
             false,
@@ -127,7 +127,7 @@ class RankController
         if (isset($data['keywords']) && strpos($data['keywords'], ',') !== false) {
             $keywordsArray = explode(',', $data['keywords']);
         } else {
-            $keywordsArray[] = $data['keywords'];
+            $keywordsArray[] = $keywords;
         }
         $dataResult = $this->rankModel->FormatDataRank(
             isset($data['data']) ? $data['data'] : [],

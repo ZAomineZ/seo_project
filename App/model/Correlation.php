@@ -80,7 +80,7 @@ class Correlation
 
             // Create File String !!!
             $fileDayStats = $this->fileData($dir, 'dash-stats', $token);
-            $fileDayData = $this->fileData($dir, $domainArray['valueWebsite'] . '-' . date('Y-m-d'), $token);
+            $fileDayData = $this->fileData($dir, $domainArray['valueWebsite'] . '-' . date('Y-m-d', strtotime($requestToken->date)), $token);
             $fileTraffic = $this->fileData($dir, 'traffic', $token);
 
             if (!is_dir($dir)) {
@@ -105,6 +105,9 @@ class Correlation
                 $dateBool = $this->dateFileData($requestToken->date, date('Y-m-d'));
 
                 if ($dateBool === true) {
+                    // Edit Day File !!!
+                    $fileDayData = $this->explodeFileData($fileDayData, $domainArray['valueWebsite'], $token);
+
                     // Update The database for update the date !!!
                     $this->website->UpdateDate($domainArray['defaultValue']);
 
@@ -112,7 +115,15 @@ class Correlation
                     $this->fileCreateDataStats(
                         $fileDayData, $fileDayStats, $fileTraffic,
                         $dir, $domainArray['defaultValue'], $token, TRUE);
+                } else {
+                    if (!file_exists($fileDayStats) || !file_exists($fileDayData) || !file_exists($fileTraffic)) {
+                        // Create File Data !!!
+                        $this->fileCreateDataStats(
+                            $fileDayData, $fileDayStats, $fileTraffic,
+                            $dir, $domainArray['defaultValue'], $token);
+                    }
                 }
+
                 // Implement in the Array Data, the stats Data !!!
                 $dataResult[$domainArray['defaultValue']]['stats'] = File_Params::OpenFile($fileDayStats, $dir);
                 $dataResult[$domainArray['defaultValue']]['traffic'] = File_Params::OpenFile($fileTraffic, $dir);
@@ -628,5 +639,17 @@ class Correlation
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param string $fileDayData
+     * @param string $valueWebsite
+     * @param string $token
+     * @return string
+     */
+    private function explodeFileData(string $fileDayData, string $valueWebsite, string $token) : string
+    {
+        $fileCut = explode($valueWebsite, $fileDayData);
+        return $fileCut[0] . str_replace_last('/', '', $fileCut[1]) . $valueWebsite . '/' . $valueWebsite . '-' . date('Y-m-d') . '-' . $token . '.json';
     }
 }

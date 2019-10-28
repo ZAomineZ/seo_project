@@ -416,7 +416,7 @@ export default class RankFront extends PureComponent {
                                 !this.props.modal && !this.state.modal ?
                                 this.state.dataKeywords && this.state.dataKeywords.length !== 0 ?
                                     <StatsRankChart id={this.props.id}
-                                                    dataResultRank={this.state.dataKeywords}/> : dataR && dataR.length !== 0 ?
+                                                    dataResultRank={this.state.dataKeywords} /> : dataR && dataR.length !== 0 ?
                                     <StatsRankChart id={this.props.id}
                                                     dataResultRank={dataR}/> : '' : ''
                             }

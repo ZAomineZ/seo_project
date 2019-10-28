@@ -447,7 +447,9 @@ class WebSiteController
             'stats' => File_Params::OpenFile($file[4], $dir),
             'traffic_data' => self::$web->ForData(
                 File_Params::OpenFile($file[1], $dir)->data,
-                File_Params::OpenFile($file[1], $dir)->data_now
+                isset(File_Params::OpenFile($file[1], $dir)->data_now) ?
+                    File_Params::OpenFile($file[1], $dir)->data_now
+                    : []
             ),
             'anchors' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' :
                 self::$web->DataDefault(File_Params::OpenFile($file[0], $dir)

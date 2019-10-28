@@ -13,7 +13,7 @@ const Header = () => (
       <Row>
         <Col md={12}>
           <h2 className="landing__header-title">The free App for checking your SEO <br/>
-            <b> 6 Tools </b> created with <br /> <b>React + Laravel !</b>
+            <b> 8 Tools </b> created with <br /> <b>React + Laravel !</b>
           </h2>
           <p className="landing__header-subhead">We created this application to have free support to analyze a site quickly and easily.
           </p>

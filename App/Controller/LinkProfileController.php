@@ -125,6 +125,10 @@ class LinkProfileController extends \App\Http\Controllers\Controller
             if (!file_exists($file)) {
                 $req = $this->table->SelectPowerbyDomain($domain);
                 if ($req) {
+                    // File Token Exist !!!
+                    $majestic = $this->DomainMajectic($domain);
+                    $file = $majestic["dir"] . '/' . $majestic["domain_str"] . '-' . $req->token . '.png';
+
                     if (self::DateNoTime($req->date) === (string)date("Y-m-d")) {
                         return false;
                     } else {

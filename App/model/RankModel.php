@@ -174,54 +174,61 @@ class RankModel
         $dataDate = [];
         $dataRankEnd = [];
 
-        $i = 0;
-        foreach ($data as $key => $value) {
-            foreach ($value['rank'] as $k => $v) {
-                foreach ($v as $k_ => $v_) {
-                    $i++;
-                    if (strpos($v_, (string)$website) !== false) {
-                        $dataRank[$key][$k][$i]['rank'] = $k_ + 1;
-                        $dataRank[$key][$k][$i]['url'] = $v_;
-                        if (!is_null($keywords)) {
-                            $dataRank[$key][$k][$i]['keyword'] = $keywords[$key];
+        if (!empty($data)) {
+            $i = 0;
+            foreach ($data as $key => $value) {
+                foreach ($value['rank'] as $k => $v) {
+                    foreach ($v as $k_ => $v_) {
+                        $i++;
+                        if (strpos($v_, (string)$website) !== false) {
+                            $dataRank[$key][$k][$i]['rank'] = $k_ + 1;
+                            $dataRank[$key][$k][$i]['url'] = $v_;
+                            if (!is_null($keywords)) {
+                                $dataRank[$key][$k][$i]['keyword'] = $keywords[$key];
+                            }
+                            $dataDate[$key] = $value['date'];
                         }
-                        $dataDate[$key] = $value['date'];
                     }
                 }
-            }
-            foreach ($dataRank as $kk => $item) {
-                if (isset($dataRank[$key])) {
-                    foreach ($item as $kVal => $dVal) {
-                        foreach ($dVal as $kkKey => $vvValue) {
-                            $dataRankEnd[$kk][$kVal][$kkKey]['rank'] = $vvValue['rank'];
-                            $dataRankEnd[$kk][$kVal][$kkKey]['url'] = $vvValue['url'];
+                foreach ($dataRank as $kk => $item) {
+                    if (isset($dataRank[$key])) {
+                        foreach ($item as $kVal => $dVal) {
+                            foreach ($dVal as $kkKey => $vvValue) {
+                                $dataRankEnd[$kk][$kVal][$kkKey]['rank'] = $vvValue['rank'];
+                                $dataRankEnd[$kk][$kVal][$kkKey]['url'] = $vvValue['url'];
+                                if (!is_null($keywords)) {
+                                    $dataRankEnd[$kk][$kVal][$kkKey]['keyword'] = $vvValue['keyword'];
+                                }
+                            }
+                        }
+                    } else {
+                        $keyArray = $key;
+                        foreach ($data[$key]['rank'] as $keyy => $valuee) {
+                            $dataRankEnd[$keyArray][$keyy][0]['rank'] = 0;
+                            $dataRankEnd[$keyArray][$keyy][0]['url'] = 'Not Found';
                             if (!is_null($keywords)) {
-                                $dataRankEnd[$kk][$kVal][$kkKey]['keyword'] = $vvValue['keyword'];
+                                $dataRankEnd[$keyArray][$keyy][0]['keyword'] = $keywords[$keyArray];
                             }
                         }
                     }
-                } else {
-                    $keyArray = $key;
-                    foreach ($data[$key]['rank'] as $keyy => $valuee) {
-                        $dataRankEnd[$keyArray][$keyy][0]['rank'] = 0;
-                        $dataRankEnd[$keyArray][$keyy][0]['url'] = 'Not Found';
-                        if (!is_null($keywords)) {
-                            $dataRankEnd[$keyArray][$keyy][0]['keyword'] = $keywords[$keyArray];
-                        }
-                    }
                 }
             }
-        }
 
-        if ($dataRankReq !== false) {
-            return $dataRankEnd;
-        }
+            if ($dataRankReq !== false) {
+                return $dataRankEnd;
+            }
 
-        $dataResultMontly = $this->DataResultRkDate($dataRankEnd, $dataDate, 'd.m', $keywords);
-        $dataResultYears = $this->DataResultRkDate($dataRankEnd, $dataDate, 'M', $keywords);
+            $dataResultMontly = $this->DataResultRkDate($dataRankEnd, $dataDate, 'd.m', $keywords);
+            $dataResultYears = $this->DataResultRkDate($dataRankEnd, $dataDate, 'M', $keywords);
+            return [
+                'dataResultYearly' => $dataResultYears,
+                'dataResultMontly' => $dataResultMontly,
+                'id' => $option
+            ];
+        }
         return [
-            'dataResultYearly' => $dataResultYears,
-            'dataResultMontly' => $dataResultMontly,
+            'dataResultYearly' => [],
+            'dataResultMontly' => [],
             'id' => $option
         ];
     }
@@ -235,7 +242,7 @@ class RankModel
     {
         $dataResult = [];
         $keywordsArray = [];
-        foreach ($data as $dt) {
+        foreach ($data as $key => $dt) {
             if (!is_null($dt->keywords)) {
                 if (strpos($dt->keywords, ',') !== false) {
                     $keywordsArray = explode(',', $dt->keywords);
@@ -245,7 +252,9 @@ class RankModel
                 $dataResultKeywords = $this->SerpResultKeywords($dt->keywords, $auth);
                 $dataResult[] = $this->FormatDataRank($dataResultKeywords, $dt->website, $dt->id, false, $keywordsArray);
             } else {
-                $dataResult[] = [];
+                $dataResult[$key]['id'] = $dt->id;
+                $dataResult[$key]['dataResultYearly'] = [];
+                $dataResult[$key]['dataResultMontly'] = [];
             }
         }
         return $dataResult;
@@ -419,7 +428,7 @@ class RankModel
         foreach ($arrKywords as $key => $value) {
             $valueFirst = trim($value);
             $value = trim($value);
-            if (strpos($value, " ")) {
+            if (strpos($value, " ") !== false) {
                 $value = str_replace(" ", '-', $valueFirst);
             }
             if (is_null($auth)) {
@@ -778,7 +787,7 @@ class RankModel
                 }
             }
         } else {
-            $DataFileVolume = $this->serp->FileVolumeData($keywords);
+            $DataFileVolume = $this->serp->FileVolumeData(str_replace(' ', '-', $keywords));
             $volumeResult = Serp::VolumeData($DataFileVolume);
             foreach ($dataRank as $k => $d) {
                 foreach ($d as $kV => $dV) {
@@ -909,7 +918,7 @@ class RankModel
     {
         $dataVl = [];
         foreach ($keywords as $key => $item) {
-            if (strpos($item, " ")) {
+            if (strpos($item, " ") !== false) {
                 $item = str_replace(" ", '-', $item);
             }
             $DataFileVolume = $this->serp->FileVolumeData($item);
