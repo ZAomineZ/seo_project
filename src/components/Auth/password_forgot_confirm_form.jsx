@@ -8,7 +8,7 @@ import {BasicNotification} from "../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
 import NotificationSystem from "rc-notification";
-
+import {route, requestUri} from "../../const";
 
 let notification = null;
 
@@ -75,8 +75,7 @@ class PasswordFagotForm extends PureComponent {
         e.preventDefault();
         if (this.state.valuePassword !== '' && this.state.valuePasswordConfirm !== '' && this.state.valuePassword.length >= 5 && this.state.valuePasswordConfirm.length >= 5) {
             if (this.state.valuePassword === this.state.valuePasswordConfirm) {
-                let route = '/ReactProject/App';
-                axios.get('http://' + window.location.hostname + route + '/Ajax/Auth/password_forgot_confirm.php', {
+                axios.get(requestUri + window.location.hostname + route + '/Ajax/Auth/password_forgot_confirm.php', {
                     params: {
                         'token': this.props.token,
                         'password': this.state.valuePassword,

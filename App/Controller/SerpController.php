@@ -115,13 +115,14 @@ class SerpController extends Controller
 
     /**
      * @param string $domain
+     * @param string $dir
      * @param null $option
      * @return string|null
      * @throws \Exception
      */
-    protected function JsonWebsite (string $domain, $option = null) : ?string
+    protected function JsonWebsite (string $domain, string $dir, $option = null) : ?string
     {
-        return $this->webSiteController->getJsonWebSite($domain, $option);
+        return $this->webSiteController->getJsonWebSite($domain, $dir, $option);
     }
 
     /**
@@ -151,7 +152,7 @@ class SerpController extends Controller
             } else {
                 $filter = $this->web->FilterRank($domain);
                 $json = $this->web->JsonReturn($filter);
-                File_Params::CreateParamsFile($this->FILETrust($domain, $req), $this->DIRTrust($domain, $req), $this->JsonWebsite($domain, $json), TRUE);
+                File_Params::CreateParamsFile($this->FILETrust($domain, $req), $this->DIRTrust($domain, $req), $this->JsonWebsite($domain, $this->DIRTrust($domain, $req), $json), TRUE);
                 File_Params::UpdateFile($this->FILEDashStat($domain, $req), $this->DIRTrust($domain, $req), $this->JsonReferringWeb($domain, false, $this->FILETrust($domain, $req), $this->DIRTrust($domain, $req)));
                 return File_Params::OpenFile($this->FILETrust($domain, $req), $this->DIRTrust($domain, $req));
             }
@@ -162,7 +163,7 @@ class SerpController extends Controller
                 $request = $this->serp->ReqDataDomain($domain, File_Params::TokenImgExplode($file));
                 $filter = $this->web->FilterRank($domain);
                 $json = $this->web->JsonReturn($filter);
-                File_Params::CreateParamsFile($this->FILETrust($domain, $req, $request->token), $this->DIRTrust($domain, $req), $this->JsonWebsite($domain, $json), TRUE);
+                File_Params::CreateParamsFile($this->FILETrust($domain, $req, $request->token), $this->DIRTrust($domain, $req), $this->JsonWebsite($domain, $this->DIRTrust($domain, $req), $json), TRUE);
                 File_Params::CreateParamsFile($this->FileDashStat($domain, $req, $request->token), $this->DIRTrust($domain, $req), $this->JsonReferringWeb($domain, TRUE, $this->FILETrust($domain, $req, $request->token), $this->DIRTrust($domain, $req)), TRUE);
                 return File_Params::OpenFile($this->FILETrust($domain, $request), $this->DIRTrust($domain, $request));
             }

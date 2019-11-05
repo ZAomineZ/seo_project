@@ -9,6 +9,7 @@ import validate from '../../containers/Form/FormValidation/components/validate';
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
 import axios from "axios";
+import {requestUri, route} from '../../const'
 
 const renderField = ({
                          input, placeholder, type, meta: { touched, error },
@@ -106,8 +107,7 @@ class CampainForm extends PureComponent {
             if (this.state.valueInput.indexOf('/') === -1 && this.state.valueInput.indexOf('.') === -1) {
                 if (/^[a-zA-Z0-9\u00C0-\u024F\u1E00-\u1EFF' ]*$/i.test(this.state.valueInput)) {
                     const value = this.state.valueInput;
-                    let route = "/ReactProject/App";
-                    axios.get("http://" + window.location.hostname + route + "/Ajax/Campain/Campain.php", {
+                    axios.get(requestUri + window.location.hostname + route + "/Ajax/Campain/Campain.php", {
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest',
                             'Content-Type': 'text/plain',

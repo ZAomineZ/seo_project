@@ -231,10 +231,14 @@ class CampainForm extends PureComponent {
                 if (response.data.error && response.data.error === 'Invalid Token')  {
                     this.CookieReset(response.data.token, response.data.id)
                 } else if (response.data.error && response.data.error === 'Invalid Value') {
-                    this.setState({ redirectSerp : !this.state.redirectSerp})
+                    this.setState({ redirectSerp : !this.state.redirectSerp});
                     NotificationSystem.newInstance({}, n => notification = n);
                     setTimeout(() => showNotification('Error Message', response.data.error), 700);
-                }  else {
+                } else if (response.data.error && response.data.error === 'Validation Error : target') {
+                    this.setState({ redirectSerp : !this.state.redirectSerp});
+                    NotificationSystem.newInstance({}, n => notification = n);
+                    setTimeout(() => showNotification('Error Message', response.data.error), 700);
+                } else {
                     if (response.data.error && response.data.error !== 'Invalid Value' && response.data.error === 'Invalid Token' && response.data.error === 'An Url is invalid or not exist !!!') {
                         NotificationSystem.newInstance({}, n => notification = n);
                         setTimeout(() => showNotification(response.data.error), 700);

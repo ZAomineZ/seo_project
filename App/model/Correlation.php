@@ -57,7 +57,8 @@ class Correlation
         $keyDataFirstSerp = array_keys($dataSerp)[count($dataSerp) - 1];
         $dataResult = [];
 
-        foreach (array_slice($dataSerp[$keyDataFirstSerp], 0, 10) as $key => $item) {
+        foreach (array_slice($dataSerp[$keyDataFirstSerp], 0, 10) as $key => $item)
+        {
             // Create Directory String !!!
             $domainArray = Str_options::TransformUrlToDomain($item);
 
@@ -65,9 +66,6 @@ class Correlation
             $request = $this->website->SelectToken($domainArray['defaultValue']);
 
             if (!$request) {
-                // Wait ...
-                sleep(3);
-
                 // Insert New Website in the database with his token !!!
                 WebSiteController::ReqDataDomain($domainArray['defaultValue'], WebSiteModel::Token());
             }
@@ -213,7 +211,7 @@ class Correlation
             $traffic = $value['traffic'];
 
             $data[$key]['stats'] = $statsValue[count($statsValue) - 1];
-            $data[$key]['traffic'] = $traffic->data_now->{'0'}->Ot;
+            $data[$key]['traffic'] = isset($traffic->data_now->{'0'}) ? $traffic->data_now->{'0'}->Ot : 0;
 
             $keyword = str_replace('-', ' ', $value['keyword']);
 
@@ -271,7 +269,7 @@ class Correlation
      * @param array $dataFormatCorrelation
      * @return array
      */
-    public function dataTopByWebsite(array $dataFormatCorrelation) : array
+    public function dataTopByWebsite(array $dataFormatCorrelation): array
     {
         $dataResult = [];
 
@@ -647,7 +645,7 @@ class Correlation
      * @param string $token
      * @return string
      */
-    private function explodeFileData(string $fileDayData, string $valueWebsite, string $token) : string
+    private function explodeFileData(string $fileDayData, string $valueWebsite, string $token): string
     {
         $fileCut = explode($valueWebsite, $fileDayData);
         return $fileCut[0] . str_replace_last('/', '', $fileCut[1]) . $valueWebsite . '/' . $valueWebsite . '-' . date('Y-m-d') . '-' . $token . '.json';

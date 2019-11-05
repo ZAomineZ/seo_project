@@ -196,6 +196,8 @@ class TopKeywordController
                 $arrayHash = explode('"exportHash":', $filter['57']);
                 if (isset($arrayHash[1])) {
                     $exportHashHCut = $arrayHash[2];
+                } else {
+                    $exportHashHCut = '';
                 }
             }
         } else {

@@ -902,7 +902,7 @@ class RankModel
     {
         $value_ex = explode(',', $value);
         foreach ($value_ex as $item) {
-            if (empty($item) || !preg_match('#^[\p{L}\p{Nd}\s]+$#u', $item)) {
+            if (empty($item) || !preg_match('#^[\p{L}\p{Nd}\-\'\s]+$#u', $item)) {
                 echo \GuzzleHttp\json_encode(['error' => 'Invalid Value !!!']);
                 die ();
             }

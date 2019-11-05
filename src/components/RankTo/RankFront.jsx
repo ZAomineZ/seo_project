@@ -49,6 +49,7 @@ export default class RankFront extends PureComponent {
         this.state = {
             modal: false,
             dataKeywords: [],
+            id: '',
             project: '',
             website: '',
             description: '',
@@ -66,6 +67,21 @@ export default class RankFront extends PureComponent {
         this.handleChangeWebsite = this.handleChangeWebsite.bind(this);
         this.handleChangeKeywords = this.handleChangeKeywords.bind(this);
         this.ErrorRenderState = this.ErrorRenderState.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.dataRankKeywords) {
+            this.setState({
+                id: nextProps.id,
+                project: nextProps.project,
+                website: nextProps.website,
+                description: nextProps.content,
+                keywords: nextProps.keywords,
+                date: nextProps.date,
+                dataKeywords: nextProps.dataRankKeywords,
+                loading: false
+            });
+        }
     }
 
     ErrorRenderState() {
@@ -168,7 +184,7 @@ export default class RankFront extends PureComponent {
                     'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                 },
                 params: {
-                    id: this.props.id,
+                    id: this.state.id,
                     cookie: this.getCookie('remember_me_auth') ?
                         this.getCookie('remember_me_auth') :
                         this.getCookie('auth_today'),
@@ -221,7 +237,7 @@ export default class RankFront extends PureComponent {
                         'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                     },
                     params: {
-                        id: this.props.id,
+                        id: this.state.id,
                         website: this.state.website,
                         project: this.state.project,
                         content: this.state.description,
@@ -244,11 +260,12 @@ export default class RankFront extends PureComponent {
                             }
                         } else {
                             this.setState({
+                                id: response.data.result.id,
                                 project: response.data.result.project,
                                 website: response.data.result.website,
-                                description: response.data.result.description,
+                                description: response.data.result.content,
                                 keywords: response.data.result.keywords,
-                                date: response.data.result.date,
+                                date: response.data.result.created_at,
                                 dataKeywords: response.data[0],
                                 loading: false
                             });
@@ -268,7 +285,7 @@ export default class RankFront extends PureComponent {
     }
 
     render() {
-        const dataR = Object.values(this.props.dataRankKeywords);
+        const dataR = Object.values(this.state.dataKeywords);
         let moment = require('moment');
         let Slugify = require('slugifyjs').fromLocale('en');
 
@@ -387,27 +404,24 @@ export default class RankFront extends PureComponent {
                                                 <a href={"/seo/rankTo/" + Slugify.parse(this.state.project)}>
                                                     {this.state.project}
                                                 </a>
-                                            :
-                                                <a href={"/seo/rankTo/" + Slugify.parse(this.props.project)}>
-                                                    { this.props.project}
-                                                </a>
+                                            : ''
                                         }
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Website Url:</th>
-                                    <td>{this.state.website !== '' ? this.state.website : this.props.website}</td>
+                                    <td>{this.state.website !== '' ? this.state.website : ''}</td>
                                 </tr>
                                 <tr>
                                     <th>Due date:</th>
-                                    <td>{this.state.date ? moment(this.state.date).format('LLL') : moment(this.props.date).format('LLL')}</td>
+                                    <td>{this.state.date ? moment(this.state.date).format('LLL') : ''}</td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <p className="typography-message">{this.state.description !== '' ? this.state.description : this.props.content}</p>
+                            <p className="typography-message">{this.state.description !== '' ? this.state.description : ''}</p>
                             {
                                 !this.props.modal && !this.state.modal ?
-                                    this.state.dataRankKeywords === undefined ? '' :
+                                    this.state.dataKeywords === undefined ? '' :
                                     this.state.dataKeywords && this.state.dataKeywords.length !== 0 ?
                                         <hr/> : dataR && dataR.length !== 0 && dataR[0].length !== 0 && dataR[1].length !== 0 ?
                                         <hr/> : '' : ''
@@ -415,9 +429,9 @@ export default class RankFront extends PureComponent {
                             {
                                 !this.props.modal && !this.state.modal ?
                                 this.state.dataKeywords && this.state.dataKeywords.length !== 0 ?
-                                    <StatsRankChart id={this.props.id}
+                                    <StatsRankChart id={this.state.id}
                                                     dataResultRank={this.state.dataKeywords} /> : dataR && dataR.length !== 0 ?
-                                    <StatsRankChart id={this.props.id}
+                                    <StatsRankChart id={this.state.id}
                                                     dataResultRank={dataR}/> : '' : ''
                             }
                         </div>

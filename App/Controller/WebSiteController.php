@@ -210,7 +210,7 @@ class WebSiteController
             echo \GuzzleHttp\json_encode(['error' => 'A Error is present !!!']);
             die();
         }
-        return \GuzzleHttp\json_encode(['data' => $traffic->rank_history->data, 'data_now' => $traffic_now->rank->data]);
+        return \GuzzleHttp\json_encode(['data' => $traffic->rank_history->data, 'data_now' => !isset($traffic_now->rank) ? 0 : $traffic_now->rank->data]);
     }
 
     /**

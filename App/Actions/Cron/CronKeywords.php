@@ -34,10 +34,12 @@ class CronKeywords
         $this->rankModel = $rankModel;
     }
 
+    /**
+     * @return bool
+     */
     public function CronKeywords()
     {
         // Data Keywords Cron create file Serp by Keyword
-
         $keywords = $this->rank->selectAllKeywords();
         foreach ($keywords as $item) {
             $this->rankModel->SerpResultKeywords($item->keywords);
