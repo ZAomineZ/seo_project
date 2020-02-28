@@ -205,7 +205,6 @@ class LinkDomain extends \Illuminate\Database\Eloquent\Model
      * @param string $url
      * @param $power
      * @param $power_last
-     * @param string $domain
      * @param $date
      * @param $json
      * @return false|string

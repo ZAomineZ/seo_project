@@ -3,6 +3,8 @@ require '../../vendor/autoload.php';
 
 use App\Actions\Json_File;
 use App\Actions\Url\Curl_Keyword;
+use App\Actions\Url\Curl_Traffic;
+use App\Actions\Url\MultiCurl_UrlTrafficAndKeyword;
 use App\concern\Str_options;
 use App\Controller\TopKeywordController;
 use App\Model\PDO_Model;
@@ -21,7 +23,7 @@ if (isset($_GET['auth']) && $_GET['auth'] !== '') {
             if (isset($auth->id) && isset($auth->username) && isset($auth->email) && isset($_GET['cookie']) && $_GET['cookie'] !== '' && $auth->id !== '' && $auth->username !== '' && $auth->email !== '') {
                 $ajax->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
 
-                $curl = new Curl_Keyword();
+                $multicurl = new MultiCurl_UrlTrafficAndKeyword();
                 $crawl = new Crawler();
                 $str = new Str_options();
                 $client = new Client();
@@ -30,7 +32,7 @@ if (isset($_GET['auth']) && $_GET['auth'] !== '') {
                 $table = new Website($pdo);
                 $model = new TopKeyword($table, $ajax);
 
-                $keyword = new TopKeywordController($curl, $crawl, $str, $scrap, $model, $table, $ajax);
+                $keyword = new TopKeywordController($multicurl, $crawl, $str, $scrap, $model, $table, $ajax);
                 $keyword->CsvDownload($_GET['data']);
             } else {
                 echo 'Invalid Token !!!';

@@ -14,6 +14,8 @@ import {route, requestUri} from '../../const'
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
+import SerpTopCopyboard from "./serp_top_copyboard";
+import SerpVolumeCharts from "./serp_volume_charts";
 
 let notification = null;
 
@@ -49,8 +51,14 @@ class SerpDate extends PureComponent {
             date_format: [],
             dataVl: [],
             rank: [],
+            trends: [],
+            serpFeature: [],
+            volume: 0,
+
             loading: true,
             loaded: false,
+            loadedTrend: false,
+
             redirectError: false,
             auth: '',
             redirectSerp: false
@@ -102,6 +110,7 @@ class SerpDate extends PureComponent {
             if (typeof (this.props.location) == 'undefined') {
                 this.setState({ redirectSerp : !this.state.redirectSerp})
             }
+
             if (this.props.location.state !== undefined) {
                 // Load Notification !!!
                 NotificationSystem.newInstance({}, n => notification = n);
@@ -141,21 +150,99 @@ class SerpDate extends PureComponent {
                                 url: response.data.url,
                                 description: response.data.description,
                                 rank: response.data.rank,
+                                serpFeature: response.data.serpFeature ? Object.values(response.data.serpFeature) : [],
                                 date: response.data.date,
                                 date_format: response.data.date_format,
-                                dataVl: response.data.dataVolume.result,
+                                dataVl: response.data.dataVolume.volume,
                                 loading: false
                             });
                             setTimeout(() => this.setState({ loaded: true }), 500);
                         }
                     }
                 });
+
+                setTimeout(() => this.rankEmpty(), 1000);
+                setTimeout(() => this.volumeSerpResult(), 2000)
             } else {
                 this.setState({ redirectError: !this.state.redirectError })
             }
         } else {
             this.setState({ auth: 'noAuth' })
         }
+    }
+
+    rankEmpty() {
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        let rankEntries = Object.entries(this.state.rank);
+
+        const params = {
+            keyword: this.props.match.params.keyword,
+            value: this.props.location.state[0].value,
+            rank: rankEntries.filter(d => d[1].length === 0),
+            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
+        axios.get(requestUri + window.location.hostname + route + '/Ajax/SerpEmptyRank.php', {
+            headers: headers,
+            params: params
+        }).then(response => {
+            if (response.status && response.status === 200 && response.data.dataRank) {
+                const dataRank = response.data.dataRank;
+                const dateArray = response.data.dates;
+                const formatDatesArray = response.data.formatDates;
+
+                this.setState({
+                    rank: dataRank,
+                    date: dateArray,
+                    date_format: formatDatesArray
+                });
+            }
+        })
+    }
+
+    volumeSerpResult()
+    {
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            keyword: this.props.match.params.keyword,
+            value: this.props.location.state[0].value,
+            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
+        axios.get(requestUri + window.location.hostname + route + '/Ajax/SerpVolumeResult.php', {
+            headers: headers,
+            params: params
+        }).then(response => {
+            if (response.status && response.status === 200 && response.data.data) {
+                this.setState({
+                    trends: response.data.data.trends ? Object.values(response.data.data.trends) : [],
+                    volume: response.data.data.volume,
+                    loadedTrend: true
+                })
+            }
+        })
     }
 
     render() {
@@ -193,16 +280,22 @@ class SerpDate extends PureComponent {
                         </Col>
                     </Row>
                     <Row>
-                        <DatePickers top_10_url={this.state.url.slice(0, 10)}
-                                     top_20_url={this.state.url.slice(0, 20)}
-                                     top_30_url={this.state.url.slice(0, 30)}
-                                     top_50_url={this.state.url.slice(0, 50)}
-                                     top_100_url={this.state.url.slice(0, this.state.url.length)}
-                                     date_array={this.state.date_format}
+                        <DatePickers date_array={this.state.date_format}
                                      dt_array={this.state.date}
                                      type_btn={true}
                                      keyword={this.props.match.params.keyword}
                                      value={this.props.location.state[0].value}/>
+                        <SerpVolumeCharts trends={this.state.trends}
+                                          volume={this.state.volume}
+                                          loaded={this.state.loadedTrend}
+                                          debutDate={this.state.date[0] ? this.state.date[0] : new Date()}/>
+                    </Row>
+                    <Row>
+                        <SerpTopCopyboard top_10_url={this.state.url.slice(0, 10)}
+                                          top_20_url={this.state.url.slice(0, 20)}
+                                          top_30_url={this.state.url.slice(0, 30)}
+                                          top_50_url={this.state.url.slice(0, 50)}
+                                          top_100_url={this.state.url.slice(0, this.state.url.length)} />
                     </Row>
                     <Row>
                         {!this.state.loaded &&
@@ -230,6 +323,7 @@ class SerpDate extends PureComponent {
                                 cryptoTable={this.props.cryptoTable}
                                 onDeleteCryptoTableData={this.onDeleteCryptoTableData}
                                 array_description={this.state.description}
+                                array_serpFeature={this.state.serpFeature}
                                 array_url={this.state.url}
                                 array_date={this.state.date}
                                 array_rank={this.state.rank}

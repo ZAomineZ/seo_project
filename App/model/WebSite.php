@@ -10,6 +10,8 @@ namespace App\Model;
 
 use App\Actions\Json_File;
 use App\Actions\Url\Curl_Keyword;
+use App\Actions\Url\Curl_Traffic;
+use App\Actions\Url\MultiCurl_UrlTrafficAndKeyword;
 use App\concern\File_Params;
 use App\concern\Str_options;
 use App\Controller\TopKeywordController;
@@ -31,9 +33,9 @@ class WebSite
      */
     private $controller;
     /**
-     * @var Curl_Keyword
+     * @var MultiCurl_UrlTrafficAndKeyword
      */
-    private $curl_keyword;
+    private $curl;
     /**
      * @var Json_File
      */
@@ -43,14 +45,19 @@ class WebSite
      * WebSite constructor.
      * @param Client $crawl
      * @param TopKeywordController $controller
-     * @param Curl_Keyword $curl_keyword
+     * @param MultiCurl_UrlTrafficAndKeyword $curl
      * @param Json_File $bl
      */
-    public function __construct(Client $crawl, TopKeywordController $controller, Curl_Keyword $curl_keyword, Json_File $bl)
+    public function __construct(
+        Client $crawl,
+        TopKeywordController $controller,
+        MultiCurl_UrlTrafficAndKeyword $curl,
+        Json_File $bl
+    )
     {
         $this->crawl = $crawl;
         $this->controller = $controller;
-        $this->curl_keyword = $curl_keyword;
+        $this->curl = $curl;
         $this->json = $bl;
     }
 
@@ -60,7 +67,7 @@ class WebSite
      * @return bool|\DateInterval
      * @throws \Exception
      */
-    private function DateDiff (string $date_create, string $date_now)
+    private function DateDiff(string $date_create, string $date_now)
     {
         $date_create = new \DateTime($date_create);
         $date_now = new \DateTime($date_now);
@@ -72,24 +79,30 @@ class WebSite
      * @param string $domain
      * @return string
      */
-    protected function JsonTrafic (string $domain) : string
+    protected function JsonTrafic(string $domain): string
     {
-        $html = $this->controller->CrawlHtml($this->curl_keyword->Curl($domain));
-        $key = $html['api_key'];
-        $exportHash = $html['export_hash'];
-        $traffic = $this->json->ReqTrafficKeyword("https://www.semrush.com/dpa/api?database=fr&amp;export=json&key=$key&domain=$domain&display_hash=$exportHash&currency=usd&action=report&type=domain_rank_history&display_sort=dt_asc&_=1555332238625");
-        return \GuzzleHttp\json_encode(['data' => $traffic->rank_history->data]);
+        $curlKeyword = $this->curl->run($domain)['keyword'] ?: null;
+        $curlTraffic = $this->curl->run($domain)['traffic'] ?: null;
+
+        $keywordJson = \GuzzleHttp\json_decode($curlKeyword);
+        $trafficJson = \GuzzleHttp\json_decode($curlTraffic);
+
+        return \GuzzleHttp\json_encode(
+            [
+                'traffic' => empty($trafficJson) ? [] : $trafficJson,
+                'keywordAndTop' => empty($keywordJson) ? [] : $keywordJson
+            ]);
     }
 
     /**
      * @param string $domain
      * @return array
      */
-    public function FilterRank (string $domain) : array
+    public function FilterRank(string $domain): array
     {
         $crawl = $this->crawl->request("GET", self::URL . $domain);
         $find = $crawl->filter("body section.rank div.rank-global p.big.data")->each(function ($node) {
-          return $node->html();
+            return $node->html();
         });
         return $find;
     }
@@ -98,7 +111,7 @@ class WebSite
      * @param array $find
      * @return string|null
      */
-    public function FindRank (array $find) : ?string
+    public function FindRank(array $find): ?string
     {
         if (!empty($find)) {
             $explode = explode("\n", $find[0]);
@@ -113,7 +126,7 @@ class WebSite
      * @param string $file
      * @return string
      */
-    public static function FindDateFile (string $file) : string
+    public static function FindDateFile(string $file): string
     {
         $explode = explode('/', $file);
         $date_ex = explode('-', $explode[11]);
@@ -124,7 +137,7 @@ class WebSite
      * @param $data
      * @return string|null
      */
-    public function JsonReturn ($data) : ?string
+    public function JsonReturn($data): ?string
     {
         return $this->FindRank($data);
     }
@@ -134,7 +147,7 @@ class WebSite
      * @throws \Exception
      * Create a token !!!
      */
-    public static function Token () : string
+    public static function Token(): string
     {
         return bin2hex(random_bytes(16));
     }
@@ -144,13 +157,13 @@ class WebSite
      * @param $key
      * @return array
      */
-    public function unique_multidim_array($array, $key) : array
+    public function unique_multidim_array($array, $key): array
     {
         $temp_array = [];
         $i = 0;
         $key_array = [];
 
-        foreach($array as $val) {
+        foreach ($array as $val) {
             if (!in_array($val->$key, $key_array)) {
                 $key_array[$i] = $val->$key;
                 $temp_array[$i] = $val;
@@ -165,7 +178,7 @@ class WebSite
      * @param $type = ''
      * @return array
      */
-    public function DataDefault ($data, $type = '') : array
+    public function DataDefault($data, $type = ''): array
     {
         $data_end = [];
         foreach ($data as $key => $item) {
@@ -180,40 +193,39 @@ class WebSite
 
     /**
      * @param $data_traffic
-     * @param $data_traffic_now
      * @return array
      */
-    public function ForData ($data_traffic, $data_traffic_now) : array
+    public function ForData($data_traffic): array
     {
-        $data_end = [];
-        $data_end_asort = [];
-        $data = [];
-        $data_asort = [];
-        foreach ($data_traffic as $key => $dt) {
-            $data['years'] = date("Y",  strtotime($dt->Dt));
-            $data['date'] = date("F Y",  strtotime($dt->Dt));
-            $data['keyword'] = $dt->Oc;
-            $data['traffic'] = $dt->Ot;
-            $data_end[strtotime($dt->Dt)] = $data;
-        }
-        // Data Traffic Now : We Create an array similar !!!
-        $dataWithNowTraffic =  $this->DataNowTraffic($data_traffic_now, $data_end);
-        // Change order Array by Years !!!
-        usort($dataWithNowTraffic, function($v1, $v2) {
-            $date_1 = strtotime($v1['date']);
-            $date_2 = strtotime($v2['date']);
-            return $date_1 - $date_2;
-        });
+        // Traffic And Keyword Top
+        $trafficDt = $data_traffic->traffic->aData[0]->data ?? null;
+        $keywordDt = $data_traffic->keywordAndTop->aData[0]->data ?? null;
 
-        // We continued and use foreach for create a new array !!!
-        foreach ($dataWithNowTraffic as $data_e) {
-            $data_asort['years'] = $data_e['years'];
-            $data_asort['date'] = $data_e['date'];
-            $data_asort['keyword'] = $data_e['keyword'];
-            $data_asort['traffic'] = $data_e['traffic'];
-            $data_end_asort[] = $data_asort;
+        if (is_null($keywordDt)) {
+            $keywordDt = end($data_traffic->keywordAndTop)->data ?: null;
         }
-        return $data_end_asort;
+
+        if (is_null($trafficDt) && is_null($keywordDt)) {
+            return [];
+        } elseif (empty($trafficDt) && is_int($keywordDt)) {
+            return [];
+        }
+
+        $data_end = [];
+
+        $dataTraffic = $this->dataTrafficOrKeyword($trafficDt);
+        $dataKeyword = $this->dataTrafficOrKeyword($keywordDt);
+
+        foreach ($dataTraffic as $key => $value) {
+            if ($value['date'] === $dataKeyword[$key]['date']) {
+                $data_end[$key]['years'] = $value['years'];
+                $data_end[$key]['date'] = $value['date'];
+                $data_end[$key]['traffic'] = $value['value'];
+                $data_end[$key]['keyword'] = $dataKeyword[$key]['value'];
+            }
+        }
+
+        return $data_end;
     }
 
     /**
@@ -222,7 +234,7 @@ class WebSite
      * @param $format
      * @return array
      */
-    public function ChangeData ($data, $format) : array
+    public function ChangeData($data, $format): array
     {
         $data_end = [];
         foreach ($data as $dt) {
@@ -238,7 +250,7 @@ class WebSite
      * @param $format
      * @return array
      */
-    public function ChangeDataItem ($data, $format) : array
+    public function ChangeDataItem($data, $format): array
     {
         $data_end = [];
         foreach ($data as $item => $dt) {
@@ -255,7 +267,7 @@ class WebSite
      * @return bool|null
      * @throws \Exception
      */
-    public function CronTraffic (string $file, string $dir, string $domain)
+    public function CronTraffic(string $file, string $dir, string $domain)
     {
         $date_strtotime = filemtime($file);
         $date = date('Y-m-d', $date_strtotime);
@@ -302,7 +314,7 @@ class WebSite
                     return $trust_rank - 4;
                 } elseif ($powerSize >= 4 && $powerSize <= 6) {
                     return $trust_rank - 2;
-                } elseif ($powerSize >= 7 && $powerSize <= 9){
+                } elseif ($powerSize >= 7 && $powerSize <= 9) {
                     return $trust_rank - 1;
                 }
             }
@@ -346,8 +358,8 @@ class WebSite
         $data_traffic = [];
         if (!empty($data_traffic_now)) {
             foreach ($data_traffic_now as $dt) {
-                $data_traffic['years'] = date("Y",  strtotime($dt->Dt));
-                $data_traffic['date'] = date("F Y",  strtotime($dt->Dt));
+                $data_traffic['years'] = date("Y", strtotime($dt->Dt));
+                $data_traffic['date'] = date("F Y", strtotime($dt->Dt));
                 $data_traffic['keyword'] = $dt->Oc;
                 $data_traffic['traffic'] = $dt->Ot;
                 $data[strtotime($dt->Dt)] = $data_traffic;
@@ -385,5 +397,38 @@ class WebSite
             return $trustRank + 8;
         }
         return 0;
+    }
+
+    /**
+     * @param array|null $dtOld
+     * @return array
+     */
+    private function dataTrafficOrKeyword(?array $dtOld): array
+    {
+        $dataEnd = [];
+
+        if (is_null($dtOld)) {
+            return [];
+        }
+
+        if (!empty($dtOld)) {
+            foreach ($dtOld as $key => $dt) {
+                $data['years'] = date("Y", substr($dt[0], 0, -3) ?? 0);
+                $data['date'] = date("F Y", substr($dt[0], 0, -3) ?? 0);
+                $data['value'] = $dt[1] ?? 0;
+                $dataEnd[substr($dt[0], 0, -3) ?? 0] = $data;
+            }
+        } else {
+            return [];
+        }
+
+        // Change order Array by Years !!!
+        usort($dataEnd, function ($v1, $v2) {
+            $date_1 = strtotime($v1['date']);
+            $date_2 = strtotime($v2['date']);
+            return $date_1 - $date_2;
+        });
+
+        return $dataEnd;
     }
 }

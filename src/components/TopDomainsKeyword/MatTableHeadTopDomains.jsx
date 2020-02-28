@@ -13,10 +13,10 @@ const rows = [
     id: 'traffic', numeric: false, disablePadding: false, label: 'Traffic',
   },
   {
-    id: 'top_3', numeric: false, disablePadding: true, label: 'Top 3',
+    id: 'top_3', numeric: false, disablePadding: true, label: 'Top 1-5',
   },
   {
-    id: 'top_4_10', numeric: false, disablePadding: true, label: 'Top 4-10',
+    id: 'top_4_10', numeric: false, disablePadding: true, label: 'Top 6-10',
   },
   {
     id: 'top_11_20', numeric: false, disablePadding: false, label: 'Top 11-20',

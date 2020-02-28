@@ -45,6 +45,7 @@ export default class TradeHistory extends PureComponent {
                 lg={5}
                 md={12}
                 xs={12}
+                serpFeature={[]}
                 title="Link Data Profile"
                 subhead="Ratings by Market Capitalization"
             >

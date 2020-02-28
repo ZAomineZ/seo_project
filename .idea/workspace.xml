@@ -2,22 +2,105 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/App/Ajax/Auth/ReconnectCookie.php" description="$ajax = new \App\concern\Ajax();&#10;$ajax-&gt;HeaderProt..." line="8" />
+    <bookmark url="file://$PROJECT_DIR$/src/containers/Dashboards/ECommerce/components/OrdersToday.jsx" line="99" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="Update Volume Data">
+    <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="Update Error Fix App">
+      <change afterPath="$PROJECT_DIR$/App/Actions/Url/Curl_CsvKeywords.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Actions/Url/MultiCurl_UrlTrafficAndKeyword.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Actions/Url/MultiCurl_VolumeResult.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Ajax/SerpEmptyRank.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Ajax/SerpVolumeResult.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Ajax/TopKeyword/KeywordPagination.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/Ajax/TopKeyword/KeywordsAll.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/DataTraitement/CrawlerDataSerp.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/DataTraitement/FileData.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/DataTraitement/KeywordsCsv.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/ErrorCode/ErrorArgument.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/ErrorCode/Exception/NullableException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/ErrorCode/NullableType.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/QueryElement/Element/KeywordsPagination.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/QueryElement/Pagination.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/RenderHTML/RenderButton.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Serp/ComponentWebsite/TabData/BarChartTab.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Serp/serp_top_copyboard.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Serp/serp_volume_charts.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/BarTopWebsite.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/ChartTrafficByWebsite.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/KeywordsComponent/TableKeywords.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/NavLinkBarTopKeywords.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ReactProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ReactProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Actions/Cron/CronKeywords.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Actions/Cron/CronKeywords.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/CronKeywords.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/CronKeywords.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Actions/Json_File.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Actions/Json_File.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Actions/Url/Curl_Keyword.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Actions/Url/Curl_Url.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/Correlation/CorrelationData.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Correlation/CorrelationData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/Serp.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/Serp.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/SerpComparaison.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/SerpComparaison.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/SerpComparaisonDate.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/SerpComparaisonDate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/SerpDate.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/SerpDate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/SerpTrustScore.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/SerpTrustScore.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/TopKeyword.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/TopKeyword.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/TopKeywordCsv.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/TopKeywordCsv.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/WebSite.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/WebSite.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Ajax/linkprofile_mount.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/linkprofile_mount.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Controller/CampainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/CampainController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Controller/RankController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/RankController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/SerpController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/SerpController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/TopKeywordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/TopKeywordController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/WebSiteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/WebSiteController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Table/Website.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Table/Website.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/concern/Backlink_Profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/concern/Backlink_Profile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/concern/Date_Format.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/concern/Date_Format.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/concern/Img_Params.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/concern/Img_Params.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/concern/Str_options.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/concern/Str_options.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/model/Correlation.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/Correlation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/LinkDomain.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/LinkDomain.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/model/RankModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/RankModel.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/model/Serp.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/Serp.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm_form.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Campain/campain_form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Campain/campain_form.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RankTo/RankFront.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RankTo/RankFront.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/TopKeyword.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/TopKeyword.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/WebSite.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/WebSite.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/CorrelationAnalyse/keywordPanel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CorrelationAnalyse/keywordPanel.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/RankTo/ChartRank.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RankTo/ChartRank.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/RankTo/RankTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RankTo/RankTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/serp_date.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/serp_date.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/tab_data.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/tab_data.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/top_backlinks.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/top_backlinks.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Serp/top_comparaison.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Serp/top_comparaison.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableHeadTopDomains.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableHeadTopDomains.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/tabs/tabs_data.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/tabs/tabs_data.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Account/EmailConfimation/components/EmailConfirmationCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/EmailConfimation/components/EmailConfirmationCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Account/Register/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/Register/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Charts/Recharts/components/SimpleLineChart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Charts/Recharts/components/SimpleLineChart.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Booking/components/Occupancy.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Booking/components/Occupancy.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BCH.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BCH.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/CryptotrendsToday.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/CryptotrendsToday.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TradeHistory.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TradeHistory.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Default/components/BounceRateArea.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Default/components/BounceRateArea.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/ECommerce/components/OrdersToday.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/ECommerce/components/OrdersToday.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/ActivityChart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/ActivityChart.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/DefaultPage/404/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/DefaultPage/404/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Form/FormPicker/components/DatePickers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Form/FormPicker/components/DatePickers.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Tables/MaterialTable/components/MatTableHead.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Tables/MaterialTable/components/MatTableHead.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/UI/Panels/components/DefaultPanelDivider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/UI/Panels/components/DefaultPanelDivider.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scss/app/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/app/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/components/Panel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/Panel.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/form/IntervalDatePicker.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_files.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_files.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_psr4.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_psr4.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/installed.json" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/installed.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,15 +126,83 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/App/model/Serp.php">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="670">
-              <caret line="313" column="28" lean-forward="true" selection-start-line="313" selection-start-column="28" selection-end-line="313" selection-end-column="28" />
+            <state relative-caret-position="756">
+              <caret line="294" column="23" selection-start-line="294" selection-start-column="23" selection-end-line="294" selection-end-column="23" />
               <folding>
-                <element signature="e#112#141#0#PHP" expanded="true" />
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#21#64#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/KeywordsComponent/TableKeywords.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="687">
+              <caret line="20" column="76" selection-start-line="20" selection-start-column="76" selection-end-line="20" selection-end-column="76" />
+              <folding>
+                <element signature="e#22#65#0" expanded="true" />
+                <element signature="e#554#1766#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/Ajax/TopKeyword/KeywordPagination.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="427">
+              <caret line="40" column="41" lean-forward="true" selection-start-line="40" selection-start-column="41" selection-end-line="40" selection-end-column="41" />
+              <folding>
+                <element signature="e#47#73#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/Controller/TopKeywordController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="407">
+              <caret line="215" column="49" lean-forward="true" selection-start-line="215" selection-start-column="49" selection-end-line="215" selection-end-column="49" />
+              <folding>
+                <element signature="e#117#143#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/App/DataTraitement/KeywordsCsv.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="442">
+              <caret line="78" column="27" selection-start-line="78" selection-start-column="27" selection-end-line="78" selection-end-column="27" />
+              <folding>
+                <element signature="e#122#150#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/QueryElement/Pagination.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="350">
+              <caret line="15" column="32" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/QueryElement/Element/KeywordsPagination.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
             </state>
           </provider>
         </entry>
@@ -67,25 +218,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>$doma</find>
-      <find>JsonWeb</find>
-      <find>dessin</find>
-      <find>coloor</find>
-      <find>CookieRese</find>
-      <find>state</find>
-      <find>FileDa</find>
-      <find>fileData</find>
-      <find>usort</find>
-      <find>select</find>
-      <find>onChangePage</find>
-      <find>descript</find>
-      <find>description</find>
-      <find>LoadReqCra</find>
-      <find>volume</find>
-      <find>FIleVol</find>
-      <find>btn-ri</find>
-      <find>dd</find>
-      <find>getS</find>
       <find>verif</find>
       <find>domainPa</find>
       <find>ext</find>
@@ -96,10 +228,30 @@
       <find>chm</find>
       <find>chmo</find>
       <find>chmod</find>
+      <find>google.com</find>
+      <find>hugo</find>
+      <find>regex</find>
+      <find>.recharts</find>
+      <find>node</find>
+      <find>node-h</find>
+      <find>mdi</find>
       <find>cpc</find>
+      <find>volu</find>
+      <find>volume</find>
+      <find>rank</find>
+      <find>overflow</find>
+      <find>arr</find>
+      <find>curl</find>
+      <find>end</find>
+      <find>json_de</find>
+      <find>Cookie: PHPSESSID=muhgsojmhimfe9girmpmsj61rc; _gcl_au=1.1.1854575438.1582024036; _fbp=fb.1.1582024036485.1617622220; _lo_uid=120485-1582024037937-8a50ffd6872d3def; __lotl=https%3A%2F%2Fseranking.com%2F; device-source=https://seranking.com/; _ym_uid=1582024053702245396; _ym_d=1582024053; device-referrer=https://online.seranking.com/research.html?input=coloriages.info&amp;do=find&amp;source=fr&amp;filter=undefined; __lotr=https%3A%2F%2Fwww.google.com%2F; _ga=GA1.3.1250590664.1582024036; UID=647284; visid_incap_2132269=gArv7rYpTCW1Fo3RKYl/SXd7Tl4AAAAAQUIPAAAAAABq/aOolpZvtE9G3spIIu2N; incap_ses_392_2132269=PwOvRmogIm4fuUvK4KpwBXd7Tl4AAAAAuZLaqegnFDHjP4KswdKm3Q==; GKD=%97%B5%A5%D7%94%CF%84r%9D%B9%A1%95%BD%B2%A0%DC%9D%AE%89%B6%95%A8%A9%D8%94%AC%94r%91%B9%AC%CA%B0%D5%A1%CF%9C%98%9Dr%95%B5%B4%A8; s_fid=450D09C5CA180D0A-13881BD90C0E8F88; s_cc=true; helpcrunch.com-seranking-1145-helpcrunch-device={\&quot;id\&quot;:25030529,\&quot;secret\&quot;:\&quot;9kU1h3INomIvyKoEUVeFTUeAs6tKgyb9qamJtFkRER4juzyGShguw6i+4/7PrAAU5GA8y8OO68rdS7I0fTiVNQ==\&quot;,\&quot;sessions\&quot;:3}; helpcrunch.com-seranking-166-helpcrunch-device={\&quot;id\&quot;:25030531,\&quot;secret\&quot;:\&quot;BHgBEqByPmp/TpKyY4+XQH6eaY2cu2bMGahccqPfvLCMq6dPexQgRHra6IrD9wud6u7AEZFvhMe7D/AIO1t0oA==\&quot;,\&quot;sessions\&quot;:6}; _lo_v=6; _gid=GA1.2.910858634.1582539870; _gid=GA1.3.910858634.1582539870; research_au=eda2428cc66f153da34a7f545e55fc1628b86a; _ym_isad=2; _pk_ref.7.7189=%5B%22%22%2C%22%22%2C1582736984%2C%22https%3A%2F%2Fwww.google.com%2F%22%5D; _pk_ses.7.7189=1; _ym_visorc_22102555=w; auto_login_cookie=410ac8edb4b0f966f23fe91c65efb50e; _ga_XH80JYLKJ9=GS1.1.1582736983.5.1.1582737752.0; _ga=GA1.2.1250590664.1582024036; _pk_id.7.7189=d52eb2183d610865.1582024036.23.1582737754.1582736984.</find>
+      <find>coloori</find>
+      <find>coloriage</find>
+      <find>$_GET</find>
     </findStrings>
     <replaceStrings>
       <replace />
+      <replace>$_POST</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/build</dir>
@@ -111,57 +263,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Account/LogIn/components/LogInForm.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/login_token.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Account/Register/index.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Account/Register/components/RegisterForm.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/email_confirmation.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx" />
-        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Campain/CampainDetails.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Campain/index.jsx" />
-        <option value="$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/serp_comparison.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/serp_comparison_date.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Suggest/suggest_details.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/form_analyse.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/index.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Serp/serp_date.jsx" />
-        <option value="$PROJECT_DIR$/src/components/RankTo/index.jsx" />
-        <option value="$PROJECT_DIR$/src/components/RankTo/indexKeyword.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Layout/topbar/TopbarProfile.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Landing/components/Header.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TradeHistory.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Fitness/components/ActivityChart.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Default/components/BounceRateArea.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/ComponentWebsite/TabData/PieChartTab.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/ComponentWebsite/TabData/BarChartTab.jsx" />
+        <option value="$PROJECT_DIR$/src/components/tabs/tabs_data.jsx" />
+        <option value="$PROJECT_DIR$/App/Actions/Url/MultiCurl_VolumeResult.php" />
+        <option value="$PROJECT_DIR$/App/Actions/Url/Curl_Traffic.php" />
+        <option value="$PROJECT_DIR$/App/Table/Website.php" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Booking/components/Occupancy.jsx" />
+        <option value="$PROJECT_DIR$/src/components/Serp/tab_data.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/UI/Panels/components/DefaultPanelDivider.jsx" />
         <option value="$PROJECT_DIR$/App/model/WebSite.php" />
-        <option value="$PROJECT_DIR$/App/Controller/LinkProfileController.php" />
-        <option value="$PROJECT_DIR$/App/Controller/CampainController.php" />
-        <option value="$PROJECT_DIR$/App/Ajax/Campain/UpdateDataBl.php" />
-        <option value="$PROJECT_DIR$/App/Actions/Url/Curl_Keyword.php" />
-        <option value="$PROJECT_DIR$/App/Ajax/RankByProject.php" />
-        <option value="$PROJECT_DIR$/App/Controller/RankController.php" />
-        <option value="$PROJECT_DIR$/src/components/RankTo/StatsRankChart.jsx" />
-        <option value="$PROJECT_DIR$/App/Actions/Url/Curl_Volume.php" />
-        <option value="$PROJECT_DIR$/App/Ajax/CronKeywords.php" />
-        <option value="$PROJECT_DIR$/App/Actions/Cron/CronKeywords.php" />
-        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/RankTo/BodyFormRank.jsx" />
-        <option value="$PROJECT_DIR$/src/components/RankTo/RankFront.jsx" />
-        <option value="$PROJECT_DIR$/src/components/Campain/campain_form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/CorrelationAnalyse/showCorrelation.jsx" />
-        <option value="$PROJECT_DIR$/App/model/Correlation.php" />
-        <option value="$PROJECT_DIR$/App/model/Auth/Register.php" />
-        <option value="$PROJECT_DIR$/App/concern/Mail.php" />
-        <option value="$PROJECT_DIR$/src/components/Auth/password_forgot_confirm_form.jsx" />
-        <option value="$PROJECT_DIR$/src/containers/Layout/index.jsx" />
-        <option value="$PROJECT_DIR$/App/Controller/SerpController.php" />
-        <option value="$PROJECT_DIR$/App/Controller/TopKeywordController.php" />
+        <option value="$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx" />
+        <option value="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/BCH.jsx" />
+        <option value="$PROJECT_DIR$/App/Ajax/TopKeywordCsv.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpVolumeResult.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/Serp.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpComparaison.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpComparaisonDate.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpDate.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpEmptyRank.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/SerpTrustScore.php" />
+        <option value="$PROJECT_DIR$/App/concern/Img_Params.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/Correlation/CorrelationData.php" />
         <option value="$PROJECT_DIR$/App/Controller/WebSiteController.php" />
-        <option value="$PROJECT_DIR$/App/model/RankModel.php" />
-        <option value="$PROJECT_DIR$/App/model/Serp.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/TopKeyword.php" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/NavLinkBarTopKeywords.jsx" />
+        <option value="$PROJECT_DIR$/App/model/TopKeyword.php" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/BarTopWebsite.jsx" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/ChartTrafficByWebsite.jsx" />
+        <option value="$PROJECT_DIR$/App/Actions/Url/MultiCurl_UrlTrafficAndKeyword.php" />
+        <option value="$PROJECT_DIR$/App/Actions/Url/Curl_CsvKeywords.php" />
+        <option value="$PROJECT_DIR$/composer.json" />
+        <option value="$PROJECT_DIR$/App/Ajax/TopKeyword/KeywordsAll.php" />
+        <option value="$PROJECT_DIR$/App/ErrorCode/ErrorArgument.php" />
+        <option value="$PROJECT_DIR$/src/scss/app/style.scss" />
+        <option value="$PROJECT_DIR$/App/QueryElement/Element/KeywordsPagination.php" />
+        <option value="$PROJECT_DIR$/App/model/LinkDomain.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/linkprofile_mount.php" />
+        <option value="$PROJECT_DIR$/App/concern/Backlink_Profile.php" />
+        <option value="$PROJECT_DIR$/App/Controller/LinkProfileController.php" />
+        <option value="$PROJECT_DIR$/App/Actions/Json_File.php" />
+        <option value="$PROJECT_DIR$/App/Ajax/WebSite.php" />
+        <option value="$PROJECT_DIR$/App/QueryElement/Pagination.php" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/KeywordsComponent/TableKeywords.jsx" />
+        <option value="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" />
+        <option value="$PROJECT_DIR$/App/Ajax/TopKeyword/KeywordPagination.php" />
+        <option value="$PROJECT_DIR$/App/Controller/TopKeywordController.php" />
+        <option value="$PROJECT_DIR$/App/DataTraitement/KeywordsCsv.php" />
       </list>
     </option>
   </component>
@@ -236,13 +388,13 @@
       <path value="$PROJECT_DIR$/vendor/stillat/numeral.php" />
       <path value="$PROJECT_DIR$/vendor/elboletaire/crawler" />
       <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
+      <path value="$PROJECT_DIR$/vendor/league/csv" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1" />
     <option name="y" value="33" />
-    <option name="width" value="1912" />
-    <option name="height" value="1054" />
+    <option name="width" value="960" />
+    <option name="height" value="523" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -250,6 +402,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -266,19 +419,68 @@
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="Controller" type="462c0819:PsiDirectoryNode" />
+              <item name="Actions" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="Ajax" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="Ajax" type="462c0819:PsiDirectoryNode" />
+              <item name="TopKeyword" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="DataTraitement" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="ErrorCode" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="QueryElement" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="QueryElement" type="462c0819:PsiDirectoryNode" />
+              <item name="Element" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ReactProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ReactProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -289,7 +491,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="js.last.introduce.type" value="CONST" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../TP_PHP" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.jscs" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -303,21 +505,21 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/components/Suggest" />
-      <recent name="$PROJECT_DIR$/App/Ajax/Campain" />
-      <recent name="$PROJECT_DIR$/src/Components/tabs" />
-      <recent name="$PROJECT_DIR$/src/Components/Suggest" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public/img" />
       <recent name="$PROJECT_DIR$/src/shared" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/Components/Serp" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/Suggest" />
+      <recent name="$PROJECT_DIR$/App/Ajax/Campain" />
+      <recent name="$PROJECT_DIR$/src/Components/tabs" />
+      <recent name="$PROJECT_DIR$/src/Components/Suggest" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -540,7 +742,67 @@
       <workItem from="1572442958875" duration="1408000" />
       <workItem from="1572444414385" duration="55000" />
       <workItem from="1572527704787" duration="192000" />
-      <workItem from="1572964607652" duration="1619000" />
+      <workItem from="1572964607652" duration="1755000" />
+      <workItem from="1573215549948" duration="108000" />
+      <workItem from="1573216972588" duration="12000" />
+      <workItem from="1573459235549" duration="331000" />
+      <workItem from="1573478569569" duration="990000" />
+      <workItem from="1574254945269" duration="34000" />
+      <workItem from="1574255368199" duration="2455000" />
+      <workItem from="1574335881348" duration="16006000" />
+      <workItem from="1574423801152" duration="12783000" />
+      <workItem from="1574507509187" duration="7399000" />
+      <workItem from="1574778965652" duration="2889000" />
+      <workItem from="1574786745476" duration="19000" />
+      <workItem from="1574787757180" duration="12000" />
+      <workItem from="1574877409400" duration="42000" />
+      <workItem from="1574877554512" duration="9000" />
+      <workItem from="1574939802093" duration="384000" />
+      <workItem from="1574943294260" duration="6000" />
+      <workItem from="1574943915104" duration="14000" />
+      <workItem from="1574954910195" duration="26000" />
+      <workItem from="1574964362840" duration="25000" />
+      <workItem from="1574967159475" duration="7000" />
+      <workItem from="1575028640598" duration="27000" />
+      <workItem from="1575028714053" duration="4000" />
+      <workItem from="1575028763854" duration="58000" />
+      <workItem from="1575028934146" duration="17000" />
+      <workItem from="1575029137211" duration="28000" />
+      <workItem from="1575040454452" duration="14000" />
+      <workItem from="1575290303402" duration="48000" />
+      <workItem from="1575291627054" duration="4000" />
+      <workItem from="1575474092231" duration="15000" />
+      <workItem from="1575474481945" duration="30000" />
+      <workItem from="1575476017473" duration="67000" />
+      <workItem from="1575567680985" duration="12000" />
+      <workItem from="1575647984808" duration="41000" />
+      <workItem from="1575893014589" duration="121000" />
+      <workItem from="1575894208932" duration="34000" />
+      <workItem from="1575895660450" duration="3000" />
+      <workItem from="1576160407331" duration="41000" />
+      <workItem from="1576160747754" duration="13000" />
+      <workItem from="1576585917125" duration="65000" />
+      <workItem from="1576586089201" duration="76000" />
+      <workItem from="1576586302713" duration="14000" />
+      <workItem from="1576666472025" duration="16000" />
+      <workItem from="1576666506243" duration="14000" />
+      <workItem from="1576666586677" duration="4000" />
+      <workItem from="1576666651494" duration="78000" />
+      <workItem from="1577465849610" duration="151000" />
+      <workItem from="1580488370134" duration="1171000" />
+      <workItem from="1581355404431" duration="48000" />
+      <workItem from="1581934995447" duration="18337000" />
+      <workItem from="1582025080817" duration="19949000" />
+      <workItem from="1582104082217" duration="26784000" />
+      <workItem from="1582193810672" duration="27916000" />
+      <workItem from="1582285533333" duration="17132000" />
+      <workItem from="1582364904453" duration="3677000" />
+      <workItem from="1582539081152" duration="22142000" />
+      <workItem from="1582625802175" duration="9013000" />
+      <workItem from="1582644968379" duration="3180000" />
+      <workItem from="1582710581268" duration="17277000" />
+      <workItem from="1582796622583" duration="18160000" />
+      <workItem from="1582880697269" duration="10575000" />
     </task>
     <task id="LOCAL-00001" summary="commit xml">
       <created>1557842988682</created>
@@ -703,11 +965,18 @@
       <option name="project" value="LOCAL" />
       <updated>1572344078579</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Update Error Fix App">
+      <created>1572966398936</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1572966398937</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1901200000" />
+    <option name="totallyTimeSpent" value="2141243000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -729,7 +998,7 @@
       <window_info id="Image Layers" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="UI Designer" order="6" />
-      <window_info active="true" content_ui="combo" id="Project" order="7" sideWeight="0.4983108" visible="true" weight="0.24758324" />
+      <window_info content_ui="combo" id="Project" order="7" sideWeight="0.4983108" weight="0.20354457" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32842582" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3284091" />
@@ -741,7 +1010,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49946353" weight="0.3284091" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5005365" side_tool="true" weight="0.32954547" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32692307" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32613635" />
       <window_info anchor="bottom" id="TypeScript" order="12" weight="0.32918552" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -828,397 +1097,405 @@
     <MESSAGE value="Add Gender Register" />
     <MESSAGE value="update tools RankTo And refactoring Code Php" />
     <MESSAGE value="Update Volume Data" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update Volume Data" />
+    <MESSAGE value="Update Error Fix App" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update Error Fix App" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/containers/Account/LogIn/index.jsx</url>
+          <line>90</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/App/concern/File_Params.php">
+    <entry file="file://$PROJECT_DIR$/node_modules/classnames/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="106" column="27" selection-start-line="106" selection-start-column="27" selection-end-line="106" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Actions/Cron/CronKeywords.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
-          <caret line="44" column="41" selection-start-line="44" selection-start-column="41" selection-end-line="44" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/CronKeywords.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1012">
-          <caret line="32" column="29" lean-forward="true" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
-          <folding>
-            <element signature="e#6#40#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1439">
-          <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="240" column="24" lean-forward="true" selection-start-line="240" selection-start-column="24" selection-end-line="240" selection-end-column="24" />
-          <folding>
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/top_index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="48" column="24" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
-          <folding>
-            <element signature="e#21#66#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/RankProject.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/RankTo/BodyContent.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
-          <folding>
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/RankTo/BodyFormRank.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="314" selection-start-line="314" selection-end-line="314" />
-          <folding>
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/RankTo/RankFront.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="10" column="42" lean-forward="true" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
-          <folding>
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Campain/campain_form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="110" column="34" lean-forward="true" selection-start-line="110" selection-start-column="34" selection-end-line="110" selection-end-column="34" />
-          <folding>
-            <element signature="e#21#66#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Campain/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="171" column="20" selection-start-line="171" selection-start-column="20" selection-end-line="171" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/CorrelationAnalyse/showCorrelation.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="134" column="44" selection-start-line="134" selection-start-column="44" selection-end-line="134" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/Correlation.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="542">
-          <caret line="69" column="102" lean-forward="true" selection-start-line="69" selection-start-column="102" selection-end-line="69" selection-end-column="102" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/Auth/Register.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="541">
-          <caret line="117" column="95" selection-start-line="117" selection-start-column="95" selection-end-line="117" selection-end-column="95" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/concern/Mail.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="126" column="69" lean-forward="true" selection-start-line="126" selection-start-column="69" selection-end-line="126" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/password_forgot_form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3938">
-          <caret line="160" column="15" selection-start-line="160" selection-start-column="15" selection-end-line="160" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/password_forgot.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="187" column="36" selection-start-line="187" selection-start-column="36" selection-end-line="187" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/password_forgot_confirm.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="218" column="32" selection-start-line="218" selection-start-column="32" selection-end-line="218" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Auth/password_forgot_confirm_form.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2464">
-          <caret line="10" column="46" lean-forward="true" selection-start-line="10" selection-end-line="11" />
-          <folding>
-            <element signature="e#21#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/App/App.test.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/react-i18next/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-78">
-          <caret line="96" column="13" selection-start-line="96" selection-start-column="13" selection-end-line="96" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/react-router-dom/es/BrowserRouter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2894">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/sidebar/Sidebar.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="28" column="20" lean-forward="true" selection-start-line="28" selection-start-column="20" selection-end-line="28" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/App/YM.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/manifest.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-660" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/customizer/Customizer.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1188">
-          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/react/cjs/react.development.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1416">
-          <caret line="1857" column="2" selection-start-line="1857" selection-start-column="2" selection-end-line="1857" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/App/ScrollToTop.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="23" column="15" selection-start-line="23" selection-start-column="15" selection-end-line="23" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/App/App.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="50" column="22" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/react-router/es/Switch.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/platform-impl.jar!/resources/html5-schema/html5/structural.rnc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="165" column="16" selection-start-line="165" selection-start-column="16" selection-end-line="165" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/App/MainWrapper.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="704">
-          <caret line="35" column="15" selection-start-line="35" selection-start-column="15" selection-end-line="35" selection-end-column="15" />
+        <state relative-caret-position="-735">
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/containers/Layout/index.jsx">
+    <entry file="file://$PROJECT_DIR$/src/shared/components/Panel.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="270" column="18" lean-forward="true" selection-start-line="270" selection-start-column="18" selection-end-line="270" selection-end-column="18" />
-          <folding>
-            <element signature="e#59#98#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-1995">
+          <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/RankTo/indexKeyword.jsx">
+    <entry file="file://$PROJECT_DIR$/node_modules/react-vis/es/make-vis-flexible.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3023">
-          <caret line="26" column="21" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
+        <state relative-caret-position="2949">
+          <caret line="228" column="11" selection-start-line="228" selection-start-column="11" selection-end-line="228" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/RankTo/index.jsx">
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/tab_data.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5927">
-          <caret line="26" column="21" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
+        <state relative-caret-position="487">
+          <caret line="271" column="20" lean-forward="true" selection-start-line="271" selection-start-column="20" selection-end-line="271" selection-end-column="20" />
           <folding>
             <element signature="e#21#64#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/tabs/tabs_data.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="28" column="21" lean-forward="true" selection-start-line="28" selection-start-column="21" selection-end-line="28" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Serp/serp_analyse_details.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="236" column="32" lean-forward="true" selection-start-line="236" selection-start-column="32" selection-end-line="236" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/concern/Date_Format.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="39" column="53" lean-forward="true" selection-start-line="39" selection-start-column="53" selection-end-line="39" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Actions/Url/MultiCurl_VolumeResult.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2310">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/ErrorCode/NullableType.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Support/helpers.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="1042" column="1" lean-forward="true" selection-start-line="1042" selection-start-column="1" selection-end-line="1042" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@material-ui/core/index.es.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/prop-types/prop-types.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="304" selection-start-column="304" selection-end-column="304" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/RankTo/indexKeyword.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4011">
+          <caret line="26" column="21" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/TopKeyword.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="142" column="64" lean-forward="true" selection-start-line="142" selection-start-column="64" selection-end-line="142" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/ChartTrafficByWebsite.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="73" column="85" lean-forward="true" selection-start-line="73" selection-start-column="85" selection-end-line="73" selection-end-column="85" />
+          <folding>
+            <element signature="e#22#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/BarTopWebsite.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="40" column="47" lean-forward="true" selection-start-line="40" selection-start-column="47" selection-end-line="40" selection-end-column="47" />
+          <folding>
+            <element signature="e#22#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/NavLinkBarTopKeywords.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="67" column="40" selection-start-line="67" selection-start-column="40" selection-end-line="67" selection-end-column="40" />
+          <folding>
+            <element signature="e#22#67#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/TopKeyword.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="43" column="20" lean-forward="true" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
+          <folding>
+            <element signature="e#44#70#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Actions/Url/Curl_Api.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-388" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Actions/Url/MultiCurl_UrlTrafficAndKeyword.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1718">
+          <caret line="127" column="51" lean-forward="true" selection-start-line="127" selection-start-column="51" selection-end-line="127" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Actions/Url/Curl_Volume.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="64" column="44" lean-forward="true" selection-start-line="64" selection-start-column="44" selection-end-line="64" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Actions/Url/Curl_CsvKeywords.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="71" selection-start-line="71" selection-end-line="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/DataTraitement/CrawlerDataSerp.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4200" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Table/Website.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="36" column="20" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/App/concern/Str_options.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="277">
-          <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
+          <caret line="78" column="27" selection-start-line="78" selection-start-column="27" selection-end-line="78" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Ajax/RankTo.php">
+    <entry file="file://$PROJECT_DIR$/App/concern/Ajax.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="43" column="45" selection-start-line="43" selection-start-column="45" selection-end-line="43" selection-end-column="45" />
+        <state relative-caret-position="-1806">
+          <caret line="73" column="20" selection-start-line="73" selection-start-column="20" selection-end-line="73" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/TopKeywordController.php">
+    <entry file="file://$PROJECT_DIR$/App/concern/File_Params.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="199" column="41" lean-forward="true" selection-start-line="199" selection-start-column="41" selection-end-line="199" selection-end-column="41" />
+        <state relative-caret-position="277">
+          <caret line="55" column="27" selection-start-line="55" selection-start-column="27" selection-end-line="55" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/RankController.php">
+    <entry file="file://$PROJECT_DIR$/App/DataTraitement/FileData.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/PDO_Model.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/WebSite.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="90" column="84" selection-start-line="90" selection-start-column="84" selection-end-line="90" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/LinkProfileController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="97" column="37" lean-forward="true" selection-start-line="97" selection-start-column="37" selection-end-line="97" selection-end-column="37" />
+        <state relative-caret-position="732">
+          <caret line="45" column="22" selection-start-line="45" selection-start-column="22" selection-end-line="45" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/App/Router.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="53" column="74" lean-forward="true" selection-start-line="53" selection-start-column="74" selection-end-line="53" selection-end-column="74" />
+        <state relative-caret-position="140">
+          <caret line="44" column="72" selection-start-line="44" selection-start-column="72" selection-end-line="44" selection-end-column="72" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/RankModel.php">
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="905" column="79" lean-forward="true" selection-start-line="905" selection-start-column="79" selection-end-line="905" selection-end-column="79" />
+        <state relative-caret-position="259">
+          <caret line="178" column="30" selection-start-line="178" selection-start-column="30" selection-end-line="178" selection-end-column="30" />
+          <folding>
+            <element signature="e#21#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/TabMaterielTopDomains.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scss/app/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="310" column="18" lean-forward="true" selection-start-line="310" selection-start-column="18" selection-end-line="310" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/league/csv/src/Statement.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1928">
+          <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="12" column="6" lean-forward="true" selection-start-line="12" selection-start-column="6" selection-end-line="13" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/ErrorCode/ErrorArgument.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="762">
+          <caret line="27" column="84" selection-start-line="27" selection-start-column="84" selection-end-line="27" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LinkProfile/linkprofile.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-210">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/model/LinkDomain.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="582">
+          <caret line="222" column="44" lean-forward="true" selection-start-line="222" selection-start-column="44" selection-end-line="222" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/WebSite.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Actions/Json_File.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="78" column="17" selection-start-line="78" selection-start-column="17" selection-end-line="78" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/concern/Backlink_Profile.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="52" column="32" selection-start-line="52" selection-start-column="32" selection-end-line="52" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/LinkProfileController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="592">
+          <caret line="229" column="32" selection-start-line="229" selection-start-column="32" selection-end-line="229" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/linkprofile_mount.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="33" column="42" lean-forward="true" selection-start-line="33" selection-start-column="42" selection-end-line="33" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/Controller/WebSiteController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="211" column="9" lean-forward="true" selection-start-line="211" selection-start-column="9" selection-end-line="211" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/SerpController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2868">
-          <caret line="179" column="11" selection-start-line="179" selection-start-column="11" selection-end-line="179" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/model/Serp.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="670">
-          <caret line="313" column="28" lean-forward="true" selection-start-line="313" selection-start-column="28" selection-end-line="313" selection-end-column="28" />
+        <state relative-caret-position="172">
+          <caret line="516" column="20" selection-start-line="516" selection-start-column="20" selection-end-line="516" selection-end-column="20" />
           <folding>
-            <element signature="e#112#141#0#PHP" expanded="true" />
+            <element signature="e#117#143#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/QueryElement/Element/KeywordsPagination.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/QueryElement/Pagination.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="15" column="32" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/TopKeyword/KeywordsAll.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="539">
+          <caret line="51" column="43" selection-end-line="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="756">
+          <caret line="294" column="23" selection-start-line="294" selection-start-column="23" selection-end-line="294" selection-end-column="23" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#21#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/KeywordsComponent/TableKeywords.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="687">
+          <caret line="20" column="76" selection-start-line="20" selection-start-column="76" selection-end-line="20" selection-end-column="76" />
+          <folding>
+            <element signature="e#22#65#0" expanded="true" />
+            <element signature="e#554#1766#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Ajax/TopKeyword/KeywordPagination.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="40" column="41" lean-forward="true" selection-start-line="40" selection-start-column="41" selection-end-line="40" selection-end-column="41" />
+          <folding>
+            <element signature="e#47#73#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/TopKeywordController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="215" column="49" lean-forward="true" selection-start-line="215" selection-start-column="49" selection-end-line="215" selection-end-column="49" />
+          <folding>
+            <element signature="e#117#143#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/DataTraitement/KeywordsCsv.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="78" column="27" selection-start-line="78" selection-start-column="27" selection-end-line="78" selection-end-column="27" />
+          <folding>
+            <element signature="e#122#150#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

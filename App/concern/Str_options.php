@@ -43,6 +43,24 @@ class Str_options
     }
 
     /**
+     * @param array $items
+     * @return array
+     */
+    public static function toArrayKey(array $items): array
+    {
+        $newItems = [];
+
+        foreach ($items as $item) {
+            $itemCut = explode('"', $item);
+            if (isset($itemCut[1])) {
+                $newItems[] = $itemCut[1];
+            }
+        }
+
+        return $newItems;
+    }
+
+    /**
      * @param string $crawl_string
      * @return mixed
      */

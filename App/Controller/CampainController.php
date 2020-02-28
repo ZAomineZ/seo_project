@@ -141,11 +141,12 @@ class CampainController
     public function CampainData (string $value, object $auth) : bool
     {
        $campain_exist = $this->table->SelectCampainExist('campaign', $auth->id, $value);
-       if ($campain_exist->name === $value) {
+       if (isset($campain_exist->name) && $campain_exist->name === $value) {
            echo \GuzzleHttp\json_encode(['error' => 'This campaign already exists !!!']);
        } else {
            return $this->data_insert($value, $auth->id);
        }
+       return false;
     }
 
     /**

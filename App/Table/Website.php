@@ -36,7 +36,9 @@ class Website extends Table
      */
     public function SelectToken (string $domain)
     {
-        $select = $this->pdo->GetPdo()->prepare("SELECT * FROM website WHERE domain = ? ORDER BY id DESC LIMIT 1");
+        $select = $this->pdo
+            ->GetPdo()
+            ->prepare("SELECT * FROM website WHERE domain = ? ORDER BY id DESC LIMIT 1");
         $select->execute([$domain]);
         return $select->fetch();
     }
@@ -46,7 +48,9 @@ class Website extends Table
      */
     public function UpdateDate (string $domain)
     {
-        $select = $this->pdo->GetPdo()->prepare("UPDATE website SET date = :date WHERE domain = :domain");
+        $select = $this->pdo
+            ->GetPdo()
+            ->prepare("UPDATE website SET date = :date WHERE domain = :domain");
         $select->execute([
             'date' => date("Y-m-d H:i:s"),
             'domain' => $domain

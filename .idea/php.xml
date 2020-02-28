@@ -62,6 +62,7 @@
       <path value="$PROJECT_DIR$/vendor/stillat/numeral.php" />
       <path value="$PROJECT_DIR$/vendor/elboletaire/crawler" />
       <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
+      <path value="$PROJECT_DIR$/vendor/league/csv" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

@@ -158,6 +158,7 @@ export default class RankTable extends PureComponent {
         return (
             <Panel
                 title={this.props.title ? this.props.title : ''}
+                serpFeature={[]}
                 keyword={this.props.keyword}
                 value={this.props.project}
             >

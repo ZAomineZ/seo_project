@@ -126,6 +126,7 @@ export default class TopTen extends PureComponent {
             PropTypes.object
         ]),
         array_date: PropTypes.array.isRequired,
+        array_serpFeature: PropTypes.array.isRequired,
         dataVl: PropTypes.array.isRequired,
         keyword: PropTypes.string.isRequired,
         date_comparaison: PropTypes.bool.isRequired,
@@ -176,12 +177,9 @@ export default class TopTen extends PureComponent {
                         description: d,
                         url: nextProps.array_url[key],
                         title: title,
-                        cpc: nextProps.dataVl[key] ?
-                            Math.round(nextProps.dataVl[key].cpc * 100) / 100
-                            : 0,
                         volume: nextProps.dataVl[key] ?
                             Math.round(nextProps.dataVl[key].volume)
-                            : 0,
+                            : 0
                     }
                 }),
                 data_diff: Object.entries(nextProps.array_rank).map((d) => {
@@ -321,6 +319,7 @@ export default class TopTen extends PureComponent {
                                     id: d.id,
                                     title: d.title,
                                     url: d.url,
+                                    volume: d.volume,
                                     ip_subnets: response.data.ip_subnets,
                                     score_rank: response.data.score_rank,
                                     trust_rank: response.data.trust_rank
@@ -382,6 +381,7 @@ export default class TopTen extends PureComponent {
                 title={this.props.title ? this.props.title : ''}
                 button={data_diff[data_diff.length - 2] ? this.props.buttonExist ? this.props.buttonExist : '' : ''}
                 keyword={this.props.keyword}
+                serpFeature={this.props.array_serpFeature}
                 date_comparaison={this.props.date_comparaison}
                 state_location={this.props.state_location}
                 value={this.props.value}
@@ -503,9 +503,6 @@ export default class TopTen extends PureComponent {
                                         </td>
                                         <td>
                                             {d.volume}
-                                        </td>
-                                        <td>
-                                            {d.cpc}
                                         </td>
                                         <td className="dashboard__table-crypto-chart">
                                             <ResponsiveContainer height={36} className="dashboard__chart-container">

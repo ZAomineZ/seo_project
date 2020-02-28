@@ -13,7 +13,7 @@ const EmailConfirmationCard = () => (
             <EmailIcon className="email-confirmation__mail" />
             <CheckboxMarkedCircleIcon className="email-confirmation__check" />
           </div>
-          <h3 className="email-confirmation__title">Your e-mail address has been successfully verified</h3>
+          <h3 className="email-confirmation__title">A mail has been enjoyed to your e-mail address</h3>
           <p className="email-confirmation__sub">Thank you for choosing the MachinOols</p>
           <ButtonToolbar className="email-confirmation__buttons">
             <Link className="btn btn-primary" to="/">Go to Home</Link>

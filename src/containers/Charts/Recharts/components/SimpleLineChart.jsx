@@ -5,6 +5,35 @@ import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsiv
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 
+const CustomTooltip = ({active, payload, label}) => {
+    if (active && payload.length !== 0) {
+        return (
+            <div className="recharts-default-tooltip recharts-block-open">
+                <p className="recharts-tooltip-label" style={{margin: '0px'}}>{label}</p>
+                <ul className="recharts-tooltip-item-list" style={{padding: '0px', margin: '0px'}}>
+                    {
+                        payload.map(d => {
+                            return (
+                                <li className="recharts-tooltip-item recharts-item">
+                                    <span className="recharts-tooltip-item-name"
+                                          style={{color: d.stroke}}>{d.name}</span>
+                                    <span className="recharts-tooltip-item-separator"> : </span>
+                                    <span className="recharts-tooltip-item-value" style={{color: d.stroke}}>
+                                        {d.value === 0 ? 'OUT' : d.value}
+                                    </span>
+                                    <span className="recharts-tooltip-item-unit"></span>
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+            </div>
+        );
+    }
+
+    return null;
+};
+
 class SimpleLineChart extends PureComponent {
     static propTypes = {
         date_array: PropTypes.array.isRequired,
@@ -44,52 +73,62 @@ class SimpleLineChart extends PureComponent {
                     dt_1: array_rank[key].filter(d => d.title === data_title[0].title) ?
                         array_rank[key].filter(d => d.title === data_title[0].title) === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[0].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[0].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[0].title)[0].rank
                         : 0,
                     dt_2: array_rank[key].filter(d => d.title === data_title[1].title) ?
                         array_rank[key].filter(d => d.title === data_title[1].title)[0] === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[1].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[1].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[1].title)[0].rank
                         : 0,
                     dt_3: array_rank[key].filter(d => d.title === data_title[2].title) ?
                         array_rank[key].filter(d => d.title === data_title[2].title)[0] === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[2].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[2].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[2].title)[0].rank
                         : 0,
                     dt_4: array_rank[key].filter(d => d.title === data_title[3].title) ?
                         array_rank[key].filter(d => d.title === data_title[3].title)[0] === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[3].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[3].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[3].title)[0].rank
                         : 0,
                     dt_5: array_rank[key].filter(d => d.title === data_title[4].title) ?
                         array_rank[key].filter(d => d.title === data_title[4].title)[0] === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[4].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[4].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[4].title)[0].rank
                         : 0,
                     dt_6: array_rank[key].filter(d => d.title === data_title[5].title) ?
                         array_rank[key].filter(d => d.title === data_title[5].title)[0] === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[5].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[5].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[5].title)[0].rank
                         : 0,
                     dt_7: array_rank[key].filter(d => d.title === data_title[6].title) ?
                         array_rank[key].filter(d => d.title === data_title[6].title)[0] === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[6].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[6].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[6].title)[0].rank
                         : 0,
                     dt_8: array_rank[key].filter(d => d.title === data_title[7].title) ?
                         array_rank[key].filter(d => d.title === data_title[7].title)[0] === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[7].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[7].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[7].title)[0].rank
                         : 0,
                     dt_9: array_rank[key].filter(d => d.title === data_title[8].title) ?
                         array_rank[key].filter(d => d.title === data_title[8].title)[0] === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[8].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[8].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[8].title)[0].rank
                         : 0,
                     dt_10: array_rank[key].filter(d => d.title === data_title[9].title) ?
                         array_rank[key].filter(d => d.title === data_title[9].title)[0] === undefined
                             ? 0
-                            : array_rank[key].filter(d => d.title === data_title[9].title)[0].rank
+                            : array_rank[key].filter(d => d.title === data_title[9].title)[0] === undefined
+                            ? 0 : array_rank[key].filter(d => d.title === data_title[9].title)[0].rank
                         : 0,
                 }
             })
@@ -136,7 +175,7 @@ class SimpleLineChart extends PureComponent {
                                 <XAxis dataKey="name"/>
                                 <YAxis reversed/>
                                 <CartesianGrid strokeDasharray="3 3"/>
-                                <Tooltip/>
+                                <Tooltip content={<CustomTooltip/>}/>
                                 <Legend/>
                                 <Line type="monotone" name={array_title[0]} dataKey="dt_1" stroke="#4ce1b6"
                                       activeDot={{r: 8}}/>

@@ -8,6 +8,7 @@
 
 namespace App\Model;
 
+use App\Actions\Url\MultiCurl_VolumeResult;
 use App\concern\Str_options;
 use App\Table\Rank;
 use Illuminate\Support\Str;
@@ -375,6 +376,11 @@ class RankModel
         die();
     }
 
+    /**
+     * @param string $project
+     * @param $auth
+     * @return array
+     */
     public function DataByKeyword(string $project, $auth)
     {
         // Json Decode AUTH !!!
@@ -396,13 +402,13 @@ class RankModel
     /**
      * @param $result
      * @param string $keyword
+     * @param bool $multiKeywords
      * @return array
      */
-    private
-    function dataRankByWebsite($result, string $keyword): array
+    private function dataRankByWebsite($result, string $keyword, bool $multiKeywords = false): array
     {
         // Request Html DomCrawler
-        $this->serp->LoadHtmlDom($result);
+        $this->serp->LoadHtmlDom($result, $multiKeywords);
 
         // Convert Url and Desc SERP int the an array !!!
         $data = $this->serp->DataDateRank(scandir($this->serp->DIRLoad(str_replace('%20', '-', $keyword))), $this->serp->DIRLoad(str_replace('%20', '-', $keyword)));
@@ -416,27 +422,29 @@ class RankModel
     }
 
     /**
-     * @param string $keywords
+     * @param null|string $keywords
      * @param $auth
+     * @param bool $multiKeywords
      * @return array
      */
-    public
-    function SerpResultKeywords(string $keywords, $auth = null)
+    public function SerpResultKeywords(?string $keywords, $auth = null, bool $multiKeywords = false)
     {
         $dataArray = [];
-        $arrKywords = explode(',', $keywords);
-        foreach ($arrKywords as $key => $value) {
-            $valueFirst = trim($value);
-            $value = trim($value);
-            if (strpos($value, " ") !== false) {
-                $value = str_replace(" ", '-', $valueFirst);
+        if (!is_null($keywords)) {
+            $arrKywords = explode(',', $keywords);
+            foreach ($arrKywords as $key => $value) {
+                $valueFirst = trim($value);
+                $value = trim($value);
+                if (strpos($value, " ") !== false) {
+                    $value = str_replace(" ", '-', $valueFirst);
+                }
+                if (is_null($auth)) {
+                    $data = $this->serp->FileData($value, $valueFirst);
+                } else {
+                    $data = $this->serp->FileData($value, $valueFirst, $auth->id);
+                }
+                $dataArray[] = $this->dataRankByWebsite($data, $value, $multiKeywords);
             }
-            if (is_null($auth)) {
-                $data = $this->serp->FileData($value, $valueFirst);
-            } else {
-                $data = $this->serp->FileData($value, $valueFirst, $auth->id);
-            }
-            $dataArray[] = $this->dataRankByWebsite($data, $value);
         }
         return $dataArray;
     }
@@ -448,8 +456,7 @@ class RankModel
      * @param array|null $keywords
      * @return array
      */
-    private
-    function DataResultRkDate(array $dataRank, array $dataDate, string $format, array $keywords = null): array
+    private function DataResultRkDate(array $dataRank, array $dataDate, string $format, array $keywords = null): array
     {
         $data = [];
 
@@ -467,8 +474,8 @@ class RankModel
                             $data[$value][$v['keyword']]['rank'] = $v['rank'];
                             $data[$value][$v['keyword']]['url'] = $v['url'];
                             if (isset($keywords) && !is_null($keywords)) {
-                                $data[$value][$v['keyword']]['volume'] = isset($dataVl[$v['keyword']]['volume'][$v['rank'] - 1]['volume']) ?
-                                    $dataVl[$v['keyword']]['volume'][$v['rank'] - 1]['volume']
+                                $data[$value][$v['keyword']]['volume'] = isset($dataVl[$v['keyword']][$v['rank'] - 1]['volume']['volume']) ?
+                                    $dataVl[$v['keyword']][$v['rank'] - 1]['volume']['volume']
                                     : 0;
                             }
                         }
@@ -514,8 +521,7 @@ class RankModel
      * @param array $data
      * @return array
      */
-    private
-    function UsortData(array $data): array
+    private function UsortData(array $data): array
     {
         /**
          * @var $dataNew array
@@ -611,8 +617,7 @@ class RankModel
      * @param null|string|int $id
      * @return mixed
      */
-    private
-    function ProjectSimilar($auth, string $project, $id = null)
+    private function ProjectSimilar($auth, string $project, $id = null)
     {
         return $this->rankTable->selectProject($auth, $project, $id);
     }
@@ -622,8 +627,7 @@ class RankModel
      * @param string $id
      * @return mixed
      */
-    private
-    function projectRank($auth, string $id)
+    private function projectRank($auth, string $id)
     {
         return $this->rankTable->selectRank($id);
     }
@@ -635,8 +639,7 @@ class RankModel
      * @param string $website
      * @return array
      */
-    private
-    function rankFormatTableKeyword(
+    private function rankFormatTableKeyword(
         array $dataRank,
         string $keywords,
         array $rankResult,
@@ -781,14 +784,25 @@ class RankModel
                     $data[$k][$kV]['url'] = $dV['url'];
                     $data[$k][$kV]['date'] = $dV['date'];
                     $data[$k][$kV]['diff'] = $dV['diff'];
-                    $data[$k][$kV]['volume'] = isset($dataVl[$dV['keyword']]['volume'][$dV['rank'] - 1]['volume']) ?
-                        $dataVl[$dV['keyword']]['volume'][$dV['rank'] - 1]['volume']
+                    $data[$k][$kV]['volume'] = isset($dataVl[$dV['keyword']][$dV['rank'] - 1]['volume']['volume']) ?
+                        $dataVl[$dV['keyword']][$dV['rank'] - 1]['volume']['volume']
                         : 0;
                 }
             }
         } else {
-            $DataFileVolume = $this->serp->FileVolumeData(str_replace(' ', '-', $keywords));
-            $volumeResult = Serp::VolumeData($DataFileVolume);
+            $keyword = str_replace(' ', '-', $keywords);
+
+            // Volume And Trends System
+            if (!$this->serp->existFileVolume($keyword)) {
+                $result = (new MultiCurl_VolumeResult())->run($keyword);
+                $DataFileVolume = $this->serp->extractResultData($result, $keyword);
+                $responseVolume = \GuzzleHttp\json_decode($DataFileVolume);
+                $volumeResult = Serp::DataRestultVolume($responseVolume->{'volume'});
+            } else {
+                $responseVolume = \GuzzleHttp\json_decode($this->serp->RenderVolume($keyword));
+                $volumeResult = Serp::DataRestultVolume($responseVolume->{'volume'});
+            }
+
             foreach ($dataRank as $k => $d) {
                 foreach ($d as $kV => $dV) {
                     $data[$k][$kV]['keyword'] = $dV['keyword'];
@@ -799,8 +813,8 @@ class RankModel
                     if (isset($volumeResult->error)) {
                         $data[$k][$kV]['volume'] = 0;
                     } else {
-                        if (isset($volumeResult['result'][$dV['rank'] - 1])) {
-                            $data[$k][$kV]['volume'] = $volumeResult['result'][$dV['rank'] - 1]['volume'];
+                        if (isset($volumeResult[$dV['rank'] - 1])) {
+                            $data[$k][$kV]['volume'] = $volumeResult[$dV['rank'] - 1]['volume'];
                         } else {
                             $data[$k][$kV]['volume'] = 0;
                         }
@@ -897,12 +911,11 @@ class RankModel
     /**
      * @param string $value
      */
-    private
-    function RegexKeywords(string $value)
+    private function RegexKeywords(string $value)
     {
         $value_ex = explode(',', $value);
         foreach ($value_ex as $item) {
-            if (empty($item) || !preg_match('#^[\p{L}\p{Nd}\-\'\s]+$#u', $item)) {
+            if (empty($item) || !preg_match("#^[\p{L}\p{Nd}\-\'\&\+\-\.\s]+$#u", $item)) {
                 echo \GuzzleHttp\json_encode(['error' => 'Invalid Value !!!']);
                 die ();
             }
@@ -921,15 +934,26 @@ class RankModel
             if (strpos($item, " ") !== false) {
                 $item = str_replace(" ", '-', $item);
             }
-            $DataFileVolume = $this->serp->FileVolumeData($item);
-            $volumeResult = Serp::VolumeData($DataFileVolume);
-            if (isset($volumeResult['result'])) {
+
+            // Volume And Trends System
+            if (!$this->serp->existFileVolume($item)) {
+                $result = (new MultiCurl_VolumeResult())->run($item);
+                $DataFileVolume = $this->serp->extractResultData($result, $item);
+                $responseVolume = \GuzzleHttp\json_decode($DataFileVolume);
+                $volumeResult = Serp::DataRestultVolume($responseVolume->{'volume'});
+            } else {
+                $responseVolume = \GuzzleHttp\json_decode($this->serp->RenderVolume($item));
+                $volumeResult = Serp::DataRestultVolume($responseVolume->{'volume'});
+            }
+
+            if (isset($volumeResult)) {
                 foreach ($volumeResult as $keyVl => $vl) {
                     $itemKey = str_replace('-', ' ', $item);
-                    $dataVl[$itemKey]['volume'] = $vl;
+                    $dataVl[$itemKey][$keyVl]['volume'] = $vl;
                 }
             }
         }
+
         return $dataVl;
     }
 
@@ -941,8 +965,8 @@ class RankModel
         if (!is_null($keywords)) {
             $arrayKeyword = explode(',', $keywords);
             $countKey = count($arrayKeyword);
-            if ($countKey >= 150) {
-                echo \GuzzleHttp\json_encode(['error' => '150 keywords by project is authorized !!!']);
+            if ($countKey >= 500) {
+                echo \GuzzleHttp\json_encode(['error' => '500 keywords by project is authorized !!!']);
                 die();
             }
         }

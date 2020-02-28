@@ -3,8 +3,7 @@ require '../../vendor/autoload.php';
 
 use App\Actions\Json_File;
 use App\Actions\Url\Curl_Backlink;
-use App\Actions\Url\Curl_Keyword;
-use App\Actions\Url\Curl_Url;
+use App\Actions\Url\MultiCurl_UrlTrafficAndKeyword;
 use App\concern\Ajax;
 use App\concern\Backlink_Profile;
 use App\concern\Str_options;
@@ -41,14 +40,13 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $linkTable = new LinkProfile($pdo);
 
                     $bl = new Json_File($goutte);
-                    $curl = new Curl_Url();
-                    $curl_keyword = new Curl_Keyword();
+                    $multicurl = new MultiCurl_UrlTrafficAndKeyword();
 
                     $str = new Str_options();
                     $top = new TopKeyword($table, $ajax);
 
-                    $controller = new TopKeywordController($curl_keyword, $crawl, $str, $bl, $top, $table, $ajax);
-                    $model = new WebsiteModel($goutte, $controller, $curl_keyword, $bl);
+                    $controller = new TopKeywordController($multicurl, $crawl, $str, $bl, $top, $table, $ajax);
+                    $model = new WebsiteModel($goutte, $controller, $multicurl, $bl);
 
                     $format = new Numeral();
                     $format->setLanguageManager(new LanguageManager());
@@ -57,7 +55,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $linkDomain = new LinkDomain($goutte, $str);
                     $linkController = new LinkProfileController($linkDomain, $goutte, $pdo, $linkTable, $backlink_profile);
 
-                    $website = new WebSiteController($table, $bl, $model, $format, $curl, $curl_keyword, $controller, $ajax, $linkTable, $linkController, $linkDomain);
+                    $website = new WebSiteController($table, $bl, $model, $format, $multicurl, $controller, $ajax, $linkTable, $linkController, $linkDomain);
                     $website->WebSite($str->searchDoubleString('.', $_GET['domain']), (int)$auth->id);
                 } else {
                     echo 'Invalid Token !!!';

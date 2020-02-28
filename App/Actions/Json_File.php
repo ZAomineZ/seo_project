@@ -76,6 +76,7 @@ class Json_File
      */
     protected function FileOpenJson (Client $goutte, string $url) : Crawler
     {
+        sleep(2);
         $gt = $goutte->request("GET", $url);
         $gt_response = $goutte->getResponse()->getContent();
         $gt->add($gt_response);

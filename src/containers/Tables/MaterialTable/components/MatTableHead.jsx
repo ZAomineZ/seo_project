@@ -23,9 +23,6 @@ const rows = [
     id: 'volume', numeric: false, disablePadding: true, label: 'Volume',
   },
   {
-    id: 'cpc', numeric: false, disablePadding: true, label: 'CPC',
-  },
-  {
     id: 'charts', numeric: false, disablePadding: false, label: 'Charts',
   },
 ];

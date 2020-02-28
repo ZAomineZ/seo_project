@@ -9,8 +9,7 @@
 namespace App\Controller;
 
 use App\Actions\Json_File;
-use App\Actions\Url\Curl_Keyword;
-use App\Actions\Url\Curl_Url;
+use App\Actions\Url\MultiCurl_UrlTrafficAndKeyword;
 use App\concern\Ajax;
 use App\concern\File_Params;
 use App\concern\Img_Params;
@@ -18,6 +17,7 @@ use App\concern\Str_options;
 use App\Model\LinkDomain;
 use App\Model\WebSite;
 use App\Table\LinkProfile;
+use InvalidArgumentException;
 use Stillat\Numeral\Numeral;
 
 class WebSiteController
@@ -39,14 +39,6 @@ class WebSiteController
      */
     private static $format;
     /**
-     * @var Curl_Url
-     */
-    private static $curl;
-    /**
-     * @var Curl_Keyword
-     */
-    private static $curl_keyword;
-    /**
      * @var TopKeywordController
      */
     private static $controller;
@@ -66,6 +58,10 @@ class WebSiteController
      * @var LinkDomain
      */
     private static $linkDomain;
+    /**
+     * @var MultiCurl_UrlTrafficAndKeyword
+     */
+    private static $curlTrafficUrlKeyword;
 
     /**
      * WebSiteController constructor.
@@ -73,8 +69,7 @@ class WebSiteController
      * @param Json_File $bl
      * @param WebSite $web
      * @param Numeral $format
-     * @param Curl_Url $curl
-     * @param Curl_Keyword $curl_keyword
+     * @param MultiCurl_UrlTrafficAndKeyword $curlTrafficUrlKeyword
      * @param TopKeywordController $controller
      * @param Ajax $ajax
      * @param LinkProfile $linkProfile
@@ -86,8 +81,7 @@ class WebSiteController
         Json_File $bl,
         WebSite $web,
         Numeral $format,
-        Curl_Url $curl,
-        Curl_Keyword $curl_keyword,
+        MultiCurl_UrlTrafficAndKeyword $curlTrafficUrlKeyword,
         TopKeywordController $controller,
         Ajax $ajax,
         LinkProfile $linkProfile,
@@ -99,8 +93,7 @@ class WebSiteController
         self::$bl = $bl;
         self::$web = $web;
         self::$format = $format;
-        self::$curl = $curl;
-        self::$curl_keyword = $curl_keyword;
+        self::$curlTrafficUrlKeyword = $curlTrafficUrlKeyword;
         self::$controller = $controller;
         self::$ajax = $ajax;
         self::$linkTable = $linkProfile;
@@ -198,19 +191,26 @@ class WebSiteController
         $domainArray = explode('.', $domain);
         $domain = $domainArray[count($domainArray) - 2] . '.' . $domainArray[count($domainArray) - 1];
 
-        $html = self::$controller->CrawlHtml(self::$curl_keyword->Curl($domain));
+        $curlKeyword = self::$curlTrafficUrlKeyword->run($domain)['keyword'] ?: null;
+        $curlTraffic = self::$curlTrafficUrlKeyword->run($domain)['traffic'] ?: null;
 
-        $key = $html['api_key'];
-        $exportHash = $html['export_hash'];
-        $exportHashTraffic = $html['export_hash_traffic'];
-
-        $traffic = self::$bl->ReqTrafficKeyword("https://www.semrush.com/dpa/api?database=fr&amp;export=json&key=$key&domain=$domain&display_hash=$exportHash&currency=usd&action=report&type=domain_rank_history&display_sort=dt_asc&_=1555332238625");
-        $traffic_now = self::$bl->ReqTrafficKeyword("https://fr.semrush.com/dpa/api?database=fr&export=json&key=$key&domain=$domain&display_hash=$exportHashTraffic&action=report&type=domain_rank");
-        if (isset($traffic->error) && $traffic->error !== '') {
-            echo \GuzzleHttp\json_encode(['error' => 'A Error is present !!!']);
-            die();
+        try {
+            $keywordJson = $curlKeyword !== null ? \GuzzleHttp\json_decode($curlKeyword): [];
+            $trafficJson = $curlTraffic !== null ? \GuzzleHttp\json_decode($curlTraffic) : [];
+        } catch (\Exception $exception) {
+            if ($exception instanceof InvalidArgumentException) {
+                echo \GuzzleHttp\json_encode([
+                    'An problem is occurrence !!!'
+                ]);
+                die();
+            }
         }
-        return \GuzzleHttp\json_encode(['data' => $traffic->rank_history->data, 'data_now' => !isset($traffic_now->rank) ? 0 : $traffic_now->rank->data]);
+
+        return \GuzzleHttp\json_encode(
+            [
+                'traffic' => empty($trafficJson) ? [] : $trafficJson,
+                'keywordAndTop' => empty($keywordJson) ? [] : $keywordJson
+            ]);
     }
 
     /**
@@ -280,12 +280,12 @@ class WebSiteController
      * @param string $domain
      * @return string
      */
-    protected static function JsonBlTop($first = false, string $domain): string
+    protected static function JsonBlTop(bool $first = false, string $domain): string
     {
-        $result_first = self::$curl->Curl($domain, "true", 'lastCheck');
-        $result = self::$curl->Curl($domain, "false", 'lastCheck');
-        $result_second = self::$curl->Curl($domain, "false", 'url');
-        $result_anchorUrl = self::$curl->Curl($domain, "true", 'anchorUrl');
+        $result_first = self::$curlTrafficUrlKeyword->run($domain, "true", 'lastCheck')['url'] ?: false;
+        $result = self::$curlTrafficUrlKeyword->run($domain, "false", 'lastCheck')['url'] ?: false;
+        $result_second = self::$curlTrafficUrlKeyword->run($domain, "false", 'url')['url'] ?: false;
+        $result_anchorUrl = self::$curlTrafficUrlKeyword->run($domain, "true", 'anchorUrl')['url'] ?: false;
         if ($first) {
             return \GuzzleHttp\json_encode([
                 $result_first === false ? [] : $result_first
@@ -311,8 +311,7 @@ class WebSiteController
         $file_traffic = self::FilesDomain($dir, 'traffic', $token);
         $file_ref = self::FilesDomain($dir, 'dash-stats', $token);
         $file_top = self::FilesDomain($dir, 'top_bl', $token);
-        $file_curl = self::FilesDomain($dir, 'all_bl', $token);
-        return [$file_bl_info, $file_traffic, $file_top, $file, $file_ref, $file_curl];
+        return [$file_bl_info, $file_traffic, $file_top, $file, $file_ref];
     }
 
 
@@ -348,7 +347,6 @@ class WebSiteController
         } else {
             File_Params::CreateParamsFile($arr[4], $dir, self::JsonReferringWeb($domain, TRUE, $arr[3], $dir), TRUE);
         }
-        self::CurlCreateFile($arr[5], $dir, $domain);
     }
 
     /**
@@ -368,7 +366,7 @@ class WebSiteController
             $file_dir = self::FileSystem($dir_domain['dir'], $req->token, $file);
             if ($mkdir && !file_exists($file_dir[0])) {
                 self::CreateFileWebSite(
-                    [$file_dir[0], $file_dir[1], $file_dir[2], $file, $file_dir[4], $file_dir[5]],
+                    [$file_dir[0], $file_dir[1], $file_dir[2], $file, $file_dir[4]],
                     $dir_domain['dir'],
                     $domain,
                     $option);
@@ -381,23 +379,22 @@ class WebSiteController
                     $file = self::FilesDomain($dir_domain['dir'], $dir_domain['domain_str'], $req->token, date("Y-m-d"));
                     $file_dir = self::FileSystem($dir_domain['dir'], $req->token, $file);
                     $file_ref = self::FilesDomain($dir_domain['dir'], 'dash-stats', $req->token);
-                    if (!file_exists($file_dir[1]) || !file_exists($file_dir[0]) || !file_exists($file_dir[2]) || !file_exists($file) || !file_exists($file_dir[4]) || !file_exists($file_dir[5])) {
+                    if (!file_exists($file_dir[1]) || !file_exists($file_dir[0]) || !file_exists($file_dir[2]) || !file_exists($file) || !file_exists($file_dir[4])) {
                         if (file_exists($file_dir[1])) {
                             self::$web->CronTraffic($file_dir[1], $dir_domain['dir'], $domain);
                         }
                         if (!file_exists($file) && file_exists($file_ref)) {
                             File_Params::CreateParamsFile($file, $dir_domain['dir'], self::JsonWebSite($domain, $dir_domain['dir'], $option), TRUE);
                             File_Params::UpdateFile($file_ref, $dir_domain['dir'], self::JsonReferringWeb($domain, false, $file, $dir_domain['dir']));
-                            if (!file_exists($file_dir[1]) || !file_exists($file_dir[0]) || !file_exists($file_dir[2]) || !file_exists($file_dir[5])) {
+                            if (!file_exists($file_dir[1]) || !file_exists($file_dir[0]) || !file_exists($file_dir[2])) {
                                 File_Params::CreateParamsFile($file_dir[1], $dir_domain['dir'], self::JsonTrafic($domain), TRUE);
                                 File_Params::CreateParamsFile($file_dir[0], $dir_domain['dir'], Json_File::JsonBacklink($domain));
                                 File_Params::CreateParamsFile($file_dir[2], $dir_domain['dir'], Json_File::JsonTopBl($domain));
-                                self::CurlCreateFile($file_dir[5], $dir_domain['dir'], $domain);
                             }
                             return true;
                         }
                         self::CreateFileWebSite(
-                            [$file_dir[0], $file_dir[1], $file_dir[2], $file, $file_dir[4], $file_dir[5]],
+                            [$file_dir[0], $file_dir[1], $file_dir[2], $file, $file_dir[4]],
                             $dir_domain['dir'],
                             $domain,
                             $option);
@@ -437,20 +434,15 @@ class WebSiteController
             'result' => File_Params::OpenFile($file[3], $dir),
             'bl_info' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' :
                 File_Params::OpenFile($file[0], $dir),
-            'traffic' => File_Params::OpenFile($file[1], $dir),
+            'traffic' => File_Params::OpenFile($file[1], $dir) ?? [],
             'file_top_bl' => File_Params::OpenFile($file[2], $dir)->status === 'Service Unavailable' ? '' :
                 File_Params::OpenFile($file[2], $dir),
-            'all_bl' => File_Params::OpenFile($file[5], $dir),
+            'all_bl' => [],
             'dash_stats' => $count >= 7 ?
                 array_slice(self::$web->ChangeData(File_Params::OpenFile($file[4], $dir), "m/d"), $count - 7, $count)
                 : self::$web->ChangeData(File_Params::OpenFile($file[4], $dir), "m/d"),
             'stats' => File_Params::OpenFile($file[4], $dir),
-            'traffic_data' => self::$web->ForData(
-                File_Params::OpenFile($file[1], $dir)->data,
-                isset(File_Params::OpenFile($file[1], $dir)->data_now) ?
-                    File_Params::OpenFile($file[1], $dir)->data_now
-                    : []
-            ),
+            'traffic_data' => self::$web->ForData(File_Params::OpenFile($file[1], $dir) ?? []),
             'anchors' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' :
                 self::$web->DataDefault(File_Params::OpenFile($file[0], $dir)
                     ->data
@@ -463,27 +455,10 @@ class WebSiteController
                     ->historical
                     ->domain_stat
                     ->weeks, "M j"),
-            'data_asc' => isset(File_Params::OpenFile($file[5], $dir)[0]) &&
-            File_Params::OpenFile($file[5], $dir)[0] === [] ?
-                [] : self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[0]
-                    ->backlink
-                    ->backlink, 'UNIQUE'),
-            'data_desc' => isset(File_Params::OpenFile($file[5], $dir)[1][0]) &&
-            File_Params::OpenFile($file[5], $dir)[1][0] === [] ?
-                [] :
-                self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][0]
-                    ->backlink
-                    ->backlink, 'UNIQUE'),
-            'data_url' => isset(File_Params::OpenFile($file[5], $dir)[1][1]) &&
-            File_Params::OpenFile($file[5], $dir)[1][1] === [] ?
-                [] : self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][1]
-                    ->backlink
-                    ->backlink, 'UNIQUE'),
-            'data_assortUrl' => isset(File_Params::OpenFile($file[5], $dir)[1][2]) &&
-            File_Params::OpenFile($file[5], $dir)[1][2] === [] ?
-                [] : self::$web->DataDefault(File_Params::OpenFile($file[5], $dir)[1][2]
-                    ->backlink
-                    ->backlink, 'UNIQUE'),
+            'data_asc' => [],
+            'data_desc' => [],
+            'data_url' => [],
+            'data_assortUrl' => [],
             'power' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
             'power_trust' => self::$web->ChangePowerSize(
                 Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)),
@@ -550,7 +525,7 @@ class WebSiteController
                 if ($req) {
                     $file = self::FilesDomain($file_result['dir'], $file_result['domain_str'], $req->token, date("Y-m-d"));
                     $file_dir = self::FileSystem($file_result['dir'], $req->token, $file);
-                    if (file_exists($file_dir[1]) && file_exists($file_dir[0]) && file_exists($file_dir[2]) && file_exists($file_dir[3]) && file_exists($file_dir[4]) && file_exists($file_dir[5])) {
+                    if (file_exists($file_dir[1]) && file_exists($file_dir[0]) && file_exists($file_dir[2]) && file_exists($file_dir[3]) && file_exists($file_dir[4])) {
                         return self::ResultJson($file_result['dir'], $file_result['domain_str'], $domain);
                     } else {
                         self::$ajax->UserRate((int)$id);

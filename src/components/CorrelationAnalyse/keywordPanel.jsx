@@ -37,6 +37,7 @@ class KeywordPanel extends PureComponent {
     render() {
         return (
             <Panel title={this.props.title}
+                   serpFeature={[]}
                    subhead={
                        this.props.description ?
                            'List of correlation data' + this.props.description

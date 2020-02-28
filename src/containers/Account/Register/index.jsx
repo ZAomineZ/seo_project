@@ -46,16 +46,14 @@ class Register extends PureComponent {
         }
     }
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
+    SetCookie(name_cookie, value_cookie, expire_days) {
         let date = new Date();
         date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
         let expire_cookie = "expires=" + date.toUTCString();
         return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
     }
 
-    DeleteCookie (name_cookie)
-    {
+    DeleteCookie(name_cookie) {
         return this.SetCookie(name_cookie, '', -1);
     }
 
@@ -92,7 +90,7 @@ class Register extends PureComponent {
                                     let JSON_DECODE = JSON.stringify(response.data);
                                     sessionStorage.setItem('Auth', JSON_DECODE);
                                     sessionStorage.setItem('Remember_me', 'TRUE');
-                                    this.setState({ auth: 'Auth' });
+                                    this.setState({auth: 'Auth'});
                                     NotificationSystem.newInstance({}, n => notification = n);
                                     setTimeout(() => showNotification('You are connected !!!', 'success'), 700);
                                 }
@@ -134,7 +132,7 @@ class Register extends PureComponent {
                                         let JSON_DECODE = JSON.stringify(response.data);
                                         sessionStorage.setItem('Auth', JSON_DECODE);
                                         sessionStorage.setItem('Remember_me', 'FALSE');
-                                        this.setState({ auth: 'Auth' });
+                                        this.setState({auth: 'Auth'});
                                         NotificationSystem.newInstance({}, n => notification = n);
                                         setTimeout(() => showNotification('You are connected !!!', 'success'), 700);
                                     }
@@ -146,14 +144,13 @@ class Register extends PureComponent {
             }
         }
         if (sessionStorage.getItem('Auth')) {
-            this.setState({ auth : 'Auth' });
+            this.setState({auth: 'Auth'});
             NotificationSystem.newInstance({}, n => notification = n);
             setTimeout(() => showNotification('You are already connected, it is impossible to access this page !!!', 'danger'), 700);
         }
     }
 
-    DeleteCookieNotExist ()
-    {
+    DeleteCookieNotExist() {
         sessionStorage.removeItem('Auth');
         sessionStorage.removeItem('Remember_me');
         this.setState({auth: 'noAuth'});
@@ -166,7 +163,7 @@ class Register extends PureComponent {
     }
 
     render() {
-        if (this.state.auth === 'Auth')  {
+        if (this.state.auth === 'Auth') {
             return (
                 <Redirect to={{
                     pathname: '/seo/serp',

@@ -20,7 +20,7 @@ class ActivityChart extends PureComponent{
         });
 
         return (
-            <Panel xs={12} lg={12} title="SEO Traffic">
+            <Panel xs={12} lg={12} title="SEO Traffic" serpFeature={[]}>
                 <ResponsiveContainer height={300} className="dashboard__area">
                     <AreaChart data={data} margin={{ top: 20, left: -15, bottom: 20 }}>
                         <XAxis dataKey="name" tickLine={false} />

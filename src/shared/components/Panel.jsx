@@ -8,6 +8,7 @@ import MinusIcon from 'mdi-react/MinusIcon';
 import AutorenewIcon from 'mdi-react/AutorenewIcon';
 import LoadingIcon from 'mdi-react/LoadingIcon';
 import {Link, Redirect} from "react-router-dom";
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 export default class AlertComponent extends PureComponent {
     static propTypes = {
@@ -15,11 +16,14 @@ export default class AlertComponent extends PureComponent {
         color: PropTypes.string,
         title: PropTypes.string,
         subhead: PropTypes.string,
+
         label: PropTypes.string,
         icon: PropTypes.string,
         panelClass: PropTypes.string,
         button: PropTypes.string,
         keyword: PropTypes.string,
+
+        serpFeature: PropTypes.array,
         date_comparaison: PropTypes.bool,
         state_location: PropTypes.array,
         value: PropTypes.string.isRequired
@@ -67,7 +71,7 @@ export default class AlertComponent extends PureComponent {
 
     render() {
         const {
-            color, divider, icon, title, label, subhead, panelClass, button,
+            color, divider, icon, title, label, subhead, panelClass, button, serpFeature
         } = this.props;
 
         let moment = require('moment');
@@ -115,6 +119,13 @@ export default class AlertComponent extends PureComponent {
                                     : ''}
                             </h5>
                             <h5 className="subhead">{subhead}</h5>
+                            <div className="theme-light theme-color-icon mt-3">
+                                {
+                                    serpFeature.map(d => {
+                                        return (ReactHtmlParser(d))
+                                    })
+                                }
+                            </div>
                         </div>
                         <Collapse isOpen={this.state.collapse}>
                             <div>

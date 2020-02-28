@@ -88,8 +88,8 @@ class IntervalDatePickerField extends PureComponent {
                     state: [
                         {
                             'type': true,
-                            'StartDate': this.state.startDate === null ? this.props[0].valueStartDate : this.state.startDate.format("LL"),
-                            'EndDate': this.state.endDate === null ? this.props[0].valueEndDate : this.state.endDate.format("LL"),
+                            'StartDate': this.state.startDate === null ? this.props[0].valueStartDate : this.state.startDate.format("MMM D, Y"),
+                            'EndDate': this.state.endDate === null ? this.props[0].valueEndDate : this.state.endDate.format("MMM D, Y"),
                             'value': this.props[0].value
                         }
                     ]
@@ -113,6 +113,7 @@ class IntervalDatePickerField extends PureComponent {
                     onChange={this.handleChangeStart}
                     value={this.state.startDate === null ? this.props[0].valueStartDate : this.state.startDate.format('LL')}
                     dateFormat="LL"
+                    disabled={!!this.props[0].type_btn}
                     placeholderText="From"
                 />
                 <MinusIcon className="date-picker__svg"/>
@@ -124,14 +125,18 @@ class IntervalDatePickerField extends PureComponent {
                     onChange={this.handleChangeEnd}
                     value={this.state.endDate === null ? this.props[0].valueEndDate : this.state.endDate.format('LL')}
                     dateFormat="LL"
+                    disabled={!!this.props[0].type_btn}
                     placeholderText="To"
                 />
                 <div className="pl-3">
-                    <button className="btn btn-sm btn-primary"
-                            onClick={(e) => this.ClickBtn(e, this.state.startDate === null ? this.props[0].valueStartDate : this.state.startDate.format('MMM D, Y'),
-                                this.state.endDate === null ? this.props[0].valueEndDate : this.state.endDate.format('MMM D, Y'),
-                                this.state.endDate === null ? moment(this.props[0].valueEndDate).format('YYYY-MM-DD') : this.state.endDate.format('YYYY-MM-DD'))}>Enjoy
-                    </button>
+                    {
+                        !this.props[0].type_btn ?
+                            <button className="btn btn-sm btn-primary"
+                                    onClick={(e) => this.ClickBtn(e, this.state.startDate === null ? this.props[0].valueStartDate : this.state.startDate.format('MMM D, Y'),
+                                        this.state.endDate === null ? this.props[0].valueEndDate : this.state.endDate.format('MMM D, Y'),
+                                        this.state.endDate === null ? moment(this.props[0].valueEndDate).format('YYYY-MM-DD') : this.state.endDate.format('YYYY-MM-DD'))}>Enjoy
+                            </button> : ''
+                    }
                     {
                         this.props[0].type_btn ? <button className="btn btn-sm btn-danger"
                                                          onClick={(e) => this.RedirectSerp(e)}>Reset to default

@@ -129,6 +129,7 @@ export default class TopTenComparaison extends PureComponent {
         return (
             <Panel
                 title={this.props.title ? this.props.title : ''}
+                serpFeature={[]}
                 button={this.props.buttonExist ? this.props.buttonExist : ''}
                 keyword={this.props.keyword}
                 value={this.props.value}

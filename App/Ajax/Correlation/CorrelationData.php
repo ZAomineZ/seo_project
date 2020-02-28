@@ -3,15 +3,13 @@ require_once dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 
 use App\Actions\Json_File;
 use App\Actions\Url\Curl_Api;
-use App\Actions\Url\Curl_Keyword;
-use App\Actions\Url\Curl_Url;
 use App\Actions\Url\Curl_Volume;
+use App\Actions\Url\MultiCurl_UrlTrafficAndKeyword;
 use App\concern\Ajax;
 use App\concern\Backlink_Profile;
 use App\concern\Str_options;
 use App\Controller\CorrelationController;
 use App\Controller\LinkProfileController;
-use App\Controller\RankController;
 use App\Controller\TopKeywordController;
 use App\Controller\WebSiteController;
 use App\Model\Correlation;
@@ -55,14 +53,13 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
                     $website = new WebsiteTable($pdoModel);
 
                     // Dependencies for TopControllerKeyword :
-                    $curlKeyword = new Curl_Keyword();
-                    $curlUrl = new Curl_Url();
+                    $multicurl = new MultiCurl_UrlTrafficAndKeyword();
                     $crawler = new Crawler();
                     $topControllerModel = new TopKeyword($website, $header);
 
                     // TopControllerKeyword
                     $topControllerKeyword = new TopKeywordController(
-                        $curlKeyword,
+                        $multicurl,
                         $crawler,
                         $strOptions,
                         $jsonFile,
@@ -88,14 +85,13 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
                     // WebSite Dependencies !!!
                     $formatNumeral = new Numeral();
                     $formatNumeral->setLanguageManager(new LanguageManager());
-                    $websiteModel = new WebSite($goutte, $topControllerKeyword, $curlKeyword, $jsonFile);
+                    $websiteModel = new WebSite($goutte, $topControllerKeyword, $multicurl, $jsonFile);
                     $websiteController = new WebSiteController(
                         $website,
                         $jsonFile,
                         $websiteModel,
                         $formatNumeral,
-                        $curlUrl,
-                        $curlKeyword,
+                        $multicurl,
                         $topControllerKeyword,
                         $header,
                         $linkTable,
@@ -128,6 +124,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
                     echo 'Invalid Token !!!';
                 }
             } catch (Exception $exception) {
+                dd($exception);
                 echo 'Invalid Token !!!';
             }
         } else {

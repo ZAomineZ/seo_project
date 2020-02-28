@@ -20,7 +20,7 @@ class BounceRateArea extends PureComponent {
         });
 
         return (
-            <Panel xl={5} lg={6} md={12} title="Dashboard Backlinks">
+            <Panel xl={5} lg={6} md={12} title="Dashboard Backlinks" serpFeature={[]}>
                 <ResponsiveContainer height={220} className="dashboard__area">
                     <AreaChart
                         data={data}

@@ -14,6 +14,8 @@ import {route, requestUri} from '../../const'
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
+import SerpTopCopyboard from "./serp_top_copyboard";
+import SerpVolumeCharts from "./serp_volume_charts";
 
 let notification = null;
 
@@ -55,7 +57,8 @@ class CryptoDashboard extends PureComponent {
 
     constructor() {
         super();
-        console.error = () => {};
+        console.error = () => {
+        };
         console.error();
         this.state = {
             description: [],
@@ -64,8 +67,14 @@ class CryptoDashboard extends PureComponent {
             date_format: [],
             dataVl: [],
             rank: [],
+            trends: [],
+            serpFeature: [],
+            volume: 0,
+
             loading: true,
             loaded: false,
+            loadedTrend: false,
+
             error: false,
             redirectSerp: false
         }
@@ -78,8 +87,7 @@ class CryptoDashboard extends PureComponent {
         this.props.dispatch(deleteCryptoTableData(arrayCopy));
     };
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
+    SetCookie(name_cookie, value_cookie, expire_days) {
         let date = new Date();
         date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
         let expire_cookie = "expires=" + date.toUTCString();
@@ -101,23 +109,22 @@ class CryptoDashboard extends PureComponent {
         }
     }
 
-    CookieReset (token, id)
-    {
+    CookieReset(token, id) {
         if (this.getCookie('remember_me_auth')) {
             this.SetCookie('remember_me_auth', token + '__' + id, 30)
         } else {
             this.SetCookie('auth_today', token + '__' + id, 1)
         }
-        this.setState({ redirectSerp : !this.state.redirectSerp})
+        this.setState({redirectSerp: !this.state.redirectSerp})
     }
 
     componentDidMount() {
         if (this.props.location.state && this.props.location.state.value === undefined && this.props.location.state[0].error) {
-            this.setState({ redirectSerp : !this.state.redirectSerp})
+            this.setState({redirectSerp: !this.state.redirectSerp});
             NotificationSystem.newInstance({}, n => notification = n);
             setTimeout(() => showNotification(this.props.location.state[0].error, 'danger'), 700);
         } else if (this.props.location.state === undefined) {
-            this.setState({ redirectSerp : !this.state.redirectSerp})
+            this.setState({redirectSerp: !this.state.redirectSerp})
         } else {
             axios.get(requestUri + window.location.hostname + route + '/Ajax/Serp.php', {
                 headers: {
@@ -142,15 +149,18 @@ class CryptoDashboard extends PureComponent {
                         if (response.data.error === 'Invalid Token') {
                             this.CookieReset(response.data.token, response.data.id)
                         } else if (response.data.error && response.data.error === 'Invalid Value') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp});
+                            this.setState({redirectSerp: !this.state.redirectSerp});
+
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
                         } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp});
+                            this.setState({redirectSerp: !this.state.redirectSerp});
+
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
                         } else if (response.data.error && response.data.error === 'Any Result found !!!') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp});
+                            this.setState({redirectSerp: !this.state.redirectSerp});
+
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
                         }
@@ -159,14 +169,15 @@ class CryptoDashboard extends PureComponent {
                             url: response.data.url,
                             description: response.data.description,
                             rank: response.data.rank,
+                            serpFeature: response.data.serpFeature ? Object.values(response.data.serpFeature) : [],
                             date: response.data.date,
                             date_format: response.data.date_format,
-                            dataVl: response.data.dataVolume.result,
+                            dataVl: response.data.dataVolume.volume,
                             loading: false
                         });
                         setTimeout(() => this.setState({loaded: true}), 500);
                         if (this.state.description && this.state.description.length === 0) {
-                            this.setState({ error: !this.state.error });
+                            this.setState({error: !this.state.error});
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification('A error has been detected, this error will be fixed as soon as possible', 'danger'), 700);
                         }
@@ -174,6 +185,82 @@ class CryptoDashboard extends PureComponent {
                 }
             });
         }
+        setTimeout(() => this.rankEmpty(), 1000);
+        setTimeout(() => this.volumeSerpResult(), 2000)
+    }
+
+    rankEmpty() {
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        let rankEntries = Object.entries(this.state.rank);
+
+        const params = {
+            keyword: this.props.match.params.keyword,
+            value: this.props.location.state !== undefined ? this.props.location.state.value : '',
+            rank: rankEntries.filter(d => d[1].length === 0),
+            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
+        axios.get(requestUri + window.location.hostname + route + '/Ajax/SerpEmptyRank.php', {
+            headers: headers,
+            params: params
+        }).then(response => {
+            if (response.status && response.status === 200 && response.data.dataRank) {
+                const dataRank = response.data.dataRank;
+                const dateArray = response.data.dates;
+                const formatDatesArray = response.data.formatDates;
+
+                this.setState({
+                    rank: dataRank,
+                    date: dateArray,
+                    date_format: formatDatesArray
+                });
+            }
+        })
+    }
+
+    volumeSerpResult()
+    {
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            keyword: this.props.match.params.keyword,
+            value: this.props.location.state !== undefined ? this.props.location.state.value : '',
+            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
+        axios.get(requestUri + window.location.hostname + route + '/Ajax/SerpVolumeResult.php', {
+            headers: headers,
+            params: params
+        }).then(response => {
+            if (response.status && response.status === 200 && response.data.data) {
+                this.setState({
+                    trends: response.data.data.trends ? Object.values(response.data.data.trends) : [],
+                    volume: response.data.data.volume,
+                    loadedTrend: true
+                })
+            }
+        })
     }
 
     render() {
@@ -204,16 +291,21 @@ class CryptoDashboard extends PureComponent {
                         </Col>
                     </Row>
                     <Row>
-                        <DatePickers top_10_url={url_data.slice(0, 10)}
-                                     top_20_url={url_data.slice(0, 20)}
-                                     top_30_url={url_data.slice(0, 30)}
-                                     top_50_url={url_data.slice(0, 50)}
-                                     top_100_url={url_data.slice(0, url_data.length)}
-                                     date_array={this.state.date_format}
+                        <DatePickers date_array={this.state.date_format}
                                      dt_array={[]}
                                      type_btn={false}
                                      keyword={this.props.match.params.keyword}
                                      value={typeof (this.props.location.state) == 'undefined' ? '' : this.props.location.state.value}/>
+                        <SerpVolumeCharts trends={this.state.trends}
+                                          volume={this.state.volume}
+                                          loaded={this.state.loadedTrend} />
+                    </Row>
+                    <Row>
+                        <SerpTopCopyboard top_10_url={url_data.slice(0, 10)}
+                                          top_20_url={url_data.slice(0, 20)}
+                                          top_30_url={url_data.slice(0, 30)}
+                                          top_50_url={url_data.slice(0, 50)}
+                                          top_100_url={url_data.slice(0, url_data.length)} />
                     </Row>
                     <Row>
                         {!this.state.loaded &&
@@ -230,7 +322,8 @@ class CryptoDashboard extends PureComponent {
                         <div className="col-xs-12 col-md-12 col-lg-12 col-xl-12">
                             {!this.state.loaded &&
                             <div className="panel__refresh">
-                                <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <svg className="mdi-icon " width="24" height="24" fill="currentColor"
+                                     viewBox="0 0 24 24">
                                     <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
                                 </svg>
                             </div>
@@ -245,6 +338,7 @@ class CryptoDashboard extends PureComponent {
                                 array_url={url_data}
                                 array_date={this.state.date}
                                 array_rank={this.state.rank}
+                                array_serpFeature={this.state.serpFeature}
                                 dataVl={this.state.dataVl}
                                 keyword={this.props.match.params.keyword}
                                 date_comparaison={false}

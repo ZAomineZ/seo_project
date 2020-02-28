@@ -9,8 +9,13 @@
 namespace App\Controller;
 
 use App\Actions\Json_File;
+use App\Actions\Url\MultiCurl_VolumeResult;
 use App\concern\Date_Format;
 use App\concern\File_Params;
+use App\concern\Str_options;
+use App\DataTraitement\FileData;
+use App\ErrorCode\Exception\NullableException;
+use App\ErrorCode\NullableType;
 use App\Http\Controllers\Controller;
 use App\Model\Serp;
 use App\Table\Website;
@@ -42,6 +47,10 @@ class SerpController extends Controller
      * @var WebSiteController
      */
     private $webSiteController;
+    /**
+     * @var MultiCurl_VolumeResult
+     */
+    private $multiCurl = null;
 
     /**
      * SerpController constructor.
@@ -51,6 +60,7 @@ class SerpController extends Controller
      * @param Numeral $format
      * @param \App\Model\WebSite $web
      * @param WebSiteController $webSiteController
+     * @param MultiCurl_VolumeResult $multiCurl
      */
     public function __construct(
         Serp $serp,
@@ -58,7 +68,8 @@ class SerpController extends Controller
         Json_File $bl,
         Numeral $format,
         \App\Model\WebSite $web,
-        WebSiteController $webSiteController
+        WebSiteController $webSiteController,
+        MultiCurl_VolumeResult $multiCurl = null
     )
     {
         $this->serp = $serp;
@@ -67,6 +78,7 @@ class SerpController extends Controller
         $this->format = $format;
         $this->web = $web;
         $this->webSiteController = $webSiteController;
+        $this->multiCurl = $multiCurl;
     }
 
     /**
@@ -196,13 +208,12 @@ class SerpController extends Controller
         $keyword = str_replace('-', '%20', $keyword);
         $create_file = $this->serp->FileData($keyword, $value, $id);
 
-        // We created now a new file with Curl_Volume class
         // If File Exist we retuned the result in JSON !!!
         // Statistic Volume And ...
-        $DataFileVolume = $this->serp->FileVolumeData($keyword);
+        $volume  = $this->serp->RenderVolume($keyword);
 
         // We return the result with DomCrawler in the body !!!
-        $dom_result = $this->serp->DomResultSerp($create_file, $DataFileVolume, $keyword);
+        $dom_result = $this->serp->DomResultSerp($create_file, $volume, $keyword);
         echo \GuzzleHttp\json_encode($dom_result);
     }
 
@@ -230,10 +241,9 @@ class SerpController extends Controller
         $rank_data = $this->serp->DataDateRank(scandir($dir), $dir);
         $create_file = $this->serp->FileData($keyword, $value, $id);
 
-        // We created now a new file with Curl_Volume class
         // If File Exist we returned the result in JSON !!!
         // Statistic Volume And CPC
-        $DataFileVolume = $this->serp->FileVolumeData($keyword);
+        $DataFileVolume = $this->serp->RenderVolume($keyword);
 
         // We returned The result in th body FRONT !!!
         $dom_result = $this->serp->DomResultSerp($create_file, $DataFileVolume, $keyword);
@@ -259,7 +269,60 @@ class SerpController extends Controller
         $file = $this->serp->DateFile($date_end_format, $this->serp->DIRLoad($keyword));
         $open = File_Params::OpenFile($file, $this->serp->DIRLoad($keyword), TRUE);
 
+        // If File Exist we returned the result in JSON !!!
+        // Statistic Volume And CPC
+        $DataFileVolume = $this->serp->RenderVolume($keyword);
+
         // Load Data With Filter Crawler, we use Method $this->LoadReqCrawler() !!!
-        echo \GuzzleHttp\json_encode($this->serp->LoadReqCrawler($open, $keyword, $date_start_format, $date_end_format, TRUE));
+        echo \GuzzleHttp\json_encode($this->serp->LoadReqCrawler($open, $keyword, $date_start_format, $date_end_format, $DataFileVolume, TRUE));
+    }
+
+    /**
+     * @param array $rank
+     * @param string $keyword
+     * @return void
+     */
+    public function emptyRank(array $rank, string $keyword): void
+    {
+        $rankDates = Str_options::toArrayKey($rank);
+        $this->serp->deleteFileRankEmpty($rankDates, $keyword);
+
+        $dataDates = $this->serp
+            ->DataDateRank(scandir($this->serp->DIRLoad($keyword)), $this->serp->DIRLoad($keyword));
+        echo \GuzzleHttp\json_encode([
+            'dataRank' => $dataDates['rank'],
+            'dates' => $dataDates['date'],
+            'formatDates' => $this->serp->DateFormat($dataDates['date'])
+        ]);
+    }
+
+    /**
+     * @param string $keyword
+     */
+    public function volumeSearchResult(string $keyword)
+    {
+        try {
+            NullableType::nullOrNotString($keyword);
+
+            if (!$this->serp->existFileVolume($keyword)) {
+                $result = $this->multiCurl->run($keyword);
+                $data = $this->serp->extractResultData($result, $keyword);
+            } else {
+                $data = $this->serp->RenderVolume($keyword);
+            }
+
+            $newDataDateFormat = (new FileData())->resultData($data);
+
+            echo \GuzzleHttp\json_encode(['data' => $newDataDateFormat]);
+            die();
+        } catch (\Exception $exception) {
+            if ($exception instanceof NullableException) {
+                echo \GuzzleHttp\json_encode([
+                    'success' => false,
+                    'error' => 'The value enjoyed must be an string or not nullable !!!'
+                ]);
+                die();
+            }
+        }
     }
 }

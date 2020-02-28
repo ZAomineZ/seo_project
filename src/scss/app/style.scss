@@ -32,7 +32,7 @@
 }
 
 .btn-right {
-  margin-right: 6rem!important;
+  margin-right: 6rem !important;
 }
 
 .btn_style {
@@ -79,7 +79,7 @@
 
 .card_style {
   padding-top: 5px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .table--bordered tr {
@@ -140,7 +140,7 @@
 }
 
 .cl_green {
-  color: #4ce1b6!important;
+  color: #4ce1b6 !important;
 }
 
 .block_modal {
@@ -150,7 +150,7 @@
 }
 
 .padding_t_15 {
-  padding-top: 15px!important;
+  padding-top: 15px !important;
 }
 
 .block_flex {
@@ -210,6 +210,12 @@
   height: 24px
 }
 
+.mdi-icon-position {
+  width: 24px!important;
+  height: 24px!important;
+  margin-right: 3px!important;
+}
+
 .account_style {
   width: calc(100% + 10px);
   margin: -10px 0 -20px -10px;
@@ -239,7 +245,7 @@
   max-width: 500px;
 }
 
-.border-textarea{
+.border-textarea {
   border: 1px solid #f2f4f7;
   color: #646777
 }
@@ -253,9 +259,56 @@
 }
 
 .pagination-info {
-  margin-top: 6px!important;
+  margin-top: 6px !important;
 }
 
-.chart-top{
+.chart-top {
   margin-top: -80px;
+}
+
+.recharts-item {
+  display: block;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.recharts-block-open {
+  margin: 0px;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(204, 204, 204);
+  white-space: nowrap;
+}
+
+.theme-color-icon {
+  background-color: #fafbfe;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.panel-chart-active {
+  width: 18rem;
+}
+
+.ul-list-chart {
+  position: absolute!important;
+  margin-top: -3rem;
+}
+
+.tabs_top {
+  margin-top: 40px;
+}
+
+.table-keywords {
+  background-color: #f2f4f7;
+}
+
+.pagination {
+  margin-bottom: 15px;
+  display: flex;
+  padding-left: 0;
+  background-color: inherit;
+  text-align: center;
 }

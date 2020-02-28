@@ -11,6 +11,7 @@ import MatTableToolbarTopDomain from './MatTableToolbarTopDomain';
 import axios from "axios";
 import {route} from "../../const";
 import {Redirect} from "react-router-dom";
+import TableKeywords from "./Components/KeywordsComponent/TableKeywords";
 
 let counter = 0;
 
@@ -25,6 +26,34 @@ function getSorting(order, orderBy) {
     return order === 'desc' ? (a, b) => b[orderBy] - a[orderBy] : (a, b) => a[orderBy] - b[orderBy];
 }
 
+const svg_red =
+    <svg
+        className="mdi-icon dashboard_top_serp_icon"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+    >
+        <path
+            d="M16,18L18.29,15.71L13.41,10.83L9.41,14.83L2,7.41L3.41,
+              6L9.41,12L13.41,8L19.71,14.29L22,12V18H16Z"
+        />
+    </svg>;
+
+const svg_green =
+    <svg
+        className="mdi-icon dashboard__trend-icon"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+    >
+        <path
+            d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,
+                  16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"
+        />
+    </svg>;
+
 export default class MatTable extends PureComponent {
     static propTypes = {
         data: PropTypes.oneOfType([
@@ -38,12 +67,86 @@ export default class MatTable extends PureComponent {
         order: 'asc',
         orderBy: 'domains',
         selected: [],
-        data: [],
+
+        dataNow: [],
+        dataLastMonth: [],
+        dataKeywords: [],
+        pagesPagination: 0,
+        currentPag: 1,
+        intervalElement: [],
+        domain: '',
+
         page: 0,
         rowsPerPage: 5,
         filter: "",
-        redirectSerp: false
+
+        redirectSerp: false,
+        loadedKeywords: true
     };
+
+    constructor(props) {
+        super(props);
+        this.handleClickOpenTable = this.handleClickOpenTable.bind(this);
+        this.paginationKeywords = this.paginationKeywords.bind(this)
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps && nextProps.data.length !== 0) {
+            const arrayDataNow = [];
+            const arrayDataLastMonth = [];
+
+            let data = Object.values(nextProps.data);
+            data.map((value, index) => {
+                arrayDataNow[index] = {
+                    date: value[value.length - 1].date,
+                    domain: value[value.length - 1].domain,
+
+                    top_3: value[value.length - 1].top_3,
+                    top_4_10: value[value.length - 1].top_4_10,
+                    top_11_20: value[value.length - 1].top_11_20,
+                    top_21_50: value[value.length - 1].top_21_50,
+                    top_51_100: value[value.length - 1].top_51_100,
+                    traffic: value[value.length - 1].traffic,
+
+                    diff_top_3: value[value.length - 2]
+                        ? (value[value.length - 1].top_3 - value[value.length - 2].top_3)
+                        : undefined,
+                    diff_top_4_10: value[value.length - 2]
+                        ? (value[value.length - 1].top_4_10 - value[value.length - 2].top_4_10)
+                        : undefined,
+                    diff_top_11_20: value[value.length - 2]
+                        ? (value[value.length - 1].top_11_20 - value[value.length - 2].top_11_20)
+                        : undefined,
+                    diff_top_21_50: value[value.length - 2]
+                        ? (value[value.length - 1].top_21_50 - value[value.length - 2].top_21_50)
+                        : undefined,
+                    diff_top_51_100: value[value.length - 2]
+                        ? (value[value.length - 1].top_51_100 - value[value.length - 2].top_51_100)
+                        : undefined,
+                    diff_traffic: value[value.length - 2]
+                        ? (value[value.length - 1].traffic - value[value.length - 2].traffic)
+                        : undefined
+                };
+
+                arrayDataLastMonth[index] = {
+                    date: value[value.length - 2] ? value[value.length - 2].date : 0,
+                    domain: value[value.length - 2] ? value[value.length - 2].domain : 0,
+
+                    top_3: value[value.length - 2] ? value[value.length - 2].top_3 : 0,
+                    top_4_10: value[value.length - 2] ? value[value.length - 2].top_4_10 : 0,
+                    top_11_20: value[value.length - 2] ? value[value.length - 2].top_11_20 : 0,
+                    top_21_50: value[value.length - 2] ? value[value.length - 2].top_21_50 : 0,
+                    top_51_100: value[value.length - 2] ? value[value.length - 2].top_51_100 : 0,
+                    traffic: value[value.length - 2] ? value[value.length - 2].traffic : 0,
+                }
+            });
+
+            this.setState({
+                dataNow: arrayDataNow,
+                dataLastMonth: arrayDataLastMonth
+            });
+        }
+    }
 
     handleChange(event) {
         this.setState({filter: event.target.value})
@@ -66,8 +169,7 @@ export default class MatTable extends PureComponent {
         this.setState({order, orderBy});
     };
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
+    SetCookie(name_cookie, value_cookie, expire_days) {
         let date = new Date();
         date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
         let expire_cookie = "expires=" + date.toUTCString();
@@ -89,14 +191,13 @@ export default class MatTable extends PureComponent {
         }
     }
 
-    CookieReset (token, id)
-    {
+    CookieReset(token, id) {
         if (this.getCookie('remember_me_auth')) {
             this.SetCookie('remember_me_auth', token + '__' + id, 30)
         } else {
             this.SetCookie('auth_today', token + '__' + id, 1)
         }
-        this.setState({ redirectSerp : !this.state.redirectSerp})
+        this.setState({redirectSerp: !this.state.redirectSerp})
     }
 
     Download(event, data) {
@@ -130,223 +231,121 @@ export default class MatTable extends PureComponent {
         })
     }
 
+    ajaxCsvKeywords(domain) {
+        this.setState({loadedKeywords: false});
+
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            domain: domain,
+            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
+        axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeyword/KeywordsAll.php", {
+            headers: headers,
+            params: params
+        }).then((response) => {
+            if (response && response.status === 200) {
+                if (response.data.success) {
+                    let data = response.data.data ? Object.values(response.data.data) : [];
+                    let pages = response.data.pages ? response.data.pages : 0;
+                    let intervalElement = response.data.intervalElement ? response.data.intervalElement : [0, 99];
+                    let currentPage = response.data.currentPage ? response.data.currentPage : 1;
+
+                    this.setState({
+                        dataKeywords: data,
+                        pagesPagination: pages,
+                        currentPage: currentPage,
+                        intervalElement: intervalElement,
+                        domain: domain
+                    });
+                    setTimeout(() => this.setState({loadedKeywords: true}), 500);
+                }
+            }
+        })
+    }
+
+    paginationKeywords(event, page, offset) {
+        event.preventDefault();
+
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            domain: this.state.domain,
+            offset: offset,
+            page: page,
+            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
+        axios.post("http://" + window.location.hostname + route + "/Ajax/TopKeyword/KeywordPagination.php",  {
+            headers: headers,
+            params: params
+        }).then((response) => {
+            if (response && response.status === 200) {
+                if (response.data.success) {
+                    //
+                }
+            }
+        })
+    }
+
+    handleClickOpenTable(e, websiteIndex) {
+        e.preventDefault();
+
+        let trRow = document.querySelector('#row-' + websiteIndex);
+        let allTrRow = document.querySelectorAll('.MuiTableRow-root-20.material-table__row');
+        let trKeyword = document.querySelector('#tr-keywords');
+        let dataDomain = trRow.getAttribute('data-domain');
+
+        trRow.after(trKeyword);
+
+        let dataTrActive = trRow.getAttribute('data-active');
+
+        allTrRow.forEach(value => {
+            if (value !== trRow) {
+                value.setAttribute('data-active', 'no-active');
+            }
+        });
+
+        if (dataTrActive === 'no-active') {
+            trKeyword.classList.remove('d-none');
+            trRow.setAttribute('data-active', 'active');
+
+            return this.ajaxCsvKeywords(dataDomain);
+        } else {
+            trKeyword.classList.add('d-none');
+            trRow.setAttribute('data-active', 'no-active');
+
+            return false;
+        }
+    }
+
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     render() {
         const {
-            data, order, orderBy, selected, filter
+            dataNow, dataLastMonth, dataKeywords, pagesPagination, currentPage, intervalElement, loadedKeywords, order, orderBy, selected, filter
         } = this.state;
-        let i = 0;
-        const data_obj = Object.values(this.props.data);
-        const data_arr_last = data_obj.map((d) => {
-            let data_obj_d = Object.values(d);
-            if (data_obj.length > 1) {
-                if (data_obj_d.length !== 0 && data_obj_d[0].length !== 0 && data_obj_d[0].length === 1) {
-                    return {
-                        id: i++,
-                        date: data_obj_d[0][data_obj_d[0].length - 1].date,
-                        domain: data_obj_d[0][data_obj_d[0].length - 1].domain,
-                        top_3: data_obj_d[0][data_obj_d[0].length - 1].top_3,
-                        top_4_10: data_obj_d[0][data_obj_d[0].length - 1].top_4_10,
-                        top_11_20: data_obj_d[0][data_obj_d[0].length - 1].top_11_20,
-                        top_21_50: data_obj_d[0][data_obj_d[0].length - 1].top_21_50,
-                        top_51_100: data_obj_d[0][data_obj_d[0].length - 1].top_51_100,
-                        traffic: data_obj_d[0][data_obj_d[0].length - 1].traffic,
-                    }
-                } else if (data_obj_d.length !== 0 && data_obj_d[0].length !== 0 && data_obj_d[0].length > 1) {
-                    return {
-                        id: i++,
-                        date: data_obj_d[0][data_obj_d[0].length - 2].date,
-                        domain: data_obj_d[0][data_obj_d[0].length - 2].domain,
-                        top_3: data_obj_d[0][data_obj_d[0].length - 2].top_3,
-                        top_4_10: data_obj_d[0][data_obj_d[0].length - 2].top_4_10,
-                        top_11_20: data_obj_d[0][data_obj_d[0].length - 2].top_11_20,
-                        top_21_50: data_obj_d[0][data_obj_d[0].length - 2].top_21_50,
-                        top_51_100: data_obj_d[0][data_obj_d[0].length - 2].top_51_100,
-                        traffic: data_obj_d[0][data_obj_d[0].length - 2].traffic,
-                    }
-                } else {
-                    return {
-                        id: i++,
-                        date: 'undefined',
-                        domain: 'undefined',
-                        top_3: 'undefined',
-                        top_4_10: 'undefined',
-                        top_11_20: 'undefined',
-                        top_21_50: 'undefined',
-                        top_51_100: 'undefined',
-                        traffic: 'undefined',
-                    }
-                }
-            }
-            if (data_obj_d.length === 1) {
-                return {
-                    id: i++,
-                    date: 'undefined',
-                    domain: 'undefined',
-                    top_3: 0,
-                    top_4_10: 0,
-                    top_11_20: 0,
-                    top_21_50: 0,
-                    top_51_100: 0,
-                    traffic: 0,
-                }
-            }
-            if (data_obj_d.length !== 0 & data_obj_d.length > 1) {
-                return {
-                    id: i++,
-                    date: d[data_obj_d.length - 2].date,
-                    domain: d[data_obj_d.length - 2].domain,
-                    top_3: d[data_obj_d.length - 2].top_3,
-                    top_4_10: d[data_obj_d.length - 2].top_4_10,
-                    top_11_20: d[data_obj_d.length - 2].top_11_20,
-                    top_21_50: d[data_obj_d.length - 2].top_21_50,
-                    top_51_100: d[data_obj_d.length - 2].top_51_100,
-                    traffic: d[data_obj_d.length - 2].traffic,
-                }
-            } else {
-                return {
-                    id: i++,
-                    date: 'undefined',
-                    domain: 'undefined',
-                    top_3: 0,
-                    top_4_10: 0,
-                    top_11_20: 0,
-                    top_21_50: 0,
-                    top_51_100: 0,
-                    traffic: 0,
-                }
-            }
-        });
-        const data_arr_now = data_obj.map((d) => {
-            let data_obj_d = Object.values(d);
-            if (data_obj.length > 1) {
-                if (data_obj_d.length !== 0 && data_obj_d[0].length !== 0 && data_obj_d[0].length === 1) {
-                    return {
-                        id: i++,
-                        date: data_obj_d[0][data_obj_d[0].length - 1].date,
-                        domain: data_obj_d[0][data_obj_d[0].length - 1].domain,
-                        top_3: data_obj_d[0][data_obj_d[0].length - 1].top_3,
-                        top_4_10: data_obj_d[0][data_obj_d[0].length - 1].top_4_10,
-                        top_11_20: data_obj_d[0][data_obj_d[0].length - 1].top_11_20,
-                        top_21_50: data_obj_d[0][data_obj_d[0].length - 1].top_21_50,
-                        top_51_100: data_obj_d[0][data_obj_d[0].length - 1].top_51_100,
-                        traffic: data_obj_d[0][data_obj_d[0].length - 1].traffic,
-                    }
-                } else if (data_obj_d.length !== 0 && data_obj_d[0].length !== 0 && data_obj_d[0].length > 1) {
-                    return {
-                        id: i++,
-                        date: data_obj_d[0][data_obj_d[0].length - 1].date,
-                        domain: data_obj_d[0][data_obj_d[0].length - 1].domain,
-                        top_3: data_obj_d[0][data_obj_d[0].length - 1].top_3,
-                        top_4_10: data_obj_d[0][data_obj_d[0].length - 1].top_4_10,
-                        top_11_20: data_obj_d[0][data_obj_d[0].length - 1].top_11_20,
-                        top_21_50: data_obj_d[0][data_obj_d[0].length - 1].top_21_50,
-                        top_51_100: data_obj_d[0][data_obj_d[0].length - 1].top_51_100,
-                        traffic: data_obj_d[0][data_obj_d[0].length - 1].traffic,
-                        diff_traffic: data_obj_d[0][data_obj_d[0].length - 1].traffic - data_obj_d[0][data_obj_d[0].length - 2].traffic,
-                        diff_top_3: data_obj_d[0][data_obj_d[0].length - 1].top_3 - data_obj_d[0][data_obj_d[0].length - 2].top_3,
-                        diff_top_4_10: data_obj_d[0][data_obj_d[0].length - 1].top_4_10 - data_obj_d[0][data_obj_d[0].length - 2].top_4_10,
-                        diff_top_11_20: data_obj_d[0][data_obj_d[0].length - 1].top_11_20 - data_obj_d[0][data_obj_d[0].length - 2].top_11_20,
-                        diff_top_21_50: data_obj_d[0][data_obj_d[0].length - 1].top_21_50 - data_obj_d[0][data_obj_d[0].length - 2].top_21_50,
-                        diff_top_51_100: data_obj_d[0][data_obj_d[0].length - 1].top_51_100 - data_obj_d[0][data_obj_d[0].length - 2].top_51_100
-                    }
-                } else {
-                    return {
-                        id: i++,
-                        date: 'undefined',
-                        domain: 'undefined',
-                        top_3: 0,
-                        top_4_10: 0,
-                        top_11_20: 0,
-                        top_21_50: 0,
-                        top_51_100: 0,
-                        traffic: 0,
-                        diff_traffic: 0,
-                        diff_top_3: 0,
-                        diff_top_4_10: 0,
-                        diff_top_11_20: 0,
-                        diff_top_21_50: 0,
-                        diff_top_51_100: 0
-                    }
-                }
-            }
-            if (data_obj_d.length === 1) {
-                return {
-                    id: i++,
-                    date: d[data_obj_d.length - 1].date,
-                    domain: d[data_obj_d.length - 1].domain,
-                    top_3: d[data_obj_d.length - 1].top_3,
-                    top_4_10: d[data_obj_d.length - 1].top_4_10,
-                    top_11_20: d[data_obj_d.length - 1].top_11_20,
-                    top_21_50: d[data_obj_d.length - 1].top_21_50,
-                    top_51_100: d[data_obj_d.length - 1].top_51_100,
-                    traffic: d[data_obj_d.length - 1].traffic,
-                }
-            }
-            if (data_obj_d.length !== 0 && data_obj_d.length > 1) {
-                return {
-                    id: i++,
-                    date: d[data_obj_d.length - 1].date,
-                    domain: d[data_obj_d.length - 1].domain,
-                    top_3: d[data_obj_d.length - 1].top_3,
-                    top_4_10: d[data_obj_d.length - 1].top_4_10,
-                    top_11_20: d[data_obj_d.length - 1].top_11_20,
-                    top_21_50: d[data_obj_d.length - 1].top_21_50,
-                    top_51_100: d[data_obj_d.length - 1].top_51_100,
-                    traffic: d[data_obj_d.length - 1].traffic,
-                    diff_traffic: d[data_obj_d.length - 1].traffic - d[data_obj_d.length - 2].traffic,
-                    diff_top_3: d[data_obj_d.length - 1].top_3 - d[data_obj_d.length - 2].top_3,
-                    diff_top_4_10: d[data_obj_d.length - 1].top_4_10 - d[data_obj_d.length - 2].top_4_10,
-                    diff_top_11_20: d[data_obj_d.length - 1].top_11_20 - d[data_obj_d.length - 2].top_11_20,
-                    diff_top_21_50: d[data_obj_d.length - 1].top_21_50 - d[data_obj_d.length - 2].top_21_50,
-                    diff_top_51_100: d[data_obj_d.length - 1].top_51_100 - d[data_obj_d.length - 2].top_51_100
-                }
-            } else {
-                return {
-                    id: i++,
-                    date: 'undefined',
-                    domain: 'undefined',
-                    top_3: 0,
-                    top_4_10: 0,
-                    top_11_20: 0,
-                    top_21_50: 0,
-                    top_51_100: 0,
-                    traffic: 0,
-                    diff_traffic: 0,
-                    diff_top_3: 0,
-                    diff_top_4_10: 0,
-                    diff_top_11_20: 0,
-                    diff_top_21_50: 0,
-                    diff_top_51_100: 0
-                }
-            }
-        });
-
-        const svg_red = <svg
-            className="mdi-icon dashboard_top_serp_icon"
-            width="24"
-            height="24"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-        >
-            <path
-                d="M16,18L18.29,15.71L13.41,10.83L9.41,14.83L2,7.41L3.41,
-              6L9.41,12L13.41,8L19.71,14.29L22,12V18H16Z"
-            />
-        </svg>;
-        const svg_green = <svg
-            className="mdi-icon dashboard__trend-icon"
-            width="24"
-            height="24"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-        >
-            <path
-                d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,
-              16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"
-            />
-        </svg>;
 
         if (this.state.redirectSerp === true) {
             return (
@@ -362,10 +361,10 @@ export default class MatTable extends PureComponent {
                     <div className="card__title">
                         <h5 className="bold-text">Top Domains</h5>
                         <div className="pt-5">
-                            <button onClick={e => this.Download(e, data_arr_now)} className="btn btn-primary">Download
+                            <button onClick={e => this.Download(e, dataNow)} className="btn btn-primary">Download
                                 CSV
                             </button>
-                            <button onClick={e => this.Download(e, data_arr_last)} className="btn btn-primary">Download
+                            <button onClick={e => this.Download(e, dataLastMonth)} className="btn btn-primary">Download
                                 CSV last month
                             </button>
                         </div>
@@ -385,13 +384,14 @@ export default class MatTable extends PureComponent {
                                 orderBy={orderBy}
                                 onSelectAllClick={this.handleSelectAllClick}
                                 onRequestSort={this.handleRequestSort}
-                                rowCount={data_arr_now.length}
+                                rowCount={dataNow.length}
                             />
                             <TableBody>
-                                {data_arr_now.filter(this.searchingFor(filter))
+                                {dataNow.filter(this.searchingFor(filter))
                                     .sort(getSorting(order, orderBy))
-                                    .map((d) => {
+                                    .map((d, index) => {
                                         const isSelected = this.isSelected(d.id);
+
                                         return (
                                             <TableRow
                                                 className="material-table__row"
@@ -399,6 +399,10 @@ export default class MatTable extends PureComponent {
                                                 aria-checked={isSelected}
                                                 tabIndex={-1}
                                                 key={d.id}
+                                                data-domain={d.domain}
+                                                data-active='no-active'
+                                                id={'row-' + (index + 1)}
+                                                onClick={e => this.handleClickOpenTable(e, (index + 1))}
                                                 selected={isSelected}
                                             >
                                                 <TableCell className="material-table__cell font-default-size">
@@ -411,16 +415,22 @@ export default class MatTable extends PureComponent {
                                                         <p className="">{d.traffic}</p>
                                                         {
                                                             d.diff_traffic !== undefined && d.traffic !== 0 ?
-                                                                Math.sign(d.diff_traffic) === -1 ?
-                                                                    svg_red : svg_green
+                                                                d.diff_traffic !== 0 ?
+                                                                    Math.sign(d.diff_traffic) === -1 ?
+                                                                        svg_red : svg_green
+                                                                    : ''
                                                                 : ''
                                                         }
                                                         <p>
-                                                            {d.diff_traffic !== undefined && d.traffic !== 0 ?
-                                                                Math.sign(d.diff_traffic) === -1 ?
-                                                                    d.diff_traffic
-                                                                : '+' + (d.diff_traffic) : ''}
-                                                                </p>
+                                                            {
+                                                                d.diff_traffic !== undefined && d.traffic !== 0 ?
+                                                                    d.diff_traffic !== 0 ?
+                                                                        Math.sign(d.diff_traffic) === -1 ?
+                                                                            d.diff_traffic
+                                                                            : '+' + (d.diff_traffic) : ''
+                                                                    : ''
+                                                            }
+                                                        </p>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="material-table__cell">
@@ -430,16 +440,23 @@ export default class MatTable extends PureComponent {
                                                         <p className="">{d.top_3}</p>
                                                         {
                                                             d.diff_top_3 !== undefined && d.top_3 !== 0 ?
-                                                                Math.sign(d.diff_top_3) === -1 ?
-                                                                    svg_red : svg_green
-                                                            : ''
+                                                                d.diff_top_3 !== 0 ?
+                                                                    Math.sign(d.diff_top_3) === -1 ?
+                                                                        svg_red : svg_green
+                                                                    : ''
+                                                                : ''
                                                         }
-                                                        <p>{
-                                                            d.diff_top_3 !== undefined && d.top_3 !== 0 ?
-                                                                Math.sign(d.diff_top_3) === -1 ?
-                                                                    d.diff_top_3
-                                                                    : '+' + (d.diff_top_3)
-                                                            : ''} </p>
+                                                        <p>
+                                                            {
+                                                                d.diff_top_3 !== undefined && d.top_3 !== 0 ?
+                                                                    d.diff_top_3 !== 0 ?
+                                                                        Math.sign(d.diff_top_3) === -1 ?
+                                                                            d.diff_top_3
+                                                                            : '+' + (d.diff_top_3)
+                                                                        : ''
+                                                                    : ''
+                                                            }
+                                                        </p>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="material-table__cell">
@@ -449,16 +466,22 @@ export default class MatTable extends PureComponent {
                                                         <p className="">{d.top_4_10}</p>
                                                         {
                                                             d.diff_top_4_10 !== undefined && d.top_4_10 !== 0 ?
-                                                                Math.sign(d.diff_top_4_10) === -1 ?
-                                                                    svg_red : svg_green
-                                                            : ''
+                                                                d.diff_top_4_10 !== 0 ?
+                                                                    Math.sign(d.diff_top_4_10) === -1 ?
+                                                                        svg_red : svg_green
+                                                                    : ''
+                                                                : ''
                                                         }
                                                         <p>{
                                                             d.diff_top_4_10 !== undefined && d.top_4_10 !== 0 ?
-                                                                Math.sign(d.diff_top_4_10) === -1 ?
-                                                                d.diff_top_4_10
-                                                                : '+' + (d.diff_top_4_10)
-                                                            : ''}</p>
+                                                                d.diff_top_4_10 !== 0 ?
+                                                                    Math.sign(d.diff_top_4_10) === -1 ?
+                                                                        d.diff_top_4_10
+                                                                        : '+' + (d.diff_top_4_10)
+                                                                    : ''
+                                                                : ''
+                                                        }
+                                                        </p>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="material-table__cell">
@@ -468,15 +491,23 @@ export default class MatTable extends PureComponent {
                                                         <p className="">{d.top_11_20}</p>
                                                         {
                                                             d.diff_top_11_20 !== undefined && d.top_11_20 !== 0 ?
-                                                                Math.sign(d.diff_top_11_20) === -1 ?
-                                                                svg_red : svg_green
-                                                            : ''
+                                                                d.diff_top_11_20 !== 0 ?
+                                                                    Math.sign(d.diff_top_11_20) === -1 ?
+                                                                        svg_red : svg_green
+                                                                    : ''
+                                                                : ''
                                                         }
-                                                        <p>{ d.diff_top_11_20 !== undefined && d.top_11_20 !== 0 ?
-                                                                Math.sign(d.diff_top_11_20) === -1 ?
-                                                                d.diff_top_11_20
-                                                            : '+' + (d.diff_top_11_20)
-                                                        : ''}</p>
+                                                        <p>
+                                                            {
+                                                                d.diff_top_11_20 !== undefined && d.top_11_20 !== 0 ?
+                                                                    d.diff_top_11_20 !== 0 ?
+                                                                        Math.sign(d.diff_top_11_20) === -1 ?
+                                                                            d.diff_top_11_20
+                                                                            : '+' + (d.diff_top_11_20)
+                                                                        : ''
+                                                                    : ''
+                                                            }
+                                                        </p>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="material-table__cell">
@@ -486,16 +517,23 @@ export default class MatTable extends PureComponent {
                                                         <p className="">{d.top_21_50}</p>
                                                         {
                                                             d.diff_top_21_50 !== undefined && d.top_21_50 !== 0 ?
-                                                                Math.sign(d.top_21_50) === -1 ?
-                                                                    svg_red : svg_green
-                                                            : ''
+                                                                d.diff_top_21_50 !== 0 ?
+                                                                    Math.sign(d.diff_top_21_50) === -1 ?
+                                                                        svg_red : svg_green
+                                                                    : ''
+                                                                : ''
                                                         }
-                                                        <p>{
-                                                            d.diff_top_21_50 !== undefined && d.top_21_50 !== 0 ?
-                                                                Math.sign(d.diff_top_21_50) === -1 ?
-                                                                 d.diff_top_21_50
-                                                                    : '+' + (d.diff_top_21_50)
-                                                            : ''}</p>
+                                                        <p>
+                                                            {
+                                                                d.diff_top_21_50 !== undefined && d.top_21_50 !== 0 ?
+                                                                    d.diff_top_21_50 !== 0 ?
+                                                                        Math.sign(d.diff_top_21_50) === -1 ?
+                                                                            d.diff_top_21_50
+                                                                            : '+' + (d.diff_top_21_50)
+                                                                        : ''
+                                                                    : ''
+                                                            }
+                                                        </p>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className="material-table__cell">
@@ -505,16 +543,23 @@ export default class MatTable extends PureComponent {
                                                         <p className="">{d.top_51_100}</p>
                                                         {
                                                             d.diff_top_51_100 !== undefined && d.top_51_100 !== 0 ?
-                                                                Math.sign(d.diff_top_51_100) === -1 ?
-                                                                    svg_red : svg_green
-                                                            : ''
+                                                                d.diff_top_51_100 !== 0 ?
+                                                                    Math.sign(d.diff_top_51_100) === -1 ?
+                                                                        svg_red : svg_green
+                                                                    : ''
+                                                                : ''
                                                         }
-                                                        <p>{
-                                                            d.diff_top_51_100 !== undefined && d.top_51_100 !== 0 ?
-                                                                Math.sign(d.diff_top_51_100) === -1 ?
-                                                                    d.diff_top_51_100
-                                                                        : '+' + (d.diff_top_51_100)
-                                                            : ''}</p>
+                                                        <p>
+                                                            {
+                                                                d.diff_top_51_100 !== undefined && d.top_51_100 !== 0 ?
+                                                                    d.diff_top_51_100 !== 0 ?
+                                                                        Math.sign(d.diff_top_51_100) === -1 ?
+                                                                            d.diff_top_51_100
+                                                                            : '+' + (d.diff_top_51_100)
+                                                                        : ''
+                                                                    : ''
+                                                            }
+                                                        </p>
                                                     </div>
                                                 </TableCell>
                                             </TableRow>
@@ -522,6 +567,12 @@ export default class MatTable extends PureComponent {
                                     })}
                             </TableBody>
                         </Table>
+                        <TableKeywords dataKeywords={dataKeywords}
+                                       paginationKeywords={this.paginationKeywords}
+                                       pagesPagination={pagesPagination}
+                                       currentPage={currentPage}
+                                       intervalElement={intervalElement}
+                                       loaded={loadedKeywords}/>
                     </div>
                 </CardBody>
             </Card>

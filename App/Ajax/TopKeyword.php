@@ -2,15 +2,18 @@
 require '../../vendor/autoload.php';
 
 use App\Actions\Json_File;
-use App\Actions\Url\Curl_Keyword;
+use App\Actions\Url\MultiCurl_UrlTrafficAndKeyword;
+use App\concern\Ajax;
 use App\concern\Str_options;
+use App\Controller\TopKeywordController;
+use App\ErrorCode\ErrorArgument;
 use App\Model\PDO_Model;
 use App\Model\TopKeyword;
 use App\Table\Website;
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
-$ajax = new \App\concern\Ajax();
+$ajax = new Ajax();
 $ajax->HeaderProtect();
 
 if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
@@ -23,7 +26,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $ajax->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
                     $ajax->VerifValueRegex($_GET['domain']);
 
-                    $curl = new Curl_Keyword();
+                    $multicurl = new MultiCurl_UrlTrafficAndKeyword();
                     $crawl = new Crawler();
                     $str = new Str_options();
                     $client = new Client();
@@ -33,7 +36,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $model = new TopKeyword($table, $ajax);
                     $website_table = new Website($pdo);
 
-                    $keyword = new \App\Controller\TopKeywordController($curl, $crawl, $str, $scrap, $model, $website_table, $ajax);
+                    $keyword = new TopKeywordController($multicurl, $crawl, $str, $scrap, $model, $website_table, $ajax);
                     $keyword->ResultJson($_GET['domain'], $auth->id);
                 } else {
                     echo 'Invalid Token !!!';
@@ -42,6 +45,9 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                 echo 'Invalid Token !!!';
             }
         } catch (Exception $exception) {
+            if ($exception instanceof InvalidArgumentException) {
+                ErrorArgument::errorCode();
+            }
             echo 'Invalid Token !!!';
         }
     } else {

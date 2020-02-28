@@ -64,7 +64,7 @@ class RankController
         if (isset($data['keywords']) && strpos($data['keywords'], ',') !== false) {
             $keywordsArray = explode(',', $data['keywords']);
         } else {
-            $keywordsArray[] = $keywords;
+            $keywordsArray[] = trim($keywords);
         }
 
         $dataResult = $this->rankModel->FormatDataRank(
@@ -127,7 +127,7 @@ class RankController
         if (isset($data['keywords']) && strpos($data['keywords'], ',') !== false) {
             $keywordsArray = explode(',', $data['keywords']);
         } else {
-            $keywordsArray[] = $keywords;
+            $keywordsArray[] = trim($keywords);
         }
         $dataResult = $this->rankModel->FormatDataRank(
             isset($data['data']) ? $data['data'] : [],

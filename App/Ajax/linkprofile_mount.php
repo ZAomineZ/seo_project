@@ -4,6 +4,7 @@ require '../../vendor/autoload.php';
 use App\concern\Backlink_Profile;
 use App\concern\Str_options;
 use App\Controller\LinkProfileController;
+use App\ErrorCode\ErrorArgument;
 use App\Model\LinkDomain;
 use App\Model\PDO_Model;
 use App\Table\LinkProfile;
@@ -38,6 +39,9 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                 echo 'Invalid Token !!!';
             }
         } catch (Exception $exception) {
+            if ($exception instanceof InvalidArgumentException) {
+                ErrorArgument::errorCode();
+            }
             echo 'Invalid Token !!!';
         }
     } else {

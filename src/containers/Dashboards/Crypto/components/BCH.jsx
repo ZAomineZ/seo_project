@@ -23,7 +23,10 @@ export default class BCH extends PureComponent {
         const Bottom = <TrendingDownIcon className="dashboard_top_serp_icon" />;
 
         const data = this.props.dash_stats.map(d => {
-            return { name: '', bch : Math.round((d.trust / d.score_rank) * 100)};
+            return {
+                name: '',
+                bch : Math.round((d.trust / d.score_rank) * 100) === Infinity ? 0 : Math.round((d.trust / d.score_rank) * 100)
+            };
         });
 
         const CustomTooltip = ({ active, payload }) => {

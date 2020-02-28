@@ -21,8 +21,8 @@ class Img_Params
         if ($aCheckIfFileExist && !file_exists($aPath)) return 0;
         $size = filesize($aPath);
         if (empty($size)) return '0 ' . ($aShort ? 'o' : 'octets');
-        $l = array();
-        $l[] = array('name' => 'octets', 'abbr' => 'o', 'size' => 1);
+        $l = [];
+        $l[] = ['name' => 'octets', 'abbr' => 'o', 'size' => 1];
         foreach ($l as $k => $v) {
             if ($size < $v['size']) {
                 return round($size / $l[$k - 1]['size'], 2) . ' ' . ($aShort ? $l[$k - 1]['abbr'] : $l[$k - 1]['name']);
@@ -38,13 +38,10 @@ class Img_Params
      */
     public static function PowerImg (string $size)
     {
-        $google = self::FileGetSize(dirname(__DIR__, 2). '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-dd250e1e7154a1406dd53fa8d373324c.png');
-        $part_gl = $google / 100;
-        $rem_fb =  $part_gl - 100;
-        $part = $size / 100;
-        $rem =  $part_gl - 100;
-        $res = $part - $rem;
-        return $res;
+        $google = self::FileGetSize(dirname(__DIR__, 2) . '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-dd250e1e7154a1406dd53fa8d373324c.png');
+        $part_gl = $google - 7408;
+        $part = $size - 7408;
+        return ($part * 100 / $part_gl);
     }
 
     /**
@@ -56,6 +53,6 @@ class Img_Params
         $google = self::FileGetSize(dirname(__DIR__, 2). '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-157fd60976bc6b154bec3e899a497b34-domain.png');
         $part_gl = $google - 7408;
         $part = $size - 7408;
-        return  $part * 100 / $part_gl;
+        return  ($part * 100 / $part_gl);
     }
 }

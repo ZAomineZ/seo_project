@@ -49,6 +49,7 @@ class SerpAnalyseDetails extends PureComponent {
             stats: [],
             backlink: 0,
             domain: 0,
+
             traffic: [],
             anchors: [],
             domain_stat: [],
@@ -57,6 +58,9 @@ class SerpAnalyseDetails extends PureComponent {
             data_desc: [],
             data_url: [],
             data_assortUrl: [],
+            categories: {},
+            topics: {},
+
             power: 0,
             power_trust: 0,
             error: false,
@@ -138,6 +142,8 @@ class SerpAnalyseDetails extends PureComponent {
                     stats: response.data.stats,
                     backlink: response.data.bl_info !== "" ? response.data.bl_info.data.total : [],
                     domain: response.data.bl_info !== "" ? response.data.bl_info.data.domains : [],
+                    categories: response.data.bl_info !== "" ? response.data.bl_info.data.categories : {},
+                    topics: response.data.bl_info !== "" ? response.data.bl_info.data.topics : {},
                     traffic: response.data.traffic_data,
                     anchors: response.data.anchors !== "" ? response.data.anchors : [],
                     domain_stat: response.data.domain_stat !== "" ? response.data.domain_stat : [],
@@ -213,7 +219,7 @@ class SerpAnalyseDetails extends PureComponent {
                         <DefaultTabs trust_rank={this.state.power_trust <= 3 ? Math.round(this.state.trust_rank) : this.state.power_trust } dash_stats={this.state.dash_stats} />
                         <TabsCalorie score_rank={this.state.power === 0 ? this.state.score_rank : this.state.power} dash_stats={this.state.dash_stats} />
                         <TabsSteps
-                            ratio_rank={this.RatioRank()}
+                            ratio_rank={this.RatioRank() === Infinity ? 0 : this.RatioRank()}
                             dash_stats={this.state.dash_stats} />
                         <TabsDistance referring_domain={this.state.referring_domain}
                                       referring_domain_int={this.state.referring_domain_int}
@@ -228,10 +234,14 @@ class SerpAnalyseDetails extends PureComponent {
                     </div>
                     <div className="row">
                         <div className="col-xl-6">
-                            <TabsData stats={this.state.stats} />
+                            <TabsData
+                                stats={this.state.stats}
+                                categories={this.state.categories}
+                            />
                         </div>
                         <div className="col-xl-6">
-                            <Occupancy dash_stats={this.state.dash_stats}/>
+                            <Occupancy dash_stats={this.state.dash_stats}
+                                       topics={this.state.topics}/>
                         </div>
                     </div>
                     <div className="row">

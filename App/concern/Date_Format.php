@@ -32,11 +32,12 @@ class Date_Format
     /**
      * @param $date
      * @param $format
+     * @param bool $strtotime
      * @return false|string
      */
-    public static function DateFormatReq ($date, $format)
+    public static function DateFormatReq ($date, $format, bool $strtotime = true)
     {
-        $dt_time = strtotime($date);
+        $dt_time = $strtotime !== false ? strtotime($date) : $date;
         return date($format, $dt_time);
     }
 }

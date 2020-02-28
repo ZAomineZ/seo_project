@@ -5,7 +5,7 @@ import Panel from '../../../../shared/components/Panel';
 import TabLinkProfile from '../../../../components/LinkProfile/tab_linkprofile';
 
 const DefaultPanelDivider = ({ t, domain }) => (
-  <Panel xs={12} md={12} lg={6} divider title={t('Link')}>
+  <Panel xs={12} md={12} lg={6} divider title={t('Link')} serpFeature={[]}>
     <TabLinkProfile domain={domain} />
   </Panel>
 );

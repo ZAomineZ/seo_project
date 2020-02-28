@@ -56,6 +56,7 @@ class CryptotrendsToday extends PureComponent {
                 lg={12}
                 xl={8}
                 xs={12}
+                serpFeature={[]}
                 title='Anchors Chart'
                 subhead="Top selling items statistic by last month"
             >

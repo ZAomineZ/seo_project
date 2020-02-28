@@ -81,6 +81,7 @@ class ChartRank extends PureComponent {
                                 {
                                     this.state.activeTab === '1' ?
                                         <Panel xs={12} lg={12}
+                                               serpFeature={[]}
                                                title={"Top 100 positions keywords (" + this.props.project + ')'}>
                                             <ResponsiveContainer height={300} className="dashboard__area">
                                                 <AreaChart data={data} margin={{top: 20, left: -15, bottom: 20}}>
@@ -96,6 +97,7 @@ class ChartRank extends PureComponent {
                                             </ResponsiveContainer>
                                         </Panel> : this.state.activeTab === '2' ?
                                         <Panel xs={12} lg={12}
+                                               serpFeature={[]}
                                                title={"Top 10 positions keywords (" + this.props.project + ')'}>
                                             <ResponsiveContainer height={300} className="dashboard__area">
                                                 <AreaChart data={data} margin={{top: 20, left: -15, bottom: 20}}>
@@ -110,7 +112,7 @@ class ChartRank extends PureComponent {
                                                 </AreaChart>
                                             </ResponsiveContainer>
                                         </Panel> :
-                                        <Panel xs={12} lg={12} title={"Volume keywords (" + this.props.project + ')'}>
+                                        <Panel serpFeature={[]} xs={12} lg={12} title={"Volume keywords (" + this.props.project + ')'}>
                                             <ResponsiveContainer height={300} className="dashboard__area">
                                                 <AreaChart data={data} margin={{top: 20, left: -15, bottom: 20}}>
                                                     <XAxis dataKey="name" tickLine={false}/>

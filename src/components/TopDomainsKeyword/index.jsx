@@ -6,6 +6,7 @@ import {route, requestUri} from '../../const'
 import {Redirect} from "react-router-dom";
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
+import NavLinkBarTopKeywords from "./Components/NavLinkBarTopKeywords";
 
 let notification = null;
 
@@ -30,6 +31,9 @@ class DomainsKeyword extends PureComponent {
         console.error();
         this.state = {
             data: [],
+            trafficData: [],
+            keywordData: [],
+
             loading: true,
             loaded: false,
             error_message: '',
@@ -97,14 +101,17 @@ class DomainsKeyword extends PureComponent {
                     if (response.data.error) {
                         if (response.data.error === 'Invalid Token') {
                             this.CookieReset(response.data.token, response.data.id)
+
                         } else if (response.data.error === 'Invalid Value') {
                             this.setState({ redirectSerp : !this.state.redirectSerp});
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+
                         } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
                             this.setState({ redirectSerp : !this.state.redirectSerp});
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+
                         } else if (response.data.error && response.data.error === 'Domain Name does not exist !!!') {
                             this.setState({ redirectSerp : !this.state.redirectSerp});
                             NotificationSystem.newInstance({}, n => notification = n);
@@ -116,7 +123,12 @@ class DomainsKeyword extends PureComponent {
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification('No information was found for this Domain !!!', 'danger'), 700);
                         }
-                        this.setState({ data: response.data, loading: false });
+                        this.setState({
+                            data: response.data.data,
+                            trafficData: response.data.trafficData,
+                            keywordData: response.data.keywordData,
+                            loading: false
+                        });
                         setTimeout(() => this.setState({ loaded: true }), 500);
                     }
                 }
@@ -163,6 +175,7 @@ class DomainsKeyword extends PureComponent {
                         </div>
                     </div>
                     <div className="row">
+                        <NavLinkBarTopKeywords keywordData={this.state.keywordData} trafficData={this.state.trafficData}/>
                         <TabMaterielTopDomains data={this.state.data} keyword={this.props.match.params.keyword}/>
                     </div>
                 </div>

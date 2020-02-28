@@ -7,11 +7,12 @@ import {translate} from "react-i18next";
 
 class TabsData extends PureComponent {
     static propTypes = {
-        stats: PropTypes.array.isRequired
+        stats: PropTypes.array.isRequired,
+        categories: PropTypes.object.isRequired
     };
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     render() {
@@ -21,10 +22,11 @@ class TabsData extends PureComponent {
                 lg={5}
                 md={12}
                 xs={12}
+                serpFeature={[]}
                 title="Link Data Profile"
                 subhead="Ratings by Market Capitalization"
             >
-                <TabData stats={this.props.stats}/>
+                <TabData stats={this.props.stats} categories={this.props.categories}/>
             </Panel>
         );
     }

@@ -86,6 +86,7 @@ export default class TopBacklinks extends PureComponent {
                 xs={12}
                 title="Top Backlinks"
                 subhead="Ratings by Market Capitalization"
+                serpFeature={[]}
             >
                 <Table responsive striped>
                     <thead>

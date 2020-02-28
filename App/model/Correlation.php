@@ -211,7 +211,7 @@ class Correlation
             $traffic = $value['traffic'];
 
             $data[$key]['stats'] = $statsValue[count($statsValue) - 1];
-            $data[$key]['traffic'] = isset($traffic->data_now->{'0'}) ? $traffic->data_now->{'0'}->Ot : 0;
+            $data[$key]['traffic'] = isset($traffic->traffic->aData[0]->data) ? end($traffic->traffic->aData[0]->data)[1] : 0;
 
             $keyword = str_replace('-', ' ', $value['keyword']);
 

@@ -3,9 +3,8 @@ require '../../vendor/autoload.php';
 
 use App\Actions\Json_File;
 use App\Actions\Url\Curl_Api;
-use App\Actions\Url\Curl_Keyword;
-use App\Actions\Url\Curl_Url;
 use App\Actions\Url\Curl_Volume;
+use App\Actions\Url\MultiCurl_UrlTrafficAndKeyword;
 use App\concern\Ajax;
 use App\concern\Backlink_Profile;
 use App\concern\Str_options;
@@ -39,8 +38,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
 
                     $curl = new Curl_Api();
                     $curlVolume = new Curl_Volume();
-                    $curlUrl = new Curl_Url();
-                    $curl_keyword = new Curl_Keyword();
+                    $multicurl = new MultiCurl_UrlTrafficAndKeyword();
 
                     $str = new Str_options();
                     $dom = new DOMDocument();
@@ -55,8 +53,8 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $blProfile = new Backlink_Profile($goutte);
 
                     $top = new TopKeyword($table, $ajax);
-                    $controller = new TopKeywordController($curl_keyword, $crawl, $str, $bl, $top, $table, $ajax);
-                    $website = new WebsiteModel($goutte, $controller, $curl_keyword, $bl);
+                    $controller = new TopKeywordController($multicurl, $crawl, $str, $bl, $top, $table, $ajax);
+                    $website = new WebsiteModel($goutte, $controller, $multicurl, $bl);
 
                     $format = new Numeral();
                     $format->setLanguageManager(new LanguageManager());
@@ -65,7 +63,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $linkModel = new LinkDomain($goutte, $str);
                     $linkController = new LinkProfileController($linkModel, $goutte, $pdo, $linkTable, $blProfile);
 
-                    $websiteController = new WebSiteController($table, $bl, $website, $format, $curlUrl, $curl_keyword, $controller, $ajax, $linkTable, $linkController, $linkModel);
+                    $websiteController = new WebSiteController($table, $bl, $website, $format, $multicurl, $controller, $ajax, $linkTable, $linkController, $linkModel);
 
                     $serp = new SerpController($model, $table, $bl, $format, $website, $websiteController);
                     $serp->ResultTrust($_GET['domain']);
