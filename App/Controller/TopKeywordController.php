@@ -15,6 +15,10 @@ use App\concern\Ajax;
 use App\concern\File_Params;
 use App\concern\Str_options;
 use App\DataTraitement\KeywordsCsv;
+use App\DataTraitement\KeywordsFilter;
+use App\DataTraitement\TraitementCsv\DownloadCsv;
+use App\DataTraitement\TraitementCsv\RenderCsvDomain;
+use App\DataTraitement\TraitementString\DomainsData;
 use App\Model\TopKeyword;
 use App\Table\Website;
 use League\Csv\Statement;
@@ -84,39 +88,30 @@ class TopKeywordController
      */
     public function CsvDownload(array $data)
     {
-        $this->ColCsv("topkeyword.csv");
-        foreach ($data as $dt) {
-            $json = \GuzzleHttp\json_decode($dt);
-            fputcsv(fopen('php://output', 'w'), [$json->domain,
-                $json->traffic,
-                $json->top_3,
-                $json->top_4_10,
-                $json->top_11_20,
-                $json->top_21_50,
-                $json->top_51_100
-            ]);
-        }
-        fclose(fopen('php://output', 'w'));
-        exit();
+        $downloadCsv = new DownloadCsv([
+            "Domain",
+            "Traffic",
+            "Top 3",
+            "Top 4-10",
+            "Top 11-20",
+            "Top 21-50",
+            "Top 51-100"
+        ], 'topkeyword.csv');
+        $downloadCsv->CsvDownload($data);
     }
 
     /**
-     * @param string $filename
-     * @return bool
+     * @param string $domains
+     * @throws \League\Csv\Exception
      */
-    private function ColCsv(string $filename): bool
+    public function CsvDownloadKeywords(string $domains)
     {
-        // Format the page Header in CSV !!!
-        header('Content-Type: application/csv');
-        header('Content-Disposition: attachment; filename=" ' . $filename . '');
+        $statementCsv = new Statement();
+        $keywordCsv = new KeywordsCsv($this->table, $statementCsv);
+        $domainsData = new DomainsData($keywordCsv, $this->table);
 
-        // FLUX php://output, open the file CSV in mode "w" !!!
-        $handle = fopen('php://output', 'w');
-
-        // Create the column TITLE CSV file with Function fputcsv !!!
-        fputcsv($handle, ["Domain", "Traffic", "Top 3", "Top 4-10", "Top 11-20", "Top 21-50", "Top 51-100"]);
-
-        return true;
+        $renderCsv = new RenderCsvDomain($domainsData);
+        $renderCsv->renderCSV($domains);
     }
 
     /**
@@ -181,7 +176,7 @@ class TopKeywordController
             $response = \GuzzleHttp\json_decode($curlCSVKeywords);
 
             $statementLeague = new Statement();
-            [$keywords, $pages, $intervalElement] = (new KeywordsCsv($website, $statementLeague))
+            [$keywords, $pages, $intervalElement, $paginationNumber] = (new KeywordsCsv($website, $statementLeague))
                             ->all($response);
 
             echo \GuzzleHttp\json_encode([
@@ -189,7 +184,8 @@ class TopKeywordController
                 'data' => $keywords,
                 'pages' => $pages,
                 'currentPage' => 1,
-                'intervalElement' => $intervalElement
+                'intervalElement' => $intervalElement,
+                'paginationNumber' => $paginationNumber
             ]);
             die();
         }
@@ -205,17 +201,27 @@ class TopKeywordController
      * @param string|null $domain
      * @param int|null $page
      * @param int|null $offset
+     * @param string $pageRemoveIndex
+     * @throws \League\Csv\Exception
      */
-    public function paginateKeywords(?string $domain, ?int $page, ?int $offset)
+    public function paginateKeywords(?string $domain, ?int $page, ?int $offset, string $pageRemoveIndex = 'false')
     {
         $website = $this->table->SelectToken($domain);
 
         if ($website) {
             $statement = new Statement();
             $keywordsCsv = new KeywordsCsv($website, $statement);
-            $pagination = $keywordsCsv->pagination($page, $offset);
+            [$keywords, $pages, $intervalElement, $paginationNumber] = $keywordsCsv->pagination($page, $offset, $pageRemoveIndex);
 
-            dd($pagination);
+            echo \GuzzleHttp\json_encode([
+                'success' => true,
+                'data' => $keywords,
+                'pages' => $pages,
+                'currentPage' => $page,
+                'intervalElement' => $intervalElement,
+                'paginationNumber' => $paginationNumber
+            ]);
+            die();
         }
 
         echo \GuzzleHttp\json_encode([
@@ -225,6 +231,150 @@ class TopKeywordController
         die();
     }
 
+    /**
+     * @param string $domain
+     * @param string $filter
+     * @throws \League\Csv\Exception
+     */
+    public function keywordsFilterByRank(string $domain, string $filter)
+    {
+        $website = $this->table->SelectToken($domain);
+
+        if ($website) {
+            $statement = new Statement();
+            $filterKeyword = new KeywordsFilter($website, $statement);
+            [$keywords, $pages, $intervalElement, $paginationNumber] = $filterKeyword->filterCsv($filter, 'Position');
+
+            echo \GuzzleHttp\json_encode([
+                'success' => true,
+                'data' => $keywords,
+                'pages' => $pages,
+                'currentPage' => 1,
+                'intervalElement' => $intervalElement,
+                'paginationNumber' => $paginationNumber,
+                'filter' => $filter,
+                'filterKey' => 'Position'
+            ]);
+            die();
+        }
+
+        echo \GuzzleHttp\json_encode([
+            'success' => false,
+            'error' => 'This webiste isn\'t present in our database !!!'
+        ]);
+        die();
+    }
+
+    /**
+     * @param string $domain
+     * @param string $filter
+     * @throws \League\Csv\Exception
+     */
+    public function keywordsFilterByVolume(string $domain, string $filter)
+    {
+        $website = $this->table->SelectToken($domain);
+
+        if ($website) {
+            $statement = new Statement();
+            $filterKeyword = new KeywordsFilter($website, $statement);
+            [$keywords, $pages, $intervalElement, $paginationNumber] = $filterKeyword->filterCsv($filter, 'Volume de recherche.');
+
+            echo \GuzzleHttp\json_encode([
+                'success' => true,
+                'data' => $keywords,
+                'pages' => $pages,
+                'currentPage' => 1,
+                'intervalElement' => $intervalElement,
+                'paginationNumber' => $paginationNumber,
+                'filter' => $filter,
+                'filterKey' => 'Volume de recherche.'
+            ]);
+            die();
+        }
+
+        echo \GuzzleHttp\json_encode([
+            'success' => false,
+            'error' => 'This webiste isn\'t present in our database !!!'
+        ]);
+        die();
+    }
+
+    /**
+     * @param string $domain
+     * @param string $filter
+     * @throws \League\Csv\Exception
+     */
+    public function keywordsFilterByUrl(string $domain, string $filter)
+    {
+        $website = $this->table->SelectToken($domain);
+
+        if ($website) {
+            $statement = new Statement();
+            $filterKeyword = new KeywordsFilter($website, $statement);
+            [$keywords, $pages, $intervalElement, $paginationNumber] = $filterKeyword->filterCsv($filter, 'URL');
+
+            echo \GuzzleHttp\json_encode([
+                'success' => true,
+                'data' => $keywords,
+                'pages' => $pages,
+                'currentPage' => 1,
+                'intervalElement' => $intervalElement,
+                'paginationNumber' => $paginationNumber,
+                'filter' => $filter,
+                'filterKey' => 'URL'
+            ]);
+            die();
+        }
+
+        echo \GuzzleHttp\json_encode([
+            'success' => false,
+            'error' => 'This webiste isn\'t present in our database !!!'
+        ]);
+        die();
+    }
+
+    /**
+     * @param string|null $domain
+     * @param int|null $page
+     * @param int|null $offset
+     * @param string $filter
+     * @param string $keyFilter
+     * @param string $pageRemoveIndex
+     * @throws \League\Csv\Exception
+     */
+    public function paginateKeywordsFilter(
+        ?string $domain,
+        ?int $page,
+        ?int $offset,
+        string $filter,
+        string $keyFilter,
+        string $pageRemoveIndex = 'false'
+    )
+    {
+        $website = $this->table->SelectToken($domain);
+
+        if ($website) {
+            $statement = new Statement();
+            $keywordsFilter = new KeywordsFilter($website, $statement);
+            [$keywords, $pages, $intervalElement, $paginationNumber] = $keywordsFilter->paginationFilter($page, $offset, $filter, $keyFilter, $pageRemoveIndex);
+
+            echo \GuzzleHttp\json_encode([
+                'success' => true,
+                'data' => $keywords,
+                'pages' => $pages,
+                'currentPage' => $page,
+                'intervalElement' => $intervalElement,
+                'paginationNumber' => $paginationNumber
+            ]);
+            die();
+        }
+
+        echo \GuzzleHttp\json_encode([
+            'success' => false,
+            'error' => 'This webiste isn\'t present in our database !!!'
+        ]);
+        die();
+    }
     /**
      * @param $dataWebsite
      * @param string $domain
@@ -239,7 +389,6 @@ class TopKeywordController
         $dir = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'datas' . DIRECTORY_SEPARATOR . 'website' . DIRECTORY_SEPARATOR . $dateY . DIRECTORY_SEPARATOR . $dateM . DIRECTORY_SEPARATOR . $domain;
         return ['dir' => $dir, 'file' => $dir . DIRECTORY_SEPARATOR . 'traffic-' . $dataWebsite->token . '.json'];
     }
-
 
     /**
      * Method Created for Search $search to recuperate Element required !!!

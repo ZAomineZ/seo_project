@@ -305,10 +305,90 @@
   background-color: #f2f4f7;
 }
 
+.table.table-striped thead tr th:first-child {
+  margin-top: 12px;
+}
+
 .pagination {
   margin-bottom: 15px;
   display: flex;
   padding-left: 0;
   background-color: inherit;
   text-align: center;
+}
+
+.opacity {
+  opacity: 1!important;
+}
+
+.sort-svg:hover {
+  cursor: pointer;
+}
+
+.sort-no-transform {
+  transform: rotate(0)!important;
+}
+
+.sortSpan:hover {
+  cursor: pointer;
+  color: #4ce1b6;
+  transition: .3s;
+}
+
+.sortSpan {
+  margin-top: 12px;
+}
+
+.block-sort {
+  display: inline-flex;
+}
+
+.thSortTable {
+  padding-bottom: 40px!important;
+}
+
+.table-responsible-no-overflow {
+  display: block;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dropdown-item.active {
+  color: #fff!important;
+}
+
+.active-link-tab {
+  color: #646777;
+}
+
+.active-link-tab:hover {
+  cursor: pointer;
+  color: #4ce1b6;
+  transition: .3s;
+}
+
+.legend-bar-chart {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  left: 5px;
+  bottom: 5px;
+  line-height: 24px;
+}
+
+.legend-ul-bar {
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+}
+
+.link-legend {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.svg-legend-bar {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
 }

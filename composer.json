@@ -20,7 +20,8 @@
             "App\\Actions\\": "App/Actions/",
             "App\\ErrorCode\\": "App/ErrorCode/",
             "App\\DataTraitement\\": "App/DataTraitement/",
-            "App\\RenderHTML\\": "App/RenderHTML/"
+            "App\\RenderHTML\\": "App/RenderHTML/",
+            "App\\QueryElement\\": "App/QueryElement/"
         }
     }
 }

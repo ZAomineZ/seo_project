@@ -61,6 +61,7 @@ return array(
     'App\\concern\\' => array($baseDir . '/App/concern'),
     'App\\Table\\' => array($baseDir . '/App/Table'),
     'App\\RenderHTML\\' => array($baseDir . '/App/RenderHTML'),
+    'App\\QueryElement\\' => array($baseDir . '/App/QueryElement'),
     'App\\Model\\' => array($baseDir . '/App/model'),
     'App\\ErrorCode\\' => array($baseDir . '/App/ErrorCode'),
     'App\\DataTraitement\\' => array($baseDir . '/App/DataTraitement'),

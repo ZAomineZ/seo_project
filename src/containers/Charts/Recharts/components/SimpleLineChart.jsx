@@ -6,31 +6,32 @@ import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 
 const CustomTooltip = ({active, payload, label}) => {
-    if (active && payload.length !== 0) {
-        return (
-            <div className="recharts-default-tooltip recharts-block-open">
-                <p className="recharts-tooltip-label" style={{margin: '0px'}}>{label}</p>
-                <ul className="recharts-tooltip-item-list" style={{padding: '0px', margin: '0px'}}>
-                    {
-                        payload.map(d => {
-                            return (
-                                <li className="recharts-tooltip-item recharts-item">
+    if (payload !== null) {
+        if (active && payload.length !== 0) {
+            return (
+                <div className="recharts-default-tooltip recharts-block-open">
+                    <p className="recharts-tooltip-label" style={{margin: '0px'}}>{label}</p>
+                    <ul className="recharts-tooltip-item-list" style={{padding: '0px', margin: '0px'}}>
+                        {
+                            payload.map(d => {
+                                return (
+                                    <li className="recharts-tooltip-item recharts-item">
                                     <span className="recharts-tooltip-item-name"
                                           style={{color: d.stroke}}>{d.name}</span>
-                                    <span className="recharts-tooltip-item-separator"> : </span>
-                                    <span className="recharts-tooltip-item-value" style={{color: d.stroke}}>
+                                        <span className="recharts-tooltip-item-separator"> : </span>
+                                        <span className="recharts-tooltip-item-value" style={{color: d.stroke}}>
                                         {d.value === 0 ? 'OUT' : d.value}
                                     </span>
-                                    <span className="recharts-tooltip-item-unit"></span>
-                                </li>
-                            );
-                        })
-                    }
-                </ul>
-            </div>
-        );
+                                        <span className="recharts-tooltip-item-unit"></span>
+                                    </li>
+                                );
+                            })
+                        }
+                    </ul>
+                </div>
+            );
+        }
     }
-
     return null;
 };
 

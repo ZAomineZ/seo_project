@@ -74,6 +74,7 @@ class CryptoDashboard extends PureComponent {
             loading: true,
             loaded: false,
             loadedTrend: false,
+            volumeFind: false,
 
             error: false,
             redirectSerp: false
@@ -126,67 +127,70 @@ class CryptoDashboard extends PureComponent {
         } else if (this.props.location.state === undefined) {
             this.setState({redirectSerp: !this.state.redirectSerp})
         } else {
-            axios.get(requestUri + window.location.hostname + route + '/Ajax/Serp.php', {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Content-Type': 'text/plain',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                    'Access-Control-Allow-Credentials': true,
-                    'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                    'Access-Control-Max-Age': 1728000,
-                    'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-                },
-                params: {
-                    keyword: this.props.match.params.keyword,
-                    value: this.props.location.state !== undefined ? this.props.location.state.value : '',
-                    cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
-                    auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
-                }
-            }).then((response) => {
-                if (response && response.status === 200) {
-                    if (response.data.error) {
-                        if (response.data.error === 'Invalid Token') {
-                            this.CookieReset(response.data.token, response.data.id)
-                        } else if (response.data.error && response.data.error === 'Invalid Value') {
-                            this.setState({redirectSerp: !this.state.redirectSerp});
+            this.volumeSerpResult();
+        }
+    }
 
-                            NotificationSystem.newInstance({}, n => notification = n);
-                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
-                        } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
-                            this.setState({redirectSerp: !this.state.redirectSerp});
+    serpKeyword()
+    {
+        axios.get(requestUri + window.location.hostname + route + '/Ajax/Serp.php', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
+            },
+            params: {
+                keyword: this.props.match.params.keyword,
+                value: this.props.location.state !== undefined ? this.props.location.state.value : '',
+                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+            }
+        }).then((response) => {
+            if (response && response.status === 200) {
+                if (response.data.error) {
+                    if (response.data.error === 'Invalid Token') {
+                        this.CookieReset(response.data.token, response.data.id)
+                    } else if (response.data.error && response.data.error === 'Invalid Value') {
+                        this.setState({redirectSerp: !this.state.redirectSerp});
 
-                            NotificationSystem.newInstance({}, n => notification = n);
-                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
-                        } else if (response.data.error && response.data.error === 'Any Result found !!!') {
-                            this.setState({redirectSerp: !this.state.redirectSerp});
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                    } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
+                        this.setState({redirectSerp: !this.state.redirectSerp});
 
-                            NotificationSystem.newInstance({}, n => notification = n);
-                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
-                        }
-                    } else {
-                        this.setState({
-                            url: response.data.url,
-                            description: response.data.description,
-                            rank: response.data.rank,
-                            serpFeature: response.data.serpFeature ? Object.values(response.data.serpFeature) : [],
-                            date: response.data.date,
-                            date_format: response.data.date_format,
-                            dataVl: response.data.dataVolume.volume,
-                            loading: false
-                        });
-                        setTimeout(() => this.setState({loaded: true}), 500);
-                        if (this.state.description && this.state.description.length === 0) {
-                            this.setState({error: !this.state.error});
-                            NotificationSystem.newInstance({}, n => notification = n);
-                            setTimeout(() => showNotification('A error has been detected, this error will be fixed as soon as possible', 'danger'), 700);
-                        }
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                    } else if (response.data.error && response.data.error === 'Any Result found !!!') {
+                        this.setState({redirectSerp: !this.state.redirectSerp});
+
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                    }
+                } else {
+                    this.setState({
+                        url: response.data.url,
+                        description: response.data.description,
+                        rank: response.data.rank,
+                        serpFeature: response.data.serpFeature ? Object.values(response.data.serpFeature) : [],
+                        date: response.data.date,
+                        date_format: response.data.date_format,
+                        dataVl: response.data.dataVolume ? response.data.dataVolume.volume : [],
+                        loading: false
+                    });
+                    setTimeout(() => this.setState({loaded: true}), 500);
+                    if (this.state.description && this.state.description.length === 0) {
+                        this.setState({error: !this.state.error});
+                        NotificationSystem.newInstance({}, n => notification = n);
+                        setTimeout(() => showNotification('A error has been detected, this error will be fixed as soon as possible', 'danger'), 700);
                     }
                 }
-            });
-        }
-        setTimeout(() => this.rankEmpty(), 1000);
-        setTimeout(() => this.volumeSerpResult(), 2000)
+            }
+        });
     }
 
     rankEmpty() {
@@ -257,8 +261,14 @@ class CryptoDashboard extends PureComponent {
                 this.setState({
                     trends: response.data.data.trends ? Object.values(response.data.data.trends) : [],
                     volume: response.data.data.volume,
-                    loadedTrend: true
-                })
+                    loadedTrend: true,
+                    volumeFind: !this.state.volumeFind
+                });
+
+                if (this.state.volumeFind) {
+                    setTimeout(() => this.serpKeyword(), 2000);
+                    setTimeout(() => this.rankEmpty(), 2000);
+                }
             }
         })
     }

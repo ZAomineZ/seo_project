@@ -11,6 +11,8 @@ namespace App\DataTraitement;
 
 use App\concern\File_Params;
 use App\concern\Str_options;
+use App\QueryElement\Element\KeywordsPagination;
+use App\Table\Website;
 use League\Csv\Reader;
 use League\Csv\Statement;
 
@@ -21,22 +23,26 @@ class KeywordsCsv
     /**
      * @var \stdClass
      */
-    private $website;
+    protected $website;
     /**
      * @var Statement
      */
-    private $statementCSV;
+    protected $statementCSV;
     /**
      * @var string
      */
-    private $file = '';
+    protected $file = '';
+    /**
+     * @var string
+     */
+    protected $directoryCSV = '';
 
     /**
      * KeywordsCsv constructor.
-     * @param \stdClass $website
+     * @param $website
      * @param Statement $statementCSV
      */
-    public function __construct(\stdClass $website, Statement $statementCSV)
+    public function __construct($website, Statement $statementCSV)
     {
         $this->website = $website;
         $this->statementCSV = $statementCSV;
@@ -58,25 +64,61 @@ class KeywordsCsv
         $csvFile = $this->createFileCsv($CSVDownload);
 
         if ($csvFile) {
-            $readerCSV = Reader::createFromPath($this->file, 'r');
-            $readerCSV->setHeaderOffset(1);
+            $keywordsPagination = new KeywordsPagination($this->statementCSV);
+            [$records, $pages, $intervalElement, $paginationNumber] = $keywordsPagination->hydrate($this->file, 1, 0);
 
-            $statement = $this->statementCSV
-                ->offset(0)
-                ->limit(100);
-            $process = $statement->process($readerCSV);
-            $records = $process->getRecords();
-            $pages = ceil($readerCSV->count() / 100);
-
-            return $this->dataCsv($records, $pages, [0, 99]);
+            return [$records, $pages, $intervalElement, $paginationNumber];
         }
 
-        return [[], 0, [0, 99]];
+        return [[], 0, [0, 99], [1, 2, 3]];
     }
 
-    public function pagination(?int $page, ?int $offset)
+    /**
+     * @param int|null $page
+     * @param int|null $offset
+     * @param string $pageRemoveIndex
+     * @return array
+     * @throws \League\Csv\Exception
+     */
+    public function pagination(?int $page, ?int $offset, string $pageRemoveIndex = 'false')
     {
-        dd($page, $offset);
+        $webiste =  Str_options::str_replace_domain($this->website->domain) ?: null;
+        $filename = 'keywords-' . $this->website->token . '.csv';
+
+        $this->FileCsv($webiste, $filename);
+
+        return (new KeywordsPagination($this->statementCSV))->hydrate($this->file, $page, $offset, $pageRemoveIndex);
+    }
+
+    /**
+     * @param string $domain
+     * @param string $filename
+     * @param \stdClass $website
+     * @return array
+     * @throws \League\Csv\Exception
+     */
+    public function getKeywords(string $domain, string $filename, \stdClass $website): array
+    {
+        $this->website = $website;
+
+        $this->FileCsv($domain, $filename);
+
+        $keywordsPagination = new KeywordsPagination($this->statementCSV);
+        $keywordsPagination->hydrate($this->file, 1, 0);
+        $records = $keywordsPagination->getKeywords();
+
+        return $records;
+    }
+
+    /**
+     * @param string $domain
+     * @param string $filename
+     * @return mixed
+     */
+    protected function openCsvFile(string $domain, string $filename)
+    {
+        $this->FileCsv($domain, $filename);
+        return File_Params::OpenFile($this->file, $this->directoryCSV, true);
     }
 
     /**
@@ -92,43 +134,29 @@ class KeywordsCsv
 
         if (file_exists($dir)) {
             $filename = 'keywords-' . $website->token . '.csv';
-            $directoryCSV = $dir . DIRECTORY_SEPARATOR . 'csvKeywords/' . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR;
+            $this->FileCsv($domain, $filename);
 
-            if (!file_exists($directoryCSV)) {
-                $mkdir = mkdir($directoryCSV, 0777, true);
+            if (!file_exists($this->directoryCSV)) {
+                $mkdir = mkdir($this->directoryCSV, 0777, true);
                 if ($mkdir) {
-                    $this->file = $directoryCSV . $filename;
-
-                    File_Params::CreateParamsFile($this->file, $directoryCSV, $csv);
-                    return File_Params::OpenFile($this->file, $directoryCSV, true);
+                    File_Params::CreateParamsFile($this->file, $this->directoryCSV, $csv);
+                    return File_Params::OpenFile($this->file, $this->directoryCSV, true);
                 }
             }
 
-            $this->file = $directoryCSV . $filename;
-            return File_Params::OpenFile($this->file, $directoryCSV, true);
+            return $this->openCsvFile($domain, $filename);
         }
     }
 
     /**
-     * @param \Generator|null $csvData
-     * @param float $pages
-     * @param array $intervalElement
-     * @return array|null
+     * @param string $domain
+     * @param string $filename
      */
-    private function dataCsv(?\Generator $csvData, float $pages, array $intervalElement): array
+    protected function FileCsv(string $domain, string $filename): void
     {
-        $keywords = [];
+        $dir = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'storage/datas/website/' . $this->website->directory . DIRECTORY_SEPARATOR . $domain;
+        $this->directoryCSV = $dir . DIRECTORY_SEPARATOR . 'csvKeywords/' . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR;
 
-        foreach ($csvData as $key => $record) {
-            if (is_array($record) && !empty($record)) {
-                $keywords[$key]['id'] = $key;
-                $keywords[$key]['keyword'] = $record['Mot-clé'];
-                $keywords[$key]['rank'] = $record['Position'];
-                $keywords[$key]['search_volume'] = $record['Volume de recherche.'];
-                $keywords[$key]['url'] = $record['URL'];
-            }
-        }
-
-        return [$keywords, $pages, $intervalElement];
+        $this->file = $this->directoryCSV . $filename;
     }
 }

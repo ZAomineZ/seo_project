@@ -38,7 +38,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $website_table = new Website($pdo);
 
                     $keyword = new TopKeywordController($multicurl, $crawl, $str, $scrap, $model, $website_table, $ajax);
-                    $keyword->paginateKeywords($_POST['domain'], $_POST['page'], $_POST['offset'], $_POST['pageRemoveIndex']);
+                    $keyword->paginateKeywordsFilter($_POST['domain'], $_POST['page'], $_POST['offset'], $_POST['filter'], $_POST['keyFilter'], $_POST['pageRemoveIndex']);
                 } else {
                     echo 'Invalid Token !!!';
                 }

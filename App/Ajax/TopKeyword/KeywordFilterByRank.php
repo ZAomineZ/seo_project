@@ -19,13 +19,13 @@ $ajax->HeaderProtect();
 
 if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
 {
-    if (isset($_POST['auth']) && $_POST['auth'] !== '') {
+    if (isset($_GET['auth']) && $_GET['auth'] !== '') {
         try {
-            if (isset($_POST['domain']) && $_POST['domain'] !== '') {
-                $auth = \GuzzleHttp\json_decode($_POST['auth']);
-                if (isset($auth->id) && isset($auth->username) && isset($auth->email) && isset($_POST['cookie']) && $_POST['cookie'] !== '' && $auth->id !== '' && $auth->username !== '' && $auth->email !== '') {
-                    $ajax->VerifAuthMe((int)$auth->id, $_POST['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
-                    $ajax->VerifValueRegex($_POST['domain']);
+            if (isset($_GET['domain']) && $_GET['domain'] !== '') {
+                $auth = \GuzzleHttp\json_decode($_GET['auth']);
+                if (isset($auth->id) && isset($auth->username) && isset($auth->email) && isset($_GET['cookie']) && $_GET['cookie'] !== '' && $auth->id !== '' && $auth->username !== '' && $auth->email !== '') {
+                    $ajax->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
+                    $ajax->VerifValueRegex($_GET['domain']);
 
                     $multicurl = new MultiCurl_UrlTrafficAndKeyword();
                     $crawl = new Crawler();
@@ -38,7 +38,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $website_table = new Website($pdo);
 
                     $keyword = new TopKeywordController($multicurl, $crawl, $str, $scrap, $model, $website_table, $ajax);
-                    $keyword->paginateKeywords($_POST['domain'], $_POST['page'], $_POST['offset'], $_POST['pageRemoveIndex']);
+                    $keyword->keywordsFilterByRank($_GET['domain'], $_GET['filter']);
                 } else {
                     echo 'Invalid Token !!!';
                 }

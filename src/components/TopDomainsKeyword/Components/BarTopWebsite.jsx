@@ -44,7 +44,7 @@ export default class BarTopWebsite extends PureComponent
                                 <VerticalGridLines />
                                 <HorizontalGridLines />
                                 <XAxis />
-                                <YAxis />
+                                <YAxis left={20} />
                                 {
                                     data.length !== 0 &&
                                         data.map((d, i) => {
@@ -63,6 +63,23 @@ export default class BarTopWebsite extends PureComponent
                                         })
                                 }
                             </FlexibleWidthXYPlot>
+                            <div className="recharts-legend-wrapper legend-bar-chart">
+                                <ul className="recharts-default-legend legend-ul-bar">
+                                    {
+                                        data.length !== 0 && data.map((d, i) => {
+                                            return (
+                                                <li className="recharts-legend-item legend-item-0 link-legend">
+                                                    <svg className="recharts-surface svg-legend-bar" width="10" height="10" viewBox="0 0 32 32" version="1.1">
+                                                        <path stroke="none" fill={dataColor[i].color} d="M0,4h32v24h-32z"
+                                                              className="recharts-legend-icon"></path>
+                                                    </svg>
+                                                    <span className="recharts-legend-item-text">{d[0].domain}</span>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                            </div>
                         </div>
                     </CardBody>
                 </Card>

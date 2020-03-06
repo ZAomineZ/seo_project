@@ -35,7 +35,7 @@ class OrdersToday extends PureComponent {
             nextProps.trends.map((value, index) => {
                 data[index] = {
                     name: index,
-                    value: value
+                    value: value === 0 ? 1 : value
                 };
             });
 

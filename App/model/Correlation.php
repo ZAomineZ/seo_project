@@ -453,7 +453,11 @@ class Correlation
 
             // Top 3 Array Keys Website : For Know if the website is the value max or not !!!
             if (!in_array($vl['website'], $keysTop3)) {
-                $dataAverage['top3']['average'] = (($top3Int / 3) / $vl['maxValue']) * 100;
+                if ($top3Int !== 0 ||  $vl['maxValue'] !== 0) {
+                    $dataAverage['top3']['average'] = (($top3Int / 3) / $vl['maxValue']) * 100;
+                } else {
+                    $dataAverage['top3']['average'] = 0;
+                }
             } else {
                 $valueWebsiteTop3 += 1;
                 $dataAverage['top3']['average'] = (($top3Int / (3 - $valueWebsiteTop3)) / ($vl['maxValue']) * 100);
@@ -461,7 +465,11 @@ class Correlation
 
             // Top 5 Array Keys Website : For Know if the website is the value max or not !!!
             if (!in_array($vl['website'], $keysTop5)) {
-                $dataAverage['top5']['average'] = (($top5Int / 5) / ($vl['maxValue']) * 100);
+                if ($top5Int !== 0 ||  $vl['maxValue'] !== 0) {
+                    $dataAverage['top5']['average'] = (($top5Int / 5) / ($vl['maxValue']) * 100);
+                } else {
+                    $dataAverage['top5']['average'] = 0;
+                }
             } else {
                 $valueWebsiteTop5 += 1;
                 $dataAverage['top5']['average'] = (($top5Int / (5 - $valueWebsiteTop5)) / ($vl['maxValue']) * 100);
@@ -469,7 +477,11 @@ class Correlation
 
             // Top 10 Array Keys Website : For Know if the website is the value max or not !!!
             if (!in_array($vl['website'], $keysTop10)) {
-                $dataAverage['top10']['average'] = (($top10Int / 10) / ($vl['maxValue']) * 100);
+                if ($top10Int !== 0 ||  $vl['maxValue'] !== 0) {
+                    $dataAverage['top10']['average'] = (($top10Int / 10) / ($vl['maxValue']) * 100);
+                } else {
+                    $dataAverage['top10']['average'] = 0;
+                }
             } else {
                 $valueWebsiteTop10 += 1;
                 $dataAverage['top10']['average'] = (($top10Int / (10 - $valueWebsiteTop10)) / ($vl['maxValue']) * 100);

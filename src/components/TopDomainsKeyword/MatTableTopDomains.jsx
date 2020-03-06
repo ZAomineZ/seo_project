@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {PureComponent} from 'react';
-import {Card, CardBody} from 'reactstrap';
+import {Card, CardBody, UncontrolledTooltip} from 'reactstrap';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -74,7 +74,12 @@ export default class MatTable extends PureComponent {
         pagesPagination: 0,
         currentPag: 1,
         intervalElement: [],
+        paginationNumber: [],
         domain: '',
+
+        paginationFilter: false,
+        filterValue: '',
+        filterLabel: '',
 
         page: 0,
         rowsPerPage: 5,
@@ -87,6 +92,10 @@ export default class MatTable extends PureComponent {
     constructor(props) {
         super(props);
         this.handleClickOpenTable = this.handleClickOpenTable.bind(this);
+        this.ajaxCsvKeywords = this.ajaxCsvKeywords.bind(this);
+        this.onHandleFilterRank = this.onHandleFilterRank.bind(this);
+        this.onHandleFilterVolume = this.onHandleFilterVolume.bind(this);
+        this.onHandleFilterUrl = this.onHandleFilterUrl.bind(this);
         this.paginationKeywords = this.paginationKeywords.bind(this)
     }
 
@@ -202,6 +211,7 @@ export default class MatTable extends PureComponent {
 
     Download(event, data) {
         event.preventDefault();
+
         axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeywordCsv.php", {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -231,7 +241,45 @@ export default class MatTable extends PureComponent {
         })
     }
 
-    ajaxCsvKeywords(domain) {
+    DownloadKeywords(event)
+    {
+        event.preventDefault();
+
+        let domains = this.props.keyword;
+        let page = '/Ajax/TopKeyword/CSV/KeywordCsvDownload.php';
+
+        axios.get("http://" + window.location.hostname + route + page, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                'Access-Control-Allow-Credentials': true,
+                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                'Access-Control-Max-Age': 1728000,
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+            },
+            params: {
+                domains: domains,
+                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+            }
+        }).then(response => {
+            if (response && response.status === 200) {
+                if (response.data.error) {
+                    if (response.data.error === 'Invalid Token') {
+                        this.CookieReset(response.data.token, response.data.id)
+                    }
+                } else {
+                    window.location.href = response.request.responseURL;
+                }
+            }
+        })
+    }
+
+    ajaxCsvKeywords(e, domain) {
+        e.preventDefault();
+
         this.setState({loadedKeywords: false});
 
         const headers = {
@@ -261,13 +309,17 @@ export default class MatTable extends PureComponent {
                     let pages = response.data.pages ? response.data.pages : 0;
                     let intervalElement = response.data.intervalElement ? response.data.intervalElement : [0, 99];
                     let currentPage = response.data.currentPage ? response.data.currentPage : 1;
+                    let paginationNumber = response.data.paginationNumber ? response.data.paginationNumber : [1, 2, 3];
 
                     this.setState({
                         dataKeywords: data,
                         pagesPagination: pages,
                         currentPage: currentPage,
                         intervalElement: intervalElement,
-                        domain: domain
+                        paginationNumber: paginationNumber,
+                        domain: domain,
+                        filterValue: '',
+                        filterLabel: '',
                     });
                     setTimeout(() => this.setState({loadedKeywords: true}), 500);
                 }
@@ -275,8 +327,65 @@ export default class MatTable extends PureComponent {
         })
     }
 
-    paginationKeywords(event, page, offset) {
+    paginationKeywords(event, page, offset, pageRemoveIndex) {
         event.preventDefault();
+
+        this.setState({loadedKeywords: false});
+
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        let formData = new FormData();
+        formData.set('domain', this.state.domain);
+        formData.set('offset', offset);
+        formData.set('page', page);
+        formData.set('pageRemoveIndex', pageRemoveIndex);
+        formData.set('cookie', this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'));
+        formData.set('auth', sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '');
+
+        if (this.state.paginationFilter) {
+            formData.set('filter', this.state.filterValue);
+            formData.set('keyFilter', this.state.filterLabel);
+        }
+
+        let filePagination = this.state.paginationFilter ? 'KeywordFilterPagination.php' : 'KeywordPagination.php';
+
+        axios.post("http://" + window.location.hostname + route + "/Ajax/TopKeyword/" + filePagination, formData,
+            {headers: headers})
+            .then((response) => {
+                if (response && response.status === 200) {
+                    if (response.data.success) {
+                        let data = response.data.data ? Object.values(response.data.data) : [];
+                        let pages = response.data.pages ? response.data.pages : 0;
+                        let intervalElement = response.data.intervalElement ? response.data.intervalElement : [0, 99];
+                        let currentPage = response.data.currentPage ? response.data.currentPage : 1;
+                        let paginationNumber = response.data.paginationNumber ? response.data.paginationNumber : [1, 2, 3];
+
+                        this.setState({
+                            dataKeywords: data,
+                            pagesPagination: pages,
+                            currentPage: currentPage,
+                            intervalElement: intervalElement,
+                            paginationNumber: paginationNumber
+                        });
+                        setTimeout(() => this.setState({loadedKeywords: true}), 500);
+                    }
+                }
+            })
+    }
+
+    onHandleFilter(e, page, filter) {
+        e.preventDefault();
+
+        this.setState({loadedKeywords: false});
 
         const headers = {
             'X-Requested-With': 'XMLHttpRequest',
@@ -291,22 +400,52 @@ export default class MatTable extends PureComponent {
 
         const params = {
             domain: this.state.domain,
-            offset: offset,
-            page: page,
+            filter: filter,
             cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 
-        axios.post("http://" + window.location.hostname + route + "/Ajax/TopKeyword/KeywordPagination.php",  {
+        axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeyword/" + page, {
             headers: headers,
             params: params
         }).then((response) => {
             if (response && response.status === 200) {
-                if (response.data.success) {
-                    //
+                if (response.data.success === true) {
+                    let data = response.data.data ? Object.values(response.data.data) : [];
+                    let pages = response.data.pages ? response.data.pages : 0;
+                    let intervalElement = response.data.intervalElement ? response.data.intervalElement : [0, 99];
+                    let currentPage = response.data.currentPage ? response.data.currentPage : 1;
+                    let paginationNumber = response.data.paginationNumber ? response.data.paginationNumber : [1, 2, 3];
+                    let filter = response.data.filter ? response.data.filter : '';
+                    let filterKey = response.data.filterKey ? response.data.filterKey : '';
+
+                    this.setState({
+                        dataKeywords: data,
+                        pagesPagination: pages,
+                        currentPage: currentPage,
+                        intervalElement: intervalElement,
+                        paginationNumber: paginationNumber,
+                        paginationFilter: true,
+                        filterValue: filter,
+                        filterLabel: filterKey
+                    });
+                    setTimeout(() => this.setState({loadedKeywords: true}), 500);
                 }
             }
         })
+    }
+
+    onHandleFilterRank(e, filter) {
+        return this.onHandleFilter(e, 'KeywordFilterByRank.php', filter)
+    }
+
+    onHandleFilterVolume(e, filter) {
+        return this.onHandleFilter(e, 'KeywordFilterByVolume.php', filter)
+    }
+
+    onHandleFilterUrl(e, filterUrl)
+    {
+        return this.onHandleFilter(e, 'KeywordFilterByUrl.php', filterUrl)
     }
 
     handleClickOpenTable(e, websiteIndex) {
@@ -331,7 +470,7 @@ export default class MatTable extends PureComponent {
             trKeyword.classList.remove('d-none');
             trRow.setAttribute('data-active', 'active');
 
-            return this.ajaxCsvKeywords(dataDomain);
+            return this.ajaxCsvKeywords(e, dataDomain);
         } else {
             trKeyword.classList.add('d-none');
             trRow.setAttribute('data-active', 'no-active');
@@ -344,7 +483,8 @@ export default class MatTable extends PureComponent {
 
     render() {
         const {
-            dataNow, dataLastMonth, dataKeywords, pagesPagination, currentPage, intervalElement, loadedKeywords, order, orderBy, selected, filter
+            dataNow, dataLastMonth, dataKeywords, pagesPagination, currentPage, intervalElement, paginationNumber,
+            filterValue, filterLabel, loadedKeywords, order, orderBy, selected, filter, domain
         } = this.state;
 
         if (this.state.redirectSerp === true) {
@@ -366,6 +506,9 @@ export default class MatTable extends PureComponent {
                             </button>
                             <button onClick={e => this.Download(e, dataLastMonth)} className="btn btn-primary">Download
                                 CSV last month
+                            </button>
+                            <button onClick={e => this.DownloadKeywords(e)} className="btn btn-primary">Download
+                                All keywords
                             </button>
                         </div>
                     </div>
@@ -562,6 +705,9 @@ export default class MatTable extends PureComponent {
                                                         </p>
                                                     </div>
                                                 </TableCell>
+                                                <UncontrolledTooltip placement="top" target={'row-' + (index + 1)}>
+                                                    Click here to see domain keywords
+                                                </UncontrolledTooltip>
                                             </TableRow>
                                         );
                                     })}
@@ -569,9 +715,16 @@ export default class MatTable extends PureComponent {
                         </Table>
                         <TableKeywords dataKeywords={dataKeywords}
                                        paginationKeywords={this.paginationKeywords}
+                                       onHandleFilterRank={this.onHandleFilterRank}
+                                       onHandleFilterVolume={this.onHandleFilterVolume}
+                                       onHandleFilterUrl={this.onHandleFilterUrl}
+                                       ajaxCsvKeywords={e => this.ajaxCsvKeywords(e, domain)}
                                        pagesPagination={pagesPagination}
                                        currentPage={currentPage}
                                        intervalElement={intervalElement}
+                                       paginationNumber={paginationNumber}
+                                       filterValue={filterValue}
+                                       filterLabel={filterLabel}
                                        loaded={loadedKeywords}/>
                     </div>
                 </CardBody>

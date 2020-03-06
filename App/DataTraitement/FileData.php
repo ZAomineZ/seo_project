@@ -4,6 +4,7 @@ namespace App\DataTraitement;
 
 use App\concern\Date_Format;
 use App\concern\File_Params;
+use Generator;
 
 class FileData
 {
@@ -23,6 +24,10 @@ class FileData
                 'volume' => $volume
             ];
             $dataJson = \GuzzleHttp\json_encode($data);
+
+            if (!file_exists($directory)) {
+                mkdir($directory, 0777, true);
+            }
             File_Params::CreateParamsFile($file, $directory, $dataJson, TRUE);
         }
 
@@ -52,5 +57,30 @@ class FileData
         $newData['volume'] = $data->{'volume'} ?: 0;
 
         return $newData;
+    }
+
+    /**
+     * @param Generator|array|null $csvData
+     * @param float $pages
+     * @param array $intervalElement
+     * @param array $paginationNumber
+     * @return array|null
+     */
+    public function dataCsv($csvData, float $pages, array $intervalElement, array $paginationNumber): array
+    {
+        $keywords = [];
+
+        foreach ($csvData as $key => $record) {
+            if (is_array($record) && !empty($record)) {
+                $keywords[$key]['id'] = $key ?: 0;
+                $keywords[$key]['keyword'] = isset($record['Mot-clé']) ? $record['Mot-clé'] : $record['keyword'];
+                $keywords[$key]['rank'] = isset($record['Position']) ? $record['Position'] : $record['rank'];
+                $keywords[$key]['search_volume'] = isset($record['Volume de recherche.']) ? $record['Volume de recherche.'] : $record['search_volume'];
+                $keywords[$key]['traffic'] = isset($record['Trafic']) ? $record['Trafic'] : $record['traffic'];
+                $keywords[$key]['url'] = isset($record['URL']) ? $record['URL'] : $record['url'];
+            }
+        }
+
+        return [$keywords, $pages, $intervalElement, $paginationNumber];
     }
 }
