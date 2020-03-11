@@ -28,6 +28,7 @@ class KeywordPanel extends PureComponent {
         trustScoreStats: PropTypes.float,
         ratioStats: PropTypes.float,
         trafficStats: PropTypes.float,
+        anchorsStats: PropTypes.float,
         httpsStats: PropTypes.float,
         titleStats: PropTypes.float,
 
@@ -116,6 +117,14 @@ class KeywordPanel extends PureComponent {
                                 <Progress value={Math.round(this.props.trafficStats)}>
                                     {
                                         Math.round(this.props.trafficStats) + '%'
+                                    }
+                                </Progress>
+                            </div>
+                            <div className="progress-wrap progress-wrap--small progress-wrap--blue">
+                                <p>Anchors</p>
+                                <Progress value={Math.round(this.props.anchorsStats)}>
+                                    {
+                                        Math.round(this.props.anchorsStats) + '%'
                                     }
                                 </Progress>
                             </div>

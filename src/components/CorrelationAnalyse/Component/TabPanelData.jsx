@@ -1,26 +1,42 @@
 /* eslint-disable */
 import {PureComponent} from "react";
-import Nav from "reactstrap/src/Nav";
-import NavItem from "reactstrap/src/NavItem";
-import NavLink from "reactstrap/src/NavLink";
 import * as classnames from "classnames";
-import TabContent from "reactstrap/src/TabContent";
-import TabPane from "reactstrap/src/TabPane";
-import BarTopWebsite from "../../TopDomainsKeyword/Components/BarTopWebsite";
-import {ChartTrafficByWebsite} from "../../TopDomainsKeyword/Components/ChartTrafficByWebsite";
 import Panel from "../../../shared/components/Panel";
 import React from "react";
+import {Nav, NavItem, NavLink, TabContent, TabPane} from "reactstrap";
+import TopResultByWebsite from "./TabComponent/TopResultByWebsite";
+import PropTypes from "prop-types";
+import {TablesListOfWebsites} from "./TabComponent/TablesListOfWebsites";
 
-export default class TabPanelData extends PureComponent
-{
-    constructor(props)
-    {
-        super(props)
+export default class TabPanelData extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeTab: '1'
+        }
+    }
+
+    static propTypes = {
+        dataTop3: PropTypes.object.isRequired,
+        dataTop5: PropTypes.object.isRequired,
+        dataTop10: PropTypes.object.isRequired,
+        dataWebsites: PropTypes.array.isRequired,
+        methodNewData: PropTypes.func.isRequired
+    };
+
+    toggle(tab) {
+        const {activeTab} = this.state;
+        if (activeTab !== tab) {
+            this.setState({
+                activeTab: tab,
+            });
+        }
     }
 
     render() {
         const {activeTab} = this.state;
-        
+        const {dataTop3, dataTop5, dataTop10, dataWebsites, methodNewData} = this.props;
+
         return (
             <Panel xs={12} lg={12} md={12} title="Data Keywords" serpFeature={[]}>
                 <div className="tabs tabs--justify tabs--bordered-top overflow-hidden">
@@ -33,7 +49,7 @@ export default class TabPanelData extends PureComponent
                                         this.toggle('1');
                                     }}
                                 >
-                                    Top Keywords
+                                    Top Correlation
                                 </NavLink>
                             </NavItem>
                             <NavItem>
@@ -43,18 +59,20 @@ export default class TabPanelData extends PureComponent
                                         this.toggle('2');
                                     }}
                                 >
-                                    Organic Traffic
+                                    Lists of websites
                                 </NavLink>
                             </NavItem>
                         </Nav>
                         <TabContent activeTab={activeTab}>
                             <TabPane tabId="1">
-                                <BarTopWebsite keywordData={keywordData}/>
+                                <TopResultByWebsite dataTop3={dataTop3}
+                                                    dataTop5={dataTop5}
+                                                    dataTop10={dataTop10}/>
                             </TabPane>
                         </TabContent>
                         <TabContent activeTab={activeTab}>
                             <TabPane tabId="2">
-                                <ChartTrafficByWebsite trafficData={trafficData}/>
+                                <TablesListOfWebsites data={dataWebsites} methodNewData={methodNewData}/>
                             </TabPane>
                         </TabContent>
                     </div>

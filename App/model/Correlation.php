@@ -9,6 +9,7 @@
 namespace App\Model;
 
 
+use App\Actions\Json_File;
 use App\concern\File_Params;
 use App\concern\Str_options;
 use App\Controller\WebSiteController;
@@ -80,19 +81,21 @@ class Correlation
             $fileDayStats = $this->fileData($dir, 'dash-stats', $token);
             $fileDayData = $this->fileData($dir, $domainArray['valueWebsite'] . '-' . date('Y-m-d', strtotime($requestToken->date)), $token);
             $fileTraffic = $this->fileData($dir, 'traffic', $token);
+            $fileBlInfo = $this->fileData($dir, 'bl-info', $token);
 
             if (!is_dir($dir)) {
                 $mkdir = mkdir($dir, 0777, true);
-                if ($mkdir && !file_exists($fileDayStats) || !file_exists($fileDayData) || !file_exists($fileTraffic)) {
+                if ($mkdir && !file_exists($fileDayStats) || !file_exists($fileDayData) || !file_exists($fileTraffic) || !file_exists($fileBlInfo)) {
                     if (!$request) {
                         // Create File And Open This Files !!!
                         $this->fileCreateDataStats(
-                            $fileDayData, $fileDayStats, $fileTraffic,
+                            $fileDayData, $fileDayStats, $fileTraffic, $fileBlInfo,
                             $dir, $domainArray['defaultValue'], $token);
 
                         // Implement in the Array Data, the stats Data !!!
                         $dataResult[$domainArray['defaultValue']]['stats'] = File_Params::OpenFile($fileDayStats, $dir);
                         $dataResult[$domainArray['defaultValue']]['traffic'] = File_Params::OpenFile($fileTraffic, $dir);
+                        $dataResult[$domainArray['defaultValue']]['blInfo'] = File_Params::OpenFile($fileBlInfo, $dir);
                         $dataResult[$domainArray['defaultValue']]['title'] = strtolower($dataTitle[$keyDataFirstSerp][$key]);
                         $dataResult[$domainArray['defaultValue']]['url'] = $item;
                         $dataResult[$domainArray['defaultValue']]['keyword'] = $keywordDefault;
@@ -114,10 +117,10 @@ class Correlation
                         $fileDayData, $fileDayStats, $fileTraffic,
                         $dir, $domainArray['defaultValue'], $token, TRUE);
                 } else {
-                    if (!file_exists($fileDayStats) || !file_exists($fileDayData) || !file_exists($fileTraffic)) {
+                    if (!file_exists($fileDayStats) || !file_exists($fileDayData) || !file_exists($fileTraffic) || !file_exists($fileBlInfo)) {
                         // Create File Data !!!
                         $this->fileCreateDataStats(
-                            $fileDayData, $fileDayStats, $fileTraffic,
+                            $fileDayData, $fileDayStats, $fileTraffic, $fileBlInfo,
                             $dir, $domainArray['defaultValue'], $token);
                     }
                 }
@@ -125,6 +128,7 @@ class Correlation
                 // Implement in the Array Data, the stats Data !!!
                 $dataResult[$domainArray['defaultValue']]['stats'] = File_Params::OpenFile($fileDayStats, $dir);
                 $dataResult[$domainArray['defaultValue']]['traffic'] = File_Params::OpenFile($fileTraffic, $dir);
+                $dataResult[$domainArray['defaultValue']]['blInfo'] = File_Params::OpenFile($fileBlInfo, $dir);
                 $dataResult[$domainArray['defaultValue']]['title'] = strtolower($dataTitle[$keyDataFirstSerp][$key]);
                 $dataResult[$domainArray['defaultValue']]['url'] = $item;
                 $dataResult[$domainArray['defaultValue']]['keyword'] = $keywordDefault;
@@ -132,6 +136,47 @@ class Correlation
         }
 
         // Return Array Result Data to File !!!
+        return $dataResult;
+    }
+
+    /**
+     * @param array $websites
+     * @param array $dataSerp
+     * @param array $dataTitle
+     * @param string $keyword
+     * @return array
+     */
+    public function getDataByWebsites(array $websites, array $dataSerp, array $dataTitle, string $keyword) : array
+    {
+        $dataResult = [];
+
+        foreach ($websites as $website)  {
+            $dataWebsite = [];
+
+            foreach (end($dataSerp) as $key => $item) {
+                $dataWebsite['key'] = $key;
+                $dataWebsite['item'] = $item;
+            }
+
+            $websiteValue = str_replace('.', '-', $website);
+            $requestToken = $this->website->SelectToken($website);
+            $dir = $this->dirName(['valueWebsite' => $websiteValue], $requestToken);
+            $token = $requestToken->token;
+
+            // Create File String !!!
+            $fileDayStats = $this->fileData($dir, 'dash-stats', $token);
+            $fileTraffic = $this->fileData($dir, 'traffic', $token);
+            $fileBlInfo = $this->fileData($dir, 'bl-info', $token);
+
+            // Implement in the Array Data, the stats Data !!!
+            $dataResult[$website]['stats'] = File_Params::OpenFile($fileDayStats, $dir);
+            $dataResult[$website]['traffic'] = File_Params::OpenFile($fileTraffic, $dir);
+            $dataResult[$website]['blInfo'] = File_Params::OpenFile($fileBlInfo, $dir);
+            $dataResult[$website]['title'] = strtolower(end($dataTitle)[$dataWebsite['key']]);
+            $dataResult[$website]['url'] = $dataWebsite['item'] ?: '';
+            $dataResult[$website]['keyword'] = $keyword;
+        }
+
         return $dataResult;
     }
 
@@ -167,6 +212,7 @@ class Correlation
      * @param string $fileData
      * @param string $fileDashStats
      * @param string $fileTraffic
+     * @param string $fileBlInfo
      * @param string $dir
      * @param string $domainDefault
      * @param string $token
@@ -178,6 +224,7 @@ class Correlation
         string $fileData,
         string $fileDashStats,
         string $fileTraffic,
+        string $fileBlInfo,
         string $dir,
         string $domainDefault,
         string $token,
@@ -195,6 +242,7 @@ class Correlation
             File_Params::CreateParamsFile($fileDashStats, $dir, $this->controller->getJsonReferringWeb($domainDefault, TRUE, $fileData, $dir), TRUE);
         }
         File_Params::CreateParamsFile($fileTraffic, $dir, WebSiteController::JsonTrafic($domainDefault), TRUE);
+        File_Params::CreateParamsFile($fileBlInfo, $dir, Json_File::JsonBacklink($domainDefault));
         return true;
     }
 
@@ -209,11 +257,14 @@ class Correlation
         foreach ($dataResult as $key => $value) {
             $statsValue = $value['stats'];
             $traffic = $value['traffic'];
+            $blInfo = $value['blInfo'];
 
             $data[$key]['stats'] = $statsValue[count($statsValue) - 1];
             $data[$key]['traffic'] = isset($traffic->traffic->aData[0]->data) ? end($traffic->traffic->aData[0]->data)[1] : 0;
 
             $keyword = str_replace('-', ' ', $value['keyword']);
+
+            $data[$key]['blInfo'] = isset($blInfo->data->anchors->data) ? $this->anchorsCount($blInfo->data->anchors->data, $keyword) : 0;
 
             if (strpos($value['title'], $keyword) !== false) {
                 $data[$key]['title'] = 1;
@@ -251,6 +302,7 @@ class Correlation
         $dataResultMax['score_rank'] = $this->correlationByStats($dataFormatCorrelation, 'score_rank', TRUE);
         $dataResultMax['trust_rank'] = $this->correlationByStats($dataFormatCorrelation, 'trust', TRUE);
         $dataResultMax['traffic'] = $this->correlationByStats($dataFormatCorrelation, 'traffic');
+        $dataResultMax['blInfo'] = $this->correlationByStats($dataFormatCorrelation, 'blInfo');
         $dataResultMax['ratio'] = $this->correlationByStats($this->correlationAverageRatio($dataFormatCorrelation), 'ratio');
 
         // Average Data !!!
@@ -258,6 +310,7 @@ class Correlation
         $dataAverage['score_rank'] = $this->correlationAverageByStats($dataFormatCorrelation, $dataResultMax, 'score_rank', 'score_rank', TRUE);
         $dataAverage['trust_rank'] = $this->correlationAverageByStats($dataFormatCorrelation, $dataResultMax, 'trust_rank', 'trust', TRUE);
         $dataAverage['traffic'] = $this->correlationAverageByStats($dataFormatCorrelation, $dataResultMax, 'traffic', 'traffic');
+        $dataAverage['blInfo'] = $this->correlationAverageByStats($dataFormatCorrelation, $dataResultMax, 'blInfo', 'blInfo');
         $dataAverage['ratio'] = $this->correlationAverageByStats($dataFormatCorrelation, $dataResultMax, 'ratio', 'ratio');
         $dataAverage['https'] = $this->correlationAverageData($dataFormatCorrelation, 'https');
         $dataAverage['title'] = $this->correlationAverageData($dataFormatCorrelation, 'title');
@@ -280,11 +333,42 @@ class Correlation
         $dataResult['score_rank'] = $this->formatTopByWebsite($dataFormatCorrelation, 'score_rank', TRUE);
         $dataResult['trust_rank'] = $this->formatTopByWebsite($dataFormatCorrelation, 'trust', TRUE);
         $dataResult['traffic'] = $this->formatTopByWebsite($dataFormatCorrelation, 'traffic');
+        $dataResult['blInfo'] = $this->formatTopByWebsite($dataFormatCorrelation, 'blInfo');
         $dataResult['ratio'] = $this->formatTopByWebsite($dataFormatCorrelation, 'ratio');
         $dataResult['https'] = $this->formatTopByWebsite($dataFormatCorrelation, 'UrlCharacters');
         $dataResult['title'] = $this->formatTopByWebsite($dataFormatCorrelation, 'titleCharacters');
 
         return $dataResult;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function allWebsites(array $data)
+    {
+        $dataWebsites = [];
+        $dataWebsitesEnd = [];
+
+        foreach ($data as $key => $value) {
+            foreach ($value as $k => $item) {
+                $dataWebsites[$k]['referring_ip'] = $data['referring_ip'][$k]['value'];
+                $dataWebsites[$k]['score_rank'] = $data['score_rank'][$k]['value'];
+                $dataWebsites[$k]['trust_rank'] = $data['trust_rank'][$k]['value'];
+                $dataWebsites[$k]['traffic'] = $data['traffic'][$k]['value'];
+                $dataWebsites[$k]['anchor'] = $data['blInfo'][$k]['value'];
+                $dataWebsites[$k]['ratio'] = $data['ratio'][$k]['value'];
+                $dataWebsites[$k]['website'] = $data['ratio'][$k]['website'];
+            }
+        }
+
+        $i = 0;
+        foreach ($dataWebsites as $website) {
+            $i++;
+            $dataWebsitesEnd[$i] = $website;
+        }
+
+        return $dataWebsitesEnd;
     }
 
     /**
@@ -594,6 +678,7 @@ class Correlation
         foreach ($dataFormatCorrelation as $key => $value) {
             $newData[$key]['stats'] = $value['stats'];
             $newData[$key]['traffic'] = $value['traffic'];
+            $newData[$key]['blInfo'] = $value['blInfo'];
             $newData[$key]['title'] = $value['title'];
             $newData[$key]['https'] = $value['https'];
             $newData[$key]['ratio'] = $ratio[$key]['ratio'];
@@ -661,5 +746,25 @@ class Correlation
     {
         $fileCut = explode($valueWebsite, $fileDayData);
         return $fileCut[0] . str_replace_last('/', '', $fileCut[1]) . $valueWebsite . '/' . $valueWebsite . '-' . date('Y-m-d') . '-' . $token . '.json';
+    }
+
+    /**
+     * @param array $anchorsData
+     * @param string $keyword
+     * @return int
+     */
+    private function anchorsCount(array $anchorsData, string $keyword): int
+    {
+        $countBl = 0;
+
+        foreach ($anchorsData as $item) {
+            $anchor = $item->anchor ?: '';
+            $backlinksNumber = $item->domains_num ?: 0;
+            if (strpos($anchor, $keyword) !== false) {
+                $countBl += $backlinksNumber;
+            }
+        }
+
+        return $countBl;
     }
 }
