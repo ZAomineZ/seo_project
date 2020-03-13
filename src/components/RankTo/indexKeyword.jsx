@@ -5,8 +5,10 @@ import axios from "axios";
 import {route, requestUri} from "../../const";
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
-import RankTable from "./RankTable";
 import {Redirect} from "react-router-dom";
+import TabsRankToProject from "./Tabs/TabsRankToProject";
+import Cookie from "../../js/Cookie";
+import ResponseAjax from "../../js/ResponseAjax";
 
 let notification = null;
 
@@ -40,56 +42,6 @@ export default class indexKeyword extends PureComponent {
         }
     }
 
-    /**
-     * Create cookie User Auth If We reseted The Cookie in progress !!!
-     * @param name_cookie
-     * @param value_cookie
-     * @param expire_days
-     * @returns {string}
-     * @constructor
-     */
-    SetCookie(name_cookie, value_cookie, expire_days) {
-        let date = new Date();
-        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-        let expire_cookie = "expires=" + date.toUTCString();
-        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
-    }
-
-    /**
-     * Recuperate Cookie User
-     * @param name_cookie
-     * @returns {string}
-     */
-    getCookie(name_cookie) {
-        let name = name_cookie + '=';
-        let cookie = document.cookie.split(';');
-        for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
-            while (cook.charAt(0) == ' ') {
-                cook = cook.substring(1);
-            }
-            if (cook.indexOf(name) == 0) {
-                return cook.substring(name.length, cook.length);
-            }
-            return '';
-        }
-    }
-
-    /**
-     * Reset Cookie User When Invalid Token found in the Request Ajax with Axios
-     * @param token
-     * @param id
-     * @constructor
-     */
-    CookieReset(token, id) {
-        if (this.getCookie('remember_me_auth')) {
-            this.SetCookie('remember_me_auth', token + '__' + id, 30)
-        } else {
-            this.SetCookie('auth_today', token + '__' + id, 1)
-        }
-        this.setState({redirectSerp: !this.state.redirectSerp})
-    }
-
     submitNotification(type, title, message) {
         NotificationSystem.newInstance({}, n => notification = n);
         setTimeout(() => showNotification(type, title, message), 700);
@@ -112,9 +64,9 @@ export default class indexKeyword extends PureComponent {
                     },
                     params: {
                         project: project,
-                        cookie: this.getCookie('remember_me_auth') ?
-                            this.getCookie('remember_me_auth') :
-                            this.getCookie('auth_today'),
+                        cookie: Cookie.getCookie('remember_me_auth') ?
+                            Cookie.getCookie('remember_me_auth') :
+                            Cookie.getCookie('auth_today'),
                         auth: sessionStorage.getItem('Auth') ?
                             sessionStorage.getItem('Auth')
                             : ''
@@ -123,7 +75,7 @@ export default class indexKeyword extends PureComponent {
                     if (response && response.status === 200) {
                         if (response.data.error) {
                             if (response.data.error === 'Invalid Token') {
-                                this.CookieReset(response.data.token, response.data.id)
+                                return this.redirectSerp(response);
                             } else {
                                 this.setState({redirectTo: !this.state.redirectTo});
                                 this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
@@ -147,6 +99,14 @@ export default class indexKeyword extends PureComponent {
         } else {
             this.setState({redirectSerp: !this.state.redirectSerp});
         }
+    }
+
+    /**
+     * @param {object} response
+     */
+    redirectSerp(response){
+        ResponseAjax.ForbiddenResponse(response);
+        this.setState({redirectSerp: !this.state.redirectSerp});
     }
 
     render() {
@@ -183,11 +143,9 @@ export default class indexKeyword extends PureComponent {
                         <ChartRank data={this.state.data} project={this.props.match.params.project}/>
                     </div>
                     <div className="col-xl-12">
-                        <RankTable
-                            title={'Dashboard Rank Keyword (' + this.state.countKeywords + ')'}
-                            project={this.props.match.params.project}
-                            data={this.state.dataKeywordsByWebsite}
-                        />
+                        <TabsRankToProject project={this.props.match.params.project}
+                                           countKeywords={this.state.countKeywords}
+                                           dataKeywordsByWebsite={this.state.dataKeywordsByWebsite} />
                     </div>
                 </div>
             </div>

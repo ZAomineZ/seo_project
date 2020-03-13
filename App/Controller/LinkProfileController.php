@@ -114,7 +114,11 @@ class LinkProfileController extends \App\Http\Controllers\Controller
             if ($mkdir && !file_exists($file)) {
                 $this->CreateParamsFile($file, $dir, $url);
                 $this->table->InsertDomain([
-                    'power' => Img_Params::PowerImg(Img_Params::FileGetSize($file)) > 100 ? 100 : Img_Params::PowerImg(Img_Params::FileGetSize($file)),
+                    'power' => Img_Params::PowerImg(
+                        Img_Params::FileGetSize($file)) > 100
+                        ? 100
+                        : Img_Params::PowerImg(Img_Params::FileGetSize($file)
+                        ),
                     'token' => $this->link->TokenImgExplode($file),
                     'domain' => $domain,
                     'date' => date("Y-m-d H:i:s")
@@ -227,9 +231,10 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      */
     public function linkProfile(string $domain): ?string
     {
-        if ($this->profile->ReqIpRef($domain)->status === "Not Found" || $this->profile->ReqIpRef($domain)->status === "Validation Error : target") {
-            return $this->link->UrlHtml('', '', '', '', $this->profile->ReqIpRef($domain));
+        $semrushReq = $this->profile->ReqIpRef($domain);
+        if ($semrushReq->status === "Not Found" || $semrushReq->status === "Validation Error : target") {
+            return $this->link->UrlHtml('', '', '', '', $semrushReq);
         }
-        return $this->ReturnHtml($domain, $this->profile->ReqIpRef($domain));
+        return $this->ReturnHtml($domain, $semrushReq);
     }
 }

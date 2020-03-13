@@ -131,6 +131,7 @@ class ComposerStaticInitff514407ed5bb9a1578a03ac13ffa678
             'App\\RenderHTML\\' => 15,
             'App\\QueryElement\\' => 17,
             'App\\Model\\' => 10,
+            'App\\Helpers\\' => 12,
             'App\\ErrorCode\\' => 14,
             'App\\DataTraitement\\' => 19,
             'App\\Controller\\' => 15,
@@ -367,6 +368,10 @@ class ComposerStaticInitff514407ed5bb9a1578a03ac13ffa678
         'App\\Model\\' => 
         array (
             0 => __DIR__ . '/../..' . '/App/model',
+        ),
+        'App\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/App/Helpers',
         ),
         'App\\ErrorCode\\' => 
         array (

@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableCell from '@material-ui/core/TableCell/TableCell';
 import Panel from '../../shared/components/Panel';
 import RankTableHead from "./RankTableHead";
+import ReactHtmlParser from "react-html-parser";
 
 const CustomTooltip = ({active, payload}) => {
     if (active) {
@@ -47,6 +48,7 @@ export default class RankTable extends PureComponent {
             PropTypes.array.isRequired,
             PropTypes.object.isRequired
         ]),
+        noFeature: PropTypes.bool.isRequired
     };
 
     static defaultProps = {
@@ -166,7 +168,8 @@ export default class RankTable extends PureComponent {
                     <RankTableHead
                         order={this.state.order}
                         orderBy={this.state.orderBy}
-                        onRequestSort={this.handleRequestSort} />
+                        onRequestSort={this.handleRequestSort}
+                        noFeature={this.props.noFeature}/>
                     <TableBody>
                         {data
                             .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
@@ -193,6 +196,18 @@ export default class RankTable extends PureComponent {
                                                 </div>
                                             </div>
                                         </td>
+                                        {
+                                            this.props.noFeature === false &&
+                                            <td>
+                                                <div className='features-table'>
+                                                    {
+                                                        d.features.map(d => {
+                                                            return (ReactHtmlParser(d))
+                                                        })
+                                                    }
+                                                </div>
+                                            </td>
+                                        }
                                         <td>
                                             {
                                                 d.rank === 'Not Found' ? d.rank : Math.round(d.rank)

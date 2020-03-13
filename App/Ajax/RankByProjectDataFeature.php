@@ -40,7 +40,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
                     $rankTable = new Rank($pdoModel);
                     $rankModel = new RankModel($rankTable, $serpModel);
                     $rankController = new RankController($rankModel, $rankTable);
-                    $rankController->projectData($project, $_GET['auth']);
+                    $rankController->getDataByFeature($project, $_GET['auth'], $_GET['typeFeature']);
                 } else {
                     echo 'Invalid Token !!!';
                 }

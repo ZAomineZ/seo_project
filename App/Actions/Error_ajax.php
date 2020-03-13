@@ -63,7 +63,9 @@ class Error_ajax
                 $error = '';
                 $err = false;
                 foreach ($domain as $dom) {
-                    if (self::$bl->ReqBl(strip_tags(trim($dom)))->status === "Not Found" || self::$bl->ReqBl(strip_tags(trim($dom)))->status === "Validation Error : target") {
+                    $blJson = self::$bl->ReqBl(strip_tags(trim($dom)));
+
+                    if ($blJson->status === "Not Found" || $blJson->status === "Validation Error : target") {
                         $err .= true;
                     }
                     $err .= false;
@@ -71,8 +73,10 @@ class Error_ajax
                 $error .= $err ? 'An Url is invalid or not exist !!!' : '';
                 return self::ResultJsonError($error);
             } else {
-                if (self::$bl->ReqBl(strip_tags(trim($domain)))->status === "Not Found" || self::$bl->ReqBl(strip_tags(trim($domain)))->status === "Validation Error : target") {
-                    return self::ResultJsonError(self::$bl->ReqBl(strip_tags(trim($domain)))->status);
+                $blJson = self::$bl->ReqBl(strip_tags(trim($domain)));
+
+                if ($blJson->status === "Not Found" || $blJson->status === "Validation Error : target") {
+                   return self::ResultJsonError($blJson->status);
                 }
                 return self::ResultJsonError('');
             }

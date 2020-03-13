@@ -41,7 +41,17 @@ class Img_Params
         $google = self::FileGetSize(dirname(__DIR__, 2) . '/' . 'storage/datas/imastic/LinkProfile-google-com/google-com-dd250e1e7154a1406dd53fa8d373324c.png');
         $part_gl = $google - 7408;
         $part = $size - 7408;
-        return ($part * 100 / $part_gl);
+        $result =  ($part * 100 / $part_gl);
+
+        if ($result > 4) {
+            $part_gl = $google / 100;
+            $part = $size / 100;
+            $rem =  $part_gl - 100;
+            $res = round(($part - $rem), 2);
+            return $res;
+        }
+
+        return $result;
     }
 
     /**

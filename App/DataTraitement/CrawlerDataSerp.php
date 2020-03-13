@@ -27,14 +27,20 @@ class CrawlerDataSerp
      * @var array
      */
     private $dataRenderExist = [];
+    /**
+     * @var bool
+     */
+    private $rankButton;
 
     /**
      * CrawlerDataSerp constructor.
      * @param Crawler $crawler
+     * @param bool $rankButton
      */
-    public function __construct(Crawler $crawler)
+    public function __construct(Crawler $crawler, bool $rankButton = false)
     {
         $this->crawler = $crawler;
+        $this->rankButton = $rankButton;
     }
 
     /**
@@ -145,7 +151,7 @@ class CrawlerDataSerp
     protected function setValuesButton(string $searchNeedle, string $name, array $values, string $path, string $keyClass): void
     {
         if (in_array($searchNeedle, $values['name'])) {
-            $this->dataRender[$searchNeedle]['button'] = (new RenderButton())->buttonWithPathSvg($name, $path);
+            $this->dataRender[$searchNeedle]['button'] = (new RenderButton())->buttonWithPathSvg($name, $path, $this->rankButton);
             $this->dataRender[$searchNeedle]['key'] = $keyClass;
             $this->dataRender[$searchNeedle]['balise'] = $values['balise'];
         }
@@ -161,7 +167,7 @@ class CrawlerDataSerp
     protected function setValueButton(string $searchNeedle, string $name, string $value, string $path, string $keyClass): void
     {
         if ($value === $searchNeedle) {
-            $this->dataRender[$searchNeedle]['button'] = (new RenderButton())->buttonWithPathSvg($name, $path);
+            $this->dataRender[$searchNeedle]['button'] = (new RenderButton())->buttonWithPathSvg($name, $path, $this->rankButton);
             $this->dataRender[$searchNeedle]['key'] = $keyClass;
             $this->dataRender[$searchNeedle]['balise'] = 'div';
         }

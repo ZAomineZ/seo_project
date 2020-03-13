@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/App/DataTraitement" isTestSource="false" packagePrefix="App\DataTraitement\" />
       <sourceFolder url="file://$MODULE_DIR$/App/Actions" isTestSource="false" packagePrefix="App\Actions\" />
       <sourceFolder url="file://$MODULE_DIR$/App/QueryElement" isTestSource="false" packagePrefix="App\QueryElement\" />
+      <sourceFolder url="file://$MODULE_DIR$/App/Helpers" isTestSource="false" packagePrefix="App\Helpers\" />
       <sourceFolder url="file://$MODULE_DIR$/App/model" isTestSource="false" packagePrefix="App\Model\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/container-interop/container-interop" />

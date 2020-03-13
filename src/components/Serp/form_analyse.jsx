@@ -138,7 +138,7 @@ class FormAnalyse extends PureComponent {
         }).then((response) => {
             if (response.data.error === '') {
                 this.setState({ valueInput: domain });
-                this.setState({ redirectTo: !this.state.redirectTo });
+                setInterval(() => this.setState({ redirectTo: !this.state.redirectTo }), 1000)
             } else {
                 if (response.data.error === 'Invalid Token') {
                     this.CookieReset(response.data.token, response.data.id)

@@ -11,6 +11,8 @@ import BodyContent from "./BodyContent";
 import TablePagination from "@material-ui/core/TablePagination/TablePagination";
 import {Button, ButtonToolbar, Modal} from "reactstrap";
 import {Redirect} from "react-router-dom";
+import ResponseAjax from "../../js/ResponseAjax";
+import Cookie from '../../js/Cookie'
 
 let notification = null;
 
@@ -102,56 +104,6 @@ class BodyFormRank extends PureComponent {
         this.setState({rowsPerPage: event.target.value});
     };
 
-    /**
-     * Create cookie User Auth If We reseted The Cookie in progress !!!
-     * @param name_cookie
-     * @param value_cookie
-     * @param expire_days
-     * @returns {string}
-     * @constructor
-     */
-    SetCookie(name_cookie, value_cookie, expire_days) {
-        let date = new Date();
-        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-        let expire_cookie = "expires=" + date.toUTCString();
-        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
-    }
-
-    /**
-     * Recuperate Cookie User
-     * @param name_cookie
-     * @returns {string}
-     */
-    getCookie(name_cookie) {
-        let name = name_cookie + '=';
-        let cookie = document.cookie.split(';');
-        for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
-            while (cook.charAt(0) == ' ') {
-                cook = cook.substring(1);
-            }
-            if (cook.indexOf(name) == 0) {
-                return cook.substring(name.length, cook.length);
-            }
-            return '';
-        }
-    }
-
-    /**
-     * Reset Cookie User When Invalid Token found in the Request Ajax with Axios
-     * @param token
-     * @param id
-     * @constructor
-     */
-    CookieReset(token, id) {
-        if (this.getCookie('remember_me_auth')) {
-            this.SetCookie('remember_me_auth', token + '__' + id, 30)
-        } else {
-            this.SetCookie('auth_today', token + '__' + id, 1)
-        }
-        this.setState({redirectSerp: !this.state.redirectSerp})
-    }
-
     toggle() {
         this.setState({modal: !this.state.modal})
     }
@@ -210,9 +162,9 @@ class BodyFormRank extends PureComponent {
                         project: this.state.project,
                         content: this.state.description,
                         keywords: this.state.keywords ? this.state.keywords : '',
-                        cookie: this.getCookie('remember_me_auth') ?
-                            this.getCookie('remember_me_auth') :
-                            this.getCookie('auth_today'),
+                        cookie: Cookie.getCookie('remember_me_auth') ?
+                            Cookie.getCookie('remember_me_auth') :
+                            Cookie.getCookie('auth_today'),
                         auth: sessionStorage.getItem('Auth') ?
                             sessionStorage.getItem('Auth')
                             : ''
@@ -221,7 +173,7 @@ class BodyFormRank extends PureComponent {
                     if (response && response.status === 200) {
                         if (response.data.error) {
                             if (response.data.error === 'Invalid Token') {
-                                this.CookieReset(response.data.token, response.data.id);
+                                return this.redirectSerp(response)
                             } else {
                                 this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
                                 this.setState({loading: false});
@@ -280,9 +232,9 @@ class BodyFormRank extends PureComponent {
                 },
                 params: {
                     id: id,
-                    cookie: this.getCookie('remember_me_auth') ?
-                        this.getCookie('remember_me_auth') :
-                        this.getCookie('auth_today'),
+                    cookie: Cookie.getCookie('remember_me_auth') ?
+                        Cookie.getCookie('remember_me_auth') :
+                        Cookie.getCookie('auth_today'),
                     auth: sessionStorage.getItem('Auth') ?
                         sessionStorage.getItem('Auth')
                         : ''
@@ -291,7 +243,7 @@ class BodyFormRank extends PureComponent {
                 if (response && response.status === 200) {
                     if (response.data.error) {
                         if (response.data.error === 'Invalid Token') {
-                            this.CookieReset(response.data.token, response.data.id);
+                            return this.redirectSerp(response)
                         } else {
                             this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
                             this.setState({modalDelete: !this.state.modalDelete})
@@ -309,6 +261,15 @@ class BodyFormRank extends PureComponent {
                 }
             });
         }
+    }
+
+    /**
+     * @param {object} response
+     */
+    redirectSerp(response)
+    {
+        ResponseAjax.ForbiddenResponse(response);
+        this.setState({redirectSerp: !this.state.redirectSerp});
     }
 
     render() {

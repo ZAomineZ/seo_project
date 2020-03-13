@@ -9,6 +9,8 @@ import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import ModalRankDelete from "./ModalRankDelete";
 import {Redirect} from "react-router-dom";
+import Cookie from "../../js/Cookie"
+import ResponseAjax from "../../js/ResponseAjax";
 
 let notification = null;
 
@@ -49,17 +51,20 @@ export default class RankFront extends PureComponent {
         this.state = {
             modal: false,
             dataKeywords: [],
+
             id: '',
             project: '',
             website: '',
             description: '',
             keywords: '',
             date: '',
+
             loading: true,
             loaded: true,
             errorMess: '',
             errorStatus: false,
-            redirectSerp: false
+            redirectSerp: false,
+            errorDuplicateKeyword: false
         };
         this.toggle = this.toggle.bind(this);
         this.handleChangeProject = this.handleChangeProject.bind(this);
@@ -115,56 +120,6 @@ export default class RankFront extends PureComponent {
         setTimeout(() => showNotification(type, title, message), 700);
     }
 
-    /**
-     * Create cookie User Auth If We reseted The Cookie in progress !!!
-     * @param name_cookie
-     * @param value_cookie
-     * @param expire_days
-     * @returns {string}
-     * @constructor
-     */
-    SetCookie(name_cookie, value_cookie, expire_days) {
-        let date = new Date();
-        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-        let expire_cookie = "expires=" + date.toUTCString();
-        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
-    }
-
-    /**
-     * Recuperate Cookie User
-     * @param name_cookie
-     * @returns {string}
-     */
-    getCookie(name_cookie) {
-        let name = name_cookie + '=';
-        let cookie = document.cookie.split(';');
-        for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
-            while (cook.charAt(0) == ' ') {
-                cook = cook.substring(1);
-            }
-            if (cook.indexOf(name) == 0) {
-                return cook.substring(name.length, cook.length);
-            }
-            return '';
-        }
-    }
-
-    /**
-     * Reset Cookie User When Invalid Token found in the Request Ajax with Axios
-     * @param token
-     * @param id
-     * @constructor
-     */
-    CookieReset(token, id) {
-        if (this.getCookie('remember_me_auth')) {
-            this.SetCookie('remember_me_auth', token + '__' + id, 30)
-        } else {
-            this.SetCookie('auth_today', token + '__' + id, 1)
-        }
-        this.setState({redirectSerp: !this.state.redirectSerp})
-    }
-
     toggle() {
         this.setState({modal: !this.state.modal})
     }
@@ -185,9 +140,9 @@ export default class RankFront extends PureComponent {
                 },
                 params: {
                     id: this.state.id,
-                    cookie: this.getCookie('remember_me_auth') ?
-                        this.getCookie('remember_me_auth') :
-                        this.getCookie('auth_today'),
+                    cookie: Cookie.getCookie('remember_me_auth') ?
+                        Cookie.getCookie('remember_me_auth') :
+                        Cookie.getCookie('auth_today'),
                     auth: sessionStorage.getItem('Auth') ?
                         sessionStorage.getItem('Auth')
                         : ''
@@ -196,26 +151,22 @@ export default class RankFront extends PureComponent {
                 if (response.data && response.status === 200) {
                     if (response.data.error) {
                         if (response.data.error === 'Invalid Token') {
-                            this.CookieReset(response.data.token, response.data.id)
+                            return this.redirectSerp(response)
                         }
                     } else {
+                        const errorDuplicateKeyword = this.state.errorDuplicateKeyword;
+
                         this.setState({
                             website: response.data.website,
                             description: response.data.content,
                             project: response.data.project,
-                            keywords: response.data.keywords
+                            keywords: errorDuplicateKeyword ? this.state.keywords : response.data.keywords
                         });
                     }
                 }
             })
         }
-        if (modalType === 'deleteModal') {
-            this.props.toggleDelete();
-            let form = document.getElementsByName("idFormDelete");
-            form.value = this.props.id;
-        } else {
-            this.setState({modal: !this.state.modal});
-        }
+        return this.modalToggle(modalType)
     }
 
     onSubmit(event) {
@@ -223,9 +174,22 @@ export default class RankFront extends PureComponent {
         let urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
         if (this.state.website !== '' && this.state.project !== '' && this.state.description !== '' && urlRegex.test(this.state.website)) {
             if (this.state.description.length > 10) {
-                this.setState({modal: !this.state.modal});
-                this.setState({loaded: !this.state.loaded});
-                axios.get(requestUri + window.location.hostname + route + '/Ajax/RankProjectUpdate.php', {
+                this.loadResponseUpdateProject();
+
+                const formData = new FormData();
+                formData.set('id', this.state.id);
+                formData.set('website', this.state.website);
+                formData.set('project', this.state.project);
+                formData.set('content', this.state.description);
+                formData.set('keywords', this.state.keywords ? this.state.keywords : '');
+                formData.set('cookie', Cookie.getCookie('remember_me_auth') ?
+                    Cookie.getCookie('remember_me_auth') :
+                    Cookie.getCookie('auth_today'));
+                formData.set('auth', sessionStorage.getItem('Auth') ?
+                    sessionStorage.getItem('Auth')
+                    : '');
+
+                axios.post(requestUri + window.location.hostname + route + '/Ajax/RankProjectUpdate.php', formData, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type': 'text/plain',
@@ -236,26 +200,18 @@ export default class RankFront extends PureComponent {
                         'Access-Control-Max-Age': 1728000,
                         'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
                     },
-                    params: {
-                        id: this.state.id,
-                        website: this.state.website,
-                        project: this.state.project,
-                        content: this.state.description,
-                        keywords: this.state.keywords ? this.state.keywords : '',
-                        cookie: this.getCookie('remember_me_auth') ?
-                            this.getCookie('remember_me_auth') :
-                            this.getCookie('auth_today'),
-                        auth: sessionStorage.getItem('Auth') ?
-                            sessionStorage.getItem('Auth')
-                            : ''
-                    }
                 }).then((response) => {
                     if (response && response.status === 200) {
                         if (response.data.error) {
                             if (response.data.error === 'Invalid Token') {
-                                this.CookieReset(response.data.token, response.data.id)
+                                return this.redirectSerp(response)
                             } else {
                                 this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
+
+                                this.setState({
+                                    keywords: response.data.keywords,
+                                    errorDuplicateKeyword: true
+                                });
                                 setTimeout(() => this.setState({loaded: true}), 500);
                             }
                         } else {
@@ -280,6 +236,33 @@ export default class RankFront extends PureComponent {
             }
         } else {
             this.submitNotification('danger', '👋 A Error is Present !!!', 'This Fiels are incorrect or empty !!!');
+            this.setState({modal: !this.state.modal});
+        }
+    }
+
+    loadResponseUpdateProject() {
+        this.setState({modal: !this.state.modal});
+        this.setState({loaded: !this.state.loaded});
+    }
+
+    /**
+     * @param {object} response
+     */
+    redirectSerp(response) {
+        ResponseAjax.ForbiddenResponse(response);
+        this.setState({redirectSerp: !this.state.redirectSerp});
+    }
+
+    /**
+     *
+     * @param {string} modalType
+     */
+    modalToggle(modalType) {
+        if (modalType === 'deleteModal') {
+            this.props.toggleDelete();
+            let form = document.getElementsByName("idFormDelete");
+            form.value = this.props.id;
+        } else {
             this.setState({modal: !this.state.modal});
         }
     }
@@ -323,7 +306,8 @@ export default class RankFront extends PureComponent {
                             >
                                 <form className='form' onSubmit={e => this.onSubmit(e)}>
                                     <div className="form__form-group">
-                                        <span className="form__form-group-label typography-message">Your new Project</span>
+                                        <span
+                                            className="form__form-group-label typography-message">Your new Project</span>
                                         <div className="form__form-group-field">
                                             <input
                                                 type="text"
@@ -336,9 +320,11 @@ export default class RankFront extends PureComponent {
                                         </div>
                                     </div>
                                     <div className="form__form-group">
-                                        <span className="form__form-group-label typography-message">Your new Website</span>
+                                        <span
+                                            className="form__form-group-label typography-message">Your new Website</span>
                                         <div className="form__form-group-field">
-                                            <div className="form__form-group-input-wrap form__form-group-input-wrap--error-above">
+                                            <div
+                                                className="form__form-group-input-wrap form__form-group-input-wrap--error-above">
                                                 <input
                                                     type='url'
                                                     name='url'
@@ -351,14 +337,16 @@ export default class RankFront extends PureComponent {
                                                     onBlur={this.ErrorRenderState}
                                                 />
                                                 {this.state.errorStatus ?
-                                                    <span className="form__form-group-error">{this.state.errorMess}</span>
+                                                    <span
+                                                        className="form__form-group-error">{this.state.errorMess}</span>
                                                     : ''
                                                 }
                                             </div>
                                         </div>
                                     </div>
                                     <div className="form__form-group">
-                                        <span className="form__form-group-label typography-message">Your new Description</span>
+                                        <span
+                                            className="form__form-group-label typography-message">Your new Description</span>
                                         <div className="form__form-group-field">
                                     <textarea
                                         placeholder="Your Description.."
@@ -371,7 +359,8 @@ export default class RankFront extends PureComponent {
                                         </div>
                                     </div>
                                     <div className="form__form-group">
-                                        <span className="form__form-group-label typography-message">Yours new Keywords</span>
+                                        <span
+                                            className="form__form-group-label typography-message">Yours new Keywords</span>
                                         <div className="form__form-group-field">
                                     <textarea
                                         placeholder="Yours Keywords.."
@@ -404,7 +393,7 @@ export default class RankFront extends PureComponent {
                                                 <a href={"/seo/rankTo/" + Slugify.parse(this.state.project)}>
                                                     {this.state.project}
                                                 </a>
-                                            : ''
+                                                : ''
                                         }
                                     </td>
                                 </tr>
@@ -422,17 +411,17 @@ export default class RankFront extends PureComponent {
                             {
                                 !this.props.modal && !this.state.modal ?
                                     this.state.dataKeywords === undefined ? '' :
-                                    this.state.dataKeywords && this.state.dataKeywords.length !== 0 ?
-                                        <hr/> : dataR && dataR.length !== 0 && dataR[0].length !== 0 && dataR[1].length !== 0 ?
-                                        <hr/> : '' : ''
+                                        this.state.dataKeywords && this.state.dataKeywords.length !== 0 ?
+                                            <hr/> : dataR && dataR.length !== 0 && dataR[0].length !== 0 && dataR[1].length !== 0 ?
+                                            <hr/> : '' : ''
                             }
                             {
                                 !this.props.modal && !this.state.modal ?
-                                this.state.dataKeywords && this.state.dataKeywords.length !== 0 ?
-                                    <StatsRankChart id={this.state.id}
-                                                    dataResultRank={this.state.dataKeywords} /> : dataR && dataR.length !== 0 ?
-                                    <StatsRankChart id={this.state.id}
-                                                    dataResultRank={dataR}/> : '' : ''
+                                    this.state.dataKeywords && this.state.dataKeywords.length !== 0 ?
+                                        <StatsRankChart id={this.state.id}
+                                                        dataResultRank={this.state.dataKeywords}/> : dataR && dataR.length !== 0 ?
+                                        <StatsRankChart id={this.state.id}
+                                                        dataResultRank={dataR}/> : '' : ''
                             }
                         </div>
                     </CardBody>

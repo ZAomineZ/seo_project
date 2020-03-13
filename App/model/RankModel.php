@@ -10,6 +10,8 @@ namespace App\Model;
 
 use App\Actions\Url\MultiCurl_VolumeResult;
 use App\concern\Str_options;
+use App\ErrorCode\Exception\NullableException;
+use App\ErrorCode\NullableType;
 use App\Table\Rank;
 use Illuminate\Support\Str;
 
@@ -48,7 +50,13 @@ class RankModel
             $newKeywords = array_diff_key($value, $keywordsProject);
             foreach ($newKeywords as $item) {
                 if (in_array($item, $keywordsProject)) {
-                    echo \GuzzleHttp\json_encode(['error' => 'This keyword exist already in the project !!!']);
+                    $dataKeywords = array_merge($newKeywords, $keywordsProject);
+                    $keywords = array_unique($dataKeywords);
+
+                    echo \GuzzleHttp\json_encode([
+                        'error' => 'One or many existing keywords already in the project, we deleted that !!!',
+                        'keywords' => implode(', ', $keywords)
+                    ]);
                     die();
                 }
             }
@@ -73,6 +81,7 @@ class RankModel
      * @param $auth
      * @param string|int $id
      * @return array
+     * @throws NullableException
      */
     public function KeywordsNotEmpty(string $project, string $website, string $content, string $keywords, $auth, $id = null): array
     {
@@ -94,7 +103,7 @@ class RankModel
             }
         }
         // Limit Count Keywords by Project !!!
-        $this->limitKeywords($request ? $request->keywords : null);
+        $this->limitKeywords($request ? $request->keywords : '', $keywords);
         $this->RegexKeywords($keywords);
         $data = [
             'project' => $project,
@@ -379,9 +388,10 @@ class RankModel
     /**
      * @param string $project
      * @param $auth
+     * @param string|null $typeFetures
      * @return array
      */
-    public function DataByKeyword(string $project, $auth)
+    public function DataByKeyword(string $project, $auth, ?string $typeFetures = null): array
     {
         // Json Decode AUTH !!!
         // Recuperate Keywords by the slug Project !!!
@@ -394,7 +404,17 @@ class RankModel
         $option = $request->id;
 
         // Result Data, Rank By keywords !!!
-        $rankResult = $this->SerpResultKeywords($keywords, $auth);
+        $rankResult = $this->SerpResultKeywords($keywords, $auth, false, $typeFetures);
+
+        if (!is_null($typeFetures)) {
+            return [
+                'rankResults' => $rankResult,
+                'website' => $website,
+                'option' => $option,
+                'keywords' => $keywords
+            ];
+        }
+
         $dataRank = $this->FormatDataRank($rankResult, $website, $option, TRUE);
         return $this->rankFormatTableKeyword($dataRank, $keywords, $rankResult, $website);
     }
@@ -403,15 +423,26 @@ class RankModel
      * @param $result
      * @param string $keyword
      * @param bool $multiKeywords
-     * @return array
+     * @param string|null $typeFeatures
+     * @return array|string
      */
-    private function dataRankByWebsite($result, string $keyword, bool $multiKeywords = false): array
+    private function dataRankByWebsite($result, string $keyword, bool $multiKeywords = false, ?string $typeFeatures = null)
     {
         // Request Html DomCrawler
         $this->serp->LoadHtmlDom($result, $multiKeywords);
 
         // Convert Url and Desc SERP int the an array !!!
         $data = $this->serp->DataDateRank(scandir($this->serp->DIRLoad(str_replace('%20', '-', $keyword))), $this->serp->DIRLoad(str_replace('%20', '-', $keyword)));
+
+        // If $typeFeatures !== null, we returned the Result Dom HTML !!!
+        if (!is_null($typeFeatures)) {
+            return [
+                'dirKeyword' => $this->serp->DIRLoad(str_replace('%20', '-', $keyword)),
+                'allDate' => $data['date'],
+                'allDateFormat' => $this->serp->DateFormat($data['date'])
+            ];
+        }
+
         // Return Array Result Data for the Front !!!
         return [
             "date_format" => $this->serp->DateFormat($data['date']),
@@ -425,9 +456,10 @@ class RankModel
      * @param null|string $keywords
      * @param $auth
      * @param bool $multiKeywords
+     * @param string|null $typesFeatures
      * @return array
      */
-    public function SerpResultKeywords(?string $keywords, $auth = null, bool $multiKeywords = false)
+    public function SerpResultKeywords(?string $keywords, $auth = null, bool $multiKeywords = false, ?string $typesFeatures = null)
     {
         $dataArray = [];
         if (!is_null($keywords)) {
@@ -443,7 +475,7 @@ class RankModel
                 } else {
                     $data = $this->serp->FileData($value, $valueFirst, $auth->id);
                 }
-                $dataArray[] = $this->dataRankByWebsite($data, $value, $multiKeywords);
+                $dataArray[] = $this->dataRankByWebsite($data, $value, $multiKeywords, $typesFeatures);
             }
         }
         return $dataArray;
@@ -562,7 +594,7 @@ class RankModel
             $volume = 0;
             foreach ($value as $k => $kValueRank) {
                 $keyDate = date($format, strtotime($key));
-                if($kValueRank['url'] !== 'Not Found') {
+                if ($kValueRank['url'] !== 'Not Found') {
                     if ($kValueRank['rank'] === 1) {
                         $top1++;
                         $top3++;
@@ -639,7 +671,7 @@ class RankModel
      * @param string $website
      * @return array
      */
-    private function rankFormatTableKeyword(
+    public function rankFormatTableKeyword(
         array $dataRank,
         string $keywords,
         array $rankResult,
@@ -958,15 +990,28 @@ class RankModel
     }
 
     /**
-     * @param string|null $keywords
+     * @param string|null $keywordsRecords
+     * @param string|null $newKeywords
+     * @throws NullableException
      */
-    private function limitKeywords(?string $keywords)
+    private function limitKeywords(?string $keywordsRecords, ?string $newKeywords)
     {
-        if (!is_null($keywords)) {
-            $arrayKeyword = explode(',', $keywords);
-            $countKey = count($arrayKeyword);
+        if (!is_null($keywordsRecords) && !is_null($newKeywords)) {
+            $keywordsRecords = explode(',', $keywordsRecords);
+            $newKeywords = explode(',', $newKeywords);
+        } else {
+            NullableType::nullableArgument();
+        }
+
+        $keywords = array_merge($keywordsRecords, $newKeywords);
+
+        if (!empty($keywords)) {
+            $countKey = count($keywords);
             if ($countKey >= 500) {
-                echo \GuzzleHttp\json_encode(['error' => '500 keywords by project is authorized !!!']);
+                echo \GuzzleHttp\json_encode([
+                    'error' => '500 keywords by project is authorized !!!',
+                    'keywords' => $keywords
+                ]);
                 die();
             }
         }

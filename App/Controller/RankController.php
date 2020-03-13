@@ -9,8 +9,17 @@
 namespace App\Controller;
 
 
+use App\Actions\Url\Curl_Api;
+use App\Actions\Url\Curl_Volume;
+use App\concern\Ajax;
+use App\concern\Str_options;
+use App\DataTraitement\RankData\DataRankByFeature;
+use App\DataTraitement\RankData\LoadCrawlerFeatures;
+use App\Model\PDO_Model;
 use App\Model\RankModel;
+use App\Model\Serp;
 use App\Table\Rank;
+use App\Table\Website;
 
 class RankController
 {
@@ -113,6 +122,7 @@ class RankController
      * @param string $keywords
      * @param $auth
      * @return void
+     * @throws \App\ErrorCode\Exception\NullableException
      */
     public function UpdateProject(string $id, string $project, string $website, string $content, string $keywords, $auth)
     {
@@ -168,10 +178,30 @@ class RankController
 
         // Format Array Rank If result keywords not found !!!
         $dataRankFormatEmptyKeyword = $this->renderDataKeywordsEmptyData($dataRankByKeyword);
+
         echo \GuzzleHttp\json_encode([
             'data' => $dataRankByDay,
             'dataKeywordsByWebsite' => $dataRankFormatEmptyKeyword,
             'countKeywords' => $result['countKeywords']
+        ]);
+    }
+
+    /**
+     * @param string $project
+     * @param $auth
+     * @param string $typeFeature
+     */
+    public function getDataByFeature(string $project, $auth, string $typeFeature)
+    {
+        $dataRankByFeature = new DataRankByFeature($this->rankModel);
+        $dataRank = $dataRankByFeature->renderData($project, $auth, $typeFeature);
+
+        // Format Array Rank If result keywords not found !!!
+        $dataRankFormatEmptyKeyword = $this->renderDataKeywordsEmptyData($dataRank);
+
+        echo \GuzzleHttp\json_encode([
+            'success' => true,
+            'data' => $dataRankFormatEmptyKeyword
         ]);
     }
 
@@ -187,6 +217,7 @@ class RankController
                 $dataRank[$k]['keyword'] = $v['keyword'];
                 $dataRank[$k]['rank'] = 'Not Found';
                 $dataRank[$k]['url'] = 'Not Found';
+                $dataRank[$k]['features'] = [];
                 $dataRank[$k]['date'] = 'Not Found';
                 $dataRank[$k]['diff'] = 'Not Found';
                 $dataRank[$k]['volume'] = 'Not Found';
@@ -195,6 +226,7 @@ class RankController
                 $dataRank[$k]['keyword'] = $v['keyword'];
                 $dataRank[$k]['rank'] = $v['rank'];
                 $dataRank[$k]['url'] = $v['url'];
+                $dataRank[$k]['features'] = (new LoadCrawlerFeatures($v['keyword']))->getFeatures();
                 $dataRank[$k]['date'] = $v['date'];
                 $dataRank[$k]['diff'] = $v['diff'];
                 $dataRank[$k]['volume'] = $v['volume'];
