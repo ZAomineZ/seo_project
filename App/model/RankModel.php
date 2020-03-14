@@ -10,6 +10,7 @@ namespace App\Model;
 
 use App\Actions\Url\MultiCurl_VolumeResult;
 use App\concern\Str_options;
+use App\DataTraitement\RankData\KeywordsTraitement;
 use App\ErrorCode\Exception\NullableException;
 use App\ErrorCode\NullableType;
 use App\Table\Rank;
@@ -48,6 +49,7 @@ class RankModel
             $value = explode(',', $value);
             $keywordsProject = explode(',', $keywordsProject);
             $newKeywords = array_diff_key($value, $keywordsProject);
+
             foreach ($newKeywords as $item) {
                 if (in_array($item, $keywordsProject)) {
                     $dataKeywords = array_merge($newKeywords, $keywordsProject);
@@ -86,25 +88,14 @@ class RankModel
     public function KeywordsNotEmpty(string $project, string $website, string $content, string $keywords, $auth, $id = null): array
     {
         $request = $this->rankTable->selectRank($id);
-        if (strpos($keywords, "\n") !== false) {
-            $keywords = Str_options::KeywordsInput($keywords, "\n");
-            if ($request) {
-                RankModel::keywordExist($keywords, $request->keywords);
-            }
-        } elseif (strpos($keywords, ",") !== false) {
-            $keywords = Str_options::KeywordsInput($keywords, ",");
-            if ($request) {
-                RankModel::keywordExist($keywords, $request->keywords);
-            }
-        } elseif (strpos($keywords, ' ') !== false) {
-            $keywords = Str_options::KeywordsInput($keywords, ",");
-            if ($request) {
-                RankModel::keywordExist($keywords, $request->keywords);
-            }
-        }
+
+        // Format keywords in array Data !!!
+        $keywords = (new KeywordsTraitement($this, $keywords))->formatKeywords($request);
+
         // Limit Count Keywords by Project !!!
         $this->limitKeywords($request ? $request->keywords : '', $keywords);
         $this->RegexKeywords($keywords);
+
         $data = [
             'project' => $project,
             'slug' => Str::slug($project),
@@ -114,6 +105,7 @@ class RankModel
             'keywords' => $keywords,
             'user_id' => $auth->id
         ];
+
         if ($id) {
             unset($data['user_id']);
             $data['id'] = $id;
@@ -121,6 +113,7 @@ class RankModel
         } else {
             $this->DataInsert($data, 'rank');
         }
+
         return [
             'data' => $this->SerpResultKeywords($keywords, $auth),
             'keywords' => $keywords

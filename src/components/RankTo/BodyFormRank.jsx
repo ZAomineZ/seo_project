@@ -144,9 +144,21 @@ class BodyFormRank extends PureComponent {
         if (this.state.webSite !== '' && this.state.project !== '' && this.state.description !== '' && urlRegex.test(this.state.webSite)) {
             if (this.state.description.length > 10) {
                 // Enjoy Params With Get Axios !!!
-                this.setState({modal: !this.state.modal});
-                setTimeout(() => this.setState({loaded: false}), 500);
-                axios.get(requestUri + window.location.hostname + route + '/Ajax/RankTo.php', {
+                this.loadedResponseNewProject();
+
+                const formData = new FormData();
+                formData.set('website', this.state.webSite);
+                formData.set('project', this.state.project);
+                formData.set('content', this.state.description);
+                formData.set('keywords', this.state.keywords ? this.state.keywords : '');
+                formData.set('cookie', Cookie.getCookie('remember_me_auth') ?
+                    Cookie.getCookie('remember_me_auth') :
+                    Cookie.getCookie('auth_today'));
+                formData.set('auth', sessionStorage.getItem('Auth') ?
+                    sessionStorage.getItem('Auth')
+                    : '');
+
+                axios.post(requestUri + window.location.hostname + route + '/Ajax/RankTo.php', formData, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type': 'text/plain',
@@ -156,18 +168,6 @@ class BodyFormRank extends PureComponent {
                         'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
                         'Access-Control-Max-Age': 1728000,
                         'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-                    },
-                    params: {
-                        website: this.state.webSite,
-                        project: this.state.project,
-                        content: this.state.description,
-                        keywords: this.state.keywords ? this.state.keywords : '',
-                        cookie: Cookie.getCookie('remember_me_auth') ?
-                            Cookie.getCookie('remember_me_auth') :
-                            Cookie.getCookie('auth_today'),
-                        auth: sessionStorage.getItem('Auth') ?
-                            sessionStorage.getItem('Auth')
-                            : ''
                     }
                 }).then((response) => {
                     if (response && response.status === 200) {
@@ -270,6 +270,12 @@ class BodyFormRank extends PureComponent {
     {
         ResponseAjax.ForbiddenResponse(response);
         this.setState({redirectSerp: !this.state.redirectSerp});
+    }
+
+    loadedResponseNewProject()
+    {
+        this.setState({modal: !this.state.modal});
+        setTimeout(() => this.setState({loaded: false}), 500);
     }
 
     render() {

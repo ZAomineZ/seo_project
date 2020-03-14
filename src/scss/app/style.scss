@@ -400,6 +400,13 @@
 
 .features-table {
   display: block;
-  margin-left: -3rem;
-  margin-top: -11px;
+  vertical-align: middle;
+}
+
+.feature-list {
+  display: unset;
+  padding-right: 10px!important;
+  padding-top: 10px!important;
+  position: relative;
+  transition: 0.3s;
 }

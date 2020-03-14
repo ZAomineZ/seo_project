@@ -8,18 +8,12 @@
 
 namespace App\Controller;
 
-
-use App\Actions\Url\Curl_Api;
-use App\Actions\Url\Curl_Volume;
-use App\concern\Ajax;
-use App\concern\Str_options;
 use App\DataTraitement\RankData\DataRankByFeature;
+use App\DataTraitement\RankData\DataRankKeywords;
+use App\DataTraitement\RankData\KeywordsTraitement;
 use App\DataTraitement\RankData\LoadCrawlerFeatures;
-use App\Model\PDO_Model;
 use App\Model\RankModel;
-use App\Model\Serp;
 use App\Table\Rank;
-use App\Table\Website;
 
 class RankController
 {
@@ -49,69 +43,31 @@ class RankController
      * @param string $content
      * @param string $keywords
      * @param $auth
+     * @throws \App\ErrorCode\Exception\NullableException
      */
     public function SaveProject(string $project, string $website, string $content, string $keywords, $auth)
     {
-        /**
-         * @var array
-         */
-        $keywordsArray = [];
-
         // JSON Decode Auth User !!!
         $auth = \GuzzleHttp\json_decode($auth);
 
-        // Verif Database !!!
+        // Verif Database
+        // Project Limit by 5 And if a project existing already !!!
         $this->rankModel->projectExist($auth, $project);
         $this->rankModel->limitProject($auth, 5);
 
-        if ($keywords !== '') {
-            $data = $this->rankModel->KeywordsNotEmpty($project, $website, $content, $keywords, $auth);
-        } else {
-            $data = $this->rankModel->KeywordsEmpty($project, $website, $content, $auth);
-        }
+        $dataTraitement = [$project, $website, $content, $auth, null];
+        $keywordsTraitement = (new KeywordsTraitement($this->rankModel, $keywords))
+            ->traitementKeywords($dataTraitement);
 
-        if (isset($data['keywords']) && strpos($data['keywords'], ',') !== false) {
-            $keywordsArray = explode(',', $data['keywords']);
-        } else {
-            $keywordsArray[] = trim($keywords);
-        }
+        $keywords = isset($keywordsTraitement['keywords']) ? $keywordsTraitement['keywords'] : [];
+        $data = isset($keywordsTraitement['data']) ? $keywordsTraitement['data']['data'] : [];
 
-        $dataResult = $this->rankModel->FormatDataRank(
-            isset($data['data']) ? $data['data'] : [],
-            $website,
-            $this->rankTable->selectRank($auth->id, true)->id,
-            false,
-            $keywordsArray
-        );
+        $dataResult = $this->rankModel
+            ->FormatDataRank($data, $website, $this->rankTable->selectRank($auth->id, true)->id, false, $keywords);
         echo \GuzzleHttp\json_encode([
             'result' => $this->rankTable->selectRank($auth->id, true),
             $dataResult
         ]);
-    }
-
-    /**
-     * @param $auth
-     */
-    public function ProjectAllUsers($auth)
-    {
-        if (is_string($auth)) {
-            $auth = \GuzzleHttp\json_decode($auth);
-        }
-        $data = $this->rankModel->AllProject($auth);
-        $dataResult = $this->rankModel->DataAllProjectRank($data, $auth);
-        echo \GuzzleHttp\json_encode([
-            'result' => $data,
-            $dataResult
-        ]);
-    }
-
-    /**
-     * @param string $id
-     */
-    public function DataIdProject(string $id)
-    {
-        $data = $this->rankTable->selectRank($id);
-        echo \GuzzleHttp\json_encode($data);
     }
 
     /**
@@ -126,29 +82,51 @@ class RankController
      */
     public function UpdateProject(string $id, string $project, string $website, string $content, string $keywords, $auth)
     {
-        $keywordsArray = [];
+        // JSON Decode Auth User !!!
         $auth = \GuzzleHttp\json_decode($auth);
+
+        // Verif if a project similar exist already !!!
         $this->rankModel->projectExist($auth, $project, $id);
-        if ($keywords !== '') {
-            $data = $this->rankModel->KeywordsNotEmpty($project, $website, $content, $keywords, $auth, $id);
-        } else {
-            $data = $this->rankModel->KeywordsEmpty($project, $website, $content, $auth, $id);
-        }
-        if (isset($data['keywords']) && strpos($data['keywords'], ',') !== false) {
-            $keywordsArray = explode(',', $data['keywords']);
-        } else {
-            $keywordsArray[] = trim($keywords);
-        }
-        $dataResult = $this->rankModel->FormatDataRank(
-            isset($data['data']) ? $data['data'] : [],
-            $website,
-            $this->rankTable->selectRank($id)->id,
-            false,
-            $keywordsArray);
+
+        $dataTraitement = [$project, $website, $content, $auth, $id];
+        $keywordsTraitement = (new KeywordsTraitement($this->rankModel, $keywords))
+            ->traitementKeywords($dataTraitement);
+
+        $keywords = isset($keywordsTraitement['keywords']) ? $keywordsTraitement['keywords'] : [];
+        $data = isset($keywordsTraitement['data']) ? $keywordsTraitement['data']['data'] : [];
+
+        $dataResult = $this->rankModel
+            ->FormatDataRank($data, $website, $this->rankTable->selectRank($id)->id, false, $keywords);
         echo \GuzzleHttp\json_encode([
             'result' => $this->rankTable->selectRank($id),
             $dataResult
         ]);
+    }
+
+    /**
+     * @param $auth
+     */
+    public function ProjectAllUsers($auth)
+    {
+        if (is_string($auth)) {
+            $auth = \GuzzleHttp\json_decode($auth);
+        }
+        $data = $this->rankModel->AllProject($auth);
+        $dataResult = $this->rankModel->DataAllProjectRank($data, $auth);
+
+        echo \GuzzleHttp\json_encode([
+            'result' => $data,
+            $dataResult
+        ]);
+    }
+
+    /**
+     * @param string $id
+     */
+    public function DataIdProject(string $id)
+    {
+        $data = $this->rankTable->selectRank($id);
+        echo \GuzzleHttp\json_encode($data);
     }
 
     /**
@@ -211,28 +189,6 @@ class RankController
      */
     private function renderDataKeywordsEmptyData(array $dataRankByKeyword): array
     {
-        $dataRank = [];
-        foreach ($dataRankByKeyword as $k => $v) {
-            if ($v['url'] === 'Not Found') {
-                $dataRank[$k]['keyword'] = $v['keyword'];
-                $dataRank[$k]['rank'] = 'Not Found';
-                $dataRank[$k]['url'] = 'Not Found';
-                $dataRank[$k]['features'] = [];
-                $dataRank[$k]['date'] = 'Not Found';
-                $dataRank[$k]['diff'] = 'Not Found';
-                $dataRank[$k]['volume'] = 'Not Found';
-                $dataRank[$k]['chart'] = 'Not Found';
-            } else {
-                $dataRank[$k]['keyword'] = $v['keyword'];
-                $dataRank[$k]['rank'] = $v['rank'];
-                $dataRank[$k]['url'] = $v['url'];
-                $dataRank[$k]['features'] = (new LoadCrawlerFeatures($v['keyword']))->getFeatures();
-                $dataRank[$k]['date'] = $v['date'];
-                $dataRank[$k]['diff'] = $v['diff'];
-                $dataRank[$k]['volume'] = $v['volume'];
-                $dataRank[$k]['chart'] = $v['chart'];
-            }
-        }
-        return $dataRank;
+        return (new DataRankKeywords())->renderDataKeywords($dataRankByKeyword);
     }
 }

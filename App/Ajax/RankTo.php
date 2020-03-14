@@ -17,16 +17,16 @@ $header->HeaderProtect();
 if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
 {
     // Get Params Body
-    $project = htmlspecialchars($_GET['project']);
-    $website = htmlspecialchars($_GET['website']);
-    $content = htmlspecialchars($_GET['content']);
-    $keywords = htmlspecialchars($_GET['keywords']);
-    if (isset($_GET['auth']) && $_GET['auth'] !== '') {
+    $project = htmlspecialchars($_POST['project']);
+    $website = htmlspecialchars($_POST['website']);
+    $content = htmlspecialchars($_POST['content']);
+    $keywords = htmlspecialchars($_POST['keywords']);
+    if (isset($_POST['auth']) && $_POST['auth'] !== '') {
         try {
             if (isset($project) && $project !== '' && isset($website) && $website !== '' && isset($content) && $content !== '' && isset($keywords)) {
-                $auth = \GuzzleHttp\json_decode($_GET['auth']);
-                if (isset($auth->id) && isset($auth->username) && isset($auth->email) && isset($_GET['cookie']) && $_GET['cookie'] !== '' && $auth->id !== '' && $auth->username !== '' && $auth->email !== '') {
-                    $header->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
+                $auth = \GuzzleHttp\json_decode($_POST['auth']);
+                if (isset($auth->id) && isset($auth->username) && isset($auth->email) && isset($_POST['cookie']) && $_POST['cookie'] !== '' && $auth->id !== '' && $auth->username !== '' && $auth->email !== '') {
+                    $header->VerifAuthMe((int)$auth->id, $_POST['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
                     // Instance Controller RankController For tools RankTo !!!
                     // Dependencies used : RankModel, RankTable, PDO_Model, SerpModel
                     $pdoModel = new PDO_Model();
@@ -41,7 +41,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED
                     $rankTable = new Rank($pdoModel);
                     $rankModel = new RankModel($rankTable, $serpModel);
                     $rankController = new RankController($rankModel, $rankTable);
-                    $rankController->SaveProject($project, $website, $content, $keywords, $_GET['auth']);
+                    $rankController->SaveProject($project, $website, $content, $keywords, $_POST['auth']);
                 } else {
                     echo 'Invalid Token !!!';
                 }

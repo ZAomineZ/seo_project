@@ -32,12 +32,10 @@ class RenderButton
      */
     private function buttonWithoutName(string $path = '')
     {
-        return "<button type=\"button\" class=\"inbox__list-button\" style='width: 9rem'>
-                     <div class=\"inbox__mailbox active d-block\"'>
+        return "<div class=\"feature-list inbox__list-button\"'>
                           <svg class=\"mdi-icon mdi-icon-position \" fill=\"currentColor\" viewBox=\"0 0 24 24\">
                                    <path fill=\"currentColor\" d=\"{$path}\"></path>
                           </svg>
-                     </div>
-              </button>";
+                     </div>";
     }
 }
