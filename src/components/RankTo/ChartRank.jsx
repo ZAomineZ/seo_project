@@ -1,11 +1,10 @@
 /* eslint-disable */
 import React, {PureComponent} from 'react';
-import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
-import Panel from '../../shared/components/Panel';
 import {Card, Nav, NavItem, NavLink} from 'reactstrap';
 import classnames from "classnames";
+import RankTop from "./Chart/RankTop";
 
 class ChartRank extends PureComponent {
     static propTypes = {
@@ -36,6 +35,7 @@ class ChartRank extends PureComponent {
                 name: d.date,
                 top100: d.top100,
                 top10: d.top10,
+                top3: d.top3,
                 volume: Math.round(d.volume)
             }
         });
@@ -72,6 +72,16 @@ class ChartRank extends PureComponent {
                                         this.toggle('3');
                                     }}
                                 >
+                                    Top 3
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink
+                                    className={classnames({active: this.state.activeTab === '4'})}
+                                    onClick={() => {
+                                        this.toggle('4');
+                                    }}
+                                >
                                     Volume
                                 </NavLink>
                             </NavItem>
@@ -79,53 +89,25 @@ class ChartRank extends PureComponent {
                         <div>
                             {
                                 this.state.activeTab === '1' ?
-                                    <Panel xs={12} lg={12}
-                                           serpFeature={[]}
-                                           title={"Top 100 positions keywords (" + this.props.project + ')'}>
-                                        <ResponsiveContainer height={300} className="dashboard__area">
-                                            <AreaChart data={data} margin={{top: 20, left: -15, bottom: 20}}>
-                                                <XAxis dataKey="name" tickLine={false}/>
-                                                <YAxis tickLine={false} type="number" domain={['auto', 'auto']}
-                                                       width={70}/>
-                                                <Tooltip/>
-                                                <Legend/>
-                                                <CartesianGrid/>
-                                                <Area name="top100" type="monotone" dataKey="top100" fill="#70bbfd"
-                                                      stroke="#70bbfd" fillOpacity={0.2}/>
-                                            </AreaChart>
-                                        </ResponsiveContainer>
-                                    </Panel> : this.state.activeTab === '2' ?
-                                    <Panel xs={12} lg={12}
-                                           serpFeature={[]}
-                                           title={"Top 10 positions keywords (" + this.props.project + ')'}>
-                                        <ResponsiveContainer height={300} className="dashboard__area">
-                                            <AreaChart data={data} margin={{top: 20, left: -15, bottom: 20}}>
-                                                <XAxis dataKey="name" tickLine={false}/>
-                                                <YAxis tickLine={false} type="number" domain={['auto', 'auto']}
-                                                       width={70}/>
-                                                <Tooltip/>
-                                                <Legend/>
-                                                <CartesianGrid/>
-                                                <Area name="top10" type="monotone" dataKey="top10" fill="#F66C7D"
-                                                      stroke="#F66C7D" fillOpacity={0.2}/>
-                                            </AreaChart>
-                                        </ResponsiveContainer>
-                                    </Panel> :
-                                    <Panel serpFeature={[]} xs={12} lg={12}
-                                           title={"Volume keywords (" + this.props.project + ')'}>
-                                        <ResponsiveContainer height={300} className="dashboard__area">
-                                            <AreaChart data={data} margin={{top: 20, left: -15, bottom: 20}}>
-                                                <XAxis dataKey="name" tickLine={false}/>
-                                                <YAxis tickLine={false} type="number" domain={['auto', 'auto']}
-                                                       width={70}/>
-                                                <Tooltip/>
-                                                <Legend/>
-                                                <CartesianGrid/>
-                                                <Area name="volume" type="monotone" dataKey="volume" fill="#4ce1b6"
-                                                      stroke="#4ce1b6" fillOpacity={0.2}/>
-                                            </AreaChart>
-                                        </ResponsiveContainer>
-                                    </Panel>
+                                    <RankTop title={"Top 100 positions keywords (" + this.props.project + ')'}
+                                             nameTop='top100'
+                                             data={data}
+                                             color='#70bbfd'/>
+                                    : this.state.activeTab === '2' ?
+                                    <RankTop title={"Top 10 positions keywords (" + this.props.project + ')'}
+                                             nameTop='top10'
+                                             data={data}
+                                             color='#F66C7D'/>
+                                    : this.state.activeTab === '3' ?
+                                        <RankTop title={"Top 3 positions keywords (" + this.props.project + ')'}
+                                                 nameTop='top3'
+                                                 data={data}
+                                                 color='#ff4861'/>
+                                        :
+                                        <RankTop title={"Volume keywords (" + this.props.project + ')'}
+                                                 nameTop='volume'
+                                                 data={data}
+                                                 color='#4ce1b6'/>
                             }
                         </div>
                     </div>

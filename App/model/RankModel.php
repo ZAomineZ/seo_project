@@ -357,15 +357,17 @@ class RankModel
      * @param array $result
      * @param string $rank
      * @param string $rank10
+     * @param string $rank3
      * @return array
      */
-    public function DataFormatRankByDay(array $result, string $rank, string $rank10)
+    public function DataFormatRankByDay(array $result, string $rank, string $rank10, string $rank3)
     {
         if (!empty($result)) {
             $data = [];
             if (isset($result['dataResultMontly'])) {
                 foreach ($result['dataResultMontly'] as $vMonth) {
                     $data[$vMonth['date']][$rank] = isset($vMonth[$rank]) ? $vMonth[$rank] : 0;
+                    $data[$vMonth['date']][$rank3] = isset($vMonth[$rank3]) ? $vMonth[$rank3] : 0;
                     $data[$vMonth['date']][$rank10] = isset($vMonth[$rank10]) ? $vMonth[$rank10] : 0;
                     $data[$vMonth['date']]['volume'] = $vMonth['volume'];
                     $data[$vMonth['date']]['date'] = $vMonth['date'];
@@ -574,8 +576,7 @@ class RankModel
      * @param string $format
      * @return array
      */
-    private
-    function DataRankTopByWebsite(array $data, string $format): array
+    private function DataRankTopByWebsite(array $data, string $format): array
     {
         $dataReturn = [];
         foreach ($data as $key => $value) {
@@ -594,40 +595,31 @@ class RankModel
                         $top10++;
                         $top50++;
                         $top100++;
-                        $dataReturn[$keyDate]['top1'] = $top1;
-                        $dataReturn[$keyDate]['top3'] = $top3;
-                        $dataReturn[$keyDate]['top10'] = $top10;
-                        $dataReturn[$keyDate]['top50'] = $top50;
-                        $dataReturn[$keyDate]['top100'] = $top100;
                     } elseif ($kValueRank['rank'] <= 1 || $kValueRank <= 3) {
                         $top3++;
                         $top10++;
                         $top50++;
                         $top100++;
-                        $dataReturn[$keyDate]['top3'] = $top3;
-                        $dataReturn[$keyDate]['top10'] = $top10;
-                        $dataReturn[$keyDate]['top50'] = $top50;
-                        $dataReturn[$keyDate]['top100'] = $top100;
                     } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 10) {
                         $top10++;
                         $top50++;
                         $top100++;
-                        $dataReturn[$keyDate]['top10'] = $top10;
-                        $dataReturn[$keyDate]['top50'] = $top50;
-                        $dataReturn[$keyDate]['top100'] = $top100;
                     } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 50) {
                         $top50++;
                         $top100++;
-                        $dataReturn[$keyDate]['top50'] = $top50;
-                        $dataReturn[$keyDate]['top100'] = $top100;
                     } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 100) {
                         $top100++;
-                        $dataReturn[$keyDate]['top100'] = $top100;
                     }
                     if (isset($kValueRank['volume'])) {
                         $volume += $kValueRank['volume'];
                         $dataReturn[$keyDate]['volume'] = $volume;
                     }
+                    $dataReturn[$keyDate]['top1'] = $top1;
+                    $dataReturn[$keyDate]['top3'] = $top3;
+                    $dataReturn[$keyDate]['top10'] = $top10;
+                    $dataReturn[$keyDate]['top50'] = $top50;
+                    $dataReturn[$keyDate]['top100'] = $top100;
+
                     $dataReturn[$keyDate]['date'] = $keyDate;
                     $dataReturn[$keyDate]['dateUsort'] = date('Y-m-d', strtotime($key));
                 }

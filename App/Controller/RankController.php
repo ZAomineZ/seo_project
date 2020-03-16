@@ -149,7 +149,7 @@ class RankController
         // Create Data Array RANK by Day
         // Format this Data in Data Rank Top 100 by Day !!!
         $result = $this->rankModel->projectUser($project, $auth);
-        $dataRankByDay = $this->rankModel->DataFormatRankByDay($result['dataResult'], 'top100', 'top10');
+        $dataRankByDay = $this->rankModel->DataFormatRankByDay($result['dataResult'], 'top100', 'top10', 'top3');
 
         // Create data Array by Keyword and by URL Website !!!
         $dataRankByKeyword = $this->rankModel->DataByKeyword($project, $auth);
