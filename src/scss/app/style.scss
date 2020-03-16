@@ -410,3 +410,15 @@
   position: relative;
   transition: 0.3s;
 }
+
+.panel__refresh.panel-refresh-custom > svg {
+  fill: #4ce1b6;
+  position: absolute;
+  -webkit-animation: refresh 1s infinite linear;
+  animation: refresh 1s infinite linear;
+  z-index: 10;
+  width: 20px;
+  height: 20px;
+  top: calc(75% - 24px);
+  left: calc(30% - 24px);
+}
