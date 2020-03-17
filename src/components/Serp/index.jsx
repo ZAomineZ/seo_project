@@ -75,6 +75,7 @@ class CryptoDashboard extends PureComponent {
             loaded: false,
             loadedTrend: false,
             volumeFind: false,
+            verifRankEmpty: false,
 
             error: false,
             redirectSerp: false
@@ -131,8 +132,7 @@ class CryptoDashboard extends PureComponent {
         }
     }
 
-    serpKeyword()
-    {
+    serpKeyword() {
         axios.get(requestUri + window.location.hostname + route + '/Ajax/Serp.php', {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -180,9 +180,9 @@ class CryptoDashboard extends PureComponent {
                         date: response.data.date,
                         date_format: response.data.date_format,
                         dataVl: response.data.dataVolume ? response.data.dataVolume.volume : [],
-                        loading: false
                     });
-                    setTimeout(() => this.setState({loaded: true}), 500);
+                    setTimeout(() => this.rankEmpty(), 1000);
+
                     if (this.state.description && this.state.description.length === 0) {
                         this.setState({error: !this.state.error});
                         NotificationSystem.newInstance({}, n => notification = n);
@@ -210,7 +210,9 @@ class CryptoDashboard extends PureComponent {
         const params = {
             keyword: this.props.match.params.keyword,
             value: this.props.location.state !== undefined ? this.props.location.state.value : '',
-            rank: rankEntries.filter(d => d[1].length === 0),
+            rank: rankEntries.filter(d => d[1].length === 0).length !== 0
+                ? rankEntries.filter(d => d[1].length === 0)
+                : '',
             cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
@@ -227,14 +229,16 @@ class CryptoDashboard extends PureComponent {
                 this.setState({
                     rank: dataRank,
                     date: dateArray,
-                    date_format: formatDatesArray
+                    date_format: formatDatesArray,
+                    verifRankEmpty: !this.state.verifRankEmpty,
+                    loading: false
                 });
+                setTimeout(() => this.setState({loaded: true}), 500);
             }
         })
     }
 
-    volumeSerpResult()
-    {
+    volumeSerpResult() {
         const headers = {
             'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'text/plain',
@@ -267,7 +271,6 @@ class CryptoDashboard extends PureComponent {
 
                 if (this.state.volumeFind) {
                     setTimeout(() => this.serpKeyword(), 2000);
-                    setTimeout(() => this.rankEmpty(), 2000);
                 }
             }
         })
@@ -308,14 +311,14 @@ class CryptoDashboard extends PureComponent {
                                      value={typeof (this.props.location.state) == 'undefined' ? '' : this.props.location.state.value}/>
                         <SerpVolumeCharts trends={this.state.trends}
                                           volume={this.state.volume}
-                                          loaded={this.state.loadedTrend} />
+                                          loaded={this.state.loadedTrend}/>
                     </Row>
                     <Row>
                         <SerpTopCopyboard top_10_url={url_data.slice(0, 10)}
                                           top_20_url={url_data.slice(0, 20)}
                                           top_30_url={url_data.slice(0, 30)}
                                           top_50_url={url_data.slice(0, 50)}
-                                          top_100_url={url_data.slice(0, url_data.length)} />
+                                          top_100_url={url_data.slice(0, url_data.length)}/>
                     </Row>
                     <Row>
                         {!this.state.loaded &&
@@ -325,8 +328,11 @@ class CryptoDashboard extends PureComponent {
                             </svg>
                         </div>
                         }
-                        <SimpleLineChart data_url={url_data} date_array={this.state.date}
-                                         rank_object={this.state.rank}/>
+                        {
+                            this.state.verifRankEmpty &&
+                            <SimpleLineChart data_url={url_data} date_array={this.state.date}
+                                             rank_object={this.state.rank}/>
+                        }
                     </Row>
                     <Row>
                         <div className="col-xs-12 col-md-12 col-lg-12 col-xl-12">
@@ -347,7 +353,7 @@ class CryptoDashboard extends PureComponent {
                                 array_description={this.state.description}
                                 array_url={url_data}
                                 array_date={this.state.date}
-                                array_rank={this.state.rank}
+                                array_rank={this.state.verifRankEmpty ? this.state.rank : []}
                                 array_serpFeature={this.state.serpFeature}
                                 dataVl={this.state.dataVl}
                                 keyword={this.props.match.params.keyword}

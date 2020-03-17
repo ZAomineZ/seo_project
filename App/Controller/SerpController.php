@@ -284,6 +284,10 @@ class SerpController extends Controller
      */
     public function emptyRank(array $rank, string $keyword): void
     {
+        if (empty($rank)) {
+            echo \GuzzleHttp\json_encode([]);
+        }
+
         $rankDates = Str_options::toArrayKey($rank);
         $this->serp->deleteFileRankEmpty($rankDates, $keyword);
 

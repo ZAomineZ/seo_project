@@ -30,7 +30,7 @@ $ajax->HeaderProtect();
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     if (isset($_GET['auth']) && $_GET['auth'] !== '') {
         try {
-            if (isset($_GET['keyword']) && $_GET['keyword'] !== '' && isset($_GET['value']) &&  $_GET['value'] !== '' && isset($_GET['rank']) && !empty($_GET['rank'])) {
+            if (isset($_GET['keyword']) && $_GET['keyword'] !== '' && isset($_GET['value']) &&  $_GET['value'] !== '' && isset($_GET['rank'])) {
                 $auth = \GuzzleHttp\json_decode($_GET['auth']);
                 if (isset($auth->id) && isset($auth->username) && isset($auth->email) && isset($_GET['cookie']) && $_GET['cookie'] !== '' && $auth->id !== '' && $auth->username !== '' && $auth->email !== '') {
                     $ajax->VerifAuthMe((int)$auth->id, $_GET['cookie'], ['username' => $auth->username, 'email' => $auth->email]);
@@ -66,7 +66,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
                     $websiteController = new WebSiteController($table, $bl, $website, $format, $multicurl, $controller, $ajax, $linkTable, $linkController, $linkModel);
 
                     $serp = new SerpController($model, $table, $bl, $format, $website, $websiteController);
-                    $serp->emptyRank($_GET['rank'], $_GET['keyword']);
+                    $serp->emptyRank((array)$_GET['rank'], $_GET['keyword']);
                 } else {
                     echo 'Invalid Token !!!';
                 }
