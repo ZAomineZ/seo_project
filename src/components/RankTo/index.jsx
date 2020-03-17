@@ -9,22 +9,7 @@ import RankTop from "./RankTop";
 import {Redirect} from "react-router-dom";
 import ResponseAjax from "../../js/ResponseAjax";
 import Cookie from '../../js/Cookie'
-
-let notification = null;
-
-const showNotification = (message) => {
-    notification.notice({
-        content: <BasicNotification
-            color="danger"
-            title="👋 A Error is present !!!"
-            message={message}
-        />,
-        duration: 5,
-        closable: true,
-        style: {top: 0, left: 'calc(100vw - 100%)'},
-        className: 'left-up',
-    });
-};
+import NotificationMessage from "../../js/NotificationMessage";
 
 export default class RankToIndex extends PureComponent {
     constructor() {
@@ -75,8 +60,7 @@ export default class RankToIndex extends PureComponent {
     componentDidMount() {
         if (this.props.location) {
             if (this.props.location.state !== undefined) {
-                NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification('This Url is invalid !!!'), 700);
+                return NotificationMessage.notification('This Url is invalid !!!', '👋 A Error is present !!!', 'danger');
             }
         }
         return this.isAuth();

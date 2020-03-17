@@ -91,10 +91,10 @@ class KeywordsTraitement
     }
 
     /**
-     * @param \stdClass $request
+     * @param \stdClass|boolean $request
      * @param string $keywords
      */
-    private function isKeywordsExisting(\stdClass $request, string $keywords)
+    private function isKeywordsExisting($request, string $keywords)
     {
         if ($request) {
             RankModel::keywordExist($keywords, $request->keywords);

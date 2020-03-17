@@ -2,9 +2,7 @@
 import React, {PureComponent} from 'react';
 import {PlusIcon} from "mdi-react";
 import * as PropTypes from "prop-types";
-import {BasicNotification} from "../../shared/components/Notification";
 import {translate} from "react-i18next";
-import NotificationSystem from "rc-notification";
 import axios from "axios";
 import {route, requestUri} from "../../const";
 import BodyContent from "./BodyContent";
@@ -13,22 +11,7 @@ import {Button, ButtonToolbar, Modal} from "reactstrap";
 import {Redirect} from "react-router-dom";
 import ResponseAjax from "../../js/ResponseAjax";
 import Cookie from '../../js/Cookie'
-
-let notification = null;
-
-const showNotification = (type, title, message) => {
-    notification.notice({
-        content: <BasicNotification
-            color={type}
-            title={title}
-            message={message}
-        />,
-        duration: 5,
-        closable: true,
-        style: {top: 0, left: 'calc(100vw - 100%)'},
-        className: 'left-up',
-    });
-};
+import NotificationMessage from "../../js/NotificationMessage";
 
 class BodyFormRank extends PureComponent {
     static propTypes = {
@@ -109,8 +92,7 @@ class BodyFormRank extends PureComponent {
     }
 
     submitNotification(type, title, message) {
-        NotificationSystem.newInstance({}, n => notification = n);
-        setTimeout(() => showNotification(type, title, message), 700);
+        return NotificationMessage.notification(message, title, type);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -181,7 +163,7 @@ class BodyFormRank extends PureComponent {
                             }
                         } else {
                             this.state.data.unshift(response.data.result);
-                            this.state.dataKeywordsRank.unshift(response.data[0]);
+                            this.state.dataKeywordsRank.unshift(response.data[0][0]);
                             this.submitNotification('success', '👋 Well Done !!!', 'You are create your project with success !!!');
                             this.setState({
                                 rankRoute: !this.state.rankRoute,
@@ -219,6 +201,8 @@ class BodyFormRank extends PureComponent {
         e.preventDefault();
         let id = document.getElementsByName("idFormDelete").value;
         if (id !== '') {
+            this.setState({loaded: false});
+
             axios.get(requestUri + window.location.hostname + route + '/Ajax/RankProjectDelete.php', {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -254,6 +238,8 @@ class BodyFormRank extends PureComponent {
                             data: this.state.data.filter(d => d.id !== id),
                             dataKeywordsRank: this.state.dataKeywordsRank.filter(d => d.id !== id)
                         });
+                        setTimeout(() => this.setState({loaded: true}), 500);
+
                         this.submitNotification('success', '👋 Well Done !!!', 'Your project has been deleted !!!');
                         let form = document.getElementsByName("idFormDelete");
                         form.value = '';

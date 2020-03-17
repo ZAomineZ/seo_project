@@ -493,6 +493,7 @@ class RankModel
         }
 
         // Array Data Classes the rank in the data !!!
+        $dataRank = array_values($dataRank);
         foreach ($dataDate as $kD => $vD) {
             foreach ($vD as $key => $value) {
                 for ($i = 0; $i < count($dataRank); $i++) {

@@ -5,28 +5,11 @@ import {Button, Card, CardBody, Col, ButtonToolbar, Modal} from "reactstrap";
 import StatsRankChart from "./StatsRankChart";
 import axios from "axios";
 import {route, requestUri} from "../../const";
-import NotificationSystem from "rc-notification";
-import {BasicNotification} from "../../shared/components/Notification";
 import ModalRankDelete from "./ModalRankDelete";
 import {Redirect} from "react-router-dom";
 import Cookie from "../../js/Cookie"
 import ResponseAjax from "../../js/ResponseAjax";
-
-let notification = null;
-
-const showNotification = (type, title, message) => {
-    notification.notice({
-        content: <BasicNotification
-            color={type}
-            title={title}
-            message={message}
-        />,
-        duration: 5,
-        closable: true,
-        style: {top: 0, left: 'calc(100vw - 100%)'},
-        className: 'left-up',
-    });
-};
+import NotificationMessage from "../../js/NotificationMessage";
 
 export default class RankFront extends PureComponent {
     static propTypes = {
@@ -116,8 +99,7 @@ export default class RankFront extends PureComponent {
     }
 
     submitNotification(type, title, message) {
-        NotificationSystem.newInstance({}, n => notification = n);
-        setTimeout(() => showNotification(type, title, message), 700);
+        return NotificationMessage.notification(message, title, type);
     }
 
     toggle() {
@@ -222,7 +204,7 @@ export default class RankFront extends PureComponent {
                                 description: response.data.result.content,
                                 keywords: response.data.result.keywords,
                                 date: response.data.result.created_at,
-                                dataKeywords: response.data[0],
+                                dataKeywords: response.data[0][0],
                                 loading: false
                             });
                             setTimeout(() => this.setState({loaded: true}), 500);

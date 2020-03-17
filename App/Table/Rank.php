@@ -81,9 +81,10 @@ class Rank extends Table
      * @param $auth
      * @param string $project
      * @param null|string|int $id
+     * @param bool $element
      * @return mixed
      */
-    public function selectProject($auth, string $project, $id = null)
+    public function selectProject($auth, string $project, $id = null, bool $element = false)
     {
         if (!is_null($id)) {
             $statement = $this->pdo->GetPdo()
@@ -95,17 +96,37 @@ class Rank extends Table
             ]);
         } else {
             $statement = $this->pdo->GetPdo()
-                ->prepare("SELECT id FROM rank WHERE project = :project AND user_id = :userID");
+                ->prepare("SELECT id, slug, website, user_id, keywords FROM rank WHERE project = :project AND user_id = :userID");
             $statement->execute([
                 'userID' => $auth->id,
                 'project' => $project
             ]);
         }
         $fetch = $statement->fetch();
+        if ($element) {
+            return $fetch;
+        }
+
         if ($fetch && $fetch->id) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param $auth
+     * @param int $id
+     * @return \stdClass
+     */
+    public function selectProjectById($auth, int $id): \stdClass
+    {
+        $statement = $this->pdo->GetPdo()
+            ->prepare("SELECT id, slug, website, user_id, keywords FROM rank WHERE user_id = :userID AND id = :id");
+        $statement->execute([
+            'userID' => $auth->id,
+            'id' => $id
+        ]);
+        return $statement->fetch();
     }
 
     /**

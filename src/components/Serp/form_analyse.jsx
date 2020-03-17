@@ -113,7 +113,7 @@ class FormAnalyse extends PureComponent {
                 return this.anyErrorAjax(domain);
             } else {
                 if (response.data.error === 'Invalid Token') {
-                    ResponseAjax.CookieReset(response.data.token, response.data.id);
+                    ResponseAjax.ForbiddenResponse(response);
                     this.setState({redirectSerp: !this.state.redirectSerp})
                 } else {
                     NotificationSystem.newInstance({}, n => notification = n);

@@ -102,7 +102,7 @@ class ChartRank extends PureComponent {
                                         <RankTop title={"Top 3 positions keywords (" + this.props.project + ')'}
                                                  nameTop='top3'
                                                  data={data}
-                                                 color='#ff4861'/>
+                                                 color='#C093FA'/>
                                         :
                                         <RankTop title={"Volume keywords (" + this.props.project + ')'}
                                                  nameTop='volume'

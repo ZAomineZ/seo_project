@@ -8,10 +8,10 @@
 
 namespace App\Controller;
 
+use App\DataTraitement\RankData\DataJson\RankJson;
 use App\DataTraitement\RankData\DataRankByFeature;
 use App\DataTraitement\RankData\DataRankKeywords;
 use App\DataTraitement\RankData\KeywordsTraitement;
-use App\DataTraitement\RankData\LoadCrawlerFeatures;
 use App\Model\RankModel;
 use App\Table\Rank;
 
@@ -56,14 +56,14 @@ class RankController
         $this->rankModel->limitProject($auth, 5);
 
         $dataTraitement = [$project, $website, $content, $auth, null];
-        $keywordsTraitement = (new KeywordsTraitement($this->rankModel, $keywords))
-            ->traitementKeywords($dataTraitement);
+        (new KeywordsTraitement($this->rankModel, $keywords))->traitementKeywords($dataTraitement);
 
-        $keywords = isset($keywordsTraitement['keywords']) ? $keywordsTraitement['keywords'] : [];
-        $data = isset($keywordsTraitement['data']) ? $keywordsTraitement['data']['data'] : [];
+        $projects = [$this->rankTable->selectProject($auth, $project, null, true)];
+        $rankJson = new RankJson($this->rankModel, $projects);
+        $rankJson->dataJson($auth);
 
-        $dataResult = $this->rankModel
-            ->FormatDataRank($data, $website, $this->rankTable->selectRank($auth->id, true)->id, false, $keywords);
+        $dataResult = $rankJson->getResultsRank($auth);
+
         echo \GuzzleHttp\json_encode([
             'result' => $this->rankTable->selectRank($auth->id, true),
             $dataResult
@@ -89,14 +89,14 @@ class RankController
         $this->rankModel->projectExist($auth, $project, $id);
 
         $dataTraitement = [$project, $website, $content, $auth, $id];
-        $keywordsTraitement = (new KeywordsTraitement($this->rankModel, $keywords))
-            ->traitementKeywords($dataTraitement);
+        (new KeywordsTraitement($this->rankModel, $keywords))->traitementKeywords($dataTraitement);
 
-        $keywords = isset($keywordsTraitement['keywords']) ? $keywordsTraitement['keywords'] : [];
-        $data = isset($keywordsTraitement['data']) ? $keywordsTraitement['data']['data'] : [];
+        $projects = [$this->rankTable->selectProject($auth, $project, null, true)];
+        $rankJson = new RankJson($this->rankModel, $projects);
+        $rankJson->dataJson($auth, true);
 
-        $dataResult = $this->rankModel
-            ->FormatDataRank($data, $website, $this->rankTable->selectRank($id)->id, false, $keywords);
+        $dataResult = $rankJson->getResultsRank($auth);
+
         echo \GuzzleHttp\json_encode([
             'result' => $this->rankTable->selectRank($id),
             $dataResult
@@ -111,11 +111,13 @@ class RankController
         if (is_string($auth)) {
             $auth = \GuzzleHttp\json_decode($auth);
         }
-        $data = $this->rankModel->AllProject($auth);
-        $dataResult = $this->rankModel->DataAllProjectRank($data, $auth);
+        $projects = $this->rankModel->AllProject($auth);
+        $rankJson = new RankJson($this->rankModel, $projects);
+
+        $dataResult = $rankJson->getResultsRank($auth);
 
         echo \GuzzleHttp\json_encode([
-            'result' => $data,
+            'result' => $projects,
             $dataResult
         ]);
     }
@@ -136,6 +138,11 @@ class RankController
     public function deleteProject(string $id, $auth)
     {
         $auth = \GuzzleHttp\json_decode($auth);
+
+        $projects = [$this->rankTable->selectProjectById($auth, (int)$id)];
+        $rankJson = new RankJson($this->rankModel, $projects);
+        $rankJson->delete($auth);
+
         $this->rankModel->ProjectDelete($id, $auth);
     }
 
@@ -145,22 +152,18 @@ class RankController
      */
     public function projectData(string $project, $auth)
     {
-        // Recuperate Result Project By User
-        // Create Data Array RANK by Day
-        // Format this Data in Data Rank Top 100 by Day !!!
-        $result = $this->rankModel->projectUser($project, $auth);
-        $dataRankByDay = $this->rankModel->DataFormatRankByDay($result['dataResult'], 'top100', 'top10', 'top3');
+        if (is_string($auth)) {
+            $auth = \GuzzleHttp\json_decode($auth);
+        }
+        $projects = $this->rankModel->AllProject($auth);
+        $rankJson = new RankJson($this->rankModel, $projects);
 
-        // Create data Array by Keyword and by URL Website !!!
-        $dataRankByKeyword = $this->rankModel->DataByKeyword($project, $auth);
-
-        // Format Array Rank If result keywords not found !!!
-        $dataRankFormatEmptyKeyword = $this->renderDataKeywordsEmptyData($dataRankByKeyword);
+        $dataResult = $rankJson->getResultsRankProject($project, $auth);
 
         echo \GuzzleHttp\json_encode([
-            'data' => $dataRankByDay,
-            'dataKeywordsByWebsite' => $dataRankFormatEmptyKeyword,
-            'countKeywords' => $result['countKeywords']
+            'data' => $dataResult->{'data'},
+            'dataKeywordsByWebsite' => $dataResult->{'dataKeywordsByWebsite'},
+            'countKeywords' => $dataResult->{'countKeywords'}
         ]);
     }
 
@@ -175,20 +178,11 @@ class RankController
         $dataRank = $dataRankByFeature->renderData($project, $auth, $typeFeature);
 
         // Format Array Rank If result keywords not found !!!
-        $dataRankFormatEmptyKeyword = $this->renderDataKeywordsEmptyData($dataRank);
+        $dataRankFormatEmptyKeyword = (new DataRankKeywords())->renderDataKeywords($dataRank);
 
         echo \GuzzleHttp\json_encode([
             'success' => true,
             'data' => $dataRankFormatEmptyKeyword
         ]);
-    }
-
-    /**
-     * @param array $dataRankByKeyword
-     * @return array
-     */
-    private function renderDataKeywordsEmptyData(array $dataRankByKeyword): array
-    {
-        return (new DataRankKeywords())->renderDataKeywords($dataRankByKeyword);
     }
 }
