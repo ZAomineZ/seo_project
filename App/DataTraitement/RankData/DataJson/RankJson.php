@@ -34,10 +34,11 @@ class RankJson
     }
 
     /**
-     * @param $auth
+     * @param $auth = null
+     *
      * @param bool $update
      */
-    public function dataJson($auth, bool $update = false)
+    public function dataJson($auth = null, bool $update = false)
     {
         $fileJson = new FileJson($this->rankModel, $auth);
         $fileJson->create($this->projects, $update);
@@ -85,6 +86,24 @@ class RankJson
         }
 
         return isset($data) ? $data->{'dataRankTopWithKeywordsAndFeatures'} : [];
+    }
+
+    /**
+     * @param $auth
+     * @param string $typeFeature
+     * @return array|object
+     */
+    public function getResultRankFeatures($auth, string $typeFeature)
+    {
+        $fileJson = new FileJson($this->rankModel, $auth);
+        $data = $fileJson->openFileProject($this->projects)[0];
+
+        if (!isset($data) || empty($data)) {
+            return [];
+        }
+        $data = $data->{'dataRankTopFeatures'}->{'data'}->{$typeFeature};
+
+        return isset($data) ? $data : [];
     }
 
     /**

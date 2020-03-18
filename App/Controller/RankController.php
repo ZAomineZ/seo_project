@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\DataTraitement\RankData\DataJson\DataJsonRank;
 use App\DataTraitement\RankData\DataJson\RankJson;
 use App\DataTraitement\RankData\DataRankByFeature;
 use App\DataTraitement\RankData\DataRankKeywords;
@@ -174,15 +175,17 @@ class RankController
      */
     public function getDataByFeature(string $project, $auth, string $typeFeature)
     {
-        $dataRankByFeature = new DataRankByFeature($this->rankModel);
-        $dataRank = $dataRankByFeature->renderData($project, $auth, $typeFeature);
+        if (is_string($auth)) {
+            $auth = \GuzzleHttp\json_decode($auth);
+        }
+        $projects = [$this->rankTable->selectProjectBySlug($auth, $project)];
+        $rankJson = new RankJson($this->rankModel, $projects);
 
-        // Format Array Rank If result keywords not found !!!
-        $dataRankFormatEmptyKeyword = (new DataRankKeywords())->renderDataKeywords($dataRank);
+        $dataResult = $rankJson->getResultRankFeatures($auth, $typeFeature);
 
         echo \GuzzleHttp\json_encode([
             'success' => true,
-            'data' => $dataRankFormatEmptyKeyword
+            'data' => $dataResult
         ]);
     }
 }

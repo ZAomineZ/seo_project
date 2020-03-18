@@ -8,9 +8,10 @@
 
 namespace App\DataTraitement\RankData\DataJson;
 
-
 use App\DataTraitement\RankData\DataRankKeywords;
+use App\Model\PDO_Model;
 use App\Model\RankModel;
+use App\Table\Auth\LogIn;
 
 class renderDataJson
 {
@@ -31,7 +32,7 @@ class renderDataJson
      * renderDataJson constructor.
      * @param RankModel $rankModel
      * @param array $projects
-     * @param $auth
+     * @param int|object|string $auth
      */
     public function __construct(RankModel $rankModel, array $projects, $auth)
     {
@@ -46,14 +47,31 @@ class renderDataJson
      */
     public function render(string $project): array
     {
+        // Verif if the property auth is to type string, int or object
+        $this->authToObject();
+
         $dataResult = $this->rankModel->DataAllProjectRank($this->projects, $this->auth);
 
-        $this->auth = \GuzzleHttp\json_encode($this->auth);
+        $this->auth = !is_string($this->auth) ? \GuzzleHttp\json_encode($this->auth) : $this->auth;
         $dataResultWithKeywordsAndFeatures = $this->dataRankTopWithKeywordsAndFeatures($project);
+        $dataResultRankFeatures = $this->dataRankTopFeatures($project);
 
         return [
             'dataRankTopByDate' => $dataResult,
-            'dataRankTopWithKeywordsAndFeatures' => $dataResultWithKeywordsAndFeatures
+            'dataRankTopWithKeywordsAndFeatures' => $dataResultWithKeywordsAndFeatures,
+            'dataRankTopFeatures' => $dataResultRankFeatures
+        ];
+    }
+
+    /**
+     * @param string $project
+     * @return array
+     */
+    private function dataRankTopFeatures(string $project): array
+    {
+        $dataRankFormatEmptyKeyword = (new DataJsonRank($this->rankModel))->dataJsonRankFeatures($project, $this->auth);
+        return [
+            'data' => $dataRankFormatEmptyKeyword
         ];
     }
 
@@ -80,5 +98,17 @@ class renderDataJson
             'dataKeywordsByWebsite' => $dataRankFormatEmptyKeyword,
             'countKeywords' => $result['countKeywords']
         ];
+    }
+
+    /**
+     * If the property is a string or a int then we recupered User with userID in $this->auth
+     */
+    private function authToObject()
+    {
+        if (is_string($this->auth) || is_int($this->auth)) {
+            $pdo = new PDO_Model();
+            $user = (new LogIn($pdo))->SelectUserByID((int)$this->auth);
+            $this->auth = $user;
+        }
     }
 }

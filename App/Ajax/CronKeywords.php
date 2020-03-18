@@ -16,7 +16,6 @@ $remoteIp = '192.168.1.8';
 
 $header = new Ajax();
 
-if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] === $remoteIp) {
     $pdo = new PDO_Model();
 
     $curl = new Curl_Api();
@@ -31,4 +30,3 @@ if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] === $remoteIp) {
 
     $cronController = new CronKeywords($rankTable, $rankModel);
     $cronController->CronKeywords();
-}

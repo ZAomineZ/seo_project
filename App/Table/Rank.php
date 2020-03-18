@@ -13,6 +13,10 @@ use PDOStatement;
 
 class Rank extends Table
 {
+    /**
+     * Rank constructor.
+     * @param PDO_Model $PDO_Model
+     */
     public function __construct(PDO_Model $PDO_Model)
     {
         parent::__construct($PDO_Model);
@@ -36,10 +40,10 @@ class Rank extends Table
     public function selectRank($id, bool $limit = false)
     {
         if ($limit) {
-            $statement =  $this->pdo->GetPdo()
+            $statement = $this->pdo->GetPdo()
                 ->prepare("SELECT * FROM rank WHERE user_id = ? ORDER BY id DESC LIMIT 1");
         } else {
-            $statement =  $this->pdo->GetPdo()
+            $statement = $this->pdo->GetPdo()
                 ->prepare("SELECT * FROM rank WHERE id = ?");
         }
         $statement->execute([$id]);
@@ -52,7 +56,7 @@ class Rank extends Table
      */
     public function SelectAllProjectByUser(int $user_id): array
     {
-        $statement =  $this->pdo->GetPdo()
+        $statement = $this->pdo->GetPdo()
             ->prepare("SELECT * FROM rank WHERE user_id = ? ORDER BY id DESC");
         $statement->execute([$user_id]);
         return $statement->fetchAll();
@@ -138,7 +142,7 @@ class Rank extends Table
     {
         $statement = $this->pdo
             ->GetPdo()
-            ->prepare("SELECT id, project, keywords, website FROM rank WHERE slug = :slug AND user_id = :userID");
+            ->prepare("SELECT id, project, user_id, slug, keywords, website FROM rank WHERE slug = :slug AND user_id = :userID");
         $statement->execute([
             'slug' => $project,
             'userID' => $auth->id
@@ -183,7 +187,7 @@ class Rank extends Table
      */
     public function selectAllKeywords()
     {
-        $statement = $this->pdo->GetPdo()->query('SELECT keywords FROM rank');
+        $statement = $this->pdo->GetPdo()->query('SELECT id, slug, user_id, keywords, website FROM rank');
         return $statement->fetchAll();
     }
 }

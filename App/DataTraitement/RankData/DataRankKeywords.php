@@ -13,9 +13,10 @@ class DataRankKeywords
 {
     /**
      * @param array $dataRankByKeyword
+     * @param bool $noFeatures
      * @return array
      */
-    public function renderDataKeywords(array $dataRankByKeyword): array
+    public function renderDataKeywords(array $dataRankByKeyword, bool $noFeatures = false): array
     {
         $dataRank = [];
         foreach ($dataRankByKeyword as $k => $v) {
@@ -23,7 +24,10 @@ class DataRankKeywords
                 $dataRank[$k]['keyword'] = $v['keyword'];
                 $dataRank[$k]['rank'] = 'Not Found';
                 $dataRank[$k]['url'] = 'Not Found';
-                $dataRank[$k]['features'] = [];
+
+                if (!$noFeatures) {
+                    $dataRank[$k]['features'] = [];
+                }
                 $dataRank[$k]['date'] = 'Not Found';
                 $dataRank[$k]['diff'] = 'Not Found';
                 $dataRank[$k]['volume'] = 'Not Found';
@@ -32,7 +36,10 @@ class DataRankKeywords
                 $dataRank[$k]['keyword'] = $v['keyword'];
                 $dataRank[$k]['rank'] = $v['rank'];
                 $dataRank[$k]['url'] = $v['url'];
-                $dataRank[$k]['features'] = (new LoadCrawlerFeatures($v['keyword']))->getFeatures();
+
+                if (!$noFeatures) {
+                    $dataRank[$k]['features'] = (new LoadCrawlerFeatures($v['keyword']))->getFeatures();
+                }
                 $dataRank[$k]['date'] = $v['date'];
                 $dataRank[$k]['diff'] = $v['diff'];
                 $dataRank[$k]['volume'] = $v['volume'];

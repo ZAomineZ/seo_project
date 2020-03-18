@@ -31,9 +31,9 @@ class FileJson
     /**
      * FileJson constructor.
      * @param RankModel $rankModel
-     * @param $auth
+     * @param $auth = null
      */
-    public function __construct(RankModel $rankModel, $auth)
+    public function __construct(RankModel $rankModel, $auth = null)
     {
         $this->rankModel = $rankModel;
         $this->auth = $auth;
@@ -113,6 +113,10 @@ class FileJson
             } else {
                 $slugProject = $project->{'slug'};
                 $userProject = $project->{'user_id'};
+
+                if (is_null($this->auth)) {
+                    $this->auth = $project->{'user_id'};
+                }
             }
 
             $this->directory = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'storage/datas/rankTo/';

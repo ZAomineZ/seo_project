@@ -9,6 +9,7 @@
 namespace App\Actions\Cron;
 
 
+use App\DataTraitement\RankData\DataJson\RankJson;
 use App\Model\RankModel;
 use App\Table\Rank;
 
@@ -42,7 +43,9 @@ class CronKeywords
         // Data Keywords Cron create file Serp by Keyword
         $keywords = $this->rank->selectAllKeywords();
         foreach ($keywords as $item) {
-            $this->rankModel->SerpResultKeywords($item->keywords, null, true);
+            $projects = [$item ?: null];
+            $rankJson = new RankJson($this->rankModel, $projects);
+            $rankJson->dataJson(null, true);
         }
         return true;
     }

@@ -10,9 +10,24 @@ namespace App\DataTraitement\RankData\DataJson;
 
 
 use App\concern\File_Params;
+use App\DataTraitement\RankData\DataRankByFeature;
+use App\Model\RankModel;
 
 class DataJsonRank
 {
+    /**
+     * @var RankModel
+     */
+    private $rankModel;
+
+    /**
+     * DataJsonRank constructor.
+     * @param RankModel $rankModel
+     */
+    public function __construct(?RankModel $rankModel = null)
+    {
+        $this->rankModel = $rankModel;
+    }
 
     /**
      * @param array $projects
@@ -60,5 +75,22 @@ class DataJsonRank
         }
 
         return $dataResult;
+    }
+
+    /**
+     * @param string $project
+     * @param $auth
+     * @return array
+     */
+    public function dataJsonRankFeatures(string $project, $auth): array
+    {
+        $dataRankFeatures = [];
+
+        $dataRankByFeature = new DataRankByFeature($this->rankModel);
+        $dataRankFeatures['images'] = $dataRankByFeature->renderData($project, $auth, 'images');
+        $dataRankFeatures['videos'] = $dataRankByFeature->renderData($project, $auth, 'videos');
+        $dataRankFeatures['P0'] = $dataRankByFeature->renderData($project, $auth, 'P0');
+
+        return $dataRankFeatures;
     }
 }
