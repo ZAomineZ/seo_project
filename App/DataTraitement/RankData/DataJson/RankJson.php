@@ -9,6 +9,7 @@
 namespace App\DataTraitement\RankData\DataJson;
 
 
+use App\DataTraitement\FileData;
 use App\Model\RankModel;
 
 class RankJson
@@ -35,13 +36,25 @@ class RankJson
 
     /**
      * @param $auth = null
-     *
-     * @param bool $update
+     * @param \stdClass $project
+     * @param array $keywordsNew
+     * @return null
      */
-    public function dataJson($auth = null, bool $update = false)
+    public function dataJson($auth = null, \stdClass $project, array $keywordsNew = [])
     {
-        $fileJson = new FileJson($this->rankModel, $auth);
-        $fileJson->create($this->projects, $update);
+        $dataKeywords = explode(',', $project->keywords);
+
+        if (!empty($keywordsNew)) {
+            if ($project->keywords !== $keywordsNew) {
+                $deleteAction = $this->removeKeywords($dataKeywords, $keywordsNew, $auth);
+                if ($deleteAction === null) {
+                    $this->createProject($auth, $keywordsNew, $dataKeywords);
+                }
+                return $deleteAction;
+            }
+        }
+
+        $this->createProject($auth, $keywordsNew, $dataKeywords);
     }
 
     /**
@@ -67,7 +80,7 @@ class RankJson
         }
         $dataResult = (new DataJsonRank())->DataRankTopResult($data);
 
-        return isset($data) ? $dataResult: [];
+        return isset($data) ? $dataResult : [];
     }
 
     /**
@@ -115,5 +128,35 @@ class RankJson
         $newData = [];
         $newData[] = $project;
         return $newData;
+    }
+
+    /**
+     * @param null $auth
+     * @param array $keywordsNew
+     * @param array $dataKeywords
+     */
+    private function createProject($auth = null, array $keywordsNew = [], array $dataKeywords = []): void
+    {
+        (new FileJson($this->rankModel, $auth, $dataKeywords))
+            ->create($this->projects, !empty($keywordsNew) ? true : false);
+    }
+
+    /**
+     * @param array $dataKeywords
+     * @param array $newKeywords
+     * @param null $auth
+     * @return bool
+     */
+    private function removeKeywords(
+        array $dataKeywords,
+        array $newKeywords,
+        $auth = null
+    ): ?bool
+    {
+        if (count($newKeywords) < count($dataKeywords)) {
+            (new FileJson($this->rankModel, $auth, $newKeywords))->deleteDataKeywords($this->projects);
+            return true;
+        }
+        return null;
     }
 }

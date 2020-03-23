@@ -27,16 +27,22 @@ class FileJson
      * @var array
      */
     private $json = [];
+    /**
+     * @var array
+     */
+    private $keywords;
 
     /**
      * FileJson constructor.
      * @param RankModel $rankModel
      * @param $auth = null
+     * @param array $keywords
      */
-    public function __construct(RankModel $rankModel, $auth = null)
+    public function __construct(RankModel $rankModel, $auth = null, array $keywords = [])
     {
         $this->rankModel = $rankModel;
         $this->auth = $auth;
+        $this->keywords = $keywords;
     }
 
     /**
@@ -47,9 +53,10 @@ class FileJson
     {
         $this->initializedFile($projects);
         if ($update) {
-            $this->deleteFile($projects);
+            $this->updateFile();
+        } else {
+            $this->createdFile();
         }
-        $this->createdFile();
     }
 
     /**
@@ -67,11 +74,32 @@ class FileJson
      */
     public function deleteFile(array $projects): void
     {
-        $this->initializedFile($projects);
+        $this->initializedFile($projects, false, true);
 
         if (file_exists($this->file)) {
             unlink($this->file);
         }
+    }
+
+    /**
+     * @param array $projects
+     */
+    public function deleteDataKeywords(array $projects = []): void
+    {
+        $this->initializedFile($projects, true);
+
+        $file = $this->file;
+        $json = $this->json;
+
+        $data = File_Params::OpenFile($file, $this->directory);
+        $newData = (new DataJsonRank())->dataJsonFilter($json, (array)$data, $this->keywords);
+
+        if (file_exists($file)) {
+            unlink($file);
+        }
+
+        $newData = \GuzzleHttp\json_encode($newData);
+        File_Params::CreateParamsFile($file, $this->directory, $newData, true);
     }
 
     /**
@@ -92,19 +120,41 @@ class FileJson
     }
 
     /**
-     * @param array $projects
-     * @param string $project
+     * Update File RankTo Project !!!
      */
-    private function toJson(array $projects, string $project): void
+    private function updateFile()
     {
-        $renderDataJson = new renderDataJson($this->rankModel, $projects, $this->auth);
-        $this->json = $renderDataJson->render($project);
+        $file = $this->file;
+        $json = $this->json;
+
+        $data = File_Params::OpenFile($file, $this->directory);
+        $newData = (new DataJsonRank())->newDataJson($data, $json);
+
+        if (file_exists($file)) {
+            unlink($file);
+        }
+
+        $newData = \GuzzleHttp\json_encode($newData);
+        File_Params::CreateParamsFile($file, $this->directory, $newData, true);
     }
 
     /**
      * @param array $projects
+     * @param string $project
+     * @param bool $noDataKeyword
      */
-    private function initializedFile(array $projects)
+    private function toJson(array $projects, string $project, bool $noDataKeyword = false): void
+    {
+        $renderDataJson = new renderDataJson($this->rankModel, $projects, $this->auth);
+        $this->json = $renderDataJson->render($project, $this->keywords, $noDataKeyword);
+    }
+
+    /**
+     * @param array $projects
+     * @param bool $noKeywordData
+     * @param bool $deleteFile
+     */
+    private function initializedFile(array $projects, bool $noKeywordData = false, bool $deleteFile = false)
     {
         foreach ($projects as $project) {
             if (is_string($project)) {
@@ -122,7 +172,7 @@ class FileJson
             $this->directory = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'storage/datas/rankTo/';
             $this->file = $this->directory . $slugProject . '-' . $userProject . '.json';
 
-            $this->toJson($projects, $slugProject);
+            $deleteFile === false ? $this->toJson($projects, $slugProject, $noKeywordData) : null;
         }
     }
 }

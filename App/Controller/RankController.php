@@ -50,7 +50,6 @@ class RankController
     {
         // JSON Decode Auth User !!!
         $auth = \GuzzleHttp\json_decode($auth);
-
         // Verif Database
         // Project Limit by 5 And if a project existing already !!!
         $this->rankModel->projectExist($auth, $project);
@@ -59,9 +58,11 @@ class RankController
         $dataTraitement = [$project, $website, $content, $auth, null];
         (new KeywordsTraitement($this->rankModel, $keywords))->traitementKeywords($dataTraitement);
 
-        $projects = [$this->rankTable->selectProject($auth, $project, null, true)];
+        $project = $this->rankTable->selectProject($auth, $project, null, true);
+        $projects = [$project];
+
         $rankJson = new RankJson($this->rankModel, $projects);
-        $rankJson->dataJson($auth);
+        $rankJson->dataJson($auth, $project);
 
         $dataResult = $rankJson->getResultsRank($auth);
 
@@ -85,16 +86,21 @@ class RankController
     {
         // JSON Decode Auth User !!!
         $auth = \GuzzleHttp\json_decode($auth);
-
         // Verif if a project similar exist already !!!
         $this->rankModel->projectExist($auth, $project, $id);
 
-        $dataTraitement = [$project, $website, $content, $auth, $id];
-        (new KeywordsTraitement($this->rankModel, $keywords))->traitementKeywords($dataTraitement);
+        $projectStd = $this->rankTable->selectProject($auth, $project, null, true);
 
-        $projects = [$this->rankTable->selectProject($auth, $project, null, true)];
+        $dataTraitement = [$project, $website, $content, $auth, $id];
+        $dataKeywords = (new KeywordsTraitement($this->rankModel, $keywords))
+            ->traitementKeywords($dataTraitement);
+
+        $projects = [
+            $this->rankTable->selectProject($auth, $project, null, true)
+        ];
+
         $rankJson = new RankJson($this->rankModel, $projects);
-        $rankJson->dataJson($auth, true);
+        $rankJson->dataJson($auth, $projectStd, $dataKeywords['keywords'] ?: '');
 
         $dataResult = $rankJson->getResultsRank($auth);
 

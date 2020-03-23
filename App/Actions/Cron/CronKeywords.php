@@ -44,8 +44,10 @@ class CronKeywords
         $keywords = $this->rank->selectAllKeywords();
         foreach ($keywords as $item) {
             $projects = [$item ?: null];
+            $keywords = explode(',', $item->keywords);
+
             $rankJson = new RankJson($this->rankModel, $projects);
-            $rankJson->dataJson(null, true);
+            $rankJson->dataJson(null, true, $keywords);
         }
         return true;
     }

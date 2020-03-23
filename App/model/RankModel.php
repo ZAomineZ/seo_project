@@ -190,6 +190,13 @@ class RankModel
                                 $dataRank[$key][$k][$i]['keyword'] = $keywords[$key];
                             }
                             $dataDate[$key] = $value['date'];
+                        } else {
+                            $dataRank[$key][$k][0]['rank'] = 0;
+                            $dataRank[$key][$k][0]['url'] = $website;
+                            if (!is_null($keywords)) {
+                                $dataRank[$key][$k][0]['keyword'] = $keywords[$key];
+                            }
+                            $dataDate[$key] = $value['date'];
                         }
                     }
                 }
@@ -221,7 +228,7 @@ class RankModel
                 return $dataRankEnd;
             }
 
-            $dataResultMontly = $this->DataResultRkDate($dataRankEnd, $dataDate, 'd.m', $keywords);
+            $dataResultMontly = $this->DataResultRkDate($dataRankEnd, $dataDate, 'Y.d.m', $keywords);
             $dataResultYears = $this->DataResultRkDate($dataRankEnd, $dataDate, 'M', $keywords);
             return [
                 'dataResultYearly' => $dataResultYears,
@@ -239,12 +246,14 @@ class RankModel
     /**
      * @param array $data
      * @param $auth
+     * @param array $keywords
      * @return array
      */
-    public function DataAllProjectRank(array $data, $auth): array
+    public function DataAllProjectRank(array $data, $auth, array $keywords = []): array
     {
         $dataResult = [];
         $keywordsArray = [];
+
         foreach ($data as $key => $dt) {
             if (!is_null($dt->keywords)) {
                 if (strpos($dt->keywords, ',') !== false) {
@@ -252,7 +261,13 @@ class RankModel
                 } else {
                     $keywordsArray[] = $dt->keywords;
                 }
-                $dataResultKeywords = $this->SerpResultKeywords($dt->keywords, $auth);
+                $keywordsArray = !empty($keywords) ? array_values(array_diff($keywords, $keywordsArray)) : $keywordsArray;
+                if (empty($keywordsArray)) {
+                    $keywordsArray = $keywords;
+                }
+                $keywords = implode(',', $keywordsArray);
+
+                $dataResultKeywords = $this->SerpResultKeywords($keywords, $auth);
                 $dataResult[] = $this->FormatDataRank($dataResultKeywords, $dt->website, $dt->id, false, $keywordsArray);
             } else {
                 $dataResult[$key]['id'] = $dt->id;
@@ -260,6 +275,7 @@ class RankModel
                 $dataResult[$key]['dataResultMontly'] = [];
             }
         }
+
         return $dataResult;
     }
 
@@ -311,12 +327,15 @@ class RankModel
     /**
      * @param string $project
      * @param $auth
+     * @param array $keywordsDefault
      * @return array
      */
-    public function projectUser(string $project, $auth)
+    public function projectUser(string $project, $auth, array $keywordsDefault = [])
     {
         $auth = \GuzzleHttp\json_decode($auth);
+
         $request = $this->rankTable->selectProjectBySlug($auth, $project);
+
         if ($request) {
             if ($request->keywords != '') {
                 // Params Attr
@@ -331,6 +350,11 @@ class RankModel
                 } else {
                     $keywordsArray[] = $keywords;
                 }
+                $keywordsArray = !empty($keywordsDefault) ? array_values(array_diff($keywordsArray, $keywordsDefault)) : $keywordsArray;
+                if (empty($keywordsArray)) {
+                    $keywordsArray = $keywordsDefault;
+                }
+                $keywords = implode(',', $keywordsArray);
 
                 $id = $request->id;
                 $website = $request->website;
@@ -383,10 +407,11 @@ class RankModel
     /**
      * @param string $project
      * @param $auth
-     * @param string|null $typeFetures
+     * @param string|null $typeFeatures
+     * @param array $keywords
      * @return array
      */
-    public function DataByKeyword(string $project, $auth, ?string $typeFetures = null): array
+    public function DataByKeyword(string $project, $auth, ?string $typeFeatures = null, array $keywords = []): array
     {
         // Json Decode AUTH !!!
         // Recuperate Keywords by the slug Project !!!
@@ -394,14 +419,20 @@ class RankModel
         $request = $this->rankTable->selectProjectBySlug($auth, $project);
 
         // Params Request
-        $keywords = $request->keywords;
+        $keywordsArray = explode(',', $request->keywords);
         $website = $request->website;
         $option = $request->id;
 
-        // Result Data, Rank By keywords !!!
-        $rankResult = $this->SerpResultKeywords($keywords, $auth, false, $typeFetures);
+        $keywordsArray = !empty($keywords) ? array_values(array_diff($keywordsArray, $keywords)) : $keywordsArray;
+        if (empty($keywordsArray)) {
+            $keywordsArray = $keywords;
+        }
+        $keywords = implode(',', $keywordsArray);
 
-        if (!is_null($typeFetures)) {
+        // Result Data, Rank By keywords !!!
+        $rankResult = $this->SerpResultKeywords($keywords, $auth, false, $typeFeatures);
+
+        if (!is_null($typeFeatures)) {
             return [
                 'rankResults' => $rankResult,
                 'website' => $website,
@@ -426,24 +457,30 @@ class RankModel
         // Request Html DomCrawler
         $this->serp->LoadHtmlDom($result, $multiKeywords);
 
-        // Convert Url and Desc SERP int the an array !!!
-        $data = $this->serp->DataDateRank(scandir($this->serp->DIRLoad(str_replace('%20', '-', $keyword))), $this->serp->DIRLoad(str_replace('%20', '-', $keyword)));
+        if (!empty($keyword)) {
+            // Convert Url and Desc SERP int the an array !!!
+            $dir = $this->serp->DIRLoad(str_replace('%20', '-', $keyword));
+            $dataResult = scandir($dir);
+            $data = $this->serp->DataDateRank($dataResult, $dir);
+        } else {
+            $data = [];
+        }
 
         // If $typeFeatures !== null, we returned the Result Dom HTML !!!
         if (!is_null($typeFeatures)) {
             return [
-                'dirKeyword' => $this->serp->DIRLoad(str_replace('%20', '-', $keyword)),
-                'allDate' => $data['date'],
-                'allDateFormat' => $this->serp->DateFormat($data['date'])
+                'dirKeyword' => !empty($keyword) ? $this->serp->DIRLoad(str_replace('%20', '-', $keyword)) : '',
+                'allDate' => !empty($keyword) ? $data['date'] : [],
+                'allDateFormat' => !empty($keyword) ? $this->serp->DateFormat($data['date']) : []
             ];
         }
 
         // Return Array Result Data for the Front !!!
         return [
-            "date_format" => $this->serp->DateFormat($data['date']),
-            "date" => $data['date'],
-            "rank" => $data['rank'],
-            "title" => $data['title']
+            "date_format" => !empty($keyword) ? $this->serp->DateFormat($data['date']) : [],
+            "date" => !empty($keyword) ? $data['date'] : [],
+            "rank" => !empty($keyword) ? $data['rank'] : [],
+            "title" => !empty($keyword) ? $data['title'] : []
         ];
     }
 
@@ -459,6 +496,10 @@ class RankModel
         $dataArray = [];
         if (!is_null($keywords)) {
             $arrKywords = explode(',', $keywords);
+            $arrKywords = array_filter($arrKywords, function ($item) {
+                return $item !== '';
+            });
+
             foreach ($arrKywords as $key => $value) {
                 $valueFirst = trim($value);
                 $value = trim($value);
@@ -523,7 +564,7 @@ class RankModel
     function ResultDataRankByTop(array $dataRank, string $format): array
     {
         $dataByMonth = [];
-        if ($format === 'd.m') {
+        if ($format === 'Y.d.m') {
             $data = $this->DataRankTopByWebsite($dataRank, $format);
         } else {
             foreach ($dataRank as $key => $value) {
@@ -536,7 +577,6 @@ class RankModel
             }
             $data = $this->DataRankTopByWebsite($dataByMonth, $format);
         }
-
 
         // Order Array Data by Date !!!
         $dataR = $this->UsortData($data);
@@ -589,14 +629,15 @@ class RankModel
             $volume = 0;
             foreach ($value as $k => $kValueRank) {
                 $keyDate = date($format, strtotime($key));
-                if ($kValueRank['url'] !== 'Not Found') {
+
+                if ($kValueRank['url'] !== 'Not Found' && $kValueRank['rank'] !== 0) {
                     if ($kValueRank['rank'] === 1) {
                         $top1++;
                         $top3++;
                         $top10++;
                         $top50++;
                         $top100++;
-                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank <= 3) {
+                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 3) {
                         $top3++;
                         $top10++;
                         $top50++;
@@ -613,17 +654,18 @@ class RankModel
                     }
                     if (isset($kValueRank['volume'])) {
                         $volume += $kValueRank['volume'];
-                        $dataReturn[$keyDate]['volume'] = $volume;
                     }
-                    $dataReturn[$keyDate]['top1'] = $top1;
-                    $dataReturn[$keyDate]['top3'] = $top3;
-                    $dataReturn[$keyDate]['top10'] = $top10;
-                    $dataReturn[$keyDate]['top50'] = $top50;
-                    $dataReturn[$keyDate]['top100'] = $top100;
-
-                    $dataReturn[$keyDate]['date'] = $keyDate;
-                    $dataReturn[$keyDate]['dateUsort'] = date('Y-m-d', strtotime($key));
                 }
+
+                $dataReturn[$keyDate]['top1'] = $top1;
+                $dataReturn[$keyDate]['top3'] = $top3;
+                $dataReturn[$keyDate]['top10'] = $top10;
+                $dataReturn[$keyDate]['top50'] = $top50;
+                $dataReturn[$keyDate]['top100'] = $top100;
+                $dataReturn[$keyDate]['volume'] = $volume;
+
+                $dataReturn[$keyDate]['date'] = $keyDate;
+                $dataReturn[$keyDate]['dateUsort'] = date('Y-m-d', strtotime($key));
             }
         }
         return $dataReturn;

@@ -557,7 +557,10 @@ class WebSiteController
      */
     public function getJsonReferringWeb(string $domain, $first = false, string $file = null, string $dir = null): string
     {
-        return self::JsonReferringWeb($domain, $first, $file, $dir);
+        $backlinkJson = self::$bl->ReqBl($domain);
+        $blTop = self::$bl->ReqTopBl($domain);
+
+        return self::JsonReferringWeb($domain, $first, $file, $dir, $backlinkJson, $blTop);
     }
 
     /**
@@ -569,6 +572,7 @@ class WebSiteController
      */
     public function getJsonWebSite(string $domain, string $dir, $option = null): string
     {
-        return self::JsonWebSite($domain, $dir, $option);
+        $backlinkJson = self::$bl->ReqBl($domain);
+        return self::JsonWebSite($domain, $dir, $backlinkJson, $option);
     }
 }

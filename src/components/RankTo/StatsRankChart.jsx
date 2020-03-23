@@ -2,6 +2,7 @@
 import StatsRank from "./StatsRank";
 import React, {PureComponent} from "react";
 import * as PropTypes from "prop-types";
+import moment from "moment";
 
 export default class StatsRankChart extends PureComponent {
     constructor(props) {
@@ -18,8 +19,10 @@ export default class StatsRankChart extends PureComponent {
         let data = dataR.map((d) => {
             let dataArray = Object.values(d);
             return dataArray.map((value) => {
+                const date = new Date(value.dateUsort);
+
                 return {
-                    name: value.date,
+                    name: moment(date).format(dataFormat === 1 ? 'MM.D' : 'MMM'),
                     value: valueTop === 'top1' ? value.top1 === undefined ? 0 : value.top1 :
                         valueTop === 'top3' ? value.top3 === undefined ? 0 : value.top3 :
                             valueTop === 'top10' ? value.top10 === undefined ? 0 : value.top10 :

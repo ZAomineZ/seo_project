@@ -25,12 +25,13 @@ class DataRankByFeature
     /**
      * @param string $project
      * @param $auth
+     * @param array $keywords
      * @param string $typeFeature
      * @return array
      */
-    public function renderData(string $project, $auth, string $typeFeature)
+    public function renderData(string $project, $auth, array $keywords = [], string $typeFeature)
     {
-        $htmlResult = $this->rank->DataByKeyword($project, $auth, $typeFeature);
+        $htmlResult = $this->rank->DataByKeyword($project, $auth, $typeFeature, $keywords);
 
         $results = $htmlResult['rankResults'] ?: [];
         $website = $htmlResult['website'] ?: '';

@@ -19,6 +19,7 @@ class DataRankKeywords
     public function renderDataKeywords(array $dataRankByKeyword, bool $noFeatures = false): array
     {
         $dataRank = [];
+
         foreach ($dataRankByKeyword as $k => $v) {
             if ($v['url'] === 'Not Found') {
                 $dataRank[$k]['keyword'] = $v['keyword'];
@@ -46,6 +47,37 @@ class DataRankKeywords
                 $dataRank[$k]['chart'] = $v['chart'];
             }
         }
+
+        $dataRank = $this->filterDataKeywordRank($dataRank);
+
+        return $dataRank;
+    }
+
+    /**
+     * @param array $dataRank
+     * @return array
+     */
+    private function filterDataKeywordRank(array $dataRank): array
+    {
+        $dataKeywords = [];
+
+        foreach ($dataRank as $key => $item) {
+            $dataKeywords[] = $item['keyword'] ?: '';
+        }
+
+        $countArray = array_count_values($dataKeywords);
+        foreach ($dataRank as $key => $item) {
+            foreach ($countArray as $keyword => $value) {
+                if ($value >= 2) {
+                    if ($item['keyword'] === $keyword && $item['rank'] === 0) {
+                        unset($dataRank[$key]);
+                    }
+                }
+            }
+        }
+
+        $dataRank = array_values($dataRank);
+
         return $dataRank;
     }
 }
