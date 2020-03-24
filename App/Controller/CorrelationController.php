@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\concern\Str_options;
 use App\DataTraitement\CorrelationData\WebsitesData;
+use App\DataTraitement\SerpData\SerpFile;
 use App\Model\Correlation;
 use App\Model\RankModel;
 
@@ -47,6 +48,14 @@ class CorrelationController
 
         // Recuperate All webSite to Keyword !!!
         $dataSerp = $this->rankModel->SerpResultKeywords($keywordDefaultValue, $auth)[0]['rank'];
+        // Verify, if in the rank Data is empty !!!
+        $result = (new SerpFile($this->rankModel->serp))->checkRank($dataSerp, $keyword);
+
+        // Restart scrap Google Serp !!!
+        if ($result) {
+            $dataSerp = $this->rankModel->SerpResultKeywords($keywordDefaultValue, $auth)[0]['rank'];
+        }
+
         $dataTitle = $this->rankModel->SerpResultKeywords($keywordDefaultValue, $auth)[0]['title'];
         $dataResult = $this->correlation->CreateOrOpenFile($dataSerp, $dataTitle, $keywordDefaultValue);
 
@@ -54,6 +63,7 @@ class CorrelationController
         $dtCorrelationAverage = $this->correlation->correlationAverage(
             $this->correlation->dataFormatCorrelation($dataResult)
         );
+
 
         // Array Website With Stats by Top 3, Top 5 And Top 10 !!!
         $dtDataWebisteByTop = $this->correlation->dataTopByWebsite(

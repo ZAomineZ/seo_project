@@ -25,7 +25,7 @@ class RankModel
     /**
      * @var Serp
      */
-    private $serp;
+    public $serp;
 
     /**
      * RankModel constructor.

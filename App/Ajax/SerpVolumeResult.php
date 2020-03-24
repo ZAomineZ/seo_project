@@ -75,6 +75,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
                 echo 'Invalid Token !!!';
             }
         } catch (Exception $exception) {
+            dd($exception);
             echo 'Invalid Token !!!';
         }
     } else {

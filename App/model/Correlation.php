@@ -8,7 +8,6 @@
 
 namespace App\Model;
 
-
 use App\Actions\Json_File;
 use App\concern\File_Params;
 use App\concern\Str_options;
@@ -384,36 +383,39 @@ class Correlation
         $dataWebsiteAll = [];
         $websiteMax = '';
 
-        // Implemented in the Array dataMax All value stat !!!
-        foreach ($dataCorrelation as $key => $item) {
-            if ($stats) {
-                $dataMax[] = $item['stats']->{$stat};
-                $dataWebsite[] = $key;
-            } else {
-                $dataMax[] = $item[$stat];
-                $dataWebsite[] = $key;
+        if (!empty($dataCorrelation)) {
+            // Implemented in the Array dataMax All value stat !!!
+            foreach ($dataCorrelation as $key => $item) {
+                if ($stats) {
+                    $dataMax[] = $item['stats']->{$stat};
+                    $dataWebsite[] = $key;
+                } else {
+                    $dataMax[] = $item[$stat];
+                    $dataWebsite[] = $key;
+                }
+            }
+
+            // Recuperate the value max to Array dataMax !!!
+            $maxValue = max($dataMax);
+
+            // Recuperate WebSite Where the value is the more long !!!
+            foreach ($dataWebsite as $website) {
+                if ($stats) {
+                    if ($dataCorrelation[$website]['stats']->{$stat} === $maxValue) {
+                        $websiteMax .= $website . ',';
+                    }
+                    $dataWebsiteAll[] = $website;
+                } else {
+                    if ($dataCorrelation[$website][$stat] === $maxValue) {
+                        $websiteMax .= $website . ',';
+                    }
+                    $dataWebsiteAll[] = $website;
+                }
             }
         }
 
-        // Recuperate the value max to Array dataMax !!!
-        $maxValue = max($dataMax);
-
-        // Recuperate WebSite Where the value is the more long !!!
-        foreach ($dataWebsite as $website) {
-            if ($stats) {
-                if ($dataCorrelation[$website]['stats']->{$stat} === $maxValue) {
-                    $websiteMax .= $website . ',';
-                }
-                $dataWebsiteAll[] = $website;
-            } else {
-                if ($dataCorrelation[$website][$stat] === $maxValue) {
-                    $websiteMax .= $website . ',';
-                }
-                $dataWebsiteAll[] = $website;
-            }
-        }
         return [
-            'maxValue' => max($dataMax),
+            'maxValue' => !empty($dataMax) ? max($dataMax) : 0,
             'webSiteData' => $websiteMax,
             'dataWebsiteAll' => $dataWebsiteAll
         ];
@@ -635,13 +637,13 @@ class Correlation
 
         return [
             'top3' => [
-                'average' => ($countItemTrueTop3 / $countItemsTop3) * 100
+                'average' => !empty($dataFormatCorrelation) ? (($countItemTrueTop3 / $countItemsTop3) * 100) : 0
             ],
             'top5' => [
-                'average' => ($countItemTrueTop5 / $countItemsTop5) * 100
+                'average' => !empty($dataFormatCorrelation) ? (($countItemTrueTop5 / $countItemsTop5) * 100) : 0
             ],
             'top10' => [
-                'average' => ($countItemTrueTop10 / $countItemsTop10) * 100
+                'average' => !empty($dataFormatCorrelation) ? ($countItemTrueTop10 / $countItemsTop10) * 100 : 0
             ]
         ];
     }

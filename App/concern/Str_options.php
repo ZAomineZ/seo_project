@@ -50,10 +50,14 @@ class Str_options
     {
         $newItems = [];
 
-        foreach ($items as $item) {
-            $itemCut = explode('"', $item);
-            if (isset($itemCut[1])) {
-                $newItems[] = $itemCut[1];
+        foreach ($items as $key => $item) {
+            if (is_string($item)) {
+                $itemCut = explode('"', $item);
+                if (isset($itemCut[1])) {
+                    $newItems[] = $itemCut[1];
+                }
+            } else {
+                $newItems[] = $key;
             }
         }
 

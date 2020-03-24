@@ -33,7 +33,7 @@ export default class ModalProfile extends PureComponent {
 
       return (
         <div className="ml-1">
-          <button className="btn btn-default" onClick={this.toggle}>
+          <button className="btn btn-outline-secondary" onClick={this.toggle}>
             {btn}
           </button>
           <Modal
@@ -48,7 +48,7 @@ export default class ModalProfile extends PureComponent {
               <PointSizes data_power={this.props.data_power} date={this.props.date} />
             </div>
             <ButtonToolbar className="modal__footer">
-              <button className="btn btn-default" onClick={this.toggle}>Close</button>
+              <button className="btn btn-secondary" onClick={this.toggle}>Close</button>
             </ButtonToolbar>
           </Modal>
         </div>

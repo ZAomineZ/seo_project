@@ -20,7 +20,8 @@ class BodyFormRank extends PureComponent {
         dataKeywordsRank: PropTypes.oneOfType([
             PropTypes.array,
             PropTypes.object
-        ])
+        ]),
+        history: PropTypes.object
     };
 
     constructor() {
@@ -376,6 +377,7 @@ class BodyFormRank extends PureComponent {
                                                 deleteProject={e => this.DeleteProject(e)}
                                                 modalDelete={this.state.modalDelete}
                                                 modal={this.state.modal}
+                                                history={this.props.history}
                                                 toggleDelete={this.toggleDelete}/>
                         })
                     }

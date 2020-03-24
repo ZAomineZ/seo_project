@@ -35,9 +35,9 @@ export class TablesListOfWebsites extends PureComponent {
                     anchor: item.anchor,
                     ratio: item.ratio,
                     referring_ip: item.referring_ip,
-                    score_rank: item.score_rank,
+                    score_rank: item.score_rank === null ? 0 : item.score_rank,
                     traffic: item.traffic,
-                    trust_rank: item.trust_rank,
+                    trust_rank: item.trust_rank === null ? 0 : item.score_rank,
                     website: item.website
                 }
             });

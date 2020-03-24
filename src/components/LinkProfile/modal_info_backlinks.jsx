@@ -39,7 +39,7 @@ export default class ModalInfoBackLinks extends PureComponent {
 
       return (
         <div className="ml-1">
-          <button className="btn btn-default" onClick={this.toggle}>
+          <button className="btn btn-outline-secondary" onClick={this.toggle}>
             {btn}
           </button>
           <Modal

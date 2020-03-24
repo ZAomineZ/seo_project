@@ -24,6 +24,7 @@ export default class RankFront extends PureComponent {
             PropTypes.object
         ]),
         modal: PropTypes.bool.isRequired,
+        history: PropTypes.object,
         modalDelete: PropTypes.bool.isRequired,
         toggleDelete: PropTypes.func.isRequired,
         deleteProject: PropTypes.func.isRequired
@@ -197,6 +198,9 @@ export default class RankFront extends PureComponent {
                                 setTimeout(() => this.setState({loaded: true}), 500);
                             }
                         } else {
+                            const {history} = this.props;
+                            const Slugify = require('slugifyjs').fromLocale('en');
+
                             this.setState({
                                 id: response.data.result.id,
                                 project: response.data.result.project,
@@ -208,7 +212,9 @@ export default class RankFront extends PureComponent {
                                 loading: false
                             });
                             setTimeout(() => this.setState({loaded: true}), 500);
+
                             this.submitNotification('success', '👋 Well Done !!!', 'You updated your project with success !!!');
+                            history.push('/seo/rankTo/' + Slugify.parse(this.props.project))
                         }
                     }
                 });

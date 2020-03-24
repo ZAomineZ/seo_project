@@ -104,6 +104,7 @@ export default class RankToIndex extends PureComponent {
                 }
                 <RankTop/>
                 <BodyFormRank name='Add Project' data={this.state.projectData}
+                              history={this.props.history}
                               dataKeywordsRank={this.state.keywordsRank}/>
             </div>
         );
