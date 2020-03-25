@@ -85,13 +85,13 @@ class RankController
     public function UpdateProject(string $id, string $project, string $website, string $content, string $keywords, $auth)
     {
         // JSON Decode Auth User !!!
-        $auth = \GuzzleHttp\json_decode($auth);
         // Verif if a project similar exist already !!!
+        $auth = \GuzzleHttp\json_decode($auth);
         $this->rankModel->projectExist($auth, $project, $id);
 
-        $projectStd = $this->rankTable->selectProject($auth, $project, null, true);
-
         $dataTraitement = [$project, $website, $content, $auth, $id];
+
+        $projectStd = $this->rankTable->selectProject($auth, $project, null, true);
         $dataKeywords = (new KeywordsTraitement($this->rankModel, $keywords))
             ->traitementKeywords($dataTraitement);
 

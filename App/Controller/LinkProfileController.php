@@ -83,7 +83,11 @@ class LinkProfileController extends \App\Http\Controllers\Controller
      */
     protected function FopenFile(string $file, $mode)
     {
-        return fopen($file, $mode);
+        try {
+            return fopen($file, $mode);
+        } catch (\Exception $exception) {
+            dd($exception);
+        }
     }
 
     /**

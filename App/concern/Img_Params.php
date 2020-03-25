@@ -20,7 +20,7 @@ class Img_Params
     {
         if ($aCheckIfFileExist && !file_exists($aPath)) return 0;
         $size = filesize($aPath);
-        if (empty($size)) return '0 ' . ($aShort ? 'o' : 'octets');
+        if (empty($size)) return '0';
         $l = [];
         $l[] = ['name' => 'octets', 'abbr' => 'o', 'size' => 1];
         foreach ($l as $k => $v) {

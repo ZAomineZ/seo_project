@@ -261,6 +261,7 @@ class RankModel
                 } else {
                     $keywordsArray[] = $dt->keywords;
                 }
+
                 $keywordsArray = !empty($keywords) ? array_values(array_diff($keywords, $keywordsArray)) : $keywordsArray;
                 if (empty($keywordsArray)) {
                     $keywordsArray = $keywords;
@@ -378,16 +379,17 @@ class RankModel
     }
 
     /**
-     * @param array $result
+     * @param array|null $result
      * @param string $rank
      * @param string $rank10
      * @param string $rank3
      * @return array
      */
-    public function DataFormatRankByDay(array $result, string $rank, string $rank10, string $rank3)
+    public function DataFormatRankByDay(?array $result, string $rank, string $rank10, string $rank3): array
     {
+        $data = [];
+
         if (!empty($result)) {
-            $data = [];
             if (isset($result['dataResultMontly'])) {
                 foreach ($result['dataResultMontly'] as $vMonth) {
                     $data[$vMonth['date']][$rank] = isset($vMonth[$rank]) ? $vMonth[$rank] : 0;
@@ -400,8 +402,7 @@ class RankModel
             }
             return $this->UsortData($data);
         }
-        echo \GuzzleHttp\json_encode(['error' => 'Your(s) Keyword(s) is(are) found in the Serp !!!']);
-        die();
+        return $data;
     }
 
     /**
@@ -1024,8 +1025,8 @@ class RankModel
      */
     private function limitKeywords(?string $keywordsRecords, ?string $newKeywords)
     {
-        if (!is_null($keywordsRecords) && !is_null($newKeywords)) {
-            $keywordsRecords = explode(',', $keywordsRecords);
+        if (!is_null($newKeywords)) {
+            $keywordsRecords = !is_null($keywordsRecords) ? explode(',', $keywordsRecords) : [];
             $newKeywords = explode(',', $newKeywords);
         } else {
             NullableType::nullableArgument();

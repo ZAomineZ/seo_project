@@ -337,7 +337,11 @@ class WebSite
         if (!is_dir($this->ChangeDir($dir, $domain))) {
             $mkdir = mkdir($this->ChangeDir($dir, $domain), 0777, true);
             if ($mkdir && !file_exists($fileCreate)) {
-                File_Params::CreateParamsFile($fileCreate, $this->ChangeDir($dir, $domain), $ImgMajestic);
+                try {
+                    $fileCreate = File_Params::CreateParamsFile($fileCreate, $this->ChangeDir($dir, $domain), $ImgMajestic);
+                } catch (\Exception $exception) {
+                    dd($exception);
+                }
                 return $fileCreate;
             }
         } else {

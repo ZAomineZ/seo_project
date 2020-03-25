@@ -232,6 +232,8 @@ class Correlation
     {
         // Create new file Picture Majestic in LinkProfile
         $this->model->SaveImgPower($domainDefault, $dir, $token);
+        // Data Json !!!
+        $reqBl = $this->controller->getRequestJson($domainDefault);
 
         // Create File Data Dash Stats And Data today !!!
         File_Params::CreateParamsFile($fileData, $dir, $this->controller->getJsonWebSite($domainDefault, $dir), TRUE);
@@ -241,7 +243,7 @@ class Correlation
             File_Params::CreateParamsFile($fileDashStats, $dir, $this->controller->getJsonReferringWeb($domainDefault, TRUE, $fileData, $dir), TRUE);
         }
         File_Params::CreateParamsFile($fileTraffic, $dir, WebSiteController::JsonTrafic($domainDefault), TRUE);
-        File_Params::CreateParamsFile($fileBlInfo, $dir, Json_File::JsonBacklink($domainDefault));
+        File_Params::CreateParamsFile($fileBlInfo, $dir, \GuzzleHttp\json_encode($reqBl), true);
         return true;
     }
 

@@ -102,176 +102,16 @@ class WebSiteController
     }
 
     /**
+     * @param string $filename
      * @param string $dir
-     * @param string $name
-     * @param $token
-     * @param string|null $options_date
-     * @return string
-     */
-    protected static function FilesDomain(string $dir, string $name, $token, string $options_date = null): string
-    {
-        if (is_null($options_date)) {
-            return $dir . DIRECTORY_SEPARATOR . $name . '-' . $token . '.json';
-        }
-        return $dir . DIRECTORY_SEPARATOR . $name . '-' . $options_date . '-' . $token . '.json';
-    }
-
-    /**
      * @param string $domain
-     * @param string $token
-     * @return mixed|null
      */
-    public static function ReqDataDomain(string $domain, string $token)
+    protected static function CurlCreateFile(string $filename, string $dir, string $domain)
     {
-        $insert = self::$table->InsertDomain([
-            'domain' => $domain,
-            'token' => $token,
-            'date' => date("Y-m-d H:i:s"),
-            'directory' => date("Y") . '/' . date("m")
-        ]);
-        if ($insert) {
-            return self::$table->SelectToken($domain);
+        if ($filename) {
+            File_Params::CreateParamsFile($filename, $dir, self::JsonBlTop(true, $domain), TRUE);
+            File_Params::UpdateFile($filename, $dir, self::JsonBlTop(false, $domain));
         }
-        return null;
-    }
-
-    /**
-     * @param string $domain
-     * @param string $dir
-     * @param $backlinkJson
-     * @param null $option
-     * @return string
-     * @throws \Exception
-     */
-    protected static function JsonWebSite(string $domain, string $dir, $backlinkJson, $option = null): string
-    {
-        // Request Backlink Curl And Verif Statut OK !!!
-        if ($backlinkJson->status === 'Service Unavailable') {
-            return null;
-        } elseif ($backlinkJson->status === 'Validation Error : target') {
-            return null;
-        }
-
-        // Recuperate the token in tht database
-        // We created Two file Img Majectic for recuperate the power Trust and power Score Rank
-        // We inserted this in the datasbase
-        $req = self::$table->SelectToken($domain);
-        $majestic = self::$linkProfileController->DomainMajectic($domain);
-        $file = $majestic["dir"] . '/' . $majestic["domain_str"] . '-' . self::$linkDomain->TokenImg() . '.png';
-
-        // Save Img Majectic Power Trust
-        self::$linkProfileController->LinkSave($file, $majestic["dir"], $majestic["url"], $domain);
-        $fileSize = self::$web->SaveImgPower($domain, $dir, $req->token);
-
-        // Save Img Majectic Power Score
-        $powerTrust = self::$web->ChangePowerSize(
-            Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)),
-            $backlinkJson->data->trust_score,
-            (int)self::$linkTable->SelectPowerbyDomain($domain)->power);
-
-        return \GuzzleHttp\json_encode(
-            [
-                'referring_domain' => $backlinkJson->data->domains > 1000 ? self::$format->format($backlinkJson->data->domains, '0a.00') : $backlinkJson->data->domains,
-                'referring_domain_int' => $backlinkJson->data->domains,
-                'trust_rank' => $powerTrust === 0 ? $backlinkJson->data->trust_score === 0 ? Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)) : $backlinkJson->data->trust_score : $powerTrust,
-                'score_rank' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
-                'alexa_rank' => $option,
-                'ip_subnets' => $backlinkJson->data->ipclassc
-            ]
-        );
-    }
-
-    /**
-     * @param string $domain
-     * @return string
-     */
-    public static function JsonTrafic(string $domain): string
-    {
-        // Format Domain For traffic !!!
-        $domainArray = explode('.', $domain);
-        $domain = $domainArray[count($domainArray) - 2] . '.' . $domainArray[count($domainArray) - 1];
-
-        $curlKeyword = self::$curlTrafficUrlKeyword->run($domain)['keyword'] ?: null;
-        $curlTraffic = self::$curlTrafficUrlKeyword->run($domain)['traffic'] ?: null;
-
-        try {
-            $keywordJson = $curlKeyword !== null ? \GuzzleHttp\json_decode($curlKeyword): [];
-            $trafficJson = $curlTraffic !== null ? \GuzzleHttp\json_decode($curlTraffic) : [];
-        } catch (\Exception $exception) {
-            if ($exception instanceof InvalidArgumentException) {
-                echo \GuzzleHttp\json_encode([
-                    'An problem is occurrence !!!'
-                ]);
-                die();
-            }
-        }
-
-        return \GuzzleHttp\json_encode(
-            [
-                'traffic' => empty($trafficJson) ? [] : $trafficJson,
-                'keywordAndTop' => empty($keywordJson) ? [] : $keywordJson
-            ]);
-    }
-
-    /**
-     * @param string $domain
-     * @param bool $first
-     * @param string|null $file
-     * @param string|null $dir
-     * @param $backlinkJson
-     * @param $blTop
-     * @return string
-     */
-    public static function JsonReferringWeb(string $domain, $first = false, string $file = null, string $dir = null, $backlinkJson, $blTop): string
-    {
-        // Recuperate Token And Request Backlink Curl And TopBL !!!
-        $req = self::$table->SelectToken($domain);
-
-        // Save Power Trust and Score Rank
-        $result = File_Params::OpenFile($file, $dir);
-        $fileSize = self::$web->SaveImgPower($domain, $dir, $req->token);
-        $powerTrust = self::$web->ChangePowerSize(
-            Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)),
-            $result->trust_rank,
-            (int)self::$linkTable->SelectPowerbyDomain($domain)->power);
-
-        // Return The result with Json_Encode for convert in JSON !!!
-        if ($first) {
-            return \GuzzleHttp\json_encode([
-                [
-                    'referring_domain' => $backlinkJson->data->domains,
-                    'referring_pages' => $backlinkJson->data->links,
-                    'ip' => $backlinkJson->data->ip,
-                    'ip_subnets' => $backlinkJson->data->ipclassc,
-                    'total_backlinks' => $blTop->data->backlinks->total,
-                    'nofollow' => $backlinkJson->data->nofollow,
-                    'follow' => $backlinkJson->data->follow,
-                    'trust' => $powerTrust === 0 ?
-                        $result->trust_rank === 0 ?
-                            Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)) :
-                            $result->trust_rank :
-                        $powerTrust,
-                    'score_rank' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
-                    'date' => date("Y-m-d")
-                ]
-            ]);
-        }
-        return \GuzzleHttp\json_encode([
-            'referring_domain' => $backlinkJson->data->domains,
-            'referring_pages' => $backlinkJson->data->links,
-            'ip' => $backlinkJson->data->ip,
-            'ip_subnets' => $backlinkJson->data->ipclassc,
-            'total_backlinks' => $blTop->data->backlinks->total,
-            'nofollow' => $backlinkJson->data->nofollow,
-            'follow' => $backlinkJson->data->follow,
-            'trust' => $powerTrust === 0 ?
-                $result->trust_rank === 0 ?
-                    Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)) :
-                    $result->trust_rank :
-                $powerTrust,
-            'score_rank' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
-            'date' => date("Y-m-d")
-        ]);
     }
 
     /**
@@ -298,6 +138,83 @@ class WebSiteController
     }
 
     /**
+     * @param string $domain
+     * @param int $id
+     * @throws \Exception
+     */
+    public function WebSite(string $domain, int $id)
+    {
+        if ($domain) {
+            $backlinkJson = self::$bl->ReqBl($domain);
+            $blTop = self::$bl->ReqTopBl($domain);
+
+            if ($backlinkJson->status === "Not Found" || $backlinkJson->status === "Validation Error : target") {
+                return self::ResultJsonError($backlinkJson->status);
+            } else {
+                $file_result = self::DirectoryWebSite($domain);
+                $req = self::$table->SelectToken($domain);
+                if ($req) {
+                    $file = self::FilesDomain($file_result['dir'], $file_result['domain_str'], $req->token, date("Y-m-d"));
+                    $file_dir = self::FileSystem($file_result['dir'], $req->token, $file);
+                    if (file_exists($file_dir[1]) && file_exists($file_dir[0]) && file_exists($file_dir[2]) && file_exists($file_dir[3]) && file_exists($file_dir[4])) {
+                        return self::ResultJson($file_result['dir'], $file_result['domain_str'], $domain);
+                    } else {
+                        self::$ajax->UserRate((int)$id);
+                        return $this->ScrapDataWebsite($domain, $backlinkJson, $blTop, $file_result);
+                    }
+                } else {
+                    self::$ajax->UserRate((int)$id);
+                    return $this->ScrapDataWebsite($domain, $backlinkJson, $blTop, $file_result);
+                }
+            }
+        }
+        throw new \Exception("Request Ajax not Valid !!!");
+    }
+
+    /**
+     * @param string $error
+     */
+    private static function ResultJsonError(string $error)
+    {
+        echo \GuzzleHttp\json_encode(["error" => $error]);
+    }
+
+    /**
+     * Create Path if the domain exist or not !!!
+     * @param string $domain
+     * @return array
+     */
+    protected static function DirectoryWebSite(string $domain): array
+    {
+        $domain_str = Str_options::str_replace_domain($domain);
+        $req = self::$table->SelectToken($domain);
+        if ($req !== false) {
+            $dir = dirname(__DIR__, 2) . '/' . 'storage/' . 'datas/' . 'website/' . $req->directory . '/' . $domain_str;
+        } else {
+            $dir = dirname(__DIR__, 2) . '/' . 'storage/' . 'datas/' . 'website/' . date("Y") . '/' . date("m") . '/' . $domain_str;
+        }
+        return [
+            "dir" => $dir,
+            "domain_str" => $domain_str
+        ];
+    }
+
+    /**
+     * @param string $dir
+     * @param string $name
+     * @param $token
+     * @param string|null $options_date
+     * @return string
+     */
+    protected static function FilesDomain(string $dir, string $name, $token, string $options_date = null): string
+    {
+        if (is_null($options_date)) {
+            return $dir . DIRECTORY_SEPARATOR . $name . '-' . $token . '.json';
+        }
+        return $dir . DIRECTORY_SEPARATOR . $name . '-' . $options_date . '-' . $token . '.json';
+    }
+
+    /**
      * @param string $dir
      * @param string $token
      * @param string $file
@@ -313,40 +230,70 @@ class WebSiteController
         return [$file_bl_info, $file_traffic, $file_top, $file, $file_ref];
     }
 
-
     /**
-     * @param string $filename
      * @param string $dir
+     * @param string $domain_str
      * @param string $domain
+     * @throws \Exception
      */
-    protected static function CurlCreateFile(string $filename, string $dir, string $domain)
+    private static function ResultJson(string $dir, string $domain_str, string $domain)
     {
-        if ($filename) {
-            File_Params::CreateParamsFile($filename, $dir, self::JsonBlTop(true, $domain), TRUE);
-            File_Params::UpdateFile($filename, $dir, self::JsonBlTop(false, $domain));
-        }
+        $req = self::$table->SelectToken($domain);
+        $fileSize = self::$web->SaveImgPower($domain, $dir, $req->token);
+        $file_1 = self::FilesDomain($dir, $domain_str, $req->token, date("Y-m-d"));
+        $file = self::FileSystem($dir, $req->token, $file_1);
+        $count = count(File_Params::OpenFile($file[4], $dir));
+        echo \GuzzleHttp\json_encode([
+            'result' => File_Params::OpenFile($file[3], $dir),
+            'bl_info' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' :
+                File_Params::OpenFile($file[0], $dir),
+            'traffic' => File_Params::OpenFile($file[1], $dir) ?? [],
+            'file_top_bl' => File_Params::OpenFile($file[2], $dir)->status === 'Service Unavailable' ? '' :
+                File_Params::OpenFile($file[2], $dir),
+            'all_bl' => [],
+            'dash_stats' => $count >= 7 ?
+                array_slice(self::$web->ChangeData(File_Params::OpenFile($file[4], $dir), "m/d"), $count - 7, $count)
+                : self::$web->ChangeData(File_Params::OpenFile($file[4], $dir), "m/d"),
+            'stats' => File_Params::OpenFile($file[4], $dir),
+            'traffic_data' => self::$web->ForData(File_Params::OpenFile($file[1], $dir) ?? []),
+            'anchors' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' :
+                self::$web->DataDefault(File_Params::OpenFile($file[0], $dir)
+                    ->data
+                    ->anchors
+                    ->data),
+            'domain_stat' => File_Params::OpenFile($file[0], $dir)
+                ->status === 'Service Unavailable' ? '' :
+                self::$web->ChangeDataItem(File_Params::OpenFile($file[0], $dir)
+                    ->data
+                    ->historical
+                    ->domain_stat
+                    ->weeks, "M j"),
+            'data_asc' => [],
+            'data_desc' => [],
+            'data_url' => [],
+            'data_assortUrl' => [],
+            'power' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
+            'power_trust' => self::$web->ChangePowerSize(
+                Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)),
+                File_Params::OpenFile($file[3], $dir)->trust_rank,
+                (int)self::$linkTable->SelectPowerbyDomain($domain)->power),
+            'error' => ''
+        ]);
     }
 
     /**
-     * Create Files with Json Data !!!
-     * @param array $arr
-     * @param $dir
-     * @param $domain
-     * @param $option
+     * @param string $domain
      * @param $backlinkJson
+     * @param $blTop
+     * @param array $file_result
      * @throws \Exception
      */
-    protected static function CreateFileWebSite(array $arr, $dir, $domain, $option, $backlinkJson, $blTop)
+    private function ScrapDataWebsite(string $domain, $backlinkJson, $blTop, array $file_result)
     {
-        File_Params::CreateParamsFile($arr[0], $dir, \GuzzleHttp\json_encode($backlinkJson), true);
-        File_Params::CreateParamsFile($arr[1], $dir, self::JsonTrafic($domain), TRUE);
-        File_Params::CreateParamsFile($arr[2], $dir, Json_File::JsonTopBl($domain));
-        File_Params::CreateParamsFile($arr[3], $dir, self::JsonWebSite($domain, $dir, $backlinkJson, $option), TRUE);
-        if (file_exists($arr[4]) && !file_exists($arr[3])) {
-            File_Params::UpdateFile($arr[4], $dir, self::JsonReferringWeb($domain, false, $arr[3], $dir, $backlinkJson, $blTop));
-        } else {
-            File_Params::CreateParamsFile($arr[4], $dir, self::JsonReferringWeb($domain, TRUE, $arr[3], $dir, $backlinkJson, $blTop), TRUE);
-        }
+        $filter = self::$web->FilterRank($domain);
+        $json = self::$web->JsonReturn($filter);
+        self::CreateFileDomain($domain, $backlinkJson, $blTop, $json);
+        return self::ResultJson($file_result['dir'], $file_result['domain_str'], $domain);
     }
 
     /**
@@ -420,131 +367,204 @@ class WebSiteController
     }
 
     /**
-     * @param string $dir
-     * @param string $domain_str
      * @param string $domain
+     * @param string $token
+     * @return mixed|null
+     */
+    public static function ReqDataDomain(string $domain, string $token)
+    {
+        $insert = self::$table->InsertDomain([
+            'domain' => $domain,
+            'token' => $token,
+            'date' => date("Y-m-d H:i:s"),
+            'directory' => date("Y") . '/' . date("m")
+        ]);
+        if ($insert) {
+            return self::$table->SelectToken($domain);
+        }
+        return null;
+    }
+
+    /**
+     * Create Files with Json Data !!!
+     * @param array $arr
+     * @param $dir
+     * @param $domain
+     * @param $option
+     * @param $backlinkJson
      * @throws \Exception
      */
-    private static function ResultJson(string $dir, string $domain_str, string $domain)
+    protected static function CreateFileWebSite(array $arr, $dir, $domain, $option, $backlinkJson, $blTop)
     {
-        $req = self::$table->SelectToken($domain);
-        $fileSize = self::$web->SaveImgPower($domain, $dir, $req->token);
-        $file_1 = self::FilesDomain($dir, $domain_str, $req->token, date("Y-m-d"));
-        $file = self::FileSystem($dir, $req->token, $file_1);
-        $count = count(File_Params::OpenFile($file[4], $dir));
-        echo \GuzzleHttp\json_encode([
-            'result' => File_Params::OpenFile($file[3], $dir),
-            'bl_info' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' :
-                File_Params::OpenFile($file[0], $dir),
-            'traffic' => File_Params::OpenFile($file[1], $dir) ?? [],
-            'file_top_bl' => File_Params::OpenFile($file[2], $dir)->status === 'Service Unavailable' ? '' :
-                File_Params::OpenFile($file[2], $dir),
-            'all_bl' => [],
-            'dash_stats' => $count >= 7 ?
-                array_slice(self::$web->ChangeData(File_Params::OpenFile($file[4], $dir), "m/d"), $count - 7, $count)
-                : self::$web->ChangeData(File_Params::OpenFile($file[4], $dir), "m/d"),
-            'stats' => File_Params::OpenFile($file[4], $dir),
-            'traffic_data' => self::$web->ForData(File_Params::OpenFile($file[1], $dir) ?? []),
-            'anchors' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' :
-                self::$web->DataDefault(File_Params::OpenFile($file[0], $dir)
-                    ->data
-                    ->anchors
-                    ->data),
-            'domain_stat' => File_Params::OpenFile($file[0], $dir)
-                ->status === 'Service Unavailable' ? '' :
-                self::$web->ChangeDataItem(File_Params::OpenFile($file[0], $dir)
-                    ->data
-                    ->historical
-                    ->domain_stat
-                    ->weeks, "M j"),
-            'data_asc' => [],
-            'data_desc' => [],
-            'data_url' => [],
-            'data_assortUrl' => [],
-            'power' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
-            'power_trust' => self::$web->ChangePowerSize(
-                Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)),
-                File_Params::OpenFile($file[3], $dir)->trust_rank,
-                (int)self::$linkTable->SelectPowerbyDomain($domain)->power),
-            'error' => ''
-        ]);
+        File_Params::CreateParamsFile($arr[0], $dir, \GuzzleHttp\json_encode($backlinkJson), true);
+        File_Params::CreateParamsFile($arr[1], $dir, self::JsonTrafic($domain), TRUE);
+        File_Params::CreateParamsFile($arr[2], $dir, Json_File::JsonTopBl($domain));
+        File_Params::CreateParamsFile($arr[3], $dir, self::JsonWebSite($domain, $dir, $backlinkJson, $option), TRUE);
+        if (file_exists($arr[4]) && !file_exists($arr[3])) {
+            File_Params::UpdateFile($arr[4], $dir, self::JsonReferringWeb($domain, false, $arr[3], $dir, $backlinkJson, $blTop));
+        } else {
+            File_Params::CreateParamsFile($arr[4], $dir, self::JsonReferringWeb($domain, TRUE, $arr[3], $dir, $backlinkJson, $blTop), TRUE);
+        }
     }
 
     /**
-     * @param string $error
+     * @param string $domain
+     * @return string
      */
-    private static function ResultJsonError(string $error)
+    public static function JsonTrafic(string $domain): string
     {
-        echo \GuzzleHttp\json_encode(["error" => $error]);
+        // Format Domain For traffic !!!
+        $domainArray = explode('.', $domain);
+        $domain = $domainArray[count($domainArray) - 2] . '.' . $domainArray[count($domainArray) - 1];
+
+        $curlKeyword = self::$curlTrafficUrlKeyword->run($domain)['keyword'] ?: null;
+        $curlTraffic = self::$curlTrafficUrlKeyword->run($domain)['traffic'] ?: null;
+
+        try {
+            $keywordJson = $curlKeyword !== null ? \GuzzleHttp\json_decode($curlKeyword) : [];
+            $trafficJson = $curlTraffic !== null ? \GuzzleHttp\json_decode($curlTraffic) : [];
+        } catch (\Exception $exception) {
+            if ($exception instanceof InvalidArgumentException) {
+                while (strpos($exception->getTrace()[0]['args'][0], '400 Bad Request') !== false) {
+                    sleep(2);
+                    [$keywordJson, $trafficJson] = self::invalidDataJson($domain);
+                }
+
+                return \GuzzleHttp\json_encode(
+                    [
+                        'traffic' => empty($trafficJson) ? [] : $trafficJson,
+                        'keywordAndTop' => empty($keywordJson) ? [] : $keywordJson
+                    ]);
+            }
+        }
+
+        return \GuzzleHttp\json_encode(
+            [
+                'traffic' => empty($trafficJson) ? [] : $trafficJson,
+                'keywordAndTop' => empty($keywordJson) ? [] : $keywordJson
+            ]);
     }
 
     /**
-     * Create Path if the domain exist or not !!!
      * @param string $domain
      * @return array
      */
-    protected static function DirectoryWebSite(string $domain): array
+    private static function invalidDataJson(string $domain): array
     {
-        $domain_str = Str_options::str_replace_domain($domain);
-        $req = self::$table->SelectToken($domain);
-        if ($req !== false) {
-            $dir = dirname(__DIR__, 2) . '/' . 'storage/' . 'datas/' . 'website/' . $req->directory . '/' . $domain_str;
-        } else {
-            $dir = dirname(__DIR__, 2) . '/' . 'storage/' . 'datas/' . 'website/' . date("Y") . '/' . date("m") . '/' . $domain_str;
-        }
-        return [
-            "dir" => $dir,
-            "domain_str" => $domain_str
-        ];
+        $curlKeyword = self::$curlTrafficUrlKeyword->run($domain)['keyword'] ?: null;
+        $curlTraffic = self::$curlTrafficUrlKeyword->run($domain)['traffic'] ?: null;
+
+        $keywordJson = $curlKeyword !== null ? \GuzzleHttp\json_decode($curlKeyword) : [];
+        $trafficJson = $curlTraffic !== null ? \GuzzleHttp\json_decode($curlTraffic) : [];
+
+        return [$keywordJson, $trafficJson];
     }
 
     /**
      * @param string $domain
+     * @param string $dir
+     * @param $backlinkJson
+     * @param null $option
+     * @return string
+     * @throws \Exception
+     */
+    protected static function JsonWebSite(string $domain, string $dir, $backlinkJson, $option = null): string
+    {
+        // Request Backlink Curl And Verif Statut OK !!!
+        if ($backlinkJson->status === 'Service Unavailable') {
+            return null;
+        } elseif ($backlinkJson->status === 'Validation Error : target') {
+            return null;
+        }
+
+        // Recuperate the token in tht database
+        // We created Two file Img Majectic for recuperate the power Trust and power Score Rank
+        // We inserted this in the datasbase
+        $req = self::$table->SelectToken($domain);
+        $majestic = self::$linkProfileController->DomainMajectic($domain);
+        $file = $majestic["dir"] . '/' . $majestic["domain_str"] . '-' . self::$linkDomain->TokenImg() . '.png';
+
+        // Save Img Majectic Power Trust
+        self::$linkProfileController->LinkSave($file, $majestic["dir"], $majestic["url"], $domain);
+        $fileSize = self::$web->SaveImgPower($domain, $dir, $req->token);
+
+        // Save Img Majectic Power Score
+        $powerTrust = self::$web->ChangePowerSize(
+            Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)),
+            $backlinkJson->data->trust_score,
+            (int)self::$linkTable->SelectPowerbyDomain($domain)->power);
+
+        return \GuzzleHttp\json_encode(
+            [
+                'referring_domain' => $backlinkJson->data->domains > 1000 ? self::$format->format($backlinkJson->data->domains, '0a.00') : $backlinkJson->data->domains,
+                'referring_domain_int' => $backlinkJson->data->domains,
+                'trust_rank' => $powerTrust === 0 ? $backlinkJson->data->trust_score === 0 ? Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)) : $backlinkJson->data->trust_score : $powerTrust,
+                'score_rank' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
+                'alexa_rank' => $option,
+                'ip_subnets' => $backlinkJson->data->ipclassc
+            ]
+        );
+    }
+
+    /**
+     * @param string $domain
+     * @param bool $first
+     * @param string|null $file
+     * @param string|null $dir
      * @param $backlinkJson
      * @param $blTop
-     * @param array $file_result
-     * @throws \Exception
+     * @return string
      */
-    private function ScrapDataWebsite(string $domain, $backlinkJson, $blTop, array $file_result)
+    public static function JsonReferringWeb(string $domain, $first = false, string $file = null, string $dir = null, $backlinkJson, $blTop): string
     {
-        $filter = self::$web->FilterRank($domain);
-        $json = self::$web->JsonReturn($filter);
-        self::CreateFileDomain($domain, $backlinkJson, $blTop, $json);
-        return self::ResultJson($file_result['dir'], $file_result['domain_str'], $domain);
-    }
+        // Recuperate Token And Request Backlink Curl And TopBL !!!
+        $req = self::$table->SelectToken($domain);
 
-    /**
-     * @param string $domain
-     * @param int $id
-     * @throws \Exception
-     */
-    public function WebSite(string $domain, int $id)
-    {
-        if ($domain) {
-            $backlinkJson = self::$bl->ReqBl($domain);
-            $blTop = self::$bl->ReqTopBl($domain);
+        // Save Power Trust and Score Rank
+        $result = File_Params::OpenFile($file, $dir);
+        $fileSize = self::$web->SaveImgPower($domain, $dir, $req->token);
+        $powerTrust = self::$web->ChangePowerSize(
+            Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)),
+            $result->trust_rank,
+            (int)self::$linkTable->SelectPowerbyDomain($domain)->power);
 
-            if ($backlinkJson->status === "Not Found" || $backlinkJson->status === "Validation Error : target") {
-                return self::ResultJsonError($backlinkJson->status);
-            } else {
-                $file_result = self::DirectoryWebSite($domain);
-                $req = self::$table->SelectToken($domain);
-                if ($req) {
-                    $file = self::FilesDomain($file_result['dir'], $file_result['domain_str'], $req->token, date("Y-m-d"));
-                    $file_dir = self::FileSystem($file_result['dir'], $req->token, $file);
-                    if (file_exists($file_dir[1]) && file_exists($file_dir[0]) && file_exists($file_dir[2]) && file_exists($file_dir[3]) && file_exists($file_dir[4])) {
-                        return self::ResultJson($file_result['dir'], $file_result['domain_str'], $domain);
-                    } else {
-                        self::$ajax->UserRate((int)$id);
-                        return $this->ScrapDataWebsite($domain, $backlinkJson, $blTop, $file_result);
-                    }
-                } else {
-                    self::$ajax->UserRate((int)$id);
-                    return $this->ScrapDataWebsite($domain, $backlinkJson, $blTop, $file_result);
-                }
-            }
+        // Return The result with Json_Encode for convert in JSON !!!
+        if ($first) {
+            return \GuzzleHttp\json_encode([
+                [
+                    'referring_domain' => $backlinkJson->data->domains,
+                    'referring_pages' => $backlinkJson->data->links,
+                    'ip' => $backlinkJson->data->ip,
+                    'ip_subnets' => $backlinkJson->data->ipclassc,
+                    'total_backlinks' => $blTop->data->backlinks->total,
+                    'nofollow' => $backlinkJson->data->nofollow,
+                    'follow' => $backlinkJson->data->follow,
+                    'trust' => $powerTrust === 0 ?
+                        $result->trust_rank === 0 ?
+                            Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)) :
+                            $result->trust_rank :
+                        $powerTrust,
+                    'score_rank' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
+                    'date' => date("Y-m-d")
+                ]
+            ]);
         }
-        throw new \Exception("Request Ajax not Valid !!!");
+        return \GuzzleHttp\json_encode([
+            'referring_domain' => $backlinkJson->data->domains,
+            'referring_pages' => $backlinkJson->data->links,
+            'ip' => $backlinkJson->data->ip,
+            'ip_subnets' => $backlinkJson->data->ipclassc,
+            'total_backlinks' => $blTop->data->backlinks->total,
+            'nofollow' => $backlinkJson->data->nofollow,
+            'follow' => $backlinkJson->data->follow,
+            'trust' => $powerTrust === 0 ?
+                $result->trust_rank === 0 ?
+                    Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)) :
+                    $result->trust_rank :
+                $powerTrust,
+            'score_rank' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
+            'date' => date("Y-m-d")
+        ]);
     }
 
     /**
@@ -574,5 +594,18 @@ class WebSiteController
     {
         $backlinkJson = self::$bl->ReqBl($domain);
         return self::JsonWebSite($domain, $dir, $backlinkJson, $option);
+    }
+
+    /**
+     * @param string $domain
+     * @param bool $topBacklink
+     * @return object
+     */
+    public function getRequestJson(string $domain, bool $topBacklink = false): object
+    {
+        if ($topBacklink) {
+            return self::$bl->ReqTopBl($domain);
+        }
+        return self::$bl->ReqBl($domain);
     }
 }

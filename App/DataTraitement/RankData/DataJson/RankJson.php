@@ -43,8 +43,11 @@ class RankJson
     public function dataJson($auth = null, \stdClass $project, array $keywordsNew = [])
     {
         $dataKeywords = explode(',', $project->keywords);
+        if ($dataKeywords === $keywordsNew) {
+            return null;
+        }
 
-        if (!empty($keywordsNew)) {
+        if (!empty($keywordsNew) && isset($keywordsNew[0]) && $keywordsNew[0] !== '') {
             if ($project->keywords !== $keywordsNew) {
                 $deleteAction = $this->removeKeywords($dataKeywords, $keywordsNew, $auth);
                 if ($deleteAction === null) {

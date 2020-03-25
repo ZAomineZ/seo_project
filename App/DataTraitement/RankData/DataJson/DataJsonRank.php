@@ -103,16 +103,30 @@ class DataJsonRank
     public function newDataJson(object $data, array $json): array
     {
         $dataRankTop = $this->NewdataRankTop((array)$data->{'dataRankTopWithKeywordsAndFeatures'}->{'data'}, $json['dataRankTopWithKeywordsAndFeatures']['data']);
-        $dataKeywordsByWebsite = array_merge((array)$data->{'dataRankTopWithKeywordsAndFeatures'}->{'dataKeywordsByWebsite'}, $json['dataRankTopWithKeywordsAndFeatures']['dataKeywordsByWebsite']);
+        $dataKeywordsByWebsite = !empty($json['dataRankTopWithKeywordsAndFeatures']['dataKeywordsByWebsite']) ?
+            array_merge(
+                (array)$data->{'dataRankTopWithKeywordsAndFeatures'}->{'dataKeywordsByWebsite'},
+                $json['dataRankTopWithKeywordsAndFeatures']['dataKeywordsByWebsite']
+            ) : [];
         $countKeywords = $json['dataRankTopWithKeywordsAndFeatures']['countKeywords'] ?: 0;
 
         $dataRankTopWithKeywordsAndFeatures['data'] = $dataRankTop;
         $dataRankTopWithKeywordsAndFeatures['dataKeywordsByWebsite'] = $dataKeywordsByWebsite;
         $dataRankTopWithKeywordsAndFeatures['countKeywords'] = $countKeywords;
 
-        $images = array_merge((array)$data->{'dataRankTopFeatures'}->{'data'}->{'images'}, $json['dataRankTopFeatures']['data']['images']);
-        $videos = array_merge((array)$data->{'dataRankTopFeatures'}->{'data'}->{'videos'}, $json['dataRankTopFeatures']['data']['videos']);
-        $P0 = array_merge((array)$data->{'dataRankTopFeatures'}->{'data'}->{'P0'}, $json['dataRankTopFeatures']['data']['P0']);
+        $images = !empty($json['dataRankTopFeatures']['data']['images']) ?
+            array_merge(
+                (array)$data->{'dataRankTopFeatures'}->{'data'}->{'images'}, $json['dataRankTopFeatures']['data']['images']
+            ) : [];
+        $videos = !empty($json['dataRankTopFeatures']['data']['videos']) ?
+            array_merge(
+                (array)$data->{'dataRankTopFeatures'}->{'data'}->{'videos'},
+                $json['dataRankTopFeatures']['data']['videos']
+            ) : [];
+        $P0 = !empty($json['dataRankTopFeatures']['data']['P0']) ? array_merge(
+            (array)$data->{'dataRankTopFeatures'}->{'data'}->{'P0'},
+            $json['dataRankTopFeatures']['data']['P0']
+        ) : [];
 
         $dataRankTopFeatures['data']['images'] = $images;
         $dataRankTopFeatures['data']['videos'] = $videos;
@@ -120,7 +134,7 @@ class DataJsonRank
 
         return [
             'dataRankTopByDate' => $json['dataRankTopByDate'],
-            'dataRankTopWithKeywordsAndFeatures'=> $dataRankTopWithKeywordsAndFeatures,
+            'dataRankTopWithKeywordsAndFeatures' => $dataRankTopWithKeywordsAndFeatures,
             'dataRankTopFeatures' => $dataRankTopFeatures
         ];
     }
@@ -151,7 +165,7 @@ class DataJsonRank
 
         return [
             'dataRankTopByDate' => $newJson['dataRankTopByDate'],
-            'dataRankTopWithKeywordsAndFeatures'=> $dataRankTopWithKeywordsAndFeatures,
+            'dataRankTopWithKeywordsAndFeatures' => $dataRankTopWithKeywordsAndFeatures,
             'dataRankTopFeatures' => $dataRankTopFeatures
         ];
     }
@@ -165,19 +179,25 @@ class DataJsonRank
     {
         $data = [];
 
-        foreach ($paramOld as $key => $item) {
-            if (isset($paramNew[$key])) {
-                $itemOld = $paramOld[$key];
-                $itemNew = $paramNew[$key];
+        if (!empty($paramNew)) {
+            if (empty($paramOld)) {
+                return $paramNew;
+            }
 
-                $data[$key]['top100'] = ($itemOld->{'top100'} + $itemNew['top100']);
-                $data[$key]['top3'] = ($itemOld->{'top3'} + $itemNew['top3']);
-                $data[$key]['top10'] = ($itemOld->{'top10'} + $itemNew['top10']);
-                $data[$key]['volume'] = ($itemNew['volume']);
-                $data[$key]['date'] = ($itemNew['date']);
-                $data[$key]['dateUsort'] = ($itemNew['dateUsort']);
-            } else {
-                $data[$key] = $item;
+            foreach ($paramOld as $key => $item) {
+                if (isset($paramNew[$key])) {
+                    $itemOld = $paramOld[$key];
+                    $itemNew = $paramNew[$key];
+
+                    $data[$key]['top100'] = ($itemOld->{'top100'} + $itemNew['top100']);
+                    $data[$key]['top3'] = ($itemOld->{'top3'} + $itemNew['top3']);
+                    $data[$key]['top10'] = ($itemOld->{'top10'} + $itemNew['top10']);
+                    $data[$key]['volume'] = ($itemNew['volume']);
+                    $data[$key]['date'] = ($itemNew['date']);
+                    $data[$key]['dateUsort'] = ($itemNew['dateUsort']);
+                } else {
+                    $data[$key] = $item;
+                }
             }
         }
 
@@ -204,7 +224,7 @@ class DataJsonRank
         $dataKeywords = [];
 
         foreach ($oldJson as $key => $item) {
-            $keyword = $item->{'keyword'} ? : '';
+            $keyword = $item->{'keyword'} ?: '';
             if (in_array($keyword, $keywords)) {
                 $dataKeywords[] = $item;
             }

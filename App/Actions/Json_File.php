@@ -76,7 +76,7 @@ class Json_File
      */
     protected function FileOpenJson (Client $goutte, string $url) : Crawler
     {
-        sleep(2.5);
+        sleep(3);
         $gt = $goutte->request("GET", $url);
         $gt_response = $goutte->getResponse()->getContent();
         $gt->add($gt_response);
@@ -97,7 +97,7 @@ class Json_File
 
     /**
      * @param string $domain
-     * @return array|string
+     * @return array|string|object
      */
     public function ReqBl (string $domain)
     {
@@ -130,7 +130,7 @@ class Json_File
 
     /**
      * @param string $domain
-     * @return array|string
+     * @return array|string|object
      */
     public function ReqTopBl (string $domain)
     {

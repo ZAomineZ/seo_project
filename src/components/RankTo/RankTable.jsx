@@ -13,7 +13,7 @@ import RankTableHead from "./RankTableHead";
 import ReactHtmlParser from "react-html-parser";
 
 const CustomTooltip = ({active, payload}) => {
-    if (active) {
+    if (active && payload.length !== 0) {
         return (
             <div className="dashboard__total-tooltip">
                 <p className="label">{`${payload[0].value}`}</p>
