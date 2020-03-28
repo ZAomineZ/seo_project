@@ -9,6 +9,7 @@
 namespace App\Model;
 
 use App\Actions\Url\MultiCurl_VolumeResult;
+use App\Actions\Url\MultiCurlKeywordConcurrent;
 use App\concern\Str_options;
 use App\DataTraitement\RankData\KeywordsTraitement;
 use App\ErrorCode\Exception\NullableException;
@@ -460,7 +461,7 @@ class RankModel
 
         if (!empty($keyword)) {
             // Convert Url and Desc SERP int the an array !!!
-            $dir = $this->serp->DIRLoad(str_replace('%20', '-', $keyword));
+            $dir = $this->serp->DIRLoad(str_replace(' ', '-', $keyword));
             $dataResult = scandir($dir);
             $data = $this->serp->DataDateRank($dataResult, $dir);
         } else {
@@ -470,7 +471,7 @@ class RankModel
         // If $typeFeatures !== null, we returned the Result Dom HTML !!!
         if (!is_null($typeFeatures)) {
             return [
-                'dirKeyword' => !empty($keyword) ? $this->serp->DIRLoad(str_replace('%20', '-', $keyword)) : '',
+                'dirKeyword' => !empty($keyword) ? $this->serp->DIRLoad(str_replace(' ', '-', $keyword)) : '',
                 'allDate' => !empty($keyword) ? $data['date'] : [],
                 'allDateFormat' => !empty($keyword) ? $this->serp->DateFormat($data['date']) : []
             ];
@@ -501,18 +502,35 @@ class RankModel
                 return $item !== '';
             });
 
+            $keywordConcurrent = new MultiCurlKeywordConcurrent($this->serp);
             foreach ($arrKywords as $key => $value) {
                 $valueFirst = trim($value);
                 $value = trim($value);
                 if (strpos($value, " ") !== false) {
                     $value = str_replace(" ", '-', $valueFirst);
                 }
-                if (is_null($auth)) {
-                    $data = $this->serp->FileData($value, $valueFirst);
-                } else {
-                    $data = $this->serp->FileData($value, $valueFirst, $auth->id);
+
+                $dir = $this->serp->DIRLoad($value);
+                if (!file_exists($this->serp->FILELoad($dir))) {
+                    if (is_null($auth)) {
+                        [$dataUri, $name] = $this->serp->FileData($value, $valueFirst, null, true);
+                    } else {
+                        [$dataUri, $name] = $this->serp->FileData($value, $valueFirst, $auth->id, true);
+                    }
+                    $keywordConcurrent->setUri($dataUri);
+                    $keywordConcurrent->setName($name);
                 }
-                $dataArray[] = $this->dataRankByWebsite($data, $value, $multiKeywords, $typesFeatures);
+            }
+            // Concurrent Multi Curl Request for keywords URI !!!
+            $keywordConcurrent->run();
+
+            // Pushed in the dataArray to data Doctype Html Google !!!
+            foreach ($arrKywords as $key => $item) {
+                $keyword = trim($item);
+                $name = str_replace(' ', '-', $keyword);
+
+                $data = $this->serp->getSerpDoctype($name);
+                $dataArray[] = $this->dataRankByWebsite($data, $keyword, $multiKeywords, $typesFeatures);
             }
         }
         return $dataArray;
