@@ -32,29 +32,20 @@ class DownloadCsv
 
     /**
      * @param array $data
+     * @param bool $arrayPush
      */
-    public function CsvDownload(array $data)
+    public function CsvDownload(array $data, bool $arrayPush = false)
     {
         $this->ColCsv($this->file);
-        foreach ($data as $dt) {
-            if (!is_array($dt)) {
-                $data = \GuzzleHttp\json_decode($dt);
 
-                $dataJson = array_map(function ($value) use ($data) {
-                    $value = str_replace(' ', '_', $value);
-                    $value = str_replace('-', '_', $value);
-                    $value = strtolower($value);
-
-                    return $data->{$value};
-                }, $this->data);
-
-                fputcsv(fopen('php://output', 'w'), $dataJson);
-            } else {
-                foreach ($dt as $d) {
-                    fputcsv(fopen('php://output', 'w'), $d);
-                }
+        if (!$arrayPush) {
+            $this->convertDataForCSV($data);
+        } else {
+            foreach ($data as $dt) {
+                fputcsv(fopen('php://output', 'w'), $dt);
             }
         }
+
         fclose(fopen('php://output', 'w'));
         exit();
     }
@@ -76,5 +67,35 @@ class DownloadCsv
         fputcsv($handle, $this->data);
 
         return true;
+    }
+
+    /**
+     * @param array $data
+     */
+    private function convertDataForCSV(array $data)
+    {
+        foreach ($data as $dt) {
+            if (!is_array($dt)) {
+                $data = \GuzzleHttp\json_decode($dt);
+
+                $dataJson = array_map(function ($value) use ($data) {
+                    $value = str_replace(' ', '_', $value);
+                    $value = str_replace('-', '_', $value);
+                    $value = strtolower($value);
+
+                    return $data->{$value};
+                }, $this->data);
+
+                fputcsv(fopen('php://output', 'w'), $dataJson);
+            } else {
+                if (is_array($dt)) {
+                    foreach ($dt as $d) {
+                        fputcsv(fopen('php://output', 'w'), $d);
+                    }
+                } else {
+                    fputcsv(fopen('php://output', 'w'), $dt);
+                }
+            }
+        }
     }
 }

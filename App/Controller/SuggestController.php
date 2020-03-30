@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Actions\Suggest_Data;
+use App\DataTraitement\TraitementCsv\RenderCsvSuggest;
 
 class SuggestController
 {
@@ -103,13 +104,22 @@ class SuggestController
      */
     protected function ArrayData (string $keyword)
     {
-        echo \GuzzleHttp\json_encode([
-           'current' => $this->json->ReqSuggest($keyword),
-           'questions' => $this->json->ReqSuggest($keyword, self::QUESTIONS),
-           'prepositions' => $this->json->ReqSuggest($keyword, self::PREPOSITIONS),
-           'comparisons' => $this->json->ReqSuggest($keyword, self::COMPARISONS),
-           'alpha' => $this->json->ReqSuggest($keyword, self::ALPHA, TRUE)
-        ]);
+        echo \GuzzleHttp\json_encode($this->arrayTo($keyword));
+    }
+
+    /**
+     * @param string $keyword
+     * @return array
+     */
+    private function arrayTo(string $keyword)
+    {
+        return [
+            'current' => $this->json->ReqSuggest($keyword),
+            'questions' => $this->json->ReqSuggest($keyword, self::QUESTIONS),
+            'prepositions' => $this->json->ReqSuggest($keyword, self::PREPOSITIONS),
+            'comparisons' => $this->json->ReqSuggest($keyword, self::COMPARISONS),
+            'alpha' => $this->json->ReqSuggest($keyword, self::ALPHA, TRUE)
+        ];
     }
 
     /**
@@ -118,5 +128,16 @@ class SuggestController
     public function JsonData (string $keyword)
     {
         return $this->ArrayData($keyword);
+    }
+
+    /**
+     * @param array $request
+     */
+    public function suggestCSV(array $request)
+    {
+        $keyword = $request['keyword'] ?? null;
+        $data = $this->arrayTo($keyword) ?? [];
+
+        (new RenderCsvSuggest($data, $keyword))->renderCSV();
     }
 }

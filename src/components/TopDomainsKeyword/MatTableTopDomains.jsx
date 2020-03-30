@@ -105,7 +105,10 @@ export default class MatTable extends PureComponent {
             const arrayDataLastMonth = [];
 
             let data = Object.values(nextProps.data);
+
             data.map((value, index) => {
+                value = Object.values(value);
+
                 arrayDataNow[index] = {
                     date: value[value.length - 1].date,
                     domain: value[value.length - 1].domain,
