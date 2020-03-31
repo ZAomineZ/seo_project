@@ -11,6 +11,7 @@ import TableCell from '@material-ui/core/TableCell/TableCell';
 import Panel from '../../shared/components/Panel';
 import RankTableHead from "./RankTableHead";
 import ReactHtmlParser from "react-html-parser";
+import Cookie from "../../js/Cookie";
 
 const CustomTooltip = ({active, payload}) => {
     if (active && Array.isArray(payload)) {
@@ -91,34 +92,8 @@ export default class RankTable extends PureComponent {
         this.setState({rowsPerPage: event.target.value});
     };
 
-    SetCookie(name_cookie, value_cookie, expire_days) {
-        let date = new Date();
-        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-        let expire_cookie = "expires=" + date.toUTCString();
-        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
-    }
-
-    getCookie(name_cookie) {
-        let name = name_cookie + '=';
-        let cookie = document.cookie.split(';');
-        for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
-            while (cook.charAt(0) == ' ') {
-                cook = cook.substring(1);
-            }
-            if (cook.indexOf(name) == 0) {
-                return cook.substring(name.length, cook.length);
-            }
-            return '';
-        }
-    }
-
     CookieReset(token, id) {
-        if (this.getCookie('remember_me_auth')) {
-            this.SetCookie('remember_me_auth', token + '__' + id, 30)
-        } else {
-            this.SetCookie('auth_today', token + '__' + id, 1)
-        }
+        Cookie.CookieReset(token, id);
         this.setState({redirectSerp: !this.state.redirectSerp})
     }
 

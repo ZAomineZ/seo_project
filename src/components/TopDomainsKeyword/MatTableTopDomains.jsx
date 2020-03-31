@@ -12,6 +12,7 @@ import axios from "axios";
 import {route} from "../../const";
 import {Redirect} from "react-router-dom";
 import TableKeywords from "./Components/KeywordsComponent/TableKeywords";
+import Cookie from "../../js/Cookie";
 
 let counter = 0;
 
@@ -181,56 +182,34 @@ export default class MatTable extends PureComponent {
         this.setState({order, orderBy});
     };
 
-    SetCookie(name_cookie, value_cookie, expire_days) {
-        let date = new Date();
-        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-        let expire_cookie = "expires=" + date.toUTCString();
-        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
-    }
-
-    getCookie(name_cookie) {
-        let name = name_cookie + '=';
-        let cookie = document.cookie.split(';');
-        for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
-            while (cook.charAt(0) == ' ') {
-                cook = cook.substring(1);
-            }
-            if (cook.indexOf(name) == 0) {
-                return cook.substring(name.length, cook.length);
-            }
-            return '';
-        }
-    }
-
     CookieReset(token, id) {
-        if (this.getCookie('remember_me_auth')) {
-            this.SetCookie('remember_me_auth', token + '__' + id, 30)
-        } else {
-            this.SetCookie('auth_today', token + '__' + id, 1)
-        }
+        Cookie.CookieReset(token, id);
         this.setState({redirectSerp: !this.state.redirectSerp})
     }
 
     Download(event, data) {
         event.preventDefault();
 
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            data: data,
+            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
         axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeywordCsv.php", {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'text/plain',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                'Access-Control-Allow-Credentials': true,
-                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                'Access-Control-Max-Age': 1728000,
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
-            },
-            params: {
-                data: data,
-                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
-                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
-            }
+            headers: headers,
+            params: params,
         }).then(response => {
             if (response && response.status === 200) {
                 if (response.data.error) {
@@ -251,27 +230,31 @@ export default class MatTable extends PureComponent {
         let domains = this.props.keyword;
         let page = '/Ajax/TopKeyword/CSV/KeywordCsvDownload.php';
 
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            domains: domains,
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
         axios.get("http://" + window.location.hostname + route + page, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'text/plain',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                'Access-Control-Allow-Credentials': true,
-                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                'Access-Control-Max-Age': 1728000,
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
-            },
-            params: {
-                domains: domains,
-                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
-                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
-            }
+            headers: headers,
+            params: params
         }).then(response => {
             if (response && response.status === 200) {
                 if (response.data.error) {
                     if (response.data.error === 'Invalid Token') {
-                        this.CookieReset(response.data.token, response.data.id)
+                        return this.CookieReset(response.data.token, response.data.id)
                     }
                 } else {
                     window.location.href = response.request.responseURL;
@@ -298,7 +281,7 @@ export default class MatTable extends PureComponent {
 
         const params = {
             domain: domain,
-            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            cookie: Cookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 
@@ -351,7 +334,7 @@ export default class MatTable extends PureComponent {
         formData.set('offset', offset);
         formData.set('page', page);
         formData.set('pageRemoveIndex', pageRemoveIndex);
-        formData.set('cookie', this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'));
+        formData.set('cookie', Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'));
         formData.set('auth', sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '');
 
         if (this.state.paginationFilter) {
@@ -404,7 +387,7 @@ export default class MatTable extends PureComponent {
         const params = {
             domain: this.state.domain,
             filter: filter,
-            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'),
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 

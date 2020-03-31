@@ -4,11 +4,11 @@ import ChartRank from "./ChartRank";
 import axios from "axios";
 import {route, requestUri} from "../../const";
 import {BasicNotification} from "../../shared/components/Notification";
-import NotificationSystem from "rc-notification";
 import {Redirect} from "react-router-dom";
 import TabsRankToProject from "./Tabs/TabsRankToProject";
 import Cookie from "../../js/Cookie";
 import ResponseAjax from "../../js/ResponseAjax";
+import NotificationMessage from "../../js/NotificationMessage";
 
 let notification = null;
 
@@ -42,35 +42,38 @@ export default class indexKeyword extends PureComponent {
         }
     }
 
-    submitNotification(type, title, message) {
-        NotificationSystem.newInstance({}, n => notification = n);
-        setTimeout(() => showNotification(type, title, message), 700);
+    static submitNotification (type, title, message) {
+        return NotificationMessage.notification(message, title, type);
     }
 
     componentDidMount() {
         if (sessionStorage.getItem('Auth')) {
             let project = this.props.match.params.project;
             if (project !== '') {
+                const headers = {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'text/plain',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                    'Access-Control-Max-Age': 1728000,
+                    'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+                };
+
+                const params = {
+                    project: project,
+                    cookie: Cookie.getCookie('remember_me_auth') ?
+                        Cookie.getCookie('remember_me_auth') :
+                        Cookie.getCookie('auth_today'),
+                    auth: sessionStorage.getItem('Auth') ?
+                        sessionStorage.getItem('Auth')
+                        : ''
+                };
+
                 axios.get( requestUri + window.location.hostname + route + '/Ajax/RankByProject.php', {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Content-Type': 'text/plain',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                        'Access-Control-Allow-Credentials': true,
-                        'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                        'Access-Control-Max-Age': 1728000,
-                        'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-                    },
-                    params: {
-                        project: project,
-                        cookie: Cookie.getCookie('remember_me_auth') ?
-                            Cookie.getCookie('remember_me_auth') :
-                            Cookie.getCookie('auth_today'),
-                        auth: sessionStorage.getItem('Auth') ?
-                            sessionStorage.getItem('Auth')
-                            : ''
-                    }
+                    headers: headers,
+                    params: params,
                 }).then((response) => {
                     if (response && response.status === 200) {
                         if (response.data.error) {
@@ -78,7 +81,7 @@ export default class indexKeyword extends PureComponent {
                                 return this.redirectSerp(response);
                             } else {
                                 this.setState({redirectTo: !this.state.redirectTo});
-                                this.submitNotification('danger', '👋 Error Found !!!', response.data.error);
+                                indexKeyword.submitNotification('danger', '👋 Error Found !!!', response.data.error);
                             }
                         } else {
                             if (response.data.data && response.data.dataKeywordsByWebsite) {

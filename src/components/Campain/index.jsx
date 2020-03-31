@@ -7,6 +7,8 @@ import NotificationSystem from "rc-notification";
 import Form from './campain_form';
 import axios from "axios";
 import {route, requestUri} from '../../const'
+import Cookie from "../../js/Cookie";
+import NotificationMessage from "../../js/NotificationMessage";
 
 let notification = null;
 
@@ -27,7 +29,7 @@ const showNotification = (type, message, title) => {
 class Campain extends PureComponent {
     constructor (props) {
       super(props);
-      console.error = () => {}
+      console.error = () => {};
       console.error();
       this.state = {
           data: [],
@@ -35,70 +37,46 @@ class Campain extends PureComponent {
       };
     }
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
-        let date = new Date();
-        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-        let expire_cookie = "expires=" + date.toUTCString();
-        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
-    }
-
-    getCookie(name_cookie) {
-        let name = name_cookie + '=';
-        let cookie = document.cookie.split(';');
-        for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
-            while (cook.charAt(0) == ' ') {
-                cook = cook.substring(1);
-            }
-            if (cook.indexOf(name) == 0) {
-                return cook.substring(name.length, cook.length);
-            }
-            return '';
-        }
-    }
-
     CookieReset (token, id)
     {
-        if (this.getCookie('remember_me_auth')) {
-            this.SetCookie('remember_me_auth', token + '__' + id, 30)
-        } else {
-            this.SetCookie('auth_today', token + '__' + id, 1)
-        }
+        Cookie.CookieReset(token, id);
         this.setState({ redirectSerp : !this.state.redirectSerp})
     }
 
     componentDidMount() {
         if (this.props.location) {
             if (this.props.location.state !== undefined) {
-                NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification('error', 'This Campain is not authorized', '👋 A Error is present !!!'), 700);
+                return NotificationMessage.notification('This Campain is not authorized', '👋 A Error is present !!!', 'danger');
             }
         }
+
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today')
+        };
+
         axios.get(requestUri + window.location.hostname  + route + "/Ajax/Campain/CampainIndex.php", {
-            params: {
-                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
-                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
-            },
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'text/plain',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                'Access-Control-Allow-Credentials': true,
-                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                'Access-Control-Max-Age': 1728000,
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-            },
+            params: params,
+            headers: headers,
         }).then((response) => {
             if (response && response.status === 200) {
                 if (response.data.error) {
                     if (response.data.error === 'Invalid Token') {
                         this.CookieReset(response.data.token, response.data.id)
                     } else {
-                        this.setState({ redirectSerp : !this.state.redirectSerp})
-                        NotificationSystem.newInstance({}, n => notification = n);
-                        setTimeout(() => showNotification('danger', response.data.error, '👋 Success Message'), 700);
+                        this.setState({ redirectSerp : !this.state.redirectSerp});
+                        return NotificationMessage.notification(response.data.error, '👋 Success Message', 'danger');
                     }
                 } else {
                     this.setState({ data : response.data})
@@ -117,22 +95,26 @@ class Campain extends PureComponent {
 
     DeleteData (event, slug)
     {
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            slug: slug,
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today')
+        };
+
         axios.get(requestUri + window.location.hostname + route + "/Ajax/Campain/CampainDelete.php", {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'text/plain',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                'Access-Control-Allow-Credentials': true,
-                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                'Access-Control-Max-Age': 1728000,
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-            },
-            params: {
-                'slug': slug,
-                'auth': sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : '',
-                'cookie': this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today')
-            }
+            headers: headers,
+            params: params,
         }).then((response) => {
             if (response && response.status === 200) {
                 if (response.data.error) {
@@ -140,14 +122,13 @@ class Campain extends PureComponent {
                         this.CookieReset(response.data.token, response.data.id)
                     } else {
                         this.setState({redirectSerp: !this.state.redirectSerp});
-                        NotificationSystem.newInstance({}, n => notification = n);
-                        setTimeout(() => showNotification('danger', response.data.error, '👋 Success Message'), 700);
+                        return NotificationMessage.notification(response.data.error, '👋 Error Message', 'danger');
                     }
                 } else {
                     const data_delete = this.state.data.filter(i => i.slug !== slug);
                     this.setState({data : data_delete});
-                    NotificationSystem.newInstance({}, n => notification = n);
-                    setTimeout(() => showNotification('success', 'Your Campain has been delete !!!', '👋 Success Message'), 700);
+
+                    return NotificationMessage.notification('Your Campain has been delete !!!', '👋 Success Message', 'success');
                 }
             }
         })

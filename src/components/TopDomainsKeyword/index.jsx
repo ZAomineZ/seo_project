@@ -4,25 +4,9 @@ import TabMaterielTopDomains from './TabMaterielTopDomains';
 import axios from "axios";
 import {route, requestUri} from '../../const'
 import {Redirect} from "react-router-dom";
-import {BasicNotification} from "../../shared/components/Notification";
-import NotificationSystem from "rc-notification";
 import NavLinkBarTopKeywords from "./Components/NavLinkBarTopKeywords";
-
-let notification = null;
-
-const showNotification = (message, type) => {
-    notification.notice({
-        content: <BasicNotification
-            color={type}
-            title={type === 'danger' ? '👋 Danger !!!' : '👋 Well done !!!'}
-            message={message}
-        />,
-        duration: 5,
-        closable: true,
-        style: {top: 0, left: 'calc(100vw - 100%)'},
-        className: 'left-up',
-    });
-};
+import Cookie from "../../js/Cookie";
+import NotificationMessage from "../../js/NotificationMessage";
 
 class DomainsKeyword extends PureComponent {
     constructor(props) {
@@ -41,58 +25,41 @@ class DomainsKeyword extends PureComponent {
         }
     }
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
-        let date = new Date();
-        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-        let expire_cookie = "expires=" + date.toUTCString();
-        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
-    }
-
-    getCookie(name_cookie) {
-        let name = name_cookie + '=';
-        let cookie = document.cookie.split(';');
-        for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
-            while (cook.charAt(0) == ' ') {
-                cook = cook.substring(1);
-            }
-            if (cook.indexOf(name) == 0) {
-                return cook.substring(name.length, cook.length);
-            }
-            return '';
-        }
-    }
-
     CookieReset (token, id)
     {
-        if (this.getCookie('remember_me_auth')) {
-            this.SetCookie('remember_me_auth', token + '__' + id, 30)
-        } else {
-            this.SetCookie('auth_today', token + '__' + id, 1)
-        }
+        Cookie.CookieReset(token, id);
         this.setState({ redirectSerp : !this.state.redirectSerp})
     }
 
+    NotificationError (response)
+    {
+        this.setState({ redirectSerp : !this.state.redirectSerp});
+        return NotificationMessage.notification(response.data.error, '👋 Danger !!!', 'danger');
+    }
+
     componentDidMount() {
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            domain: this.props.location.state !== undefined ?
+                this.props.location.state.domain :
+                this.PropsChange(this.props.match.params.keyword),
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
         axios.get(requestUri + window.location.hostname + route + "/Ajax/TopKeyword.php", {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'text/plain',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                'Access-Control-Allow-Credentials': true,
-                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                'Access-Control-Max-Age': 1728000,
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-            },
-            params: {
-                domain: this.props.location.state !== undefined ?
-                    this.props.location.state.domain :
-                    this.PropsChange(this.props.match.params.keyword),
-                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
-                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
-            }
+            headers: headers,
+            params: params,
         }).then(response => {
             if (response && response.status === 200) {
                 if (response.data === "You have enjoyed more to 5 domain, while the limit 5 !!!") {
@@ -101,27 +68,13 @@ class DomainsKeyword extends PureComponent {
                     if (response.data.error) {
                         if (response.data.error === 'Invalid Token') {
                             this.CookieReset(response.data.token, response.data.id)
-
-                        } else if (response.data.error === 'Invalid Value') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp});
-                            NotificationSystem.newInstance({}, n => notification = n);
-                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
-
-                        } else if (response.data.error && response.data.error === 'Limit exceeded !!!') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp});
-                            NotificationSystem.newInstance({}, n => notification = n);
-                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
-
-                        } else if (response.data.error && response.data.error === 'Domain Name does not exist !!!') {
-                            this.setState({ redirectSerp : !this.state.redirectSerp});
-                            NotificationSystem.newInstance({}, n => notification = n);
-                            setTimeout(() => showNotification(response.data.error, 'danger'), 700);
+                        } else  {
+                            return this.NotificationError(response)
                         }
                     } else {
                         if (response.data.length === 0) {
                             this.setState({ redirectSerp : !this.state.redirectSerp});
-                            NotificationSystem.newInstance({}, n => notification = n);
-                            setTimeout(() => showNotification('No information was found for this Domain !!!', 'danger'), 700);
+                            return NotificationMessage.notification('No information was found for this Domain !!!', '👋 Danger !!!', 'danegr');
                         }
                         this.setState({
                             data: response.data.data,

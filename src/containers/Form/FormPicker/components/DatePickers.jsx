@@ -5,23 +5,6 @@ import {Field, reduxForm} from 'redux-form';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 import IntervalDatePickerField from '../../../../shared/components/form/IntervalDatePicker';
-import {BasicNotification} from "../../../../shared/components/Notification";
-
-let notification = null;
-
-const showNotification = (message) => {
-    notification.notice({
-        content: <BasicNotification
-            color="success"
-            title="👋 Well done !!!"
-            message={message}
-        />,
-        duration: 5,
-        closable: true,
-        style: {top: 0, left: 'calc(100vw - 100%)'},
-        className: 'left-up',
-    });
-};
 
 class DatePickers extends PureComponent {
     static propTypes = {

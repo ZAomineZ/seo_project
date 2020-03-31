@@ -11,27 +11,11 @@ import DatePickers from '../../containers/Form/FormPicker/components/DatePickers
 import SimpleLineChart from '../../containers/Charts/Recharts/components/SimpleLineChart';
 import axios from "axios";
 import {route, requestUri} from '../../const'
-import NotificationSystem from "rc-notification";
-import {BasicNotification} from "../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
 import SerpTopCopyboard from "./serp_top_copyboard";
 import SerpVolumeCharts from "./serp_volume_charts";
-
-let notification = null;
-
-const showNotification = (message, type) => {
-    notification.notice({
-        content: <BasicNotification
-            color={type}
-            title={type === 'danger' ? '👋 Danger !!!' : '👋 Well done !!!'}
-            message={message}
-        />,
-        duration: 5,
-        closable: true,
-        style: {top: 0, left: 'calc(100vw - 100%)'},
-        className: 'left-up',
-    });
-};
+import Cookie from "../../js/Cookie";
+import NotificationMessage from "../../js/NotificationMessage";
 
 class SerpDate extends PureComponent {
     static propTypes = {
@@ -72,37 +56,16 @@ class SerpDate extends PureComponent {
         this.props.dispatch(deleteCryptoTableData(arrayCopy));
     };
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
-        let date = new Date();
-        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-        let expire_cookie = "expires=" + date.toUTCString();
-        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
-    }
-
-    getCookie(name_cookie) {
-        let name = name_cookie + '=';
-        let cookie = document.cookie.split(';');
-        for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
-            while (cook.charAt(0) == ' ') {
-                cook = cook.substring(1);
-            }
-            if (cook.indexOf(name) == 0) {
-                return cook.substring(name.length, cook.length);
-            }
-            return '';
-        }
-    }
-
     CookieReset (token, id)
     {
-        if (this.getCookie('remember_me_auth')) {
-            this.SetCookie('remember_me_auth', token + '__' + id, 30)
-        } else {
-            this.SetCookie('auth_today', token + '__' + id, 1)
-        }
+        Cookie.CookieReset(token, id);
         this.setState({ redirectSerp : !this.state.redirectSerp})
+    }
+
+    NotificationError (response)
+    {
+        this.setState({ redirectSerp : !this.state.redirectSerp});
+        return NotificationMessage.notification(response.data.error, 'Error Message', 'danger');
     }
 
     componentDidMount() {
@@ -113,37 +76,38 @@ class SerpDate extends PureComponent {
 
             if (this.props.location.state !== undefined) {
                 // Load Notification !!!
-                NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification('The modification of the dates of the calendar have been modified with success !!!', 'success'), 700);
+                NotificationMessage.notification('The modification of the dates of the calendar have been modified with success !!!', '👋 Well done !!!', 'success');
+
+                const headers = {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'text/plain',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+                    'Access-Control-Max-Age': 1728000,
+                    'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+                };
+
+                const params = {
+                    keyword: this.props.match.params.keyword,
+                    value: this.props.location.state[0].value,
+                    state_location: this.props.location.state,
+                    cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'),
+                    auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+                };
 
                 // Ajax Load Data Rank !!!
                 axios.get(requestUri + window.location.hostname + route + '/Ajax/SerpDate.php', {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Content-Type': 'text/plain',
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                        'Access-Control-Allow-Credentials': true,
-                        'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                        'Access-Control-Max-Age': 1728000,
-                        'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-                    },
-                    params: {
-                        keyword: this.props.match.params.keyword,
-                        value: this.props.location.state[0].value,
-                        state_location: this.props.location.state,
-                        cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
-                        auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
-                    }
+                    headers: headers,
+                    params: params,
                 }).then((response) => {
                     if (response && response.status === 200) {
                         if (response.data.error) {
                             if (response.data.error === 'Invalid Token') {
                                 this.CookieReset(response.data.token, response.data.id)
                             } else if (response.data.error && response.data.error === 'Invalid Value') {
-                                this.setState({ redirectSerp : !this.state.redirectSerp})
-                                NotificationSystem.newInstance({}, n => notification = n);
-                                setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
+                                return this.NotificationError(response);
                             }
                         } else {
                             this.setState({
@@ -189,7 +153,7 @@ class SerpDate extends PureComponent {
             keyword: this.props.match.params.keyword,
             value: this.props.location.state[0].value,
             rank: rankEntries.filter(d => d[1].length === 0),
-            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'),
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 
@@ -227,7 +191,7 @@ class SerpDate extends PureComponent {
         const params = {
             keyword: this.props.match.params.keyword,
             value: this.props.location.state[0].value,
-            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'),
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 

@@ -31,4 +31,6 @@ export default class NotificationMessage
         NotificationSystem.newInstance({}, n => notification = n);
         setTimeout(() => showNotification(title, message, type), 700);
     }
+
+    static destroy = () => notification.destroy();
 }

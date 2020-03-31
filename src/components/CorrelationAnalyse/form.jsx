@@ -8,6 +8,7 @@ import {Redirect} from 'react-router-dom';
 import validate from '../../containers/Form/FormValidation/components/validate';
 import {BasicNotification} from "../../shared/components/Notification";
 import NotificationSystem from "rc-notification";
+import NotificationMessage from "../../js/NotificationMessage";
 
 const renderField = ({
                          input, placeholder, type, meta: {touched, error},
@@ -66,18 +67,19 @@ class CampainForm extends PureComponent {
         this.onChangeInput = this.onChangeInput.bind(this);
     }
 
+    NotificationError = (message, title, type) => NotificationMessage.notification(message, title, type);
+
     onSubmit(e) {
         e.preventDefault();
+
         if (this.state.valueInput !== '' && this.state.valueInput.length >= 3) {
             if (/^[a-zA-Z0-9\u00C0-\u024F\u1E00-\u1EFF' ]*$/i.test(this.state.valueInput)) {
                 this.setState({redirectTo: !this.state.redirectTo});
             } else {
-                NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification('👋 Error Find !!!', 'Your Keyword is not valid !!!'), 700);
+                return this.NotificationError('Your Keyword is not valid !!!', '👋 Error Find !!!', 'danger');
             }
         } else {
-            NotificationSystem.newInstance({}, n => notification = n);
-            setTimeout(() => showNotification('👋 Error Find !!!', 'Your Form Keyword is empty or so short !!!'), 700);
+            return this.NotificationError('Your Form Keyword is empty or so short !!!', '👋 Error Find !!!', 'danger');
         }
     }
 
@@ -88,6 +90,7 @@ class CampainForm extends PureComponent {
     render() {
         const {t, location} = this.props;
         const redirectMe = this.state.redirectTo;
+
         let Slugify = require('slugifyjs').fromLocale('en');
         if (redirectMe) {
             return (

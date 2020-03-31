@@ -1,31 +1,13 @@
 /* eslint-disable */
 import React, { PureComponent } from 'react';
 import Form from './form';
-import NotificationSystem from "rc-notification";
-import {BasicNotification} from "../../shared/components/Notification";
-
-let notification = null;
-
-const showNotification = (message) => {
-    notification.notice({
-        content: <BasicNotification
-            color="danger"
-            title="👋 A Error is present !!!"
-            message={message}
-        />,
-        duration: 5,
-        closable: true,
-        style: { top: 0, left: 'calc(100vw - 100%)' },
-        className: 'left-up',
-    });
-};
+import NotificationMessage from "../../js/NotificationMessage";
 
 class TopIndex extends PureComponent {
     componentDidMount() {
         if (this.props.location) {
             if (this.props.location.state !== undefined) {
-                NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification(this.props.location.state.error), 700);
+                return NotificationMessage.notification(this.props.location.state.error, '👋 A Error is present !!!', 'danger');
             }
         }
     }
@@ -33,7 +15,7 @@ class TopIndex extends PureComponent {
     componentWillUnmount() {
         if (this.props.location) {
             if (this.props.location.state !== undefined) {
-                notification.destroy();
+                return NotificationMessage.destroy()
             }
         }
     }

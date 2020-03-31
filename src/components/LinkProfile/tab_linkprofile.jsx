@@ -14,6 +14,8 @@ import {route, requestUri} from '../../const'
 import {Redirect} from "react-router-dom";
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
+import Cookie from "../../js/Cookie";
+import NotificationMessage from "../../js/NotificationMessage";
 
 let notification = null;
 
@@ -87,63 +89,40 @@ class tab_linkprofile extends PureComponent {
         return diff
     }
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
-        let date = new Date();
-        date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
-        let expire_cookie = "expires=" + date.toUTCString();
-        return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
-    }
-
-    getCookie(name_cookie) {
-        let name = name_cookie + '=';
-        let cookie = document.cookie.split(';');
-        for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
-            while (cook.charAt(0) == ' ') {
-                cook = cook.substring(1);
-            }
-            if (cook.indexOf(name) == 0) {
-                return cook.substring(name.length, cook.length);
-            }
-            return '';
-        }
-    }
-
     CookieReset (token, id)
     {
-        if (this.getCookie('remember_me_auth')) {
-            this.SetCookie('remember_me_auth', token + '__' + id, 30)
-        } else {
-            this.SetCookie('auth_today', token + '__' + id, 1)
-        }
+        Cookie.CookieReset(token, id);
         this.setState({ redirectSerp : !this.state.redirectSerp})
     }
 
     componentDidMount() {
+        const headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, HEAD',
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
+            'Access-Control-Max-Age': 1728000,
+            'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        };
+
+        const params = {
+            domain: this.PropsChange(this.props.domain),
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'),
+            auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
+        };
+
         axios.get(requestUri + window.location.hostname + route + '/Ajax/linkprofile_mount.php', {
-            params: {
-                domain: this.PropsChange(this.props.domain),
-                cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
-                auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
-            },
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'text/plain',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, HEAD',
-                'Access-Control-Allow-Credentials': true,
-                'Access-Control-Expose-Headers': 'Content-Lenght, Content-Range',
-                'Access-Control-Max-Age': 1728000,
-                'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin, Access-Control-Expose-Headers, Access-Control-Allow-Credentials, Access-Control-Allow-Methods, Access-Control-Allow-Headers, Access-Control-Max-Age, Origin, X-Requested-With, Content-Type, Accept, Authorization',
-             },
+            headers: headers,
+            params: params
         }).then((response) => {
                     if (response.data.error && response.data.error === 'Invalid Token') {
                         this.CookieReset(response.data.token, response.data.id);
                     } else if (response.data.error && response.data.error === 'Invalid Value') {
                         this.setState({ redirectSerp : !this.state.redirectSerp});
-                        NotificationSystem.newInstance({}, n => notification = n);
-                        setTimeout(() => showNotification('Error Message', response.data.error, 'danger'), 700);
+
+                        return NotificationMessage.notification(response.data.error, 'Error Message', 'danger');
                     } else {
                         if (response.data.error && response.data.error !== 'Invalid Value' && response.data.error !== 'Invalid Token') {
                             this.setState({ error : !this.state.error, error_message: response.data.error });

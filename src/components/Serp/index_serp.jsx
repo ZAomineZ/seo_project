@@ -4,6 +4,7 @@ import Form from './form_serp';
 import NotificationSystem from "rc-notification";
 import {BasicNotification} from "../../shared/components/Notification";
 import {Redirect} from "react-router-dom";
+import NotificationMessage from "../../js/NotificationMessage";
 
 let notification = null;
 
@@ -25,8 +26,7 @@ class TopIndex extends PureComponent {
     componentDidMount() {
         if (this.props.location) {
             if (this.props.location.state !== undefined) {
-                NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification(this.props.location.state.error), 700);
+                return NotificationMessage.notification(this.props.location.state.error, '👋 A Error is present !!!', 'danger');
             }
         }
     }
@@ -34,7 +34,7 @@ class TopIndex extends PureComponent {
     componentWillUnmount() {
         if (this.props.location) {
             if (this.props.location.state !== undefined) {
-                notification.destroy();
+                return NotificationMessage.destroy();
             }
         }
     }

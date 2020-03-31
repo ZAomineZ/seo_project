@@ -39,7 +39,7 @@ class RenderCsvSuggest
      */
     public function renderCSV(): void
     {
-        $keyword = (new Str_options())->strReplaceString('-', ' ', $this->keyword);
+        //$keyword = (new Str_options())->strReplaceString('-', ' ', $this->keyword);
         $data = (new DataCSV($this->data))->formatData();
 
         $downloadCsv = new DownloadCsv([
