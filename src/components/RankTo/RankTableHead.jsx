@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
+import {Button, ButtonToolbar, UncontrolledTooltip} from "reactstrap";
 
 const rowsData = [
     {
@@ -75,7 +76,21 @@ export default class RankTableHead extends PureComponent {
                             <TableSortLabel active={this.props.orderBy === row.id}
                                             direction={this.props.order}
                                             onClick={this.createSortHandler(row.id)}>
-                                {row.label}
+                                <ButtonToolbar className="btn-toolbar--center">
+                                    {
+                                        row.label === 'Diff' ?
+                                            <div id="TooltipTop">
+                                                {row.label}
+                                            </div> :
+                                            row.label
+                                    }
+                                    {
+                                        row.label === 'Diff' &&
+                                        <UncontrolledTooltip placement="top" target="TooltipTop">
+                                            Diff = Originally -7 days from today's date if available or -1 day
+                                        </UncontrolledTooltip>
+                                    }
+                                </ButtonToolbar>
                             </TableSortLabel>
                         </TableCell>
                     ), this)}

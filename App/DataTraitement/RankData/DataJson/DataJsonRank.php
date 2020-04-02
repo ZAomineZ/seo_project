@@ -192,7 +192,7 @@ class DataJsonRank
                     $data[$key]['top100'] = ($itemOld->{'top100'} + $itemNew['top100']);
                     $data[$key]['top3'] = ($itemOld->{'top3'} + $itemNew['top3']);
                     $data[$key]['top10'] = ($itemOld->{'top10'} + $itemNew['top10']);
-                    $data[$key]['volume'] = ($itemNew['volume']);
+                    $data[$key]['volume'] = ($itemOld->{'volume'} + $itemNew['volume']);
                     $data[$key]['date'] = ($itemNew['date']);
                     $data[$key]['dateUsort'] = ($itemNew['dateUsort']);
                 } else {

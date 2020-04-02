@@ -19,6 +19,7 @@ use App\DataTraitement\KeywordsFilter;
 use App\DataTraitement\TraitementCsv\DownloadCsv;
 use App\DataTraitement\TraitementCsv\RenderCsvDomain;
 use App\DataTraitement\TraitementString\DomainsData;
+use App\Helpers\RenderMessage;
 use App\Model\TopKeyword;
 use App\Table\Website;
 use League\Csv\Statement;
@@ -174,6 +175,9 @@ class TopKeywordController
                 ->run($domain);
 
             $response = \GuzzleHttp\json_decode($curlCSVKeywords);
+            if ($response && $response->status && $response->status === 'wait') {
+                (new RenderMessage())->messageError('An problem is occurence !!!');
+            }
 
             $statementLeague = new Statement();
             [$keywords, $pages, $intervalElement, $paginationNumber] = (new KeywordsCsv($website, $statementLeague))
@@ -190,11 +194,7 @@ class TopKeywordController
             die();
         }
 
-        echo \GuzzleHttp\json_encode([
-            'success' => false,
-            'error' => 'This webiste isn\'t present in our database !!!'
-        ]);
-        die();
+        (new RenderMessage())->messageError('This webiste isn\'t present in our database !!!');
     }
 
     /**

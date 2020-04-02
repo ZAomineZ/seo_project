@@ -14,6 +14,7 @@ use App\concern\Date_Format;
 use App\concern\File_Params;
 use App\concern\Str_options;
 use App\DataTraitement\FileData;
+use App\DataTraitement\SerpData\DataSerp;
 use App\DataTraitement\SerpData\SerpFile;
 use App\ErrorCode\Exception\NullableException;
 use App\ErrorCode\NullableType;
@@ -291,9 +292,9 @@ class SerpController extends Controller
 
         $dataResults = (new SerpFile($this->serp))->rankEmpty($rank, $keyword);
         echo \GuzzleHttp\json_encode([
-            'dataRank' => $dataResults['rank'],
-            'dates' => $dataResults['date'],
-            'formatDates' => $this->serp->DateFormat($dataResults['date'])
+            'dataRank' => DataSerp::sliceData($dataResults, 'rank', 7),
+            'dates' => DataSerp::sliceData($dataResults, 'date', 7),
+            'formatDates' => DataSerp::sliceData($this->serp->DateFormat($dataResults['date']), null, 7)
         ]);
     }
 

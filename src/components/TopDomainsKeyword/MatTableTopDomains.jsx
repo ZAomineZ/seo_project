@@ -13,6 +13,7 @@ import {route} from "../../const";
 import {Redirect} from "react-router-dom";
 import TableKeywords from "./Components/KeywordsComponent/TableKeywords";
 import Cookie from "../../js/Cookie";
+import NotificationMessage from "../../js/NotificationMessage";
 
 let counter = 0;
 
@@ -281,7 +282,7 @@ export default class MatTable extends PureComponent {
 
         const params = {
             domain: domain,
-            cookie: Cookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'),
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 
@@ -308,6 +309,9 @@ export default class MatTable extends PureComponent {
                         filterLabel: '',
                     });
                     setTimeout(() => this.setState({loadedKeywords: true}), 500);
+                } else {
+                    setTimeout(() => this.setState({loadedKeywords: true}), 500);
+                    return NotificationMessage.notification(response.data.error, 'Error Message', 'danger');
                 }
             }
         })

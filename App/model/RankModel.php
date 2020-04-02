@@ -53,11 +53,11 @@ class RankModel
 
             foreach ($newKeywords as $item) {
                 if (in_array($item, $keywordsProject)) {
-                    $dataKeywords = array_merge($newKeywords, $keywordsProject);
+                    $dataKeywords = array_merge($keywordsProject, $newKeywords);
                     $keywords = array_unique($dataKeywords);
 
                     echo \GuzzleHttp\json_encode([
-                        'error' => 'One or many existing keywords already in the project, we deleted that !!!',
+                        'error' => 'One or many existing keywords already in the project, we deleted that, click on add again !!!',
                         'keywords' => implode(', ', $keywords)
                     ]);
                     die();
@@ -639,6 +639,7 @@ class RankModel
     private function DataRankTopByWebsite(array $data, string $format): array
     {
         $dataReturn = [];
+
         foreach ($data as $key => $value) {
             $top1 = 0;
             $top3 = 0;
@@ -671,9 +672,9 @@ class RankModel
                     } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 100) {
                         $top100++;
                     }
-                    if (isset($kValueRank['volume'])) {
-                        $volume += $kValueRank['volume'];
-                    }
+                }
+                if (isset($kValueRank['volume'])) {
+                    $volume += (int)$kValueRank['volume'];
                 }
 
                 $dataReturn[$keyDate]['top1'] = $top1;
