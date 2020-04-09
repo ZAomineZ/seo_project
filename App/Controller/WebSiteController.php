@@ -18,6 +18,7 @@ use App\Model\LinkDomain;
 use App\Model\WebSite;
 use App\Table\LinkProfile;
 use InvalidArgumentException;
+use function PHPSTORM_META\type;
 use Stillat\Numeral\Numeral;
 
 class WebSiteController
@@ -156,6 +157,7 @@ class WebSiteController
                 if ($req) {
                     $file = self::FilesDomain($file_result['dir'], $file_result['domain_str'], $req->token, date("Y-m-d"));
                     $file_dir = self::FileSystem($file_result['dir'], $req->token, $file);
+
                     if (file_exists($file_dir[1]) && file_exists($file_dir[0]) && file_exists($file_dir[2]) && file_exists($file_dir[3]) && file_exists($file_dir[4])) {
                         return self::ResultJson($file_result['dir'], $file_result['domain_str'], $domain);
                     } else {
@@ -239,10 +241,13 @@ class WebSiteController
     private static function ResultJson(string $dir, string $domain_str, string $domain)
     {
         $req = self::$table->SelectToken($domain);
+
         $fileSize = self::$web->SaveImgPower($domain, $dir, $req->token);
         $file_1 = self::FilesDomain($dir, $domain_str, $req->token, date("Y-m-d"));
         $file = self::FileSystem($dir, $req->token, $file_1);
+
         $count = count(File_Params::OpenFile($file[4], $dir));
+
         echo \GuzzleHttp\json_encode([
             'result' => File_Params::OpenFile($file[3], $dir),
             'bl_info' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' :
@@ -417,26 +422,13 @@ class WebSiteController
         $domainArray = explode('.', $domain);
         $domain = $domainArray[count($domainArray) - 2] . '.' . $domainArray[count($domainArray) - 1];
 
-        $curlKeyword = self::$curlTrafficUrlKeyword->run($domain)['keyword'] ?: null;
-        $curlTraffic = self::$curlTrafficUrlKeyword->run($domain)['traffic'] ?: null;
-
-        try {
-            $keywordJson = $curlKeyword !== null ? \GuzzleHttp\json_decode($curlKeyword) : [];
-            $trafficJson = $curlTraffic !== null ? \GuzzleHttp\json_decode($curlTraffic) : [];
-        } catch (\Exception $exception) {
-            if ($exception instanceof InvalidArgumentException) {
-                while (strpos($exception->getTrace()[0]['args'][0], '400 Bad Request') !== false) {
-                    sleep(2);
-                    [$keywordJson, $trafficJson] = self::invalidDataJson($domain);
-                }
-
-                return \GuzzleHttp\json_encode(
-                    [
-                        'traffic' => empty($trafficJson) ? [] : $trafficJson,
-                        'keywordAndTop' => empty($keywordJson) ? [] : $keywordJson
-                    ]);
-            }
+        [$curlKeyword, $curlTraffic] = self::dataCurlJSON($domain);
+        while (strpos($curlKeyword, '400 Bad Request') || strpos($curlTraffic, '400 Bad Request')) {
+            [$curlKeyword, $curlTraffic] = self::dataCurlJSON($domain);
         }
+
+        $keywordJson = $curlKeyword !== null ? \GuzzleHttp\json_decode($curlKeyword) : [];
+        $trafficJson = $curlTraffic !== null ? \GuzzleHttp\json_decode($curlTraffic) : [];
 
         return \GuzzleHttp\json_encode(
             [
@@ -449,15 +441,11 @@ class WebSiteController
      * @param string $domain
      * @return array
      */
-    private static function invalidDataJson(string $domain): array
+    private static function dataCurlJSON(string $domain): array
     {
         $curlKeyword = self::$curlTrafficUrlKeyword->run($domain)['keyword'] ?: null;
         $curlTraffic = self::$curlTrafficUrlKeyword->run($domain)['traffic'] ?: null;
-
-        $keywordJson = $curlKeyword !== null ? \GuzzleHttp\json_decode($curlKeyword) : [];
-        $trafficJson = $curlTraffic !== null ? \GuzzleHttp\json_decode($curlTraffic) : [];
-
-        return [$keywordJson, $trafficJson];
+        return [$curlKeyword, $curlTraffic];
     }
 
     /**

@@ -26,6 +26,15 @@ class RenderMessage
     /**
      * @param string $message
      */
+    public function messageRender(string $message)
+    {
+        echo $message;
+        die();
+    }
+
+    /**
+     * @param string $message
+     */
     public function messageSuccess(string $message)
     {
         echo \GuzzleHttp\json_encode([

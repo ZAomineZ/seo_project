@@ -49,13 +49,13 @@ class File_Params
 
     /**
      * @param string $file
-     * @param string $dir
+     * @param string|null $dir
      * @param bool $string_r
      * @return mixed
      */
-    public static function OpenFile (string $file, string $dir, bool $string_r = false)
+    public static function OpenFile (string $file, ?string $dir = null, bool $string_r = false)
     {
-        chmod($dir, 0777);
+        $dir !== null ? chmod($dir, 0777) : null;
         self::FopenFile($file, 'r');
         return $string_r === false ?
             \GuzzleHttp\json_decode(file_get_contents($file))

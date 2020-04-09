@@ -45,33 +45,6 @@ class MultiCurl_VolumeResult
 
     /**
      * @param $ch
-     * @param string $keywords
-     */
-    protected function curlSurferSeoKeywords($ch, string $keywords): void
-    {
-        $this->curlSetopt($ch, CURLOPT_URL, 'https://db.surferseo.com/keywords');
-        $this->curlSetopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $this->curlSetopt($ch, CURLOPT_POST, 1);
-        $this->curlSetopt($ch, CURLOPT_POSTFIELDS, "[\"$keywords\"]");
-        $this->curlSetopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
-
-        $this
-            ->setHeaders('Authority: db.surferseo.com', 0)
-            ->setHeaders('Origin: https://www.google.com', 0)
-            ->setHeaders('X-Recaptcha-Token: ', 0)
-            ->setHeaders('Sec-Fetch-Dest: empty', 0)
-            ->setHeaders('User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/80.0.3987.87 Chrome/80.0.3987.87 Safari/537.36', 0)
-            ->setHeaders('Content-Type: text/plain;charset=UTF-8', 0)
-            ->setHeaders('Accept: */*', 0)
-            ->setHeaders('Sec-Fetch-Site: cross-site', 0)
-            ->setHeaders('Sec-Fetch-Mode: cors', 0)
-            ->setHeaders('Referer: https://www.google.com/', 0)
-            ->setHeaders('Accept-Language: fr,es;q=0.9,en-US;q=0.8,en;q=0.7', 0);
-        $this->curlSetopt($ch, CURLOPT_HTTPHEADER, $this->getHeaders(0));
-    }
-
-    /**
-     * @param $ch
      * @param string $keyword
      */
     protected function curlSerpAnalysis($ch, string $keyword): void
@@ -106,19 +79,16 @@ class MultiCurl_VolumeResult
     {
         // Curl Keywords Serp Analysis and Curl surferseo Keywords !!!
         $ch = curl_init();
-        $ch2 = curl_init();
 
         // Initialised the Curls !!!
         $keyword = (new Str_options())->strReplaceString('-', ' ', $keyword);
         $this->curlSerpAnalysis($ch, $keyword);
-        $this->curlSurferSeoKeywords($ch2, $keyword);
 
         // Create administrator to multi curl !!!
         $multiCurl = curl_multi_init();
 
         // ADD to two administrators with method add_handle for the Multi Curl !!!
         curl_multi_add_handle($multiCurl, $ch);
-        curl_multi_add_handle($multiCurl, $ch2);
 
         // Running Exec multi curl !!!
         $running = null;
@@ -131,17 +101,13 @@ class MultiCurl_VolumeResult
         // Error $ch verification to URL CURL !!!
         if (curl_errno($ch)) {
             echo 'Error:' . curl_error($ch);
-        } elseif (curl_errno($ch2)) {
-            echo 'Error:' . curl_error($ch2);
         }
 
         // We recuperated the result to the Curls and pushed the results in the array Data
         $data = [];
-        $resultSerpAnalysis = curl_multi_getcontent($ch);
-        $resultSurferSeoKeywords = curl_multi_getcontent($ch2);
 
+        $resultSerpAnalysis = curl_multi_getcontent($ch);
         $data['serpAnalysis'] = $resultSerpAnalysis;
-        $data['seoKeywords'] = $resultSurferSeoKeywords;
 
         // Return $data Data[], the informations to the CURL !!!
         return $data;

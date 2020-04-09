@@ -43,6 +43,7 @@ if (isset($_GET['auth']) && $_GET['auth'] !== '') {
             echo 'Invalid Token !!!';
         }
     } catch (Exception $exception) {
+        dd($exception);
         if ($exception instanceof InvalidArgumentException) {
             ErrorArgument::errorCode();
         } elseif ($exception instanceof SyntaxError) {

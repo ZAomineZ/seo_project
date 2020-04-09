@@ -2,6 +2,7 @@
 
 namespace App\Actions\Url;
 
+use App\Actions\CreateCookieRender;
 use App\concern\Str_options;
 
 class MultiCurl_UrlTrafficAndKeyword
@@ -87,6 +88,11 @@ class MultiCurl_UrlTrafficAndKeyword
      */
     protected function curlKeyword($ch, string $domain): void
     {
+        $dir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'storage/datas/';
+        $file = $dir . 'cookies.json';
+
+        $cookie = (new CreateCookieRender($file))->init();
+
         $this->curlSetopt($ch, CURLOPT_URL, "https://online.seranking.com/research.organic.html?ajax=Chart&source=fr&engine=google&input=$domain&filter=base_domain&should_show_es_db_label=false&type=keywords_count&line=organic");
         $this->curlSetopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $this->curlSetopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
@@ -94,7 +100,7 @@ class MultiCurl_UrlTrafficAndKeyword
 
         $this
             ->setHeaders('Authority: online.seranking.com', 1)
-            ->setHeaders('Cookie: PHPSESSID=muhgsojmhimfe9girmpmsj61rc; _gcl_au=1.1.1854575438.1582024036; _fbp=fb.1.1582024036485.1617622220; _lo_uid=120485-1582024037937-8a50ffd6872d3def; __lotl=https%3A%2F%2Fseranking.com%2F; device-source=https://seranking.com/; _ym_uid=1582024053702245396; _ym_d=1582024053; device-referrer=https://online.seranking.com/research.html?input=coloriages.info&do=find&source=fr&filter=undefined; __lotr=https%3A%2F%2Fwww.google.com%2F; _ga=GA1.3.1250590664.1582024036; UID=647284; visid_incap_2132269=gArv7rYpTCW1Fo3RKYl/SXd7Tl4AAAAAQUIPAAAAAABq/aOolpZvtE9G3spIIu2N; incap_ses_392_2132269=PwOvRmogIm4fuUvK4KpwBXd7Tl4AAAAAuZLaqegnFDHjP4KswdKm3Q==; GKD=%97%B5%A5%D7%94%CF%84r%9D%B9%A1%95%BD%B2%A0%DC%9D%AE%89%B6%95%A8%A9%D8%94%AC%94r%91%B9%AC%CA%B0%D5%A1%CF%9C%98%9Dr%95%B5%B4%A8; s_fid=450D09C5CA180D0A-13881BD90C0E8F88; s_cc=true; helpcrunch.com-seranking-1145-helpcrunch-device={\"id\":25030529,\"secret\":\"9kU1h3INomIvyKoEUVeFTUeAs6tKgyb9qamJtFkRER4juzyGShguw6i+4/7PrAAU5GA8y8OO68rdS7I0fTiVNQ==\",\"sessions\":3}; helpcrunch.com-seranking-166-helpcrunch-device={\"id\":25030531,\"secret\":\"BHgBEqByPmp/TpKyY4+XQH6eaY2cu2bMGahccqPfvLCMq6dPexQgRHra6IrD9wud6u7AEZFvhMe7D/AIO1t0oA==\",\"sessions\":6}; _lo_v=6; _gid=GA1.2.910858634.1582539870; _gid=GA1.3.910858634.1582539870; research_au=eda2428cc66f153da34a7f545e55fc1628b86a; _ym_isad=2; _pk_ref.7.7189=%5B%22%22%2C%22%22%2C1582736984%2C%22https%3A%2F%2Fwww.google.com%2F%22%5D; _pk_ses.7.7189=1; _ym_visorc_22102555=w; auto_login_cookie=410ac8edb4b0f966f23fe91c65efb50e; _ga_XH80JYLKJ9=GS1.1.1582736983.5.1.1582737752.0; _ga=GA1.2.1250590664.1582024036; _pk_id.7.7189=d52eb2183d610865.1582024036.23.1582737754.1582736984.', 1)
+            ->setHeaders($cookie, 1)
             ->setHeaders('Accept: application/json, text/javascript, */*; q=0.01', 1)
             ->setHeaders('Sec-Fetch-Dest: empty', 1)
             ->setHeaders('User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/80.0.3987.87 Chrome/80.0.3987.87 Safari/537.36', 1)
@@ -113,6 +119,11 @@ class MultiCurl_UrlTrafficAndKeyword
      */
     protected function curlTraffic($ch, string $domain): void
     {
+        $dir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'storage/datas/';
+        $file = $dir . 'cookies.json';
+
+        $cookie = (new CreateCookieRender($file))->init();
+
         $this->curlSetopt($ch, CURLOPT_URL, "https://online.seranking.com/research.organic.html?ajax=Chart&source=fr&engine=google&input=$domain&filter=base_domain&should_show_es_db_label=false&type=traffic_sum&line=both");
         $this->curlSetopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $this->curlSetopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
@@ -128,7 +139,7 @@ class MultiCurl_UrlTrafficAndKeyword
             ->setHeaders('Sec-Fetch-Mode: cors', 2)
             ->setHeaders("Referer: https://online.seranking.com/research.overview.html?source=fr&engine=google&input=$domain&filter=base_domain&should_show_es_db_label=0", 2)
             ->setHeaders('Accept-Language: fr,es;q=0.9,en-US;q=0.8,en;q=0.7', 2)
-            ->setHeaders('Cookie: PHPSESSID=muhgsojmhimfe9girmpmsj61rc; _gcl_au=1.1.1854575438.1582024036; _fbp=fb.1.1582024036485.1617622220; _lo_uid=120485-1582024037937-8a50ffd6872d3def; __lotl=https%3A%2F%2Fseranking.com%2F; device-source=https://seranking.com/; _ym_uid=1582024053702245396; _ym_d=1582024053; device-referrer=https://online.seranking.com/research.html?input=coloriages.info&do=find&source=fr&filter=undefined; __lotr=https%3A%2F%2Fwww.google.com%2F; _ga=GA1.3.1250590664.1582024036; UID=647284; visid_incap_2132269=gArv7rYpTCW1Fo3RKYl/SXd7Tl4AAAAAQUIPAAAAAABq/aOolpZvtE9G3spIIu2N; incap_ses_392_2132269=PwOvRmogIm4fuUvK4KpwBXd7Tl4AAAAAuZLaqegnFDHjP4KswdKm3Q==; GKD=%97%B5%A5%D7%94%CF%84r%9D%B9%A1%95%BD%B2%A0%DC%9D%AE%89%B6%95%A8%A9%D8%94%AC%94r%91%B9%AC%CA%B0%D5%A1%CF%9C%98%9Dr%95%B5%B4%A8; s_fid=450D09C5CA180D0A-13881BD90C0E8F88; s_cc=true; helpcrunch.com-seranking-1145-helpcrunch-device={\"id\":25030529,\"secret\":\"9kU1h3INomIvyKoEUVeFTUeAs6tKgyb9qamJtFkRER4juzyGShguw6i+4/7PrAAU5GA8y8OO68rdS7I0fTiVNQ==\",\"sessions\":3}; helpcrunch.com-seranking-166-helpcrunch-device={\"id\":25030531,\"secret\":\"BHgBEqByPmp/TpKyY4+XQH6eaY2cu2bMGahccqPfvLCMq6dPexQgRHra6IrD9wud6u7AEZFvhMe7D/AIO1t0oA==\",\"sessions\":6}; _lo_v=6; _gid=GA1.2.910858634.1582539870; _gid=GA1.3.910858634.1582539870; research_au=eda2428cc66f153da34a7f545e55fc1628b86a; _ym_isad=2; _pk_ref.7.7189=%5B%22%22%2C%22%22%2C1582736984%2C%22https%3A%2F%2Fwww.google.com%2F%22%5D; _pk_ses.7.7189=1; _ym_visorc_22102555=w; auto_login_cookie=410ac8edb4b0f966f23fe91c65efb50e; _ga_XH80JYLKJ9=GS1.1.1582736983.5.1.1582737752.0; _ga=GA1.2.1250590664.1582024036; _pk_id.7.7189=d52eb2183d610865.1582024036.23.1582737754.1582736984.', 2);
+            ->setHeaders($cookie, 2);
 
         $this->curlSetopt($ch, CURLOPT_HTTPHEADER, $this->getHeaders(2));
     }

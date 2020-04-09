@@ -47,6 +47,7 @@
     "postcss-preset-env": "6.0.6",
     "postcss-safe-parser": "4.0.1",
     "prop-types": "^15.7.2",
+    "puppeteer": "^2.1.1",
     "rc-notification": "^3.3.1",
     "rc-slider": "^8.6.13",
     "rc-time-picker": "^3.7.1",

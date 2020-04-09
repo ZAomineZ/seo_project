@@ -111,12 +111,10 @@ class FileJson
             mkdir($this->directory, 0777, true);
         }
 
-        if (!file_exists($this->file)) {
-            $file = $this->file;
-            $json = \GuzzleHttp\json_encode($this->json);
+        $file = $this->file;
+        $json = \GuzzleHttp\json_encode($this->json);
 
-            File_Params::CreateParamsFile($file, $this->directory, $json, true);
-        }
+        File_Params::CreateParamsFile($file, $this->directory, $json, true);
     }
 
     /**

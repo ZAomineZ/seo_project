@@ -177,6 +177,14 @@ class CryptoDashboard extends PureComponent {
             headers: headers,
             params: params
         }).then(response => {
+            if (response.data.error) {
+                if (response.data.error === 'Invalid Token') {
+                    this.CookieReset(response.data.token, response.data.id)
+                } else {
+                    return this.NotificationError(response);
+                }
+            }
+
             if (response.status && response.status === 200 && response.data.dataRank) {
                 const dataRank = response.data.dataRank;
                 const dateArray = response.data.dates;
@@ -217,6 +225,14 @@ class CryptoDashboard extends PureComponent {
             headers: headers,
             params: params
         }).then(response => {
+            if (response.data.error) {
+                if (response.data.error === 'Invalid Token') {
+                    this.CookieReset(response.data.token, response.data.id)
+                } else {
+                    return this.NotificationError(response);
+                }
+            }
+
             if (response.status && response.status === 200 && response.data.data) {
                 this.setState({
                     trends: response.data.data.trends ? Object.values(response.data.data.trends) : [],

@@ -9,7 +9,9 @@
 namespace App\Actions\Cron;
 
 
+use App\concern\Date_Format;
 use App\DataTraitement\RankData\DataJson\RankJson;
+use App\Helpers\RenderMessage;
 use App\Model\RankModel;
 use App\Table\Rank;
 
@@ -42,12 +44,42 @@ class CronKeywords
     {
         // Data Keywords Cron create file Serp by Keyword
         $keywords = $this->rank->selectAllKeywords();
+
+        // Checked if the date now === date to database Rank !!!
+        $checkedDate = $this->dateCheckedToday($keywords);
+        if ($checkedDate === false) {
+            (new RenderMessage())
+                ->messageRender('Hey Drogbadvc, I you remind that you already have start this CRON !!!');
+        }
+
         foreach ($keywords as $item) {
             $projects = [$item ?: null];
-            $keywords = explode(',', $item->keywords);
+            $project = $this->rank->selectRank((int)$item->id);
 
             $rankJson = new RankJson($this->rankModel, $projects);
-            $rankJson->dataJson(null, true, $keywords);
+            $rankJson->dataJson(null, $project, []);
+        }
+        return true;
+    }
+
+    /**
+     * @param array $items
+     * @return bool
+     */
+    private function dateCheckedToday(array $items)
+    {
+        if (!empty($items)) {
+            $countTodayDate = 0;
+            foreach ($items as $item) {
+                $date = $item->created_at ?? null;
+                if (Date_Format::DateFormatReq($date, 'Y-m-d') === date('Y-m-d')) {
+                    $countTodayDate++;
+                }
+            }
+
+            if ($countTodayDate === count($items)) {
+                return false;
+            }
         }
         return true;
     }

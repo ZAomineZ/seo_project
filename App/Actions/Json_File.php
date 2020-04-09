@@ -76,22 +76,27 @@ class Json_File
      */
     protected function FileOpenJson (Client $goutte, string $url) : Crawler
     {
-        sleep(3);
         $gt = $goutte->request("GET", $url);
+        while ($gt->getNode(0)) {
+            $gt = $goutte->request("GET", $url);
+        }
         $gt_response = $goutte->getResponse()->getContent();
+
         $gt->add($gt_response);
         return $gt;
     }
 
     /**
-     * @param $json
+     * @param Crawler $crawler
      * @return mixed
      */
-    protected static function DataReq ($json)
+    protected static function DataReq (Crawler $crawler)
     {
-        $json_search = $json->filter("body > p")->each(function ($node){
+        $json_search = $crawler->filter("body > p")->each(function ($node){
             return $node->html();
         });
+
+        $crawler->clear();
         return json_decode($json_search[0]);
     }
 
@@ -103,6 +108,8 @@ class Json_File
     {
         $link = self::JsonBacklink($domain);
         $open_link = $this->FileOpenJson($this->goutte, $link);
+
+        $this->goutte = new Client();
         return self::DataReq($open_link);
     }
 
@@ -114,6 +121,8 @@ class Json_File
     {
         $link = self::JsonTrafic($domain);
         $open_link = $this->FileOpenJson($this->goutte, $link);
+
+        $this->goutte = new Client();
         return self::DataReq($open_link);
     }
 
@@ -125,6 +134,8 @@ class Json_File
     {
         $link = self::JsonKeyword($domain);
         $open_link = $this->FileOpenJson($this->goutte, $link);
+
+        $this->goutte = new Client();
         return self::DataReq($open_link);
     }
 
@@ -136,6 +147,8 @@ class Json_File
     {
         $link = self::JsonTopBl($domain);
         $open_link = $this->FileOpenJson($this->goutte, $link);
+
+        $this->goutte = new Client();
         return self::DataReq($open_link);
     }
 
@@ -146,6 +159,8 @@ class Json_File
     public function ReqTrafficKeyword (string $url)
     {
         $open_link = $this->FileOpenJson($this->goutte, $url);
+
+        $this->goutte = new Client();
         return self::DataReq($open_link);
     }
 }

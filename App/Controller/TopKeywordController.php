@@ -136,7 +136,7 @@ class TopKeywordController
                     if ($req_verif && file_exists($this->DirAndFileCall($req_verif, str_replace('.', '-', $ex))['file'])) {
                         $data = $this->model->CreateJson(
                             File_Params::OpenFile($this->DirAndFileCall($req_verif, str_replace('.', '-', $ex))['file'],
-                            $this->DirAndFileCall($req_verif, str_replace('.', '-', $ex))['dir']), $req_verif->domain);
+                                $this->DirAndFileCall($req_verif, str_replace('.', '-', $ex))['dir']), $req_verif->domain);
                     } else {
                         // Recuperate Api_key and Export_Hash with DomCrawler
                         $data = $this->DomainParam($string_ex, $id);
@@ -152,13 +152,24 @@ class TopKeywordController
                 echo \GuzzleHttp\json_encode(
                     $this->model->CreateJson(
                         File_Params::OpenFile($this->DirAndFileCall($req_verif, str_replace('.', '-', $domain))['file'],
-                        $this->DirAndFileCall($req_verif, str_replace('.', '-', $domain))['dir']), $domain));
+                            $this->DirAndFileCall($req_verif, str_replace('.', '-', $domain))['dir']), $domain));
             } else {
                 // Recuperate Api_key and Export_Hash with DomCrawler
                 $data = $this->DomainParam($string, $id);
                 echo \GuzzleHttp\json_encode($data);
             }
         }
+    }
+
+    /**
+     * @param string $domain
+     * @return mixed
+     */
+    protected function getResponseKeywords(string $domain)
+    {
+        $curlCSVKeywords = (new Curl_CsvKeywords())
+            ->run($domain);
+        return \GuzzleHttp\json_decode($curlCSVKeywords);
     }
 
     /**
@@ -171,17 +182,21 @@ class TopKeywordController
         $website = $this->table->SelectToken($domain);
 
         if ($website) {
-            $curlCSVKeywords = (new Curl_CsvKeywords())
-                ->run($domain);
+            $response = $this->getResponseKeywords($domain);
 
-            $response = \GuzzleHttp\json_decode($curlCSVKeywords);
+            while ($response->status === 'wait' || $response->status === 'is_generate') {
+                $response = $this->getResponseKeywords($domain);
+            }
             if ($response && $response->status && $response->status === 'wait') {
                 (new RenderMessage())->messageError('An problem is occurence !!!');
+            }
+            if ($response && $response->status && $response->status === 'error') {
+                (new RenderMessage())->messageError('Any keywords enregistred on the Website');
             }
 
             $statementLeague = new Statement();
             [$keywords, $pages, $intervalElement, $paginationNumber] = (new KeywordsCsv($website, $statementLeague))
-                            ->all($response);
+                ->all($response);
 
             echo \GuzzleHttp\json_encode([
                 'success' => true,
@@ -375,6 +390,7 @@ class TopKeywordController
         ]);
         die();
     }
+
     /**
      * @param $dataWebsite
      * @param string $domain
@@ -442,7 +458,7 @@ class TopKeywordController
         $curlKeyword = $this->curl->run($domain)['keyword'] ?: null;
         $curlTraffic = $this->curl->run($domain)['traffic'] ?: null;
 
-        $keywordJson = $curlKeyword !== null ? \GuzzleHttp\json_decode($curlKeyword): [];
+        $keywordJson = $curlKeyword !== null ? \GuzzleHttp\json_decode($curlKeyword) : [];
         $trafficJson = $curlTraffic !== null ? \GuzzleHttp\json_decode($curlTraffic) : [];
 
         return [

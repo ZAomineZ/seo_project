@@ -82,6 +82,17 @@ class Rank extends Table
     }
 
     /**
+     * @param int $id
+     * @return bool
+     */
+    public function UpdateCreated(int $id)
+    {
+        $statement = $this->pdo->GetPdo()
+            ->prepare("UPDATE rank SET created_at = :created WHERE id = :id");
+        return $statement->execute(['created' => date('Y-m-d H:i:s'), 'id' => $id]);
+    }
+
+    /**
      * @param $auth
      * @param string $project
      * @param null|string|int $id
@@ -187,7 +198,7 @@ class Rank extends Table
      */
     public function selectAllKeywords()
     {
-        $statement = $this->pdo->GetPdo()->query('SELECT id, slug, user_id, keywords, website FROM rank');
+        $statement = $this->pdo->GetPdo()->query('SELECT id, slug, user_id, keywords, website, created_at FROM rank');
         return $statement->fetchAll();
     }
 }

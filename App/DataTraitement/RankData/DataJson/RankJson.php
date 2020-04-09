@@ -8,9 +8,9 @@
 
 namespace App\DataTraitement\RankData\DataJson;
 
-
-use App\DataTraitement\FileData;
+use App\Model\PDO_Model;
 use App\Model\RankModel;
+use App\Table\Rank;
 
 class RankJson
 {
@@ -36,14 +36,14 @@ class RankJson
 
     /**
      * @param $auth = null
-     * @param \stdClass $project
+     * @param \stdClass|bool $project
      * @param array $keywordsNew
      * @return null
      */
-    public function dataJson($auth = null, \stdClass $project, array $keywordsNew = [])
+    public function dataJson($auth = null, $project, array $keywordsNew = [])
     {
         $dataKeywords = explode(',', $project->keywords);
-        if ($dataKeywords === $keywordsNew) {
+        if (!is_null($auth) && $dataKeywords === $keywordsNew) {
             return null;
         }
 
@@ -57,7 +57,12 @@ class RankJson
             }
         }
 
-        $this->createProject($auth, $keywordsNew, $dataKeywords);
+        if (is_null($auth)) {
+            $this->updateRank($project);
+            $this->createProject($auth, [], $dataKeywords);
+        } else {
+            $this->createProject($auth, $keywordsNew, $dataKeywords);
+        }
     }
 
     /**
@@ -161,5 +166,15 @@ class RankJson
             return true;
         }
         return null;
+    }
+
+    /**
+     * @param \stdClass $item
+     * @return bool
+     */
+    private function updateRank(\stdClass $item)
+    {
+        $PDO = new PDO_Model();
+        return (new Rank($PDO))->UpdateCreated((int)$item->id);
     }
 }

@@ -288,6 +288,9 @@ export default class TopTen extends PureComponent {
 
     TrustScoreRank = (event, domain, id) => {
         event.preventDefault();
+
+        this.setState({loading: true, loaded: false});
+
         axios.get(requestUri + window.location.hostname + route + '/Ajax/SerpTrustScore.php', {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -330,8 +333,6 @@ export default class TopTen extends PureComponent {
                         loading: false
                     });
                     setTimeout(() => this.setState({loaded: true}), 500);
-                    this.setState({loading: true});
-                    this.setState({loaded: false});
                 }
             }
         });
