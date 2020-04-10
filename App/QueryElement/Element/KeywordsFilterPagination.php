@@ -16,7 +16,14 @@ class KeywordsFilterPagination extends KeywordsPagination
      * @return array
      * @throws \League\Csv\Exception
      */
-    public function hydrate(?string $element, ?int $page, ?int $offset, string $pageRemoveIndex = 'false', ?string $filter = null, ?string $keyFilter = null): array
+    public function hydrate(
+        ?string $element,
+        ?int $page,
+        ?int $offset,
+        string $pageRemoveIndex = 'false',
+        ?string $filter = null,
+        ?string $keyFilter = null
+    ): array
     {
         return parent::hydrate($element, $page, $offset, $pageRemoveIndex, $filter, $keyFilter);
     }

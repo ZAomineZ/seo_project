@@ -1,4 +1,5 @@
 <?php
+
 namespace App\QueryElement\Element;
 
 use App\QueryElement\Pagination;
@@ -12,7 +13,6 @@ use League\Csv\Statement;
  * Date: 28/02/20
  * Time: 10:42
  */
-
 class KeywordsPagination extends Pagination
 {
     /**
@@ -47,7 +47,14 @@ class KeywordsPagination extends Pagination
      * @return array
      * @throws \League\Csv\Exception
      */
-    public function hydrate(?string $element, ?int $page, ?int $offset, string $pageRemoveIndex = 'false', ?string $filter = null, ?string $keyFilter = null): array
+    public function hydrate(
+        ?string $element,
+        ?int $page,
+        ?int $offset,
+        string $pageRemoveIndex = 'false',
+        ?string $filter = null,
+        ?string $keyFilter = null
+    ): array
     {
         $offset = $offset ?: 0;
         $page = $page ?: 1;
@@ -64,7 +71,7 @@ class KeywordsPagination extends Pagination
             $dataFilter = [
                 'value' => $filter,
                 'key' => $keyFilter
-             ];
+            ];
             $records = $this->getRecords($intervalElement, $readerCSV, $dataFilter);
         }
 
@@ -75,7 +82,7 @@ class KeywordsPagination extends Pagination
         $paginationNumber = $this->paginationNumber($page, $pages);
         $intervalElement = $this->intervalRecords($intervalElement, $count);
 
-        $offsetRecords = is_null($filter) || is_null($keyFilter) ? 0 : $intervalElement[0];
+        $offsetRecords = $intervalElement[0];
         $records = array_slice($this->newRecords, $offsetRecords, 100);
 
         return $this->recordsPaginate($records, $pages, $intervalElement, $paginationNumber);
@@ -94,12 +101,10 @@ class KeywordsPagination extends Pagination
      * @param Reader $readerCSV
      * @param array|null $dataFilter
      * @return Generator
-     * @throws \League\Csv\Exception
      */
     protected function getRecords(array $intervalElement, Reader $readerCSV, ?array $dataFilter = [])
     {
-        $statement = $this->statement->offset($intervalElement[0]);
-        $process = $statement->process($readerCSV);
+        $process = $this->statement->process($readerCSV);
         return $process->getRecords();
     }
 
@@ -112,6 +117,13 @@ class KeywordsPagination extends Pagination
         foreach ($records as $record) {
             $this->newRecords[] = $record;
         }
+
+        usort($this->newRecords, function ($a, $b) {
+            $position_a = isset($a['Position']) ? $a['Position'] : $a['rank'];
+            $position_b = isset($b['Position']) ? $b['Position'] : $b['rank'];
+
+            return $position_a - $position_b;
+        });
 
         $this->countRecords = count($this->newRecords);
     }
