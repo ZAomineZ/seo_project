@@ -73,6 +73,8 @@ class renderDataJson
     private function dataRankTopFeatures(string $project, array $keywords = []): array
     {
         $dataRankFormatEmptyKeyword = (new DataJsonRank($this->rankModel))->dataJsonRankFeatures($project, $this->auth, $keywords);
+        $dataRankFormatEmptyKeyword = (new DataRankKeywords())->dataRenderFormatKeywordByFeatures($dataRankFormatEmptyKeyword);
+
         return [
             'data' => $dataRankFormatEmptyKeyword
         ];

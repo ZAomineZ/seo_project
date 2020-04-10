@@ -42,7 +42,7 @@ class DataRankKeywords
                     $dataRank[$k]['features'] = (new LoadCrawlerFeatures($v['keyword']))->getFeatures();
                 }
                 $dataRank[$k]['date'] = $v['date'];
-                $dataRank[$k]['diff'] = $v['diff'];
+                $dataRank[$k]['diff'] =  $v['rank'] !== 0 ? $v['diff'] : 0;
                 $dataRank[$k]['volume'] = $v['volume'];
                 $dataRank[$k]['chart'] = $v['chart'];
             }
@@ -51,6 +51,22 @@ class DataRankKeywords
         $dataRank = $this->filterDataKeywordRank($dataRank);
 
         return $dataRank;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function dataRenderFormatKeywordByFeatures(array $data)
+    {
+        $dataKeywordsByFeatures = [];
+
+        if (!empty($data)) {
+            $dataKeywordsByFeatures['images'] = $this->renderDataKeywords($data['images']);
+            $dataKeywordsByFeatures['videos'] = $this->renderDataKeywords($data['videos']);
+            $dataKeywordsByFeatures['P0'] = $this->renderDataKeywords($data['P0']);
+        }
+        return $dataKeywordsByFeatures;
     }
 
     /**

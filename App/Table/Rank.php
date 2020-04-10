@@ -201,4 +201,15 @@ class Rank extends Table
         $statement = $this->pdo->GetPdo()->query('SELECT id, slug, user_id, keywords, website, created_at FROM rank');
         return $statement->fetchAll();
     }
+
+    /**
+     * @param string $project
+     * @return mixed
+     */
+    public function findOrFail(string $project)
+    {
+        $statement = $this->pdo->GetPdo()->prepare('SELECT id from rank WHERE slug = ?');
+        $statement->execute([$project]);
+        return $statement->fetch();
+    }
 }

@@ -4,9 +4,11 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/App/Table" isTestSource="false" packagePrefix="App\Table\" />
       <sourceFolder url="file://$MODULE_DIR$/App/ErrorCode" isTestSource="false" packagePrefix="App\ErrorCode\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/App/RenderHTML" isTestSource="false" packagePrefix="App\RenderHTML\" />
       <sourceFolder url="file://$MODULE_DIR$/App/Controller" isTestSource="false" packagePrefix="App\Controller\" />
       <sourceFolder url="file://$MODULE_DIR$/App/concern" isTestSource="false" packagePrefix="App\concern\" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/App/DataTraitement" isTestSource="false" packagePrefix="App\DataTraitement\" />
       <sourceFolder url="file://$MODULE_DIR$/App/Actions" isTestSource="false" packagePrefix="App\Actions\" />
       <sourceFolder url="file://$MODULE_DIR$/App/QueryElement" isTestSource="false" packagePrefix="App\QueryElement\" />

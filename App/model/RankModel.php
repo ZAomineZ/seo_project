@@ -14,6 +14,7 @@ use App\concern\Str_options;
 use App\DataTraitement\RankData\KeywordsTraitement;
 use App\ErrorCode\Exception\NullableException;
 use App\ErrorCode\NullableType;
+use App\Helpers\RenderMessage;
 use App\Table\Rank;
 use Illuminate\Support\Str;
 
@@ -37,6 +38,19 @@ class RankModel
     {
         $this->rankTable = $rankTable;
         $this->serp = $serp;
+    }
+
+    /**
+     * @param string $project
+     * @return bool
+     */
+    public function findOrFail(string $project)
+    {
+        $bdd = $this->rankTable->findOrFail($project);
+        if ($bdd === false) {
+            (new RenderMessage())->messageError('This Project dont\' exist in our database !!!');
+        }
+        return true;
     }
 
     /**
@@ -804,17 +818,17 @@ class RankModel
             }
         }
 
-
         foreach ($dataDiff as $key => $diff) {
             // Diff Rank
             foreach ($diff as $k => $dfUrl) {
                 foreach ($dfUrl as $kRank => $vRank) {
                     if (isset($dataDiff[0][$k]) && isset($dataDiff[1][$k])) {
-                        $key1 = array_keys($dataDiff[0][$k])[0];
-                        $key2 = array_keys($dataDiff[1][$k])[0];
+                        $key1 = array_keys($dataDiff[0][$k])[1] ?? array_keys($dataDiff[0][$k])[0];
+                        $key2 = array_keys($dataDiff[1][$k])[1] ?? array_keys($dataDiff[1][$k])[0];
+
                         if (count($dataDiff) === 2) {
                             if (isset($dataDiff[0][$k][$key1]) && isset($dataDiff[1][$k][$key2])) {
-                                $dataNumberDiff[$kRank] = $dataDiff[0][$k][$key1]['rank'] - $dataDiff[1][$k][$key2]['rank'];
+                                $dataNumberDiff[$kRank] = ($dataDiff[0][$k][$key1]['rank'] - $dataDiff[1][$k][$key2]['rank']);
                             }
                         } else {
                             $dataNumberDiff[$kRank] = 0;

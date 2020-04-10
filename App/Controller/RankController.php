@@ -8,11 +8,9 @@
 
 namespace App\Controller;
 
-use App\DataTraitement\RankData\DataJson\DataJsonRank;
 use App\DataTraitement\RankData\DataJson\RankJson;
-use App\DataTraitement\RankData\DataRankByFeature;
-use App\DataTraitement\RankData\DataRankKeywords;
 use App\DataTraitement\RankData\KeywordsTraitement;
+use App\ErrorCode\Exception\NullableException;
 use App\Model\RankModel;
 use App\Table\Rank;
 
@@ -44,7 +42,7 @@ class RankController
      * @param string $content
      * @param string $keywords
      * @param $auth
-     * @throws \App\ErrorCode\Exception\NullableException
+     * @throws NullableException
      */
     public function SaveProject(string $project, string $website, string $content, string $keywords, $auth)
     {
@@ -80,7 +78,7 @@ class RankController
      * @param string $keywords
      * @param $auth
      * @return void
-     * @throws \App\ErrorCode\Exception\NullableException
+     * @throws NullableException
      */
     public function UpdateProject(string $id, string $project, string $website, string $content, string $keywords, $auth)
     {
@@ -159,12 +157,14 @@ class RankController
      */
     public function projectData(string $project, $auth)
     {
+        // Checked if project exist !!!
+        $this->rankModel->findOrFail($project);
         if (is_string($auth)) {
             $auth = \GuzzleHttp\json_decode($auth);
         }
         $projects = $this->rankModel->AllProject($auth);
-        $rankJson = new RankJson($this->rankModel, $projects);
 
+        $rankJson = new RankJson($this->rankModel, $projects);
         $dataResult = $rankJson->getResultsRankProject($project, $auth);
 
         echo \GuzzleHttp\json_encode([
