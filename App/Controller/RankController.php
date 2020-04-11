@@ -98,7 +98,7 @@ class RankController
         ];
 
         $rankJson = new RankJson($this->rankModel, $projects);
-        $rankJson->dataJson($auth, $projectStd, $dataKeywords['keywords'] ?: []);
+        $rankJson->dataJson($auth, $projectStd, $dataKeywords['keywords'] ?: [], $website !== $projectStd->website ? true : false);
 
         $dataResult = $rankJson->getResultsRank($auth);
 

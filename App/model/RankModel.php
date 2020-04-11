@@ -377,7 +377,6 @@ class RankModel
 
                 // Data Rank By Keywords
                 $data = $this->SerpResultKeywords($keywords, $auth);
-
                 // Return And Format Rank Array Data by Day !!!
                 $dataResultKeywords = $this->FormatDataRank($data, $website, $id, FALSE, $keywordsArray);
 
@@ -573,10 +572,10 @@ class RankModel
                 for ($i = 0; $i < count($dataRank); $i++) {
                     if (isset($dataRank[$i][$value])) {
                         foreach ($dataRank[$i][$value] as $k => $v) {
-                            $data[$value][$v['keyword']]['rank'] = $v['rank'];
-                            $data[$value][$v['keyword']]['url'] = $v['url'];
+                            $data[$value][$v['keyword']][$k]['rank'] = $v['rank'];
+                            $data[$value][$v['keyword']][$k]['url'] = $v['url'];
                             if (isset($keywords) && !is_null($keywords)) {
-                                $data[$value][$v['keyword']]['volume'] = isset($dataVl[$v['keyword']][$v['rank'] - 1]['volume']['volume']) ?
+                                $data[$value][$v['keyword']][$k]['volume'] = isset($dataVl[$v['keyword']][$v['rank'] - 1]['volume']['volume']) ?
                                     $dataVl[$v['keyword']][$v['rank'] - 1]['volume']['volume']
                                     : 0;
                             }
@@ -604,7 +603,9 @@ class RankModel
                 $dt = date('Y-m', strtotime($key));
                 if (strpos($key, $dt) !== false) {
                     foreach ($value as $k => $v) {
-                        $dataByMonth[$dt][$k . '-' . $key] = $v;
+                        foreach ($v as $keyRank => $rankValue) {
+                            $dataByMonth[$dt][$k . '-' . $key][$keyRank] = $rankValue;
+                        }
                     }
                 }
             }
@@ -664,42 +665,44 @@ class RankModel
             foreach ($value as $k => $kValueRank) {
                 $keyDate = date($format, strtotime($key));
 
-                if ($kValueRank['url'] !== 'Not Found' && $kValueRank['rank'] !== 0) {
-                    if ($kValueRank['rank'] === 1) {
-                        $top1++;
-                        $top3++;
-                        $top10++;
-                        $top50++;
-                        $top100++;
-                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 3) {
-                        $top3++;
-                        $top10++;
-                        $top50++;
-                        $top100++;
-                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 10) {
-                        $top10++;
-                        $top50++;
-                        $top100++;
-                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 50) {
-                        $top50++;
-                        $top100++;
-                    } elseif ($kValueRank['rank'] <= 1 || $kValueRank['rank'] <= 100) {
-                        $top100++;
+                foreach ($kValueRank as $valueRank) {
+                    if ($valueRank['url'] !== 'Not Found' && $valueRank['rank'] !== 0) {
+                        if ($valueRank['rank'] === 1) {
+                            $top1++;
+                            $top3++;
+                            $top10++;
+                            $top50++;
+                            $top100++;
+                        } elseif ($valueRank['rank'] <= 1 || $valueRank['rank'] <= 3) {
+                            $top3++;
+                            $top10++;
+                            $top50++;
+                            $top100++;
+                        } elseif ($valueRank['rank'] <= 1 || $valueRank['rank'] <= 10) {
+                            $top10++;
+                            $top50++;
+                            $top100++;
+                        } elseif ($valueRank['rank'] <= 1 || $valueRank['rank'] <= 50) {
+                            $top50++;
+                            $top100++;
+                        } elseif ($valueRank['rank'] <= 1 || $valueRank['rank'] <= 100) {
+                            $top100++;
+                        }
                     }
-                }
-                if (isset($kValueRank['volume'])) {
-                    $volume += (int)$kValueRank['volume'];
-                }
+                    if (isset($valueRank['volume'])) {
+                        $volume += (int)$valueRank['volume'];
+                    }
 
-                $dataReturn[$keyDate]['top1'] = $top1;
-                $dataReturn[$keyDate]['top3'] = $top3;
-                $dataReturn[$keyDate]['top10'] = $top10;
-                $dataReturn[$keyDate]['top50'] = $top50;
-                $dataReturn[$keyDate]['top100'] = $top100;
-                $dataReturn[$keyDate]['volume'] = $volume;
+                    $dataReturn[$keyDate]['top1'] = $top1;
+                    $dataReturn[$keyDate]['top3'] = $top3;
+                    $dataReturn[$keyDate]['top10'] = $top10;
+                    $dataReturn[$keyDate]['top50'] = $top50;
+                    $dataReturn[$keyDate]['top100'] = $top100;
+                    $dataReturn[$keyDate]['volume'] = $volume;
 
-                $dataReturn[$keyDate]['date'] = $keyDate;
-                $dataReturn[$keyDate]['dateUsort'] = date('Y-m-d', strtotime($key));
+                    $dataReturn[$keyDate]['date'] = $keyDate;
+                    $dataReturn[$keyDate]['dateUsort'] = date('Y-m-d', strtotime($key));
+                }
             }
         }
         return $dataReturn;
@@ -823,18 +826,44 @@ class RankModel
             foreach ($diff as $k => $dfUrl) {
                 foreach ($dfUrl as $kRank => $vRank) {
                     if (isset($dataDiff[0][$k]) && isset($dataDiff[1][$k])) {
-                        $key1 = array_keys($dataDiff[0][$k])[1] ?? array_keys($dataDiff[0][$k])[0];
-                        $key2 = array_keys($dataDiff[1][$k])[1] ?? array_keys($dataDiff[1][$k])[0];
-
                         if (count($dataDiff) === 2) {
-                            if (isset($dataDiff[0][$k][$key1]) && isset($dataDiff[1][$k][$key2])) {
-                                $dataNumberDiff[$kRank] = ($dataDiff[0][$k][$key1]['rank'] - $dataDiff[1][$k][$key2]['rank']);
+                            $keysItems1 = array_keys($dataDiff[0][$k]);
+                            $keysItems2 = array_keys($dataDiff[1][$k]);
+
+                            foreach ($keysItems1 as $kItem => $item) {
+                                $item_diff1 = $dataDiff[0][$k][$item] ?? null;
+                                if (isset($keysItems2[$kItem]) && !is_null($keysItems2[$kItem])) {
+                                    $item_diff2 = isset($dataDiff[1][$k][$keysItems2[$kItem]]) ? $dataDiff[1][$k][$keysItems2[$kItem]] : null;
+                                } else {
+                                    $item_diff2 = null;
+                                }
+
+                                if (!is_null($item_diff1) && !is_null($item_diff2)) {
+                                    $dataNumberDiff[0][$k][$item_diff1['url']]['rank'] = $item_diff1['rank'];
+                                    $dataNumberDiff[0][$k][$item_diff1['url']]['key'] = $item;
+
+                                    $dataNumberDiff[1][$k][$item_diff2['url']]['rank'] = $item_diff2['rank'];
+                                    $dataNumberDiff[1][$k][$item_diff2['url']]['key'] = $keysItems2[$kItem];
+                                }
                             }
-                        } else {
-                            $dataNumberDiff[$kRank] = 0;
                         }
-                    } else {
-                        $dataNumberDiff[$kRank] = 0;
+                    }
+                }
+            }
+        }
+
+        // Diff Rank with url identic
+        $newDataDiff = [];
+        foreach ($dataNumberDiff as $diffKey => $diffValue) {
+            foreach ($diffValue as $keyDiff => $valueDiff) {
+                if (isset($dataNumberDiff[0][$diffKey]) && isset($dataNumberDiff[1][$diffKey])) {
+                    $element1 = $dataNumberDiff[0][$keyDiff];
+                    $element2 = $dataNumberDiff[1][$keyDiff];
+
+                    foreach ($element1 as $kElement => $vElement) {
+                        $elementDiff = $element2[$kElement] ?? 0;
+
+                        $newDataDiff[$elementDiff['key']] = ($vElement['rank'] - $elementDiff['rank']);
                     }
                 }
             }
@@ -843,13 +872,16 @@ class RankModel
         // Add Diff Number in the array Data Rank !!!
         foreach ($dataRnk as $k => $d) {
             foreach ($d as $kV => $dV) {
+                $values = $newDataDiff;
+
                 $data[$k][$kV]['keyword'] = $dV['keyword'];
                 $data[$k][$kV]['rank'] = $dV['rank'];
                 $data[$k][$kV]['url'] = $dV['url'];
                 $data[$k][$kV]['date'] = $dV['date'];
-                $data[$k][$kV]['diff'] = isset($dataNumberDiff[$kV]) ? $dataNumberDiff[$kV] : 0;
+                $data[$k][$kV]['diff'] = isset($values[$kV]) ? $values[$kV] : 0;
             }
         }
+
         return $data;
     }
 

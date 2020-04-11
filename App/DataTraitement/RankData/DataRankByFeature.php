@@ -88,7 +88,7 @@ class DataRankByFeature
     private function selectorFeature(string $typeFeature): string
     {
         if ($typeFeature === 'images') {
-            return 'div.vsqVBf.tapJqb.ivg-i.rg_el > a.bia > g-img.BA0A6c > img';
+            return 'div.ivg-i > a.bia > g-img.BA0A6c > img';
         } elseif ($typeFeature === 'videos') {
             return 'div.BFJZOc > div.P94G9b > g-inner-card.ZTH1s.cv2VAd > div.y8AWGd.llvJ5e > a';
         } elseif ($typeFeature === 'P0') {

@@ -38,10 +38,15 @@ class RankJson
      * @param $auth = null
      * @param \stdClass|bool $project
      * @param array $keywordsNew
+     * @param bool $newCreationData
      * @return null
      */
-    public function dataJson($auth = null, $project, array $keywordsNew = [])
+    public function dataJson($auth = null, $project, array $keywordsNew = [], bool $newCreationData = false)
     {
+        if ($newCreationData) {
+            $this->createProject($auth, [], $keywordsNew);
+        }
+
         $dataKeywords = explode(',', $project->keywords);
         if (!is_null($auth) && $dataKeywords === $keywordsNew) {
             return null;
@@ -143,7 +148,11 @@ class RankJson
      * @param array $keywordsNew
      * @param array $dataKeywords
      */
-    private function createProject($auth = null, array $keywordsNew = [], array $dataKeywords = []): void
+    private function createProject(
+        $auth = null,
+        array $keywordsNew = [],
+        array $dataKeywords = []
+    ): void
     {
         (new FileJson($this->rankModel, $auth, $dataKeywords))
             ->create($this->projects, !empty($keywordsNew) ? true : false);
