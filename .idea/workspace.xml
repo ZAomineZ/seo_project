@@ -3,10 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Controller/RankController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/RankController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/RankJson.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/RankJson.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/DataTraitement/RankData/DataRankByFeature.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/DataTraitement/RankData/DataRankByFeature.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/model/RankModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/RankModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/concern/Img_Params.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/concern/Img_Params.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/WebSite.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/WebSite.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LinkProfile/tab_linkprofile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/KeywordsComponent/TableKeywords.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/KeywordsComponent/TableKeywords.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/MatTableTopDomains.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +149,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
@@ -471,7 +472,10 @@
       <workItem from="1586442036060" duration="163000" />
       <workItem from="1586449833195" duration="520000" />
       <workItem from="1586513702335" duration="19686000" />
-      <workItem from="1586601666603" duration="18488000" />
+      <workItem from="1586601666603" duration="21473000" />
+      <workItem from="1586855358933" duration="297000" />
+      <workItem from="1586855806690" duration="1383000" />
+      <workItem from="1586938771792" duration="1253000" />
     </task>
     <task id="LOCAL-00001" summary="commit xml">
       <created>1557842988682</created>
@@ -767,7 +771,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586525961746</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Fix bug diff and change website data in RankTo tools">
+      <created>1586620836324</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1586620836324</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TodoView">
@@ -822,7 +833,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Add Tools Index RankTo" />
     <MESSAGE value="Add Tools Show RankTo" />
     <MESSAGE value="Add Tools Correlation Data" />
     <MESSAGE value="Add Gender Register" />
@@ -847,21 +857,30 @@
     <MESSAGE value="Fix Bug Cookie CURL and Cron Fail Keywords !!!" />
     <MESSAGE value="Fix Bug Diff keywords rankTo tools !!!" />
     <MESSAGE value="Fix Bug pagination keywords order by position !!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix Bug pagination keywords order by position !!!" />
+    <MESSAGE value="Fix bug diff and change website data in RankTo tools" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix bug diff and change website data in RankTo tools" />
   </component>
   <component name="WindowStateProjectService">
     <state x="0" y="33" width="1920" height="1047" key="CommitChangelistDialog2" timestamp="1586620834289">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
     <state x="0" y="33" width="1920" height="1047" key="CommitChangelistDialog2/0.33.1920.1047@0.33.1920.1047" timestamp="1586620834289" />
-    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2" timestamp="1586525967619">
+    <state x="691" y="261" key="FileChooserDialogImpl" timestamp="1586855668932">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
-    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2/0.33.1920.1047@0.33.1920.1047" timestamp="1586525967619" />
-    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1586526205723">
+    <state x="691" y="261" key="FileChooserDialogImpl/0.33.1920.1047@0.33.1920.1047" timestamp="1586855668932" />
+    <state x="303" y="105" width="1314" height="906" key="SettingsEditor" timestamp="1586855864116">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
-    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup/0.33.1920.1047@0.33.1920.1047" timestamp="1586526205723" />
+    <state x="303" y="105" width="1314" height="906" key="SettingsEditor/0.33.1920.1047@0.33.1920.1047" timestamp="1586855864116" />
+    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2" timestamp="1586620841019">
+      <screen x="0" y="33" width="1920" height="1047" />
+    </state>
+    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2/0.33.1920.1047@0.33.1920.1047" timestamp="1586620841019" />
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1586623458168">
+      <screen x="0" y="33" width="1920" height="1047" />
+    </state>
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup/0.33.1920.1047@0.33.1920.1047" timestamp="1586623458168" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

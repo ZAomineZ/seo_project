@@ -340,7 +340,7 @@ class WebSite
                 try {
                     $fileCreate = File_Params::CreateParamsFile($fileCreate, $this->ChangeDir($dir, $domain), $ImgMajestic);
                 } catch (\Exception $exception) {
-                    dd($exception);
+                    $fileCreate = File_Params::CreateParamsFile($fileCreate, $this->ChangeDir($dir, $domain), null);
                 }
                 return $fileCreate;
             }

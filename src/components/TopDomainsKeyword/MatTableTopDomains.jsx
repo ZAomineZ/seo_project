@@ -88,6 +88,7 @@ export default class MatTable extends PureComponent {
         filter: "",
 
         redirectSerp: false,
+        loadedBtn: true,
         loadedKeywords: true
     };
 
@@ -204,7 +205,7 @@ export default class MatTable extends PureComponent {
 
         const params = {
             data: data,
-            cookie: this.getCookie('remember_me_auth') ? this.getCookie('remember_me_auth') : this.getCookie('auth_today'),
+            cookie: Cookie.getCookie('remember_me_auth') ? Cookie.getCookie('remember_me_auth') : Cookie.getCookie('auth_today'),
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 
@@ -224,9 +225,9 @@ export default class MatTable extends PureComponent {
         })
     }
 
-    DownloadKeywords(event)
-    {
+    DownloadKeywords(event) {
         event.preventDefault();
+        this.setState({loadedBtn: false});
 
         let domains = this.props.keyword;
         let page = '/Ajax/TopKeyword/CSV/KeywordCsvDownload.php';
@@ -258,6 +259,7 @@ export default class MatTable extends PureComponent {
                         return this.CookieReset(response.data.token, response.data.id)
                     }
                 } else {
+                    this.setState({loadedBtn: true});
                     window.location.href = response.request.responseURL;
                 }
             }
@@ -433,8 +435,7 @@ export default class MatTable extends PureComponent {
         return this.onHandleFilter(e, 'KeywordFilterByVolume.php', filter)
     }
 
-    onHandleFilterUrl(e, filterUrl)
-    {
+    onHandleFilterUrl(e, filterUrl) {
         return this.onHandleFilter(e, 'KeywordFilterByUrl.php', filterUrl)
     }
 
@@ -474,7 +475,7 @@ export default class MatTable extends PureComponent {
     render() {
         const {
             dataNow, dataLastMonth, dataKeywords, pagesPagination, currentPage, intervalElement, paginationNumber,
-            filterValue, filterLabel, loadedKeywords, order, orderBy, selected, filter, domain
+            filterValue, filterLabel, loadedKeywords, order, orderBy, selected, filter, domain, loadedBtn
         } = this.state;
 
         if (this.state.redirectSerp === true) {
@@ -498,6 +499,14 @@ export default class MatTable extends PureComponent {
                                 CSV last month
                             </button>
                             <button onClick={e => this.DownloadKeywords(e)} className="btn btn-primary">Download
+                                {!loadedBtn &&
+                                <div className='panel__refresh panel-refresh-custom'>
+                                    <svg className="mdi-icon icon-right" width="24" height="24" fill="currentColor"
+                                         viewBox="0 0 24 24" style={{left: '20px'}}>
+                                        <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
+                                    </svg>
+                                </div>
+                                }
                                 All keywords
                             </button>
                         </div>

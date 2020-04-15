@@ -242,7 +242,7 @@ class tab_linkprofile extends PureComponent {
                                     <img className="img-icon" src={img_icon} alt=""/>
                                 </td>
                                 <td>
-                                    <ModalProfile date={this.state.date} data_power={power} btn={power_last}/>
+                                    <ModalProfile date={this.state.date} data_power={power} btn={Math.round(power_last * 100) / 100}/>
                                     <div className="place_flex">
                                         { Math.sign(date_diff) === -1 ? svg_red : Math.sign(date_diff) === 0 ? '' : svg_green }
                                         <p className="dashboard__total-stat">{ Math.sign(date_diff) === 0 ? '' : Math.abs(date_diff) }</p>

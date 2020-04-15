@@ -241,8 +241,8 @@ export default class TableKeywords extends PureComponent {
                                                     <td>
                                                         <div className="progress-wrap progress-wrap--small">
                                                             <Progress
-                                                                value={Math.round((value.traffic / value.search_volume) * 100)}>
-                                                                {Math.round((value.traffic / value.search_volume) * 100)}%
+                                                                value={value.search_volume !== '0' ? Math.round((value.traffic / value.search_volume) * 100) : 0}>
+                                                                {value.search_volume !== '0' ? Math.round((value.traffic / value.search_volume) * 100) : 0}%
                                                             </Progress>
                                                         </div>
                                                     </td>

@@ -43,7 +43,7 @@ class Img_Params
         $part = $size - 7408;
         $result =  ($part * 100 / $part_gl);
 
-        if ($result > 4) {
+        if ($result > 1) {
             $part_gl = $google / 100;
             $part = $size / 100;
             $rem =  $part_gl - 100;
