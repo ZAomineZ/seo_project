@@ -43,13 +43,12 @@ class RankJson
      */
     public function dataJson($auth = null, $project, array $keywordsNew = [], bool $newCreationData = false)
     {
-        if ($newCreationData) {
-            $this->createProject($auth, [], $keywordsNew);
-        }
-
         $dataKeywords = explode(',', $project->keywords);
         if (!is_null($auth) && $dataKeywords === $keywordsNew) {
             return null;
+        }
+        if ($newCreationData) {
+            $this->createProject($auth, [], $keywordsNew);
         }
 
         if (!empty($keywordsNew) && isset($keywordsNew[0]) && $keywordsNew[0] !== '') {

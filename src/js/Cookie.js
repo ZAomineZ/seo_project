@@ -25,15 +25,15 @@ export default class Cookie
    static getCookie = name_cookie => {
         let name = `${name_cookie}=`;
         let cookie = document.cookie.split(';');
+
         for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
+            let cook = cookie[i].trimStart();
             while (cook.charAt(0) === ' ') {
                 cook = cook.substring(1);
             }
             if (cook.indexOf(name) === 0) {
                 return cook.substring(name.length, cook.length);
             }
-            return '';
         }
     };
 

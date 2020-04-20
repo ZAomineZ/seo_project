@@ -146,7 +146,9 @@ class LogInForm extends PureComponent {
                         if (!response.data.error) {
                             sessionStorage.setItem('Auth', this.ArrayAuth(JSON.stringify(response.data)));
                             sessionStorage.setItem('Remember_me', this.state.rememberMe ? 'TRUE' : 'FALSE');
+
                             this.CookieLogIn(sessionStorage.getItem('Remember_me'), JSON.stringify(response.data));
+
                             this.setState({ UserConnect: !this.state.UserConnect });
                             NotificationSystem.newInstance({}, n => notification = n);
                             setTimeout(() => showNotification('You are connected !!!', 'success'), 700);

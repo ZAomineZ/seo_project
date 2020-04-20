@@ -55,32 +55,29 @@ class Layout extends Component {
         let name = name_cookie + '=';
         let cookie = document.cookie.split(';');
         for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
+            let cook = cookie[i].trimStart();
             while (cook.charAt(0) == ' ') {
                 cook = cook.substring(1);
             }
             if (cook.indexOf(name) == 0) {
                 return cook.substring(name.length, cook.length);
             }
-            return '';
         }
     }
 
-    SetCookie (name_cookie, value_cookie, expire_days)
-    {
+    SetCookie(name_cookie, value_cookie, expire_days) {
         let date = new Date();
         date.setTime(date.getTime() + (expire_days * 24 * 60 * 60 * 1000));
         let expire_cookie = "expires=" + date.toUTCString();
         return document.cookie = name_cookie + '=' + value_cookie + ";" + expire_cookie + ";path=/";
     }
 
-    DeleteCookie (name_cookie)
-    {
+    DeleteCookie(name_cookie) {
         return this.SetCookie(name_cookie, '', -1);
     }
 
     componentDidMount() {
-        if (this.getCookie('remember_me_auth') !== '') {
+        if (this.getCookie('remember_me_auth') !== undefined) {
             if (!sessionStorage.getItem('Auth')) {
                 let split_string = this.getCookie('remember_me_auth').split('__');
                 let id = split_string[1];
@@ -121,7 +118,7 @@ class Layout extends Component {
                 }
             }
         } else {
-            if (this.getCookie('auth_today') !== '') {
+            if (this.getCookie('auth_today') !== undefined) {
                 if (!sessionStorage.getItem('Auth')) {
                     let split_string = this.getCookie('auth_today').split('__');
                     let id = split_string[1];
@@ -161,23 +158,23 @@ class Layout extends Component {
                         })
                     }
                 }
-            } else {
-                this.setState({auth: 'noAuth'});
-                NotificationSystem.newInstance({}, n => notification = n);
-                setTimeout(() => showNotification('You must be logged in to access this page !!!', 'danger'), 700);
             }
+        }
+        if (this.getCookie('remember_me_auth') === undefined && this.getCookie('auth_today') === undefined && !sessionStorage.getItem('Auth')) {
+            this.setState({auth: 'noAuth'});
+            NotificationSystem.newInstance({}, n => notification = n);
+            setTimeout(() => showNotification('You must be logged in to access this page !!!', 'danger'), 700);
         }
     }
 
-    DeleteCookieNotExist ()
-    {
+    DeleteCookieNotExist() {
         sessionStorage.removeItem('Auth');
         sessionStorage.removeItem('Remember_me');
         this.setState({auth: 'noAuth'});
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.getCookie('auth_today') === '' && this.getCookie('remember_me_auth') === '') {
+        if (this.getCookie('auth_today') === undefined && this.getCookie('remember_me_auth') === undefined) {
             this.DeleteCookieNotExist()
         }
     }

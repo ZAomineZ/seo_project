@@ -292,9 +292,9 @@ class SerpController extends Controller
 
         $dataResults = (new SerpFile($this->serp))->rankEmpty($rank, $keyword);
         echo \GuzzleHttp\json_encode([
-            'dataRank' => DataSerp::sliceData($dataResults, 'rank', 7),
-            'dates' => DataSerp::sliceData($dataResults, 'date', 7),
-            'formatDates' => DataSerp::sliceData($this->serp->DateFormat($dataResults['date']), null, 7)
+            'dataRank' => DataSerp::sliceData($dataResults, 'rank'),
+            'dates' => DataSerp::sliceData($dataResults, 'date'),
+            'formatDates' => $this->serp->DateFormat($dataResults['date'])
         ]);
     }
 

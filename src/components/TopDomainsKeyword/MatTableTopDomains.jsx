@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import MatTableHead from './MatTableHeadTopDomains';
 import MatTableToolbarTopDomain from './MatTableToolbarTopDomain';
 import axios from "axios";
-import {route} from "../../const";
+import {requestUri, route} from "../../const";
 import {Redirect} from "react-router-dom";
 import TableKeywords from "./Components/KeywordsComponent/TableKeywords";
 import Cookie from "../../js/Cookie";
@@ -209,7 +209,7 @@ export default class MatTable extends PureComponent {
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 
-        axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeywordCsv.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/TopKeywordCsv.php", {
             headers: headers,
             params: params,
         }).then(response => {
@@ -249,7 +249,7 @@ export default class MatTable extends PureComponent {
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 
-        axios.get("http://" + window.location.hostname + route + page, {
+        axios.get(requestUri + window.location.hostname + route + page, {
             headers: headers,
             params: params
         }).then(response => {
@@ -270,6 +270,11 @@ export default class MatTable extends PureComponent {
         e.preventDefault();
 
         this.setState({loadedKeywords: false});
+        this.setState({
+            filterValue: '',
+            filterLabel: '',
+            paginationFilter: false
+        });
 
         const headers = {
             'X-Requested-With': 'XMLHttpRequest',
@@ -288,7 +293,7 @@ export default class MatTable extends PureComponent {
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 
-        axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeyword/KeywordsAll.php", {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/TopKeyword/KeywordsAll.php", {
             headers: headers,
             params: params
         }).then((response) => {
@@ -350,7 +355,7 @@ export default class MatTable extends PureComponent {
 
         let filePagination = this.state.paginationFilter ? 'KeywordFilterPagination.php' : 'KeywordPagination.php';
 
-        axios.post("http://" + window.location.hostname + route + "/Ajax/TopKeyword/" + filePagination, formData,
+        axios.post(requestUri + window.location.hostname + route + "/Ajax/TopKeyword/" + filePagination, formData,
             {headers: headers})
             .then((response) => {
                 if (response && response.status === 200) {
@@ -397,7 +402,7 @@ export default class MatTable extends PureComponent {
             auth: sessionStorage.getItem('Auth') ? sessionStorage.getItem('Auth') : ''
         };
 
-        axios.get("http://" + window.location.hostname + route + "/Ajax/TopKeyword/" + page, {
+        axios.get(requestUri + window.location.hostname + route + "/Ajax/TopKeyword/" + page, {
             headers: headers,
             params: params
         }).then((response) => {
@@ -457,6 +462,7 @@ export default class MatTable extends PureComponent {
             }
         });
 
+        this.setState({});
         if (dataTrActive === 'no-active') {
             trKeyword.classList.remove('d-none');
             trRow.setAttribute('data-active', 'active');

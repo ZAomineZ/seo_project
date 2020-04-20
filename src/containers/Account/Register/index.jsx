@@ -35,14 +35,13 @@ class Register extends PureComponent {
         let name = name_cookie + '=';
         let cookie = document.cookie.split(';');
         for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
+            let cook = cookie[i].trimStart();
             while (cook.charAt(0) == ' ') {
                 cook = cook.substring(1);
             }
             if (cook.indexOf(name) == 0) {
                 return cook.substring(name.length, cook.length);
             }
-            return '';
         }
     }
 
@@ -58,7 +57,7 @@ class Register extends PureComponent {
     }
 
     componentDidMount() {
-        if (this.getCookie('remember_me_auth') !== '') {
+        if (this.getCookie('remember_me_auth') !== undefined) {
             if (!sessionStorage.getItem('Auth')) {
                 let split_string = this.getCookie('remember_me_auth').split('__');
                 let id = split_string[1];
@@ -100,7 +99,7 @@ class Register extends PureComponent {
                 }
             }
         } else {
-            if (this.getCookie('auth_today') !== '') {
+            if (this.getCookie('auth_today') !== undefined) {
                 if (!sessionStorage.getItem('Auth')) {
                     let split_string = this.getCookie('auth_today').split('__');
                     let id = split_string[1];
@@ -157,7 +156,7 @@ class Register extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.getCookie('auth_today') === '' && this.getCookie('remember_me_auth') === '') {
+        if (this.getCookie('auth_today') === undefined && this.getCookie('remember_me_auth') === undefined) {
             this.DeleteCookieNotExist()
         }
     }

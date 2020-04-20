@@ -35,14 +35,13 @@ class LogIn extends PureComponent {
         let name = name_cookie + '=';
         let cookie = document.cookie.split(';');
         for (let i = 0; i < cookie.length; i++) {
-            let cook = cookie[i];
+            let cook = cookie[i].trimStart();
             while (cook.charAt(0) == ' ') {
                 cook = cook.substring(1);
             }
             if (cook.indexOf(name) == 0) {
                 return cook.substring(name.length, cook.length);
             }
-            return '';
         }
     }
 
@@ -60,7 +59,7 @@ class LogIn extends PureComponent {
     }
 
     componentDidMount() {
-        if (this.getCookie('remember_me_auth') !== '') {
+        if (this.getCookie('remember_me_auth') !== undefined) {
             if (!sessionStorage.getItem('Auth')) {
                 let split_string = this.getCookie('remember_me_auth').split('__');
                 let id = split_string[1];
@@ -84,7 +83,7 @@ class LogIn extends PureComponent {
                         if (response && response.status === 200) {
                             if (response.data !== '') {
                                 if (response.data.error && response.data.error === 'Invalid Token') {
-                                    this.DeleteCookie('remember_me_auth')
+                                    this.DeleteCookie('remember_me_auth');
                                     this.DeleteCookieNotExist();
                                     NotificationSystem.newInstance({}, n => notification = n);
                                     setTimeout(() => showNotification('Your account is used by another platform', 'danger'), 700);
@@ -102,7 +101,7 @@ class LogIn extends PureComponent {
                 }
             }
         } else {
-            if (this.getCookie('auth_today') !== '') {
+            if (this.getCookie('auth_today') !== undefined) {
                 if (!sessionStorage.getItem('Auth')) {
                     let split_string = this.getCookie('auth_today').split('__');
                     let id = split_string[1];
@@ -160,7 +159,7 @@ class LogIn extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.getCookie('auth_today') === '' && this.getCookie('remember_me_auth') === '') {
+        if (this.getCookie('auth_today') === undefined && this.getCookie('remember_me_auth') === undefined) {
             this.DeleteCookieNotExist()
         }
     }

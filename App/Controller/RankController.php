@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\concern\Ajax;
 use App\DataTraitement\RankData\DataJson\RankJson;
 use App\DataTraitement\RankData\KeywordsTraitement;
 use App\ErrorCode\Exception\NullableException;
@@ -52,6 +53,8 @@ class RankController
         // Project Limit by 5 And if a project existing already !!!
         $this->rankModel->projectExist($auth, $project);
         $this->rankModel->limitProject($auth, 5);
+        // Checked if the rate user is exceed !!!
+        $keywords !== '' ? (new Ajax())->checkedRateUser((int)$auth->id) : null;
 
         $dataTraitement = [$project, $website, $content, $auth, null];
         (new KeywordsTraitement($this->rankModel, $keywords))->traitementKeywords($dataTraitement);

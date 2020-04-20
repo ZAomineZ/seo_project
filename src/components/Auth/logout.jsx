@@ -42,8 +42,10 @@ export default class LogOut extends PureComponent {
         if (sessionStorage.getItem('Auth')) {
             sessionStorage.removeItem('Auth');
             sessionStorage.removeItem('Remember_me');
+
             this.DeleteCookie('remember_me_auth');
             this.DeleteCookie('auth_today');
+
             NotificationSystem.newInstance({}, n => notification = n);
             setTimeout(() => showNotification('You are logout !!!', 'danger'), 700);
         } else {

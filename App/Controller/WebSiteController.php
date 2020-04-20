@@ -247,14 +247,16 @@ class WebSiteController
         $file = self::FileSystem($dir, $req->token, $file_1);
 
         $count = count(File_Params::OpenFile($file[4], $dir));
+        $resultExist = File_Params::OpenFile($file[3], $dir , true) !== '';
 
         echo \GuzzleHttp\json_encode([
-            'result' => File_Params::OpenFile($file[3], $dir),
+            'result' => $resultExist ? File_Params::OpenFile($file[3], $dir) : [],
             'bl_info' => File_Params::OpenFile($file[0], $dir)->status === 'Service Unavailable' ? '' :
                 File_Params::OpenFile($file[0], $dir),
             'traffic' => File_Params::OpenFile($file[1], $dir) ?? [],
-            'file_top_bl' => File_Params::OpenFile($file[2], $dir)->status === 'Service Unavailable' ? '' :
-                File_Params::OpenFile($file[2], $dir),
+            'file_top_bl' =>
+                File_Params::OpenFile($file[2], $dir, true) === '' || File_Params::OpenFile($file[2], $dir)->status === 'Service Unavailable'
+                    ? '' : File_Params::OpenFile($file[2], $dir),
             'all_bl' => [],
             'dash_stats' => $count >= 7 ?
                 array_slice(self::$web->ChangeData(File_Params::OpenFile($file[4], $dir), "m/d"), $count - 7, $count)
@@ -278,10 +280,10 @@ class WebSiteController
             'data_url' => [],
             'data_assortUrl' => [],
             'power' => (int)self::$linkTable->SelectPowerbyDomain($domain)->power,
-            'power_trust' => self::$web->ChangePowerSize(
+            'power_trust' => $resultExist ? self::$web->ChangePowerSize(
                 Img_Params::PowerGoogleSize(Img_Params::FileGetSize($fileSize)),
                 File_Params::OpenFile($file[3], $dir)->trust_rank,
-                (int)self::$linkTable->SelectPowerbyDomain($domain)->power),
+                (int)self::$linkTable->SelectPowerbyDomain($domain)->power) : 0,
             'error' => ''
         ]);
     }
@@ -343,7 +345,7 @@ class WebSiteController
                             if (!file_exists($file_dir[1]) || !file_exists($file_dir[0]) || !file_exists($file_dir[2])) {
                                 File_Params::CreateParamsFile($file_dir[1], $dir_domain['dir'], self::JsonTrafic($domain), TRUE);
                                 File_Params::CreateParamsFile($file_dir[0], $dir_domain['dir'], \GuzzleHttp\json_encode($backlinkJson), true);
-                                File_Params::CreateParamsFile($file_dir[2], $dir_domain['dir'], $blTop);
+                                File_Params::CreateParamsFile($file_dir[2], $dir_domain['dir'], Json_File::JsonTopBl($domain));
                             }
                             return true;
                         }
@@ -453,10 +455,10 @@ class WebSiteController
      * @param string $dir
      * @param $backlinkJson
      * @param null $option
-     * @return string
+     * @return string|null
      * @throws \Exception
      */
-    protected static function JsonWebSite(string $domain, string $dir, $backlinkJson, $option = null): string
+    protected static function JsonWebSite(string $domain, string $dir, $backlinkJson, $option = null)
     {
         // Request Backlink Curl And Verif Statut OK !!!
         if ($backlinkJson->status === 'Service Unavailable') {
@@ -560,10 +562,10 @@ class WebSiteController
      * @param bool $first
      * @param string|null $file
      * @param string|null $dir
-     * @return string
+     * @return string|null
      * @throws \Exception
      */
-    public function getJsonReferringWeb(string $domain, $first = false, string $file = null, string $dir = null): string
+    public function getJsonReferringWeb(string $domain, $first = false, string $file = null, string $dir = null): ?string
     {
         $backlinkJson = self::$bl->ReqBl($domain);
         $blTop = self::$bl->ReqTopBl($domain);
@@ -575,10 +577,10 @@ class WebSiteController
      * @param string $domain
      * @param string $dir
      * @param $option
-     * @return string
+     * @return string|null
      * @throws \Exception
      */
-    public function getJsonWebSite(string $domain, string $dir, $option = null): string
+    public function getJsonWebSite(string $domain, string $dir, $option = null): ?string
     {
         $backlinkJson = self::$bl->ReqBl($domain);
         return self::JsonWebSite($domain, $dir, $backlinkJson, $option);
@@ -587,9 +589,9 @@ class WebSiteController
     /**
      * @param string $domain
      * @param bool $topBacklink
-     * @return object
+     * @return object|null
      */
-    public function getRequestJson(string $domain, bool $topBacklink = false): object
+    public function getRequestJson(string $domain, bool $topBacklink = false): ?object
     {
         if ($topBacklink) {
             return self::$bl->ReqTopBl($domain);

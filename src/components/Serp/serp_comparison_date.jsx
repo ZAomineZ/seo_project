@@ -44,6 +44,7 @@ class SerpComparisonDate extends PureComponent {
         this.state = {
             rank: [],
             url: [],
+            loaded: false,
             redirectSerpDate: false,
             auth: '',
             redirectSerp: false
@@ -102,7 +103,8 @@ class SerpComparisonDate extends PureComponent {
                             this.setState({
                                 rank: response.data.rank,
                                 url: response.data.url,
-                            })
+                            });
+                            setTimeout(() => this.setState({loaded: true}), 500)
                         }
                     }
                 });
@@ -237,6 +239,14 @@ class SerpComparisonDate extends PureComponent {
                     </div>
                     <div className="row">
                         <div className="col-xl-6">
+                            {
+                                !this.state.loaded &&
+                                <div className="panel__refresh">
+                                    <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
+                                    </svg>
+                                </div>
+                            }
                             <TopTenComparaison
                                 TopOrLose
                                 title="Top Dashboard Serp"
@@ -248,6 +258,14 @@ class SerpComparisonDate extends PureComponent {
                             />
                         </div>
                         <div className="col-xl-6">
+                            {
+                                !this.state.loaded &&
+                                <div className="panel__refresh">
+                                    <svg className="mdi-icon " width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12,4V2C6.48,2 2,6.48 2,12H4C4,7.58 7.58,4 12,4Z"></path>
+                                    </svg>
+                                </div>
+                            }
                             <TopTenComparaison
                                 title="Lose Dashboard Serp"
                                 cryptoTable={this.props.cryptoTable}

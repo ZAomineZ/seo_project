@@ -108,7 +108,7 @@ class Ajax
     {
         $auth = new LogIn(new PDO_Model());
         $rate_user = $auth->SelectRateByUser($user_id);
-        if ($rate_user->rate_user < 100) {
+        if ((int)$rate_user->rate_user < 100) {
             if ($this->DateCompare(date('Y-m-d')) !== $this->DateCompare(date('Y-m-d', strtotime($rate_user->created_at)))) {
                 $auth->UpdateResetRateUser($user_id);
                 $auth->UpdateRateUser($user_id, date('Y-m-d H:i:s'));
@@ -123,6 +123,19 @@ class Ajax
                 echo \GuzzleHttp\json_encode(['error' => 'Limit exceeded !!!']);
                 die();
             }
+        }
+    }
+
+    /**
+     * @param int $user_id
+     */
+    public function checkedRateUser(int $user_id)
+    {
+        $auth = new LogIn(new PDO_Model());
+        $rate_user = $auth->SelectRateByUser($user_id);
+        if ((int)$rate_user->rate_user === 10000) {
+            echo \GuzzleHttp\json_encode(['error' => 'Limit exceeded !!!']);
+            die();
         }
     }
 

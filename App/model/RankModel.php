@@ -15,6 +15,7 @@ use App\DataTraitement\RankData\KeywordsTraitement;
 use App\ErrorCode\Exception\NullableException;
 use App\ErrorCode\NullableType;
 use App\Helpers\RenderMessage;
+use App\Table\Auth\LogIn;
 use App\Table\Rank;
 use Illuminate\Support\Str;
 
@@ -130,7 +131,6 @@ class RankModel
         }
 
         return [
-            'data' => $this->SerpResultKeywords($keywords, $auth),
             'keywords' => $keywords
         ];
     }
@@ -195,7 +195,9 @@ class RankModel
         if (!empty($data)) {
             $i = 0;
             foreach ($data as $key => $value) {
-                foreach ($value['rank'] as $k => $v) {
+                $countValueRank = count($value['rank']);
+                $valueRank = $countValueRank >= 240 ? array_slice($value['rank'], $countValueRank - 240) : $value['rank'];
+                foreach ($valueRank as $k => $v) {
                     foreach ($v as $k_ => $v_) {
                         $i++;
                         if (strpos($v_, (string)$website) !== false) {
@@ -245,6 +247,9 @@ class RankModel
 
             $dataResultMontly = $this->DataResultRkDate($dataRankEnd, $dataDate, 'Y.d.m', $keywords);
             $dataResultYears = $this->DataResultRkDate($dataRankEnd, $dataDate, 'M', $keywords);
+
+
+
             return [
                 'dataResultYearly' => $dataResultYears,
                 'dataResultMontly' => $dataResultMontly,
@@ -262,9 +267,10 @@ class RankModel
      * @param array $data
      * @param $auth
      * @param array $keywords
+     * @param array $newKeywords
      * @return array
      */
-    public function DataAllProjectRank(array $data, $auth, array $keywords = []): array
+    public function DataAllProjectRank(array $data, $auth, array $keywords = [], array $newKeywords = []): array
     {
         $dataResult = [];
         $keywordsArray = [];
@@ -282,8 +288,9 @@ class RankModel
                     $keywordsArray = $keywords;
                 }
                 $keywords = implode(',', $keywordsArray);
+                $newKeywords = array_values(array_diff($keywordsArray, $newKeywords));
 
-                $dataResultKeywords = $this->SerpResultKeywords($keywords, $auth);
+                $dataResultKeywords = $this->SerpResultKeywords($keywords, $auth, false, null, $dt->slug, $newKeywords);
                 $dataResult[] = $this->FormatDataRank($dataResultKeywords, $dt->website, $dt->id, false, $keywordsArray);
             } else {
                 $dataResult[$key]['id'] = $dt->id;
@@ -445,7 +452,7 @@ class RankModel
         $keywords = implode(',', $keywordsArray);
 
         // Result Data, Rank By keywords !!!
-        $rankResult = $this->SerpResultKeywords($keywords, $auth, false, $typeFeatures);
+        $rankResult = $this->SerpResultKeywords($keywords, $auth, false, $typeFeatures, $project);
 
         if (!is_null($typeFeatures)) {
             return [
@@ -504,9 +511,18 @@ class RankModel
      * @param $auth
      * @param bool $multiKeywords
      * @param string|null $typesFeatures
+     * @param string|null $project
+     * @param array $newKeywords
      * @return array
      */
-    public function SerpResultKeywords(?string $keywords, $auth = null, bool $multiKeywords = false, ?string $typesFeatures = null)
+    public function SerpResultKeywords(
+        ?string $keywords,
+        $auth = null,
+        bool $multiKeywords = false,
+        ?string $typesFeatures = null,
+        ?string $project = null,
+        array $newKeywords = []
+    )
     {
         $dataArray = [];
         if (!is_null($keywords)) {
@@ -525,6 +541,10 @@ class RankModel
 
                 $dir = $this->serp->DIRLoad($value);
                 if (!file_exists($this->serp->FILELoad($dir))) {
+                    if (!is_null($auth)) {
+                        $this->rateUserCheck($newKeywords, $auth, $project);
+                    }
+
                     if (is_null($auth)) {
                         [$dataUri, $name] = $this->serp->FileData($value, $valueFirst, null, true);
                     } else {
@@ -1107,6 +1127,29 @@ class RankModel
                     'keywords' => $keywords
                 ]);
                 die();
+            }
+        }
+    }
+
+    /**
+     * @param null|array $keywords
+     * @param null $auth
+     * @param string|null $project
+     */
+    private function rateUserCheck(?array $keywords = [], $auth = null, ?string $project = null): void
+    {
+        if (!is_null($project)) {
+            $pdo = new PDO_Model();
+
+            $user = (new LogIn($pdo))->SelectRateByUser((int)$auth->id);
+            $tableRank = new Rank($pdo);
+
+            $bddProject = $tableRank->selectKeywordsByProject($project);
+            if ((int)$user->rate_user === 100 && !empty($keywords)) {
+                $tableRank
+                    ->deleteKeywordsRecents($keywords, $bddProject->keywords ?? '', $project);
+            } elseif ((int)$user->rate_user === 100 && empty($keywords)) {
+                $tableRank->deleteProject($auth, $bddProject->id ?? null);
             }
         }
     }

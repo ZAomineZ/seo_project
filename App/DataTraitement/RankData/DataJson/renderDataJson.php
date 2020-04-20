@@ -52,7 +52,7 @@ class renderDataJson
         // Verif if the property auth is to type string, int or object
         $this->authToObject();
 
-        $dataResult = $this->rankModel->DataAllProjectRank($this->projects, $this->auth);
+        $dataResult = $this->rankModel->DataAllProjectRank($this->projects, $this->auth, [], $keywords);
 
         $this->auth = !is_string($this->auth) ? \GuzzleHttp\json_encode($this->auth) : $this->auth;
         $dataResultWithKeywordsAndFeatures = $this->dataRankTopWithKeywordsAndFeatures($project, $keywords, $noDataKeywords);

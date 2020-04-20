@@ -10,7 +10,9 @@ namespace App\DataTraitement\RankData;
 
 
 use App\concern\Str_options;
+use App\ErrorCode\Exception\NullableException;
 use App\Model\RankModel;
+use stdClass;
 
 class KeywordsTraitement
 {
@@ -37,7 +39,7 @@ class KeywordsTraitement
     /**
      * @param array $data
      * @return array
-     * @throws \App\ErrorCode\Exception\NullableException
+     * @throws NullableException
      */
     public function traitementKeywords(array $data): array
     {
@@ -61,12 +63,11 @@ class KeywordsTraitement
 
         return [
             'keywords' => $keywordsArray,
-            'data' => $data
         ];
     }
 
     /**
-     * @param \stdClass|boolean $request
+     * @param stdClass|boolean $request
      * @return string
      */
     public function formatKeywords($request)
@@ -91,7 +92,7 @@ class KeywordsTraitement
     }
 
     /**
-     * @param \stdClass|boolean $request
+     * @param stdClass|boolean $request
      * @param string $keywords
      */
     private function isKeywordsExisting($request, string $keywords)

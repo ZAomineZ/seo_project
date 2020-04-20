@@ -14,7 +14,9 @@ const dataColor = [
     {color: '#a4de6c'},
     {color: '#d0ed57'},
     {color: '#ffc658'},
-    {color: '#4ce1b6'}
+    {color: '#4ce1b6'},
+    {color: '#8D608C'},
+    {color: '#FAA945'}
 ];
 
 export default class TabData extends PureComponent {
@@ -44,7 +46,7 @@ export default class TabData extends PureComponent {
                     dataCategories[index] = {
                         name: categoriesKey[index],
                         percentage: (value) * 100,
-                        fill: dataColor[index].color
+                        fill: dataColor[index] ? dataColor[index].color : null
                     }
                 });
 

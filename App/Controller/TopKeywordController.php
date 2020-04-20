@@ -135,8 +135,9 @@ class TopKeywordController
                     $req_verif = $this->table->SelectToken($string_ex);
                     if ($req_verif && file_exists($this->DirAndFileCall($req_verif, str_replace('.', '-', $ex))['file'])) {
                         $data = $this->model->CreateJson(
-                            File_Params::OpenFile($this->DirAndFileCall($req_verif, str_replace('.', '-', $ex))['file'],
-                                $this->DirAndFileCall($req_verif, str_replace('.', '-', $ex))['dir']), $req_verif->domain);
+                            File_Params::OpenFile($this->DirAndFileCall($req_verif, str_replace('.', '-', $ex))['file']),
+                            $req_verif->domain
+                    );
                     } else {
                         // Recuperate Api_key and Export_Hash with DomCrawler
                         $data = $this->DomainParam($string_ex, $id);
@@ -151,8 +152,8 @@ class TopKeywordController
             if ($req_verif && file_exists($this->DirAndFileCall($req_verif, str_replace('.', '-', $domain))['file'])) {
                 echo \GuzzleHttp\json_encode(
                     $this->model->CreateJson(
-                        File_Params::OpenFile($this->DirAndFileCall($req_verif, str_replace('.', '-', $domain))['file'],
-                            $this->DirAndFileCall($req_verif, str_replace('.', '-', $domain))['dir']), $domain));
+                        File_Params::OpenFile($this->DirAndFileCall($req_verif, str_replace('.', '-', $domain))['file']), $domain)
+                    );
             } else {
                 // Recuperate Api_key and Export_Hash with DomCrawler
                 $data = $this->DomainParam($string, $id);

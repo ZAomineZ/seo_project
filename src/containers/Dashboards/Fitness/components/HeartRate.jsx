@@ -34,8 +34,8 @@ class HeartRate extends PureComponent {
                         </PieChart>
                     </ResponsiveContainer>
                     <div className="dashboard__health-chart-info">
-                        <p className="dashboard__health-chart-number">{ this.props.trust_rank }</p>
-                        <p className="dashboard__health-chart-units">{ this.props.trust_rank } /100</p>
+                        <p className="dashboard__health-chart-number">{ isNaN(this.props.trust_rank) ? 0 : this.props.trust_rank }</p>
+                        <p className="dashboard__health-chart-units">{ isNaN(this.props.trust_rank) ? 0 : this.props.trust_rank } / 100</p>
                     </div>
                 </div>
                 <p className="dashboard__goal">Percentage: 0-100</p>

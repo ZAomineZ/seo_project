@@ -113,7 +113,7 @@ class Correlation
 
                     // Create File Data And Update File Dash Stats
                     $this->fileCreateDataStats(
-                        $fileDayData, $fileDayStats, $fileTraffic,
+                        $fileDayData, $fileDayStats, $fileTraffic, $fileBlInfo,
                         $dir, $domainArray['defaultValue'], $token, TRUE);
                 } else {
                     if (!file_exists($fileDayStats) || !file_exists($fileDayData) || !file_exists($fileTraffic) || !file_exists($fileBlInfo)) {
@@ -662,7 +662,7 @@ class Correlation
         foreach ($dataFormatCorrelation as $key => $value) {
             if (isset($value['stats'])) {
                 $stats = $value['stats'];
-                $dataRatio[$key]['ratio'] = ($stats->trust / $stats->score_rank) * 100;
+                $dataRatio[$key]['ratio'] = $stats->trust !== 0 && $stats->score_rank !== 0 ? ($stats->trust / $stats->score_rank) * 100 : 0;
             }
         }
 

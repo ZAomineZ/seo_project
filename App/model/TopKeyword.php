@@ -84,7 +84,7 @@ class TopKeyword
      * @param array $data
      * @return string
      */
-    private function JsonData(array $data) : string
+    private function JsonData(array $data): string
     {
         if (is_null($data) || empty($data)) {
             return \GuzzleHttp\json_encode([]);
@@ -97,7 +97,7 @@ class TopKeyword
      * @param string $domain
      * @return bool
      */
-    private function ReqDataInsert(string $token, string $domain) : bool
+    private function ReqDataInsert(string $token, string $domain): bool
     {
         return $this->table->InsertDomain([
             'token' => $token,
@@ -124,14 +124,12 @@ class TopKeyword
 
         // Check if $keyObject is != keywordData
         // If the condition return true we inserted the traffic in the options !!!
-
         if ($keyObject !== 'keywordData') {
             $option['traffic'] = $dt[1] ?? 0;
         }
 
         // If $keywordDT is to type array, we recuperated the index 0 to array current !!!
         // Else we recuperated the object aData on the variable $keywordDt !!!
-
         if ($keyObject !== 'trafficData') {
             if (is_array($keywordDt)) {
                 $option['top_3'] = $keywordDt[0]->data[count($keywordDt[0]->data) - ($key + 1)][1] ?? 0;
@@ -165,28 +163,23 @@ class TopKeyword
     {
         foreach ($data as $key => $dt) {
             if ($dateCheck) {
-                // Create Date random for -1, -2, -3 Month to Today date !!!
-                $lastmonth = mktime(0, 0, 0, date("m") - 1, date("d"), date("Y"));
-                $lastmonth_2 = mktime(0, 0, 0, date("m") - 2, date("d"), date("Y"));
-                $lastmonth_3 = mktime(0, 0, 0, date("m") - 3, date("d"), date("Y"));
+                /*
+                    // Create Date random for -1, -2, -3 Month to Today date !!!
+                    $lastmonth = mktime(0, 0, 0, date("m") - 1, date("d"), date("Y"));
+                    $lastmonth_2 = mktime(0, 0, 0, date("m") - 2, date("d"), date("Y"));
+                    $lastmonth_3 = mktime(0, 0, 0, date("m") - 3, date("d"), date("Y"));
 
-                // Format the dates random 'Ym15' !!!
-                $str_date = date('m', $lastmonth);
-                $str_date_2 = date('m', $lastmonth_2);
-                $str_date_3 = date('m', $lastmonth_3);
+                    // Format the dates random 'Ym15' !!!
+                    $str_date = date('m', $lastmonth);
+                    $str_date_2 = date('m', $lastmonth_2);
+                    $str_date_3 = date('m', $lastmonth_3);
 
-                // Format the date exists Traffic Json !!!
-                $dateExist = date('m', substr($dt[0], 0, -3));
+                    // Format the date exists Traffic Json !!!
+                    $dateExist = date('m', substr($dt[0], 0, -3));
+                */
 
                 // Verify if the date randoms are equal to dates exists !!!
-                if (
-                    $dateExist === $str_date ||
-                    $dateExist === $str_date_2 ||
-                    $dateExist === $str_date_3 ||
-                    $dateExist === date('m')
-                ) {
-                    $this->InsertDataTrafficKeyword($dt, $keywordDt, $key, $domain, $keyObject);
-                }
+                $this->InsertDataTrafficKeyword($dt, $keywordDt, $key, $domain, $keyObject);
             } else {
                 $this->InsertDataTrafficKeyword($dt, $keywordDt, $key, $domain, $keyObject);
             }
@@ -199,18 +192,22 @@ class TopKeyword
      * @param string $domain
      * @return array
      */
-    public function CreateJson($result, string $domain = '') : array
+    public function CreateJson($result, string $domain = ''): array
     {
-        if (!is_null($result) || !empty($result)){
+        if (!is_null($result) || !empty($result)) {
+            if (is_string($result)) {
+                $result = \GuzzleHttp\json_decode($result);
+            }
+
             if ($result->traffic !== null) {
                 // Define trafficData and KeywordAndTop in the Result JSon !!!
                 $trafficDt = $result->traffic->aData[0]->data ?? null;
                 $keywordDt = $result->keywordAndTop ?? null;
 
                 if (!is_null($trafficDt) && !is_null($keywordDt)) {
-                    $dtTrafficAndKeyword = array_slice($trafficDt, - 3, count($trafficDt));
-                    $dtTraffic = array_slice($trafficDt, - 6, count($trafficDt));
-                    $dtKeyword = array_slice($trafficDt, - 1, count($trafficDt));
+                    $dtTrafficAndKeyword = array_slice($trafficDt, -3, count($trafficDt));
+                    $dtTraffic = array_slice($trafficDt, -6, count($trafficDt));
+                    $dtKeyword = array_slice($trafficDt, -1, count($trafficDt));
 
                     $this->createDataTrafficAndTop($dtTrafficAndKeyword, $keywordDt, $domain, true, 'data');
                     $this->createDataTrafficAndTop($dtTraffic, $keywordDt, $domain, false, 'trafficData');

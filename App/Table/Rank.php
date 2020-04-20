@@ -93,6 +93,18 @@ class Rank extends Table
     }
 
     /**
+     * @param string|null $slug
+     * @param string|null $keywords
+     * @return bool
+     */
+    private function updateKeywordsBySlug(?string $slug = null, ?string $keywords = null)
+    {
+        $statement = $this->pdo->GetPdo()
+            ->prepare("UPDATE rank SET keywords = :keywords WHERE slug = :slug");
+        return $statement->execute(['keywords' => $keywords, 'slug' => $slug]);
+    }
+
+    /**
      * @param $auth
      * @param string $project
      * @param null|string|int $id
@@ -166,14 +178,17 @@ class Rank extends Table
      * @param string $id
      * @return bool|PDOStatement
      */
-    public function deleteProject($auth, string $id)
+    public function deleteProject($auth, ?string $id = null)
     {
+        if (is_null($id)) {
+            return false;
+        }
         $statement = $this->pdo
             ->GetPdo()
             ->prepare('DELETE FROM rank WHERE id = :id AND user_id = :userID');
         $statement->execute([
-            'id' => $id,
-            'userID' => $auth->id
+            'id' => (int)$id,
+            'userID' => (int)$auth->id
         ]);
         return $statement;
     }
@@ -203,6 +218,17 @@ class Rank extends Table
     }
 
     /**
+     * @param string|null $slug
+     * @return array
+     */
+    public function selectKeywordsByProject(?string $slug = null)
+    {
+        $statement = $this->pdo->GetPdo()->prepare('SELECT id, keywords FROM rank WHERE slug = ?');
+        $statement->execute([$slug]);
+        return $statement->fetch();
+    }
+
+    /**
      * @param string $project
      * @return mixed
      */
@@ -211,5 +237,20 @@ class Rank extends Table
         $statement = $this->pdo->GetPdo()->prepare('SELECT id from rank WHERE slug = ?');
         $statement->execute([$project]);
         return $statement->fetch();
+    }
+
+    /**
+     * @param null|array $keywords
+     * @param string|null $keywordsExists
+     * @param string|null $project
+     * @return bool
+     */
+    public function deleteKeywordsRecents(?array $keywords = [], ?string $keywordsExists, ?string $project = null): bool
+    {
+        $kExists = explode(',', $keywordsExists);
+        $arrayDiff = array_diff($kExists, $keywords);
+        $stringToKeywords = implode(',', $arrayDiff);
+
+        return $this->updateKeywordsBySlug($project, $stringToKeywords);
     }
 }

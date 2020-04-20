@@ -287,10 +287,14 @@ class WebSite
     public function ChangeDir(string $dir, string $domain)
     {
         if ($dir) {
-            $dirArray = explode('datas/', $dir)[0];
-            $dirNew = $dirArray . 'datas/imastic/' . 'LinkProfile-' .
-                Str_options::str_replace_domain($domain) . '/';
-            return $dirNew;
+            $dirArray = explode('datas/', $dir);
+            $underDir = 'datas/imastic/LinkProfile-';
+            $domain = Str_options::str_replace_domain($domain);
+
+            if (count($dirArray) === 2) {
+                return $dirArray[0] . $underDir . $domain;
+            }
+            return false;
         }
         return false;
     }
@@ -331,7 +335,7 @@ class WebSite
     public function SaveImgPower(string $domain, string $dir, string $token)
     {
         $ImgMajestic = "https://majestic.com/charts/linkprofile/2/?target=$domain&datatype=1&IndexDataSource=F";
-        $fileCreate = $this->ChangeDir($dir, $domain) .
+        $fileCreate = $this->ChangeDir($dir, $domain) . DIRECTORY_SEPARATOR .
             Str_options::str_replace_domain($domain) . '-' .
             $token . '-domain.png';
         if (!is_dir($this->ChangeDir($dir, $domain))) {
