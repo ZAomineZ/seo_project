@@ -135,7 +135,7 @@ class FileJson
     {
         $file = $this->file;
         $json = $this->json;
-        
+
         $data = File_Params::OpenFile($file, $this->directory);
         $newData = (new DataJsonRank())->newDataJson($data, $json);
 
@@ -190,7 +190,7 @@ class FileJson
             }
         }
 
-        $this->directory = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'storage/datas/rankTo/';
+        $this->directory = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'storage/datas/rankTo/' . $userProject . '/';
         $this->file = $this->directory . $slugProject . '-' . $userProject . '.json';
 
         return [$slugProject];

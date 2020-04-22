@@ -47,10 +47,12 @@ class DataJsonRank
                 $userProject = $project->{'user_id'};
             }
 
-            $directory = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'storage/datas/rankTo/';
+            $directory = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'storage/datas/rankTo/' . $userProject . '/';
             $file = $directory . $slugProject . '-' . $userProject . '.json';
 
-            $dataJson[] = File_Params::OpenFile($file, $directory);
+            if (file_exists($file)) {
+                $dataJson[] = File_Params::OpenFile($file, $directory);
+            }
         }
 
         return $dataJson;

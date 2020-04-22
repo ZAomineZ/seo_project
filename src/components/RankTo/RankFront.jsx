@@ -269,7 +269,8 @@ export default class RankFront extends PureComponent {
     }
 
     render() {
-        const dataR = Object.values(this.state.dataKeywords);
+        const dataR = this.state.dataKeywords !== undefined ? Object.values(this.state.dataKeywords) : [];
+
         let moment = require('moment');
         let Slugify = require('slugifyjs').fromLocale('en');
 

@@ -65,7 +65,6 @@ class RankController
 
         $rankJson = new RankJson($this->rankModel, $projects);
         $rankJson->dataJson($auth, $project);
-
         $dataResult = $rankJson->getResultsRank($auth);
 
         echo \GuzzleHttp\json_encode([
@@ -103,7 +102,6 @@ class RankController
 
         $rankJson = new RankJson($this->rankModel, $projects);
         $rankJson->dataJson($auth, $projectStd, $dataKeywords['keywords'] ?: [], $website !== $projectStd->website ? true : false);
-
         $dataResult = $rankJson->getResultsRank($auth);
 
         echo \GuzzleHttp\json_encode([
@@ -176,9 +174,9 @@ class RankController
         $dataResult = $rankJson->getResultsRankProject($project, $auth);
 
         echo \GuzzleHttp\json_encode([
-            'data' => $dataResult->{'data'},
-            'dataKeywordsByWebsite' => $dataResult->{'dataKeywordsByWebsite'},
-            'countKeywords' => $dataResult->{'countKeywords'}
+            'data' => !empty($dataResult) ? $dataResult->{'data'} : [],
+            'dataKeywordsByWebsite' => !empty($dataResult) ? $dataResult->{'dataKeywordsByWebsite'} : [],
+            'countKeywords' => !empty($dataResult) ? $dataResult->{'countKeywords'} : []
         ]);
     }
 

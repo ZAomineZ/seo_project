@@ -104,7 +104,8 @@ class RankJson
     {
         $projects = $this->toProjects($project);
         $fileJson = new FileJson($this->rankModel, $auth);
-        $data = $fileJson->openFileProject($projects)[0];
+        $dataFile = $fileJson->openFileProject($projects);
+        $data = !empty($dataFile) ? $dataFile[0] : [];
 
         if (!isset($data) || empty($data)) {
             return [];
