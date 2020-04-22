@@ -1,7 +1,6 @@
 <?php
 namespace App\DataTraitement\RankData\DataJson;
 
-
 use App\concern\File_Params;
 use App\Model\RankModel;
 
@@ -103,6 +102,18 @@ class FileJson
     }
 
     /**
+     * @param $project
+     */
+    public function checkedFileExist($project)
+    {
+        $this->fileInit($project);
+
+        if (!file_exists($this->file)) {
+            $this->rankModel->ProjectDelete($project->id, $this->auth);
+        }
+    }
+
+    /**
      * @return void
      */
     private function createdFile()
@@ -155,22 +166,33 @@ class FileJson
     private function initializedFile(array $projects, bool $noKeywordData = false, bool $deleteFile = false)
     {
         foreach ($projects as $project) {
-            if (is_string($project)) {
-                $slugProject = $project;
-                $userProject = $this->auth->{'id'};
-            } else {
-                $slugProject = $project->{'slug'};
-                $userProject = $project->{'user_id'};
-
-                if (is_null($this->auth)) {
-                    $this->auth = $project->{'user_id'};
-                }
-            }
-
-            $this->directory = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'storage/datas/rankTo/';
-            $this->file = $this->directory . $slugProject . '-' . $userProject . '.json';
+            [$slugProject] = $this->fileInit($project);
 
             $deleteFile === false ? $this->toJson($projects, $slugProject, $noKeywordData) : null;
         }
+    }
+
+    /**
+     * @param $project
+     * @return array
+     */
+    private function fileInit($project): array
+    {
+        if (is_string($project)) {
+            $slugProject = $project;
+            $userProject = $this->auth->{'id'};
+        } else {
+            $slugProject = $project->{'slug'};
+            $userProject = $project->{'user_id'};
+
+            if (is_null($this->auth)) {
+                $this->auth = $project->{'user_id'};
+            }
+        }
+
+        $this->directory = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'storage/datas/rankTo/';
+        $this->file = $this->directory . $slugProject . '-' . $userProject . '.json';
+
+        return [$slugProject];
     }
 }

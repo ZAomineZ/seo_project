@@ -12,9 +12,9 @@ use App\Table\Website;
 
 require_once '../../vendor/autoload.php';
 
-$remoteIp = '192.168.1.8';
+    $remoteIp = '192.168.1.8';
 
-$header = new Ajax();
+    $header = new Ajax();
 
     $pdo = new PDO_Model();
 

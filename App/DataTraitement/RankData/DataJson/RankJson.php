@@ -132,6 +132,17 @@ class RankJson
     }
 
     /**
+     * @param $auth
+     */
+    public function checkedFilesKeywordsExist($auth): void
+    {
+        foreach ($this->projects as $project) {
+            (new FileJson($this->rankModel, $auth))->checkedFileExist($project);
+        }
+        $this->projects = $this->rankModel->AllProject($auth);
+    }
+
+    /**
      * @param string $project
      * @return array
      */

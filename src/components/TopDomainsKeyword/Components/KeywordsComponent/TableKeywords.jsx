@@ -103,7 +103,7 @@ export default class TableKeywords extends PureComponent {
         const sortSvg = (idSvg) => {
             return (
                 <svg
-                    className="MuiSvgIcon-root-42 MuiTableSortLabel-icon-39 MuiTableSortLabel-iconDirectionAsc-41 opacity"
+                    className="svg-icon-position sort-label-icon rotate-icon opacity"
                     focusable="false" viewBox="0 0 24 24" id={idSvg} width={24} height={24}>
                     <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path>
                 </svg>

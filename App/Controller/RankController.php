@@ -121,11 +121,12 @@ class RankController
         }
         $projects = $this->rankModel->AllProject($auth);
         $rankJson = new RankJson($this->rankModel, $projects);
+        $rankJson->checkedFilesKeywordsExist($auth);
 
         $dataResult = $rankJson->getResultsRank($auth);
 
         echo \GuzzleHttp\json_encode([
-            'result' => $projects,
+            'result' => $this->rankModel->AllProject($auth),
             $dataResult
         ]);
     }

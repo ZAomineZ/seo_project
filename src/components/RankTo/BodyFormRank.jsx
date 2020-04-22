@@ -258,14 +258,12 @@ class BodyFormRank extends PureComponent {
     /**
      * @param {object} response
      */
-    redirectSerp(response)
-    {
+    redirectSerp(response) {
         ResponseAjax.ForbiddenResponse(response);
         this.setState({redirectSerp: !this.state.redirectSerp});
     }
 
-    loadedResponseNewProject()
-    {
+    loadedResponseNewProject() {
         this.setState({modal: !this.state.modal});
         setTimeout(() => this.setState({loaded: false}), 500);
     }
@@ -372,18 +370,20 @@ class BodyFormRank extends PureComponent {
                     {this.state.data
                         .slice(this.state.page * this.state.rowsPerPage, (this.state.page * this.state.rowsPerPage) + this.state.rowsPerPage)
                         .map((d) => {
-                            return <BodyContent id={d.id}
-                                                project={d.project}
-                                                website={d.website}
-                                                date={d.created_at}
-                                                content={d.content}
-                                                keywords={d.keywords === null ? '' : d.keywords}
-                                                dataRankKeywords={d.dataKeywordsRank}
-                                                deleteProject={e => this.DeleteProject(e)}
-                                                modalDelete={this.state.modalDelete}
-                                                modal={this.state.modal}
-                                                history={this.props.history}
-                                                toggleDelete={this.toggleDelete}/>
+                            return (
+                                <BodyContent id={d.id}
+                                             project={d.project}
+                                             website={d.website}
+                                             date={d.created_at}
+                                             content={d.content}
+                                             keywords={d.keywords === null ? '' : d.keywords}
+                                             dataRankKeywords={d.dataKeywordsRank}
+                                             deleteProject={e => this.DeleteProject(e)}
+                                             modalDelete={this.state.modalDelete}
+                                             modal={this.state.modal}
+                                             history={this.props.history}
+                                             toggleDelete={this.toggleDelete}/>
+                            )
                         })
                     }
                     <div className="col-md-3">

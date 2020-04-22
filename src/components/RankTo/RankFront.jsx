@@ -12,26 +12,8 @@ import ResponseAjax from "../../js/ResponseAjax";
 import NotificationMessage from "../../js/NotificationMessage";
 
 export default class RankFront extends PureComponent {
-    static propTypes = {
-        id: PropTypes.string.isRequired,
-        project: PropTypes.string.isRequired,
-        website: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-        content: PropTypes.string.isRequired,
-        keywords: PropTypes.string.isRequired,
-        dataRankKeywords: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.object
-        ]),
-        modal: PropTypes.bool.isRequired,
-        history: PropTypes.object,
-        modalDelete: PropTypes.bool.isRequired,
-        toggleDelete: PropTypes.func.isRequired,
-        deleteProject: PropTypes.func.isRequired
-    };
-
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             modal: false,
             dataKeywords: [],
@@ -58,19 +40,46 @@ export default class RankFront extends PureComponent {
         this.ErrorRenderState = this.ErrorRenderState.bind(this);
     }
 
+    static propTypes = {
+        id: PropTypes.string.isRequired,
+        project: PropTypes.string.isRequired,
+        website: PropTypes.string.isRequired,
+        date: PropTypes.string.isRequired,
+        content: PropTypes.string.isRequired,
+        keywords: PropTypes.string.isRequired,
+        dataRankKeywords: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.object
+        ]),
+        modal: PropTypes.bool.isRequired,
+        history: PropTypes.object,
+        modalDelete: PropTypes.bool.isRequired,
+        toggleDelete: PropTypes.func.isRequired,
+        deleteProject: PropTypes.func.isRequired
+    };
+
+    componentDidMount() {
+        this.reloadProps(this.props)
+    }
+
     componentWillReceiveProps(nextProps, nextContext) {
         if (nextProps.dataRankKeywords) {
-            this.setState({
-                id: nextProps.id,
-                project: nextProps.project,
-                website: nextProps.website,
-                description: nextProps.content,
-                keywords: nextProps.keywords,
-                date: nextProps.date,
-                dataKeywords: nextProps.dataRankKeywords,
-                loading: false
-            });
+            this.reloadProps(nextProps)
         }
+    }
+
+    reloadProps(nextProps)
+    {
+        this.setState({
+            id: nextProps.id,
+            project: nextProps.project,
+            website: nextProps.website,
+            description: nextProps.content,
+            keywords: nextProps.keywords,
+            date: nextProps.date,
+            dataKeywords: nextProps.dataRankKeywords,
+            loading: false
+        });
     }
 
     ErrorRenderState() {

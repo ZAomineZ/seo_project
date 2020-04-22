@@ -3,7 +3,11 @@ import React, {PureComponent} from 'react';
 import RankFront from "./RankFront";
 import PropTypes from "prop-types";
 
-export default class BodyContent extends PureComponent{
+export default class BodyContent extends PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
     static propTypes = {
         id: PropTypes.string.isRequired,
         project: PropTypes.string.isRequired,
@@ -35,7 +39,7 @@ export default class BodyContent extends PureComponent{
                        modalDelete={this.props.modalDelete}
                        modal={this.props.modal}
                        history={this.props.history}
-                       toggleDelete={this.props.toggleDelete} />
+                       toggleDelete={this.props.toggleDelete}/>
         )
     }
 }

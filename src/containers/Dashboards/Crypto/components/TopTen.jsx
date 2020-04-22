@@ -273,7 +273,6 @@ export default class TopTen extends PureComponent {
             if (cook.indexOf(name) == 0) {
                 return cook.substring(name.length, cook.length);
             }
-            return '';
         }
     }
 
