@@ -3,6 +3,7 @@ namespace App\DataTraitement\RankData\DataJson;
 
 use App\concern\File_Params;
 use App\Model\RankModel;
+use stdClass;
 
 class FileJson
 {
@@ -114,6 +115,22 @@ class FileJson
     }
 
     /**
+     * @param stdClass $project
+     * @param null|string $newSlug
+     */
+    public function renameFile(stdClass $project, ?string $newSlug)
+    {
+        [$slugProject, $userProject] = $this->fileInit($project);
+
+        if (file_exists($this->file)) {
+            $newName = $this->directory . $newSlug . '-' . $userProject . '.json';
+            rename($this->file, $newName);
+
+            $this->file = $newName;
+        }
+    }
+
+    /**
      * @return void
      */
     private function createdFile()
@@ -193,6 +210,6 @@ class FileJson
         $this->directory = dirname(__DIR__, 4) . DIRECTORY_SEPARATOR . 'storage/datas/rankTo/' . $userProject . '/';
         $this->file = $this->directory . $slugProject . '-' . $userProject . '.json';
 
-        return [$slugProject];
+        return [$slugProject, $userProject];
     }
 }

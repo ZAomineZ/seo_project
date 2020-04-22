@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="Fix Bug Cron Active and Bl Semruch Request error 503">
+    <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="Fix Bug file structure and delete file when cron is started !!!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/RankController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/RankController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/DataJsonRank.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/DataJsonRank.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/FileJson.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/FileJson.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/RankJson.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/RankJson.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Helpers/RenderMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Helpers/RenderMessage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Table/Rank.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Table/Rank.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/model/RankModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/RankModel.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/RankTo/RankFront.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RankTo/RankFront.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -133,7 +135,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="js.last.introduce.type" value="CONST" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../LaravelEventsProject" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.jscs" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -497,7 +499,8 @@
       <workItem from="1587459490046" duration="19129000" />
       <workItem from="1587545311251" duration="2909000" />
       <workItem from="1587548396407" duration="425000" />
-      <workItem from="1587548838271" duration="4319000" />
+      <workItem from="1587548838271" duration="4838000" />
+      <workItem from="1587555801202" duration="5954000" />
     </task>
     <task id="LOCAL-00001" summary="commit xml">
       <created>1557842988682</created>
@@ -828,7 +831,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587548181487</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Fix Bug file structure and delete file when cron is started !!!">
+      <created>1587554454153</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1587554454153</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TodoView">
@@ -883,7 +893,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Update Volume Data" />
     <MESSAGE value="Update Error Fix App" />
     <MESSAGE value="Fix Error App, Update Tool Serp and Website, new system keywords for the tool TopKeyword" />
     <MESSAGE value="Keywords system mounted in TopKeyword tools !!!" />
@@ -908,7 +917,8 @@
     <MESSAGE value="Fix Bug RankTo And Cookie Auth !!!" />
     <MESSAGE value="Fix Bug RankTo empty project and keywords not valid" />
     <MESSAGE value="Fix Bug Cron Active and Bl Semruch Request error 503" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix Bug Cron Active and Bl Semruch Request error 503" />
+    <MESSAGE value="Fix Bug file structure and delete file when cron is started !!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix Bug file structure and delete file when cron is started !!!" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="138" width="1002" height="840" key="#ESLint" timestamp="1587470946084">
@@ -919,14 +929,14 @@
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
     <state x="688" y="159" width="535" height="799" key="#com.intellij.ide.util.MemberChooser/0.33.1920.1047@0.33.1920.1047" timestamp="1587334722790" />
-    <state x="0" y="33" width="1920" height="1047" key="CommitChangelistDialog2" timestamp="1587554450629">
+    <state x="0" y="33" width="1920" height="1047" key="CommitChangelistDialog2" timestamp="1587562415357">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
-    <state x="0" y="33" width="1920" height="1047" key="CommitChangelistDialog2/0.33.1920.1047@0.33.1920.1047" timestamp="1587554450629" />
-    <state x="691" y="261" key="FileChooserDialogImpl" timestamp="1587391820095">
+    <state x="0" y="33" width="1920" height="1047" key="CommitChangelistDialog2/0.33.1920.1047@0.33.1920.1047" timestamp="1587562415357" />
+    <state x="691" y="261" key="FileChooserDialogImpl" timestamp="1587554853501">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
-    <state x="691" y="261" key="FileChooserDialogImpl/0.33.1920.1047@0.33.1920.1047" timestamp="1587391820095" />
+    <state x="691" y="261" key="FileChooserDialogImpl/0.33.1920.1047@0.33.1920.1047" timestamp="1587554853501" />
     <state x="0" y="33" width="1920" height="1047" key="SettingsEditor" timestamp="1587548903799">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
@@ -935,14 +945,14 @@
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
     <state width="623" height="498" key="SwitcherDM/0.33.1920.1047@0.33.1920.1047" timestamp="1587384441785" />
-    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2" timestamp="1587548182748">
+    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2" timestamp="1587554459477">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
-    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2/0.33.1920.1047@0.33.1920.1047" timestamp="1587548182748" />
-    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1587551918287">
+    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2/0.33.1920.1047@0.33.1920.1047" timestamp="1587554459477" />
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1587562419083">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
-    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup/0.33.1920.1047@0.33.1920.1047" timestamp="1587551918287" />
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup/0.33.1920.1047@0.33.1920.1047" timestamp="1587562419083" />
   </component>
   <component name="masterDetails">
     <states>

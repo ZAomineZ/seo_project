@@ -13,6 +13,7 @@ use App\concern\Ajax;
 use App\DataTraitement\RankData\DataJson\RankJson;
 use App\DataTraitement\RankData\KeywordsTraitement;
 use App\ErrorCode\Exception\NullableException;
+use App\Helpers\RenderMessage;
 use App\Model\RankModel;
 use App\Table\Rank;
 
@@ -92,15 +93,17 @@ class RankController
 
         $dataTraitement = [$project, $website, $content, $auth, $id];
 
-        $projectStd = $this->rankTable->selectProject($auth, $project, null, true);
+        $projectStd = $this->rankTable->selectProjectById($auth, $id);
         $dataKeywords = (new KeywordsTraitement($this->rankModel, $keywords))
             ->traitementKeywords($dataTraitement);
 
-        $projects = [
-            $this->rankTable->selectProject($auth, $project, null, true)
-        ];
+        $bddProject = $this->rankTable->selectProjectById($auth, $id);
+        $projects = [$bddProject];
 
         $rankJson = new RankJson($this->rankModel, $projects);
+        if ($project !== $projectStd->project) {
+            $rankJson->updateNameFile($auth, $projectStd, $bddProject->slug);
+        }
         $rankJson->dataJson($auth, $projectStd, $dataKeywords['keywords'] ?: [], $website !== $projectStd->website ? true : false);
         $dataResult = $rankJson->getResultsRank($auth);
 

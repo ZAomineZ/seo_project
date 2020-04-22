@@ -10,6 +10,7 @@ namespace App\Table;
 
 use App\Model\PDO_Model;
 use PDOStatement;
+use stdClass;
 
 class Rank extends Table
 {
@@ -123,7 +124,7 @@ class Rank extends Table
             ]);
         } else {
             $statement = $this->pdo->GetPdo()
-                ->prepare("SELECT id, slug, website, user_id, keywords FROM rank WHERE project = :project AND user_id = :userID");
+                ->prepare("SELECT id, project, slug, website, user_id, keywords FROM rank WHERE project = :project AND user_id = :userID");
             $statement->execute([
                 'userID' => $auth->id,
                 'project' => $project
@@ -143,12 +144,12 @@ class Rank extends Table
     /**
      * @param $auth
      * @param int $id
-     * @return \stdClass
+     * @return stdClass|boolean
      */
-    public function selectProjectById($auth, int $id): \stdClass
+    public function selectProjectById($auth, int $id)
     {
         $statement = $this->pdo->GetPdo()
-            ->prepare("SELECT id, slug, website, user_id, keywords FROM rank WHERE user_id = :userID AND id = :id");
+            ->prepare("SELECT id, project, slug, website, user_id, keywords FROM rank WHERE user_id = :userID AND id = :id");
         $statement->execute([
             'userID' => $auth->id,
             'id' => $id

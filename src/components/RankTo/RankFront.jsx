@@ -68,8 +68,7 @@ export default class RankFront extends PureComponent {
         }
     }
 
-    reloadProps(nextProps)
-    {
+    reloadProps(nextProps) {
         this.setState({
             id: nextProps.id,
             project: nextProps.project,
@@ -227,7 +226,7 @@ export default class RankFront extends PureComponent {
                             setTimeout(() => this.setState({loaded: true}), 500);
 
                             this.submitNotification('success', '👋 Well Done !!!', 'You updated your project with success !!!');
-                            history.push('/seo/rankTo/' + Slugify.parse(this.props.project))
+                            history.push('/seo/rankTo/' + Slugify.parse(this.state.project))
                         }
                     }
                 });

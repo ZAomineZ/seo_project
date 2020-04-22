@@ -11,6 +11,7 @@ namespace App\DataTraitement\RankData\DataJson;
 use App\Model\PDO_Model;
 use App\Model\RankModel;
 use App\Table\Rank;
+use stdClass;
 
 class RankJson
 {
@@ -36,7 +37,7 @@ class RankJson
 
     /**
      * @param $auth = null
-     * @param \stdClass|bool $project
+     * @param stdClass|bool $project
      * @param array $keywordsNew
      * @param bool $newCreationData
      * @return null
@@ -76,6 +77,17 @@ class RankJson
     {
         $fileJson = new FileJson($this->rankModel, $auth);
         $fileJson->deleteFile($this->projects);
+    }
+
+    /**
+     * @param $auth
+     * @param stdClass $projectOld
+     * @param string $newSlug
+     */
+    public function updateNameFile($auth, stdClass $projectOld, string $newSlug)
+    {
+        $fileJson = new FileJson($this->rankModel, $auth);
+        $fileJson->renameFile($projectOld, $newSlug);
     }
 
     /**
@@ -189,10 +201,10 @@ class RankJson
     }
 
     /**
-     * @param \stdClass $item
+     * @param stdClass $item
      * @return bool
      */
-    private function updateRank(\stdClass $item)
+    private function updateRank(stdClass $item)
     {
         $PDO = new PDO_Model();
         return (new Rank($PDO))->UpdateCreated((int)$item->id);

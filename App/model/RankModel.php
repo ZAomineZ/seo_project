@@ -112,9 +112,11 @@ class RankModel
         $this->limitKeywords($request ? $request->keywords : '', $keywords);
         $this->RegexKeywords($keywords);
 
+        $projectSlug = (new Str_options())->strReplaceString('.', '-', $project);
+        $slug = Str::slug($projectSlug);
         $data = [
             'project' => $project,
-            'slug' => Str::slug($project),
+            'slug' => $slug,
             'website' => $website,
             'content' => $content,
             'created_at' => date('Y-m-d H:i:s'),
@@ -145,11 +147,14 @@ class RankModel
      */
     public function KeywordsEmpty(string $project, string $website, string $content, $auth, $id = null): array
     {
+        $projectSlug = (new Str_options())->strReplaceString('.', '-', $project);
+        $slug = Str::slug($projectSlug);
+
         if ($id) {
             $this->rankTable
                 ->UpdateData([
                     'project' => $project,
-                    'slug' => Str::slug($project),
+                    'slug' => $slug,
                     'website' => $website,
                     'content' => $content,
                     'keywords' => null,
@@ -160,7 +165,7 @@ class RankModel
         }
         $this->DataInsert([
             'project' => $project,
-            'slug' => Str::slug($project),
+            'slug' => (new Str_options())->strReplaceString('.', '-', $slug),
             'website' => $website,
             'content' => $content,
             'created_at' => date('Y-m-d H:i:s'),
@@ -1145,10 +1150,10 @@ class RankModel
             $tableRank = new Rank($pdo);
 
             $bddProject = $tableRank->selectKeywordsByProject($project);
-            if ((int)$user->rate_user === 100 && !empty($keywords)) {
+            if ((int)$user->rate_user === 10000 && !empty($keywords)) {
                 $tableRank
                     ->deleteKeywordsRecents($keywords, $bddProject->keywords ?? '', $project);
-            } elseif ((int)$user->rate_user === 100 && empty($keywords)) {
+            } elseif ((int)$user->rate_user === 10000 && empty($keywords)) {
                 $tableRank->deleteProject($auth, $bddProject->id ?? null);
             }
         }

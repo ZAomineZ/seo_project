@@ -39,7 +39,7 @@ class RenderMessage
     {
         echo \GuzzleHttp\json_encode([
             'success' => true,
-            'error' => $message
+            'message' => $message
         ]);
         die();
     }
