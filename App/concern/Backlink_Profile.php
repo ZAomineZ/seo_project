@@ -43,25 +43,30 @@ class Backlink_Profile
     /**
      * @param Client $goutte
      * @param string $url
-     * @return \Symfony\Component\DomCrawler\Crawler
+     * @return Crawler
      */
     protected function FileOpenJson (Client $goutte, string $url) : Crawler
     {
         $gt = $goutte->request("GET", $url);
+        while ($gt->getNode(0)) {
+            $gt = $goutte->request("GET", $url);
+        }
         $gt_response = $goutte->getResponse()->getContent();
         $gt->addContent($gt_response);
         return $gt;
     }
 
     /**
-     * @param $json
+     * @param Crawler $crawler
      * @return mixed
      */
-    protected static function DataReq ($json)
+    protected static function DataReq (Crawler $crawler)
     {
-        $json_search = $json->filter("body > p")->each(function ($node){
+        $json_search = $crawler->filter("body > p")->each(function ($node){
            return $node->html();
         });
+
+        $crawler->clear();
         return json_decode($json_search[0]);
     }
 
@@ -73,6 +78,8 @@ class Backlink_Profile
     {
         $link = self::Backlink($domain);
         $open_link = $this->FileOpenJson($this->goutte, $link);
+
+        $this->goutte = new Client();
         return self::DataReq($open_link);
     }
 }

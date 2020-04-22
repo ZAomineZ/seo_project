@@ -135,7 +135,7 @@ class FileJson
     {
         $file = $this->file;
         $json = $this->json;
-
+        
         $data = File_Params::OpenFile($file, $this->directory);
         $newData = (new DataJsonRank())->newDataJson($data, $json);
 

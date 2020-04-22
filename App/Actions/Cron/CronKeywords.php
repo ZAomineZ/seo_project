@@ -18,6 +18,10 @@ use App\Table\Rank;
 class CronKeywords
 {
     /**
+     * @var bool
+     */
+    public $cronActive = false;
+    /**
      * @var Rank
      */
     private $rank;
@@ -52,6 +56,7 @@ class CronKeywords
                 ->messageRender('Hey Drogbadvc, I you remind that you already have start this CRON !!!');
         }
 
+        $this->cronActive = true;
         foreach ($keywords as $item) {
             $projects = [$item ?: null];
             $project = $this->rank->selectRank((int)$item->id);
@@ -59,6 +64,8 @@ class CronKeywords
             $rankJson = new RankJson($this->rankModel, $projects);
             $rankJson->dataJson(null, $project, []);
         }
+        $this->cronActive = false;
+
         return true;
     }
 

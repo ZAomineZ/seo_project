@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Actions\Cron\CronKeywords;
 use App\concern\Ajax;
 use App\DataTraitement\RankData\DataJson\RankJson;
 use App\DataTraitement\RankData\KeywordsTraitement;
@@ -121,8 +122,11 @@ class RankController
         }
         $projects = $this->rankModel->AllProject($auth);
         $rankJson = new RankJson($this->rankModel, $projects);
-        $rankJson->checkedFilesKeywordsExist($auth);
 
+        $cronKeywords = new CronKeywords($this->rankTable, $this->rankModel);
+        if ($cronKeywords->cronActive !== true) {
+            $rankJson->checkedFilesKeywordsExist($auth);
+        }
         $dataResult = $rankJson->getResultsRank($auth);
 
         echo \GuzzleHttp\json_encode([

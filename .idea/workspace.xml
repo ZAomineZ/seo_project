@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="Fix Bug RankTo And Cookie Auth !!!">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="393bd7a6-e3f8-4c0a-ade2-3f52b7d3f5a8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/Ajax/CronKeywords.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Ajax/CronKeywords.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/Actions/Cron/CronKeywords.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Actions/Cron/CronKeywords.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/RankController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/RankController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/FileJson.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/FileJson.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/RankJson.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/DataTraitement/RankData/DataJson/RankJson.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/concern/Ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/concern/Ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/model/Serp.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/model/Serp.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RankTo/BodyContent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RankTo/BodyContent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RankTo/BodyFormRank.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RankTo/BodyFormRank.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/RankTo/RankFront.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/RankTo/RankFront.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/KeywordsComponent/TableKeywords.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopDomainsKeyword/Components/KeywordsComponent/TableKeywords.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Dashboards/Crypto/components/TopTen.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scss/app/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/app/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/concern/Backlink_Profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/concern/Backlink_Profile.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -503,7 +494,7 @@
       <workItem from="1587331964755" duration="9862000" />
       <workItem from="1587373617026" duration="25100000" />
       <workItem from="1587459490046" duration="19129000" />
-      <workItem from="1587545311251" duration="739000" />
+      <workItem from="1587545311251" duration="2741000" />
     </task>
     <task id="LOCAL-00001" summary="commit xml">
       <created>1557842988682</created>
@@ -820,7 +811,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587406583005</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Fix Bug RankTo empty project and keywords not valid">
+      <created>1587546198741</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1587546198741</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TodoView">
@@ -875,7 +873,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Add Gender Register" />
     <MESSAGE value="update tools RankTo And refactoring Code Php" />
     <MESSAGE value="Update Volume Data" />
     <MESSAGE value="Update Error Fix App" />
@@ -900,7 +897,8 @@
     <MESSAGE value="Fix bug diff and change website data in RankTo tools" />
     <MESSAGE value="Fix last bugs !!!" />
     <MESSAGE value="Fix Bug RankTo And Cookie Auth !!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix Bug RankTo And Cookie Auth !!!" />
+    <MESSAGE value="Fix Bug RankTo empty project and keywords not valid" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix Bug RankTo empty project and keywords not valid" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="138" width="1002" height="840" key="#ESLint" timestamp="1587470946084">
@@ -927,14 +925,14 @@
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
     <state width="623" height="498" key="SwitcherDM/0.33.1920.1047@0.33.1920.1047" timestamp="1587384441785" />
-    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2" timestamp="1587406586118">
+    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2" timestamp="1587546202585">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
-    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2/0.33.1920.1047@0.33.1920.1047" timestamp="1587406586118" />
-    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1587546111195">
+    <state x="455" y="226" width="1002" height="665" key="Vcs.Push.Dialog.v2/0.33.1920.1047@0.33.1920.1047" timestamp="1587546202585" />
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup" timestamp="1587548071918">
       <screen x="0" y="33" width="1920" height="1047" />
     </state>
-    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup/0.33.1920.1047@0.33.1920.1047" timestamp="1587546111195" />
+    <state x="539" y="45" width="840" height="1034" key="search.everywhere.popup/0.33.1920.1047@0.33.1920.1047" timestamp="1587548071918" />
   </component>
   <component name="masterDetails">
     <states>
